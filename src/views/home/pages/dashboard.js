@@ -1,120 +1,80 @@
 import React from 'react'
-import { Box, Card, CardContent, Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { navigationConfig } from 'configs/navigationConfig';
+import { Link } from 'react-router-dom';
 
 
 export default function Dashboard() {
 
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
+  const usersData = [
+    {
+      name: 'Foydalanuvchilar',
+      path: '/users',
+    }
+  ]
 
-  const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-  ];
+
 
   return (
-    <div>
-      <Box sx={{ flexGrow: 1, width: '100%' }} className="flex justify-between gap-2">
-        <Card className='w-1/4'>
-          <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-              Word of the Day
-            </Typography>
-            <Typography variant="h5" component="div">
-              be nev o lent
-            </Typography>
-            <Typography variant="body2">
-              well meaning and kindly.
-              <br />
-              {'"a benevolent smile"'}
-            </Typography>
-          </CardContent>
-        </Card>
-        <Card className='w-1/4'>
-          <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-              Word of the Day
-            </Typography>
-            <Typography variant="h5" component="div">
-              be nev o lent
-            </Typography>
-            <Typography variant="body2">
-              well meaning and kindly.
-              <br />
-              {'"a benevolent smile"'}
-            </Typography>
-          </CardContent>
-        </Card>
-        <Card className='w-1/4'>
-          <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-              Word of the Day
-            </Typography>
-            <Typography variant="h5" component="div">
-              be nev o lent
-            </Typography>
-            <Typography variant="body2">
-              well meaning and kindly.
-              <br />
-              {'"a benevolent smile"'}
-            </Typography>
-          </CardContent>
-        </Card>
-        <Card className='w-1/4'>
-          <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-              Word of the Day
-            </Typography>
-            <Typography variant="h5" component="div">
-              be nev o lent
-            </Typography>
-            <Typography variant="body2">
-              well meaning and kindly.
-              <br />
-              {'"a benevolent smile"'}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>
-      <Typography sx={{ fontSize: 24, marginTop: 2, marginLeft: 2 }} gutterBottom>
-        Data Table
-      </Typography>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className='flex gap-5'>
+      <div className='block w-1/2 border shadow-xl p-2'>
+        <Typography className='p-2' sx={{ fontSize: 30 }}>
+          Shop
+        </Typography>
+        <Table aria-label="simple table">
+          <TableBody>
+            {navigationConfig.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  <Link to={row.path} className='hover:underline'>
+                    {row.name}
+                  </Link>
+                </TableCell>
+                <TableCell align="right">
+                  <Button variant="outlined">Add</Button>
+                </TableCell>
+                <TableCell align="">
+                  <Button variant="outlined" color='success'>Change</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      <div className='block w-1/2 border shadow-xl p-2'>
+        <Typography className='p-2' sx={{ fontSize: 30 }}>
+          Users
+        </Typography>
+        <Table aria-label="simple table">
+          <TableBody>
+            {usersData.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  <Link to={row.path} className='hover:underline'>
+                    {row.name}
+                  </Link>
+                </TableCell>
+                <TableCell align="right">
+                  <Button variant="outlined">Add</Button>
+                </TableCell>
+                <TableCell align="">
+                  <Button variant="outlined" color='success'>Change</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   )
 }
