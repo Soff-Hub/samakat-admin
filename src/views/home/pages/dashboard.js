@@ -27,24 +27,34 @@ export default function Dashboard() {
         </Typography>
         <Table aria-label="simple table">
           <TableBody>
-            {navigationConfig.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  <Link to={row.path} className='hover:underline'>
-                    {row.name}
-                  </Link>
-                </TableCell>
-                <TableCell align="right">
-                  <Button variant="outlined">Add</Button>
-                </TableCell>
-                <TableCell align="">
-                  <Button variant="outlined" color='success'>Change</Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {
+              navigationConfig.map((row, index) => {
+                return (
+                  index !== 0 ? (
+                    <TableRow
+                      key={row.name}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        <Link to={row.path} className='hover:underline'>
+                          {row.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Link to={`${row.path}/add`}>
+                          <Button variant="outlined">Add</Button>
+                        </Link>
+                      </TableCell>
+                      <TableCell align="">
+                      <Link to={`${row.path}`}>
+                        <Button variant="outlined" color='success'>Change</Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ) : <></>
+                )
+              })
+            }
           </TableBody>
         </Table>
       </div>

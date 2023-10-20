@@ -108,14 +108,17 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const currentPageConverter = (page) => {
+    const current = navigationConfig.find(el => el.path.split('/')[1] === page.split('/')[1])
+    dispatch(setCurrentPage(current?.name || 'Dashboard'))
+  }
+
   useEffect(() => {
     if (location.pathname === '/') {
       navigate('/dashboard')
     }
 
-    const item = navigationConfig.find(el => el.path === location.pathname)
-    dispatch(setCurrentPage(item?.name || 'Dashboard'))
-
+    currentPageConverter(location.pathname)
 
     // eslint-disable-next-line
   }, [location.pathname, navigationConfig])

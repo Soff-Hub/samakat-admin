@@ -12,18 +12,21 @@ function Login() {
   const dispatch = useDispatch()
   const [errPhone, setErrPhone] = useState(false)
   const [errPass, setErrPass] = useState(false)
+  const [submiting, setSubmiting] = useState(false)
 
   const handleSubmit = async (values) => {
     await Client.post
-      (API_ENDPOINTS.LOGIN, JSON.parse(values))
+      (API_ENDPOINTS.LOGIN, values)
       .then(data => {
         dispatch(loginSuccess(data))
         console.clear()
         navigate('/')
+        setSubmiting(false)
       })
       .catch(err => {
         setErrPhone(err.response.data.msg[0])
         setErrPass(err.response.data.msg[0])
+        setSubmiting(false)
       })
   }
 
@@ -43,10 +46,9 @@ function Login() {
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          handleSubmit(JSON.stringify(values, null, 2))
-          setSubmitting(false);
-        }, 400);
+        handleSubmit(values)
+        setSubmitting(true);
+        setSubmiting(true)
       }}
     >
       {({
@@ -95,8 +97,16 @@ function Login() {
               value={values.password}
               type='password'
             />
-            <Button variant="outlined" size='large' type='submit' disabled={isSubmitting}>Login</Button>
+            {/* {
+              isSubmitting ? <LoadingButton loading variant="outlined">
+                Submit
+              </LoadingButton> : <Button variant="outlined" size='large' type='submit' disabled={isSubmitting}>Login</Button>
+            } */}
+            <Button variant="outlined" size='large' type='submit' disabled={submiting}>{
+              submiting ? 'Submitting...' : 'Submit'
+            }</Button>
           </form>
+
         </div>
       )}
     </Formik>
