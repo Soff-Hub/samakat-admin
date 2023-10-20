@@ -1,9 +1,10 @@
+import NavHeader from 'components/shared/NavHeader'
 import React from 'react'
 
 export default function ProductCategories() {
     return (
         <div>
-            Mahsulot kategoriyalari
+            <NavHeader title="Mahsulot kategoriyalari"/>
         </div>
     )
 }

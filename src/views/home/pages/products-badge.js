@@ -1,9 +1,10 @@
+import NavHeader from 'components/shared/NavHeader'
 import React from 'react'
 
 export default function ProductsBadge() {
   return (
     <div>
-      Mahsulot Belgisi
+      <NavHeader title="Mahsulot Belgisi"/>
     </div>
   )
 }

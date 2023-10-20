@@ -1,9 +1,10 @@
+import NavHeader from 'components/shared/NavHeader'
 import React from 'react'
 
 export default function Branches() {
   return (
     <div>
-      Filiallar
+      <NavHeader title="Filiallar"/>
     </div>
   )
 }

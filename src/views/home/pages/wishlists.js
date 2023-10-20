@@ -1,9 +1,10 @@
+import NavHeader from 'components/shared/NavHeader'
 import React from 'react'
 
 export default function Wishlists() {
     return (
         <div>
-            Mahsulot Wishlistlar
+            <NavHeader title="Mahsulot Wishlistlar"/>
         </div>
     )
 }
