@@ -1,0 +1,16 @@
+.login-page {
+    height: 100vh;
+    margin-top: 0;
+    background-image: url('https://vasilevo.ru/wp-content/uploads/2020/01/imported_rokka.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.login-form {
+    padding-top: 180px;
+}
+
+.login-form-inner {
+    background-color: #ffffff95;
+    padding: 20px 40px 40px;
+}
