@@ -15,7 +15,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import { navigationConfig } from 'configs/navigationConfig';
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -109,6 +108,7 @@ export default function MiniDrawer() {
     if (location.pathname === '/') {
       navigate('/dashboard')
     }
+    // eslint-disable-next-line
   }, [location.pathname])
 
   return (

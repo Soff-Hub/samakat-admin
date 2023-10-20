@@ -33,5 +33,5 @@ class Client {
     }
 }
 
-
-export default new Client
+// eslint-disable-next-line
+export default new Client()

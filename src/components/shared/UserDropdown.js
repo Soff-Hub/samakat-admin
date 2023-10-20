@@ -3,12 +3,10 @@ import { Button, Fade, Menu, MenuItem } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useDispatch } from 'react-redux';
 import { logoutSuccess } from 'store/slice';
-import { useNavigate } from 'react-router-dom';
 
 export default function UserDropdown() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const open = Boolean(anchorEl);
 
     const handleClick = (event) => {
