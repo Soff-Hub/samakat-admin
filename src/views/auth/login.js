@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { Button, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
@@ -10,38 +10,35 @@ import { API_ENDPOINTS } from 'service/ApiEndpoints';
 function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [errPhone, setErrPhone] = useState(false)
+  const [errPass, setErrPass] = useState(false)
 
-  const get = async () => {
-    await Client.get(API_ENDPOINTS.TODOS)
-      .then(data => console.log(data))
-      .catch(err => console.log(err))
-  }
-
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
+    await Client.post
+      (API_ENDPOINTS.LOGIN, JSON.parse(values))
+      .then(data => {
+        dispatch(loginSuccess(data))
+      })
+      .catch(err => {
+        setErrPhone(err.response.data.msg[0])
+        setErrPass(err.response.data.msg[0])
+      })
+    console.clear()
     navigate('/')
-    dispatch(loginSuccess())
   }
-
-  useEffect(() => {
-    get()
-  }, [])
 
 
   return <div className='login-page'>
     <Formik
-      initialValues={{ email: '', password: '' }}
+      initialValues={{ phone: '', password: '' }}
       validate={values => {
         const errors = {};
-        if (!values.email) {
-          errors.email = 'Email required';
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = 'Invalid email address';
+        if (!values.phone || errPhone) {
+          errors.phone = errPhone || 'Telefon majburiy';
         }
 
-        if (!values.password) {
-          errors.password = 'Password required';
+        if (!values.password || errPass) {
+          errors.password = 'Parol majburiy';
         }
         return errors;
       }}
@@ -65,26 +62,35 @@ function Login() {
           <form onSubmit={handleSubmit} className='login-form-inner flex flex-col mx-auto xl:1/4 lg:w-1/3 sm:w-1/2 w-full px-5 gap-5'>
             <h1 className='text-center text-[35px]'>Login</h1>
             <TextField
-              label="Email"
+              label="Telefon raqam"
               // eslint-disable-next-line
-              error={values.email && errors.email || values.email === '' && errors.email}
-              helperText={errors.email}
+              error={values.phone && errors.phone || values.phone === '' && errors.phone || errPhone}
+              helperText={errors.phone || errPhone}
               variant="filled"
               size="small"
-              name="email"
-              onChange={handleChange}
+              name="phone"
+              type='phone'
+              onChange={(e) => {
+                handleChange(e)
+                setErrPhone(false)
+                setErrPass(false)
+              }}
               onBlur={handleBlur}
-              value={values.email}
+              value={values.phone}
             />
             <TextField
               // eslint-disable-next-line
-              error={values.password && errors.password || errors.password}
-              helperText={errors.password}
-              label="Pasword"
+              error={values.password && errors.password || errors.password || errPass}
+              helperText={errors.password || errPass}
+              label="Parol"
               variant="filled"
               size="small"
               name="password"
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e)
+                setErrPhone(false)
+                setErrPass(false)
+              }}
               onBlur={handleBlur}
               value={values.password}
               type='password'

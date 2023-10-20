@@ -1,3 +1,3 @@
 export const appConfig = {
-    apiPrefix: 'https://jsonplaceholder.typicode.com'
+    apiPrefix: 'https://samokat1.pythonanywhere.com/api/v1/admin'
 }

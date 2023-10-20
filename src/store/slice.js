@@ -11,10 +11,10 @@ const slice = createSlice({
     initialState,
     reducers: {
         loginSuccess: (state, action) => {
-            // state.token = action.payload?.token
-            // localStorage.setItem('admin', action.payload?.token)
+            state.token = action.payload?.token.access
+            localStorage.setItem('admin', action.payload?.token.access)
 
-            localStorage.setItem('admin', 'fdsjghsdfjghsdfgbudiyfgs')
+            localStorage.setItem('admin', action.payload?.token.access)
             localStorage.setItem('is_loginning', JSON.stringify(true))
             state.isLoginning = true
         },
