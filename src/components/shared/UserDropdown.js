@@ -11,7 +11,6 @@ export default function UserDropdown() {
     const dispatch = useDispatch()
     const open = Boolean(anchorEl);
     const { user } = useSelector(state => state.admin)
-    console.log(user);
 
     const getUser = async () => {
         await Client.get(API_ENDPOINTS.PROFILE)

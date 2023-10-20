@@ -22,8 +22,10 @@ import { adminActionRoutes } from 'configs/routes.config/routes';
 import AppRoute from 'components/route/AppRoute';
 import UserDropdown from 'components/shared/UserDropdown';
 import { Suspense } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentPage } from 'store/slice';
 
-const drawerWidth = 260;
+const drawerWidth = 300;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -94,6 +96,8 @@ export default function MiniDrawer() {
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useDispatch()
+  const { currentPage } = useSelector(state => state.admin)
 
 
   const handleDrawerOpen = () => {
@@ -108,6 +112,10 @@ export default function MiniDrawer() {
     if (location.pathname === '/') {
       navigate('/dashboard')
     }
+
+    dispatch(setCurrentPage(navigationConfig.find(el => el.path === location.pathname).name))
+
+
     // eslint-disable-next-line
   }, [location.pathname])
 
@@ -130,7 +138,7 @@ export default function MiniDrawer() {
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             {
-              location.pathname.split('/')[1].toUpperCase()
+              currentPage
             }
           </Typography>
           <UserDropdown />
@@ -146,7 +154,7 @@ export default function MiniDrawer() {
         <Divider />
         <List>
           {navigationConfig.map((item, index) => (
-            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+            <ListItem key={index} disablePadding sx={{ display: 'block' }} className={item.name === currentPage ? "bg-blue-500 text-white" : ''}>
               <Link to={item.path}>
                 <ListItemButton
                   sx={{
@@ -158,8 +166,9 @@ export default function MiniDrawer() {
                   <ListItemIcon
                     sx={{
                       minWidth: 0,
-                      mr: open ? 3 : 'auto',
+                      mr: open ? 1 : 'auto',
                       justifyContent: 'center',
+                      color: item.name === currentPage ? '#fff' : ''
                     }}
                   >
                     {item.icon}

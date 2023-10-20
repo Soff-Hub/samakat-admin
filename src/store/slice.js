@@ -4,7 +4,8 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
     isLoginning: JSON.parse(localStorage.getItem('is_loginning')) || false,
     token: localStorage.getItem('admin') || '',
-    user: null
+    user: null,
+    currentPage: 'Dashboard'
 }
 
 const slice = createSlice({
@@ -27,10 +28,13 @@ const slice = createSlice({
         },
         setUser: (state, action) => {
             state.user = action.payload
+        },
+        setCurrentPage: (state, action) => {
+            state.currentPage = action.payload
         }
     }
 })
 
 
-export const { loginSuccess, logoutSuccess, setUser } = slice.actions;
+export const { loginSuccess, logoutSuccess, setUser, setCurrentPage } = slice.actions;
 export default slice.reducer
