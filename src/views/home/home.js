@@ -113,11 +113,12 @@ export default function MiniDrawer() {
       navigate('/dashboard')
     }
 
-    dispatch(setCurrentPage(navigationConfig.find(el => el.path === location.pathname).name))
+    const item = navigationConfig.find(el => el.path === location.pathname)
+    dispatch(setCurrentPage(item?.name || 'Dashboard'))
 
 
     // eslint-disable-next-line
-  }, [location.pathname])
+  }, [location.pathname, navigationConfig])
 
   return (
     <Box sx={{ display: 'flex' }}>

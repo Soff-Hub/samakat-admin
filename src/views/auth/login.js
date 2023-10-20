@@ -18,13 +18,13 @@ function Login() {
       (API_ENDPOINTS.LOGIN, JSON.parse(values))
       .then(data => {
         dispatch(loginSuccess(data))
+        console.clear()
+        navigate('/')
       })
       .catch(err => {
         setErrPhone(err.response.data.msg[0])
         setErrPass(err.response.data.msg[0])
       })
-    console.clear()
-    navigate('/')
   }
 
 
