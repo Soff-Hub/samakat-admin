@@ -19,6 +19,8 @@ const slice = createSlice({
             state.isLoginning = true
         },
         logoutSuccess: (state, action) => {
+            state.isLoginning = false
+            state.token = ''
             localStorage.removeItem('admin')
             localStorage.removeItem('is_loginning')
         }

@@ -16,7 +16,7 @@ export default function Views() {
       navigate('/login')
     }
     // eslint-disable-next-line
-  }, [])
+  }, [isLoginning])
 
   return (
     <Suspense fallback={<h1>Loading...</h1>}>

@@ -25,10 +25,4 @@ export const adminActionRoutes = [
         key: 'dashboard',
         path: '/dashboard',
         component: React.lazy(() => import('views/home/pages/dashboard'))
-    },
-    {
-        key: 'documentation',
-        path: '/documentation',
-        component: React.lazy(() => import('views/home/pages/documentation'))
-    },
-]
+    },]
