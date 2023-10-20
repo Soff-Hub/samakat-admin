@@ -1,3 +1,4 @@
 export const API_ENDPOINTS = {
-    LOGIN: 'login/'
+    LOGIN: 'admin/login/',
+    PROFILE: 'auth/profile/'
 }

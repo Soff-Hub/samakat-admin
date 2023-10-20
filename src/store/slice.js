@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     isLoginning: JSON.parse(localStorage.getItem('is_loginning')) || false,
-    token: localStorage.getItem('admin') || ''
+    token: localStorage.getItem('admin') || '',
+    user: null
 }
 
 const slice = createSlice({
@@ -23,10 +24,13 @@ const slice = createSlice({
             state.token = ''
             localStorage.removeItem('admin')
             localStorage.removeItem('is_loginning')
+        },
+        setUser: (state, action) => {
+            state.user = action.payload
         }
     }
 })
 
 
-export const { loginSuccess, logoutSuccess } = slice.actions;
+export const { loginSuccess, logoutSuccess, setUser } = slice.actions;
 export default slice.reducer

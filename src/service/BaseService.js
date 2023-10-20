@@ -10,7 +10,15 @@ const BaseService = axios.create({
 
 
 BaseService.interceptors.request.use(
-    (config) => config,
+    (config) => {
+        const token = localStorage.getItem('admin')
+
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        return config
+    },
     (error) => Promise.reject(error)
 )
 
