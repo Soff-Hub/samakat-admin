@@ -6,14 +6,27 @@ import { API_ENDPOINTS } from 'service/ApiEndpoints'
 import Client from 'service/Client'
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import ResponsiveDialog from 'components/shared/modal'
 
 export default function Branches() {
 
   const [data, setData] = useState(null)
+  const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null)
 
   async function getBranches() {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then(resp => setData(resp.results))
+      .catch(err => console.log(err))
+  }
+
+  async function handleDelete() {
+    await Client.delete(`${API_ENDPOINTS.DELETE_BRANCH}${deleteId}/`)
+      .then(resp => {
+        setOpen(false)
+        console.log(resp);
+        getBranches()
+      })
       .catch(err => console.log(err))
   }
 
@@ -51,7 +64,7 @@ export default function Branches() {
                       </Link>
                     </TableCell>
                     <TableCell align="left">
-                      <Button variant="outlined" color='error'>Delete</Button>
+                      <Button variant="outlined" color='error' onClick={() => (setDeleteId(row.uuid), setOpen(true))}>Delete</Button>
                     </TableCell>
                   </TableRow>
                 })
@@ -62,6 +75,8 @@ export default function Branches() {
             <CircularProgress />
           </Box>
       }
+
+      <ResponsiveDialog open={open} setOpen={setOpen} handleDelete={handleDelete} />
     </div>
   )
 }
