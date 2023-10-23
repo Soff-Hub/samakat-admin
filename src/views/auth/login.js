@@ -97,11 +97,6 @@ function Login() {
               value={values.password}
               type='password'
             />
-            {/* {
-              isSubmitting ? <LoadingButton loading variant="outlined">
-                Submit
-              </LoadingButton> : <Button variant="outlined" size='large' type='submit' disabled={isSubmitting}>Login</Button>
-            } */}
             <Button variant="outlined" size='large' type='submit' disabled={submiting}>{
               submiting ? 'Submitting...' : 'Submit'
             }</Button>
