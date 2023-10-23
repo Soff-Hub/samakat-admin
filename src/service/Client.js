@@ -17,6 +17,14 @@ class Client {
         })
     }
 
+    put(url, data) {
+        return BaseService({
+            url: url,
+            method: 'put',
+            data: data
+        })
+    }
+
     patch(url, data) {
         return BaseService({
             url: url,
