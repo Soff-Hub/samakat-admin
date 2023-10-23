@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableRow } from '@mui/material'
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import NavHeader from 'components/shared/NavHeader'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -60,6 +60,13 @@ export default function Branches() {
         data ?
           <div className='block w-1/2 border shadow-lg p-2 mt-5'>
             <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Filial Nomi</TableCell>
+                  <TableCell align="">Aniq Manzil</TableCell>
+                  <TableCell align="right">Amallar</TableCell>
+                </TableRow>
+              </TableHead>
               <TableBody>
                 {
                   data.map((row) => {
