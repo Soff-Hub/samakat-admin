@@ -1,4 +1,4 @@
-import { Button, Table, TableBody, TableCell, TableRow } from '@mui/material'
+import { Table, TableBody, TableCell, TableRow } from '@mui/material'
 import NavHeader from 'components/shared/NavHeader'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -17,11 +17,6 @@ export default function Branches() {
   const [data, setData] = useState(null)
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null)
-
-  const options = [
-    'Tahrirlash',
-    "O'chirish",
-  ];
 
   async function getBranches() {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
@@ -109,27 +104,19 @@ export default function Branches() {
                             },
                           }}
                         >
-                          {/* {options.map((option) => (
-                            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-                              {option}
-                            </MenuItem>
-                          ))} */}
-
                           <MenuItem onClick={handleClose}>
                             <Link to={'actions/' + row.uuid}>
                               Tahrirlash
                             </Link>
                           </MenuItem>
-                          <MenuItem onClick={() => (setDeleteId(row.uuid), setOpen(true), handleClose())}>
+                          <MenuItem onClick={() => {
+                            setDeleteId(row.uuid)
+                            setOpen(true)
+                            handleClose()
+                          }}>
                             O'chirish
                           </MenuItem>
                         </Menu>
-                        {/* <Link to={'actions/' + row.uuid}>
-                        <Button variant="outlined" color='success'>Change</Button>
-                      </Link>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Button variant="outlined" color='error' onClick={() => (setDeleteId(row.uuid), setOpen(true))}>Delete</Button> */}
                       </TableCell>
                     </TableRow>
                   })

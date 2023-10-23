@@ -155,8 +155,8 @@ function Login() {
     } else if (formVal.latitude === 0 && formVal.longitude === 0) {
       getItem()
     }
-
-  }, [])
+    // eslint-disable-next-line
+  }, [formVal.latitude, formVal.longitude])
 
   return query['*'] !== '' ? (
     <div>
