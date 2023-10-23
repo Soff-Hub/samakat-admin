@@ -7,7 +7,7 @@ export default function NavHeader({ title }) {
     return (
         <div className='flex items-center justify-between'>
             <span style={{ fontSize: 30 }}>{title}</span>
-            <Link to={'add'}>
+            <Link to={'actions'}>
                 <Button variant="contained" color='success' startIcon={<AddIcon />} size='large'>Qo'shish</Button>
             </Link>
         </div>

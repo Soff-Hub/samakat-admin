@@ -41,7 +41,7 @@ export default function Dashboard() {
                         </Link>
                       </TableCell>
                       <TableCell align="right">
-                        <Link to={`${row.path}/add`}>
+                        <Link to={`${row.path}/actions`}>
                           <Button variant="outlined">Add</Button>
                         </Link>
                       </TableCell>
