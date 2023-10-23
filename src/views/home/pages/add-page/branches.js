@@ -263,98 +263,94 @@ function Login() {
   ) : <div>
     <h1 className='text-[35px] pb-3'>Filial qo'shish</h1>
     <Toaster />
-    {
-      map ? <div className='flex gap-5'>
-        <div className='w-1/2' style={{ minHeight: 400 }}>
-          <LoadScript googleMapsApiKey={'AIzaSyDJEtT1hiuEuRHOy366iwruiyFl0vcaBTM'}>
-            <GoogleMap
-              onLoad={handleMapLoad}
-              onDragEnd={handleDragOver}
-              mapContainerStyle={mapStyles}
-              zoom={14}
-              center={defaultCenter}>
-              <Marker position={position} options={markerOptions} draggable onDrag={handleMarkerDrag}
-                onDragEnd={handleMarkerDragOver}>
-                <OverlayView
-                  position={position}
-                  mapPaneName={"overlayLayer"}
-                >
-                  <div style={overlayViewStyles}>{formVal.name === '' ? 'Filial nomi' : formVal.name}</div>
-                </OverlayView>
-              </Marker>
-            </GoogleMap>
-          </LoadScript>
-        </div>
-        <form onSubmit={handleSubmit} className='w-1/3 flex flex-col gap-5 create-branch-form'>
-          <TextField
-            label="Filial nomi"
-            variant="outlined"
-            size="large"
-            type='text'
-            required
-            value={formVal.name}
-            onChange={(e) => {
-              setFormVal((c) => ({ ...c, name: e.target.value }))
-            }}
-          />
-          <TextField
-            label="Aniq manzil"
-            variant="outlined"
-            size="large"
-            required
-            value={formVal.address}
-            onChange={(e) => {
-              setFormVal((c) => ({ ...c, address: e.target.value }))
-            }}
-            type='text'
-          />
-          <TextField
-            label="Latitude"
-            variant="outlined"
-            size="large"
-            name="latitude"
-            required
-            value={formVal.latitude}
-            onChange={(e) => {
-              setPosition((c) => ({
-                ...c,
-                lat: Number(e.target.value),
-              }))
-              setdefaultCenter((c) => ({
-                ...c,
-                lat: Number(e.target.value),
-              }))
-              setFormVal((c) => ({ ...c, latitude: e.target.value }))
-            }}
-            type='number'
-          />
-          <TextField
-            label="Longitude"
-            variant="outlined"
-            size="large"
-            required
-            value={formVal.longitude}
-            onChange={(e) => {
-              setPosition((c) => ({
-                ...c,
-                lng: Number(e.target.value),
-              }))
-              setdefaultCenter((c) => ({
-                ...c,
-                lng: Number(e.target.value),
-              }))
-              setFormVal((c) => ({ ...c, longitude: e.target.value }))
-            }}
-            type='number'
-          />
-          <Button variant="outlined" size='large' type='submit' disabled={submiting}>{
-            submiting ? "Qo'shilmoqda" : "Qo'shish"
-          }</Button>
-        </form>
-      </div> : <Box sx={{ display: 'flex', wdith: '100%', justifyContent: 'center', padding: '150px 0' }}>
-        <CircularProgress />
-      </Box>
-    }
+    <div className='flex gap-5'>
+      <div className='w-1/2' style={{ minHeight: 400 }}>
+        <LoadScript googleMapsApiKey={'AIzaSyDJEtT1hiuEuRHOy366iwruiyFl0vcaBTM'}>
+          <GoogleMap
+            onLoad={handleMapLoad}
+            onDragEnd={handleDragOver}
+            mapContainerStyle={mapStyles}
+            zoom={14}
+            center={defaultCenter}>
+            <Marker position={position} options={markerOptions} draggable onDrag={handleMarkerDrag}
+              onDragEnd={handleMarkerDragOver}>
+              <OverlayView
+                position={position}
+                mapPaneName={"overlayLayer"}
+              >
+                <div style={overlayViewStyles}>{formVal.name === '' ? 'Filial nomi' : formVal.name}</div>
+              </OverlayView>
+            </Marker>
+          </GoogleMap>
+        </LoadScript>
+      </div>
+      <form onSubmit={handleSubmit} className='w-1/3 flex flex-col gap-5 create-branch-form'>
+        <TextField
+          label="Filial nomi"
+          variant="outlined"
+          size="large"
+          type='text'
+          required
+          value={formVal.name}
+          onChange={(e) => {
+            setFormVal((c) => ({ ...c, name: e.target.value }))
+          }}
+        />
+        <TextField
+          label="Aniq manzil"
+          variant="outlined"
+          size="large"
+          required
+          value={formVal.address}
+          onChange={(e) => {
+            setFormVal((c) => ({ ...c, address: e.target.value }))
+          }}
+          type='text'
+        />
+        <TextField
+          label="Latitude"
+          variant="outlined"
+          size="large"
+          name="latitude"
+          required
+          value={formVal.latitude}
+          onChange={(e) => {
+            setPosition((c) => ({
+              ...c,
+              lat: Number(e.target.value),
+            }))
+            setdefaultCenter((c) => ({
+              ...c,
+              lat: Number(e.target.value),
+            }))
+            setFormVal((c) => ({ ...c, latitude: e.target.value }))
+          }}
+          type='number'
+        />
+        <TextField
+          label="Longitude"
+          variant="outlined"
+          size="large"
+          required
+          value={formVal.longitude}
+          onChange={(e) => {
+            setPosition((c) => ({
+              ...c,
+              lng: Number(e.target.value),
+            }))
+            setdefaultCenter((c) => ({
+              ...c,
+              lng: Number(e.target.value),
+            }))
+            setFormVal((c) => ({ ...c, longitude: e.target.value }))
+          }}
+          type='number'
+        />
+        <Button variant="outlined" size='large' type='submit' disabled={submiting}>{
+          submiting ? "Qo'shilmoqda" : "Qo'shish"
+        }</Button>
+      </form>
+    </div>
 
   </div>
 
