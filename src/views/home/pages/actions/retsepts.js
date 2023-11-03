@@ -169,7 +169,7 @@ export default function Retsepts() {
         setCategory("salom");
         setChecked(res?.is_active);
         setImageData(res?.recipe_gallery);
-        setImageF(res?.recipe_gallery);
+        setImage(res?.recipe_gallery);
         setImage(res?.recipe_gallery);
 
         setRelatedCategory(res?.related_categories);
