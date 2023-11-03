@@ -107,71 +107,71 @@ export const adminActionRoutes = [
     {
         key: 'customer-products',
         path: '/customer-products/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/customer-products'))
+        component: React.lazy(() => import('views/home/pages/actions/customer-products'))
     },
     {
         key: 'orders',
         path: '/orders/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/orders'))
+        component: React.lazy(() => import('views/home/pages/actions/orders'))
     },
     {
         key: 'branches',
         path: '/branches/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/branches'))
+        component: React.lazy(() => import('views/home/pages/actions/branches'))
     },
     {
         key: 'branch-products',
         path: '/branch-products/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/branch-products'))
+        component: React.lazy(() => import('views/home/pages/actions/branch-products'))
     },
     {
         key: 'categories',
         path: '/categories/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/categories'))
+        component: React.lazy(() => import('views/home/pages/actions/categories'))
     },
     {
         key: 'wishlists',
         path: '/wishlists/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/wishlists'))
+        component: React.lazy(() => import('views/home/pages/actions/wishlists'))
     },
     {
         key: 'product-badge',
         path: '/product-badge/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/products-badge'))
+        component: React.lazy(() => import('views/home/pages/actions/products-badge'))
     },
     {
         key: 'products',
         path: '/products/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/products'))
+        component: React.lazy(() => import('views/home/pages/actions/products'))
     },
     {
         key: 'adresses',
         path: '/adresses/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/adresses'))
+        component: React.lazy(() => import('views/home/pages/actions/adresses'))
     },
     {
         key: 'product-categories',
         path: '/product-categories/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/product-categories'))
+        component: React.lazy(() => import('views/home/pages/actions/product-categories'))
     },
     {
         key: 'promos',
         path: '/promos/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/promos'))
+        component: React.lazy(() => import('views/home/pages/actions/promos'))
     },
     {
         key: 'retsept-wishlists',
         path: '/retsept-wishlists/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/retsept-wishlists'))
+        component: React.lazy(() => import('views/home/pages/actions/retsept-wishlists'))
     },
     {
         key: 'retsepts',
         path: '/retsepts/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/retsepts'))
+        component: React.lazy(() => import('views/home/pages/actions/retsepts'))
     },
     {
         key: 'users',
         path: '/users/actions/*',
-        component: React.lazy(() => import('views/home/pages/add-page/users'))
+        component: React.lazy(() => import('views/home/pages/actions/users'))
     },
 ]

@@ -7,6 +7,7 @@ import store from 'store';
 import './index.css';
 import './main.css';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
