@@ -1,34 +1,18 @@
 import {
-  Button,
-  Table,
-  TableBody,
   TableCell,
-  TableHead,
   TableRow,
 } from "@mui/material";
-import NavHeader from "components/shared/NavHeader";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 import { Row } from "./Row";
-import ResponsiveDialog from "components/shared/modal";
 import IconButton from "@mui/material/IconButton";
-import PropTypes from "prop-types";
-import Collapse from "@mui/material/Collapse";
-import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import NavHeaderSelect from "components/shared/NavHeaderSelect";
-import Typography from "@mui/material/Typography";
-import Pagination from "@mui/material/Pagination";
-import Categories from "views/home/pages/categories";
 
 export function ChaildRow(props) {
   const { row } = props;
@@ -88,8 +72,8 @@ export function ChaildRow(props) {
             <IconButton
               color="error"
               onClick={() => {
-                setDeleteId(row.slug);
-                setOpen(true);
+                // setDeleteId(row.slug);
+                // setOpen(true);
               }}
               aria-label="delete"
             >

@@ -131,7 +131,8 @@ export default function Products() {
     setFilialInput([...filialInput, { id, ...value }]);
   };
 
-  const addAtributInput = async (value, id) => {
+
+  const addAtributInput = async ( value , id) => {
     setAtributInput([...atributInput, { id, ...value }]);
   };
 

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
-import ResponsiveDialog from "components/shared/modal";
 import { ChaildRow } from "./chaildrow";
 
 export function Row(props) {
@@ -15,7 +14,7 @@ export function Row(props) {
       .then((resp) => {
         setOpen(false);
         console.log(resp);
-        getCategories();
+        // getCategories();
       })
       .catch((err) => console.log(err));
   }
