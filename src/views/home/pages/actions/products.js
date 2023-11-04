@@ -33,7 +33,6 @@ const MenuProps = {
 };
 
 export default function Products() {
-  const query = useParams();
   const [submiting, setSubmiting] = useState(false);
   const [data, setData] = useState(null);
   const [editData, setEditData] = useState(null);
@@ -44,7 +43,7 @@ export default function Products() {
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState(0);
   const [badge, setBadge] = React.useState([]);
-  const [on_sale, setOn_sale] = React.useState(true);
+  const [on_sale, setOn_sale] = React.useState(null);
   const [branch, setBranch] = React.useState(0);
   const [quantity, setQuantity] = React.useState(0);
   const [content, setContent] = React.useState("");
@@ -64,7 +63,7 @@ export default function Products() {
   const [imageFiles, setImageFiles] = React.useState("");
 
   const [product_categories, setProduct_categories] = React.useState([]);
-  const arr = [];
+  const [product_highlight, setProduct_highlight] = useState([]);
 
   const [image, setImage] = useState("");
   const [imageData, setImageData] = useState([
@@ -78,20 +77,18 @@ export default function Products() {
       id: 3,
     },
   ]);
-  const [filialArray, setFilialArray] = useState("");
   const [filialInput, setFilialInput] = useState([
     {
       id: 1,
-      branch: "",
+      branch: 0,
       quantity: 0,
     },
   ]);
-  const [atributArray, setAtributArray] = useState("");
   const [atributInput, setAtributInput] = useState([
     {
       id: 1,
-      content:'',
-      order: 0
+      content: "",
+      order: 0,
     },
   ]);
   const navigate = useNavigate();
@@ -116,28 +113,25 @@ export default function Products() {
 
   const addFilialInput = (value, id) => {
     let findItem = filialInput.find((elem) => elem.id == id);
-    findItem.branch = value?.branch;
+    findItem.branch = Number(value?.branch);
     findItem.quantity = value?.quantity;
 
     setFilialInput([...filialInput]);
-    console.log("value", value, filialInput, findItem);
   };
+
   const addProductHighlightInput = (value, id) => {
     let findItem = atributInput.find((elem) => elem.id == id);
     findItem.content = value?.content;
     findItem.order = value?.order;
 
     setAtributInput([...atributInput]);
-    console.log("value", value, atributInput, findItem);
   };
-
-
 
   const addFormInput = (value, id) => {
     setFilialInput([...filialInput, { id, ...value }]);
   };
 
-  const addAtributInput = async ( value , e) => {
+  const addAtributInput = async (value, id) => {
     setAtributInput([...atributInput, { id, ...value }]);
   };
 
@@ -146,31 +140,29 @@ export default function Products() {
     imageData.pop();
   };
 
-  const DeleteAtributlItem = async (e) => {
-    setAtributInput(atributInput.filter((item) => item.id !== e));
-  };
-
   const deleteID = (i) => {
     setFilialInput(filialInput.filter((item) => item.id !== i));
-  }
+  };
   const deleteIDHighlight = (i) => {
-    setFilialInput(filialInput.filter((item) => item.id !== i));
-  }
+    setFilialInput(atributInput.filter((item) => item.id !== i));
+  };
 
   const setImageUrl = async (e) => {
     setImage([...image, e]);
-    console.log(e);
   };
 
   const handleSubmitAdd = async (e) => {
-    console.log("ishladi");
-
     e.preventDefault();
     setSubmiting(true);
-    // const product_branch = filialInput.map((item) => {
-    //   const { id, branch, quantity } = item;
-    //   return { branch, quantity };
-    // });
+
+    const product_branch = filialInput.map((item) => {
+      const { id, branch, quantity } = item;
+      return { branch, quantity };
+    });
+    const product_highlight = atributInput.map((item) => {
+      const { id, content, order } = item;
+      return { content, order };
+    });
 
     const formData = new FormData();
     for (let i = 0; i < image.length; i++) {
@@ -195,48 +187,164 @@ export default function Products() {
         specification: specification,
         shelf_life: shelf_life,
       },
-      // product_count_branch : product_branch,
-      // product_highlight: [
-      //   {
-      //     content: content,
-      //     order: order,
-      //   },
-      // ],
+      product_count_branch : product_branch,
+      product_highlight: product_highlight,
       product_categories: product_categories,
     };
 
-    console.log("data", data);
 
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, data)
       .then((data) => {
         toast.success("Retsep muvaffaqiyatli qo'shildi");
-        console.log("respons", data);
-        setSlug(data?.slug);
+        console.log(data);
         setTimeout(() => {
-          // navigate("/products");
+          data?.slug &&
+            Client.patch(
+              `${API_ENDPOINTS.PATCH_PRODUCT}${data?.slug}/`,
+              formData
+            )
+              .then((res) => {
+                console.log(res);
+                navigate("/products");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
         }, 300);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
       });
 
-    slug &&
-      Client.patch(`${API_ENDPOINTS.PATCH_PRODUCT}${slug}/`, formData)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-        
-        setSubmiting(false);
+    setSubmiting(false);
+    document.querySelector(".create-branch-form").reset();
+  };
+
+  const handleSubmitEdit = async (e) => {
+    e.preventDefault();
+    setSubmiting(true);
+
+    const product_branch = filialInput.map((item) => {
+      const { id, branch, quantity } = item;
+      return { branch, quantity };
+    });
+    const product_highlight = atributInput.map((item) => {
+      const { id, content, order } = item;
+      return { content, order };
+    });
+
+    const formData = new FormData();
+    for (let i = 0; i < image.length; i++) {
+      formData.append("product_galereya", image[i]);
+    }
+
+    const EDiteddata = {};
+    if (name !== "") {
+      const addObj = { name: name };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (price !== "") {
+      const addObj = { price: price };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (description !== "") {
+      const addObj = { description: description };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (discount !== 0) {
+      const addObj = { discount: discount };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (badge.length > 0) {
+      const addObj = { badge: badge };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (on_sale !== null) {
+      const addObj = { on_sale: on_sale };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (carbohydrates !== 0) {
+      const addObj = { carbohydrates: carbohydrates };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (ingredients !== 0) {
+      const addObj = { ingredients: ingredients };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (fats !== 0) {
+      const addObj = { fats: fats };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (kilocalories !== 0) {
+      const addObj = { kilocalories: kilocalories };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (manufacturer !== "") {
+      const addObj = { manufacturer: manufacturer };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (protein !== 0) {
+      const addObj = { protein: protein };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (storageConditions !== "") {
+      const addObj = { storageConditions: storageConditions };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (specification !== "") {
+      const addObj = { specification: specification };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (shelf_life !== "") {
+      const addObj = { shelf_life: shelf_life };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (product_branch) {
+      const addObj = { product_count_branch: product_branch };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (product_highlight.length > 0) {
+      const addObj = { product_highlight: product_highlight };
+      Object.assign(EDiteddata, addObj);
+    }
+    if (product_categories.length > 0) {
+      const addObj = { product_categories: product_categories };
+      Object.assign(EDiteddata, addObj);
+    }
+
+
+    await Client.patch(
+      `${API_ENDPOINTS.PATCH_PRODUCT}${location.search.split("?")[3]}/`,
+      EDiteddata
+    )
+      .then((data) => {
+        console.log(data);
+        setTimeout(() => {
+          data &&
+            Client.patch(
+              `${API_ENDPOINTS.PATCH_PRODUCT}${location.search.split("?")[3]}/`,
+              formData
+            )
+              .then((res) => {
+                toast.success("Retsep muvaffaqiyatli saqlandi");
+                navigate("/products");
+                setSubmiting(false);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+        }, 300);
+      })
+      .catch((err) => {
+        toast.error("Xatolik! Qayta urinib ko'ring");
+      });
+
     document.querySelector(".create-branch-form").reset();
   };
 
   const getCategory = async (e) => {
     await Client.get(`${API_ENDPOINTS.CATEGORIES}?type=${e}`)
       .then((resp) => {
-        // setFormVal(resp);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -264,28 +372,28 @@ export default function Products() {
 
   const getItem = async () => {
     await Client.get(
-      API_ENDPOINTS.DETAIL_RECIPE + location.search.split("?")[2]
+      API_ENDPOINTS.DETAIL_PRODUCT + location.search.split("?")[3]
     )
       .then((res) => {
-        console.log(res);
+        console.log( res);
         setEditData(res);
-        setName(res?.title);
-        setDescription(res?.description);
-        // setCategory(res.category);
-        // setChecked(res?.is_active);
-        setImageData(res?.recipe_gallery);
-        // setRelatedCategory(res?.related_categories);
+        setImageData(res?.recipe_gallery ? res?.recipe_gallery : imageData);
+        setAtributInput(
+          res?.product_highlight ? res?.product_highlight : atributInput
+        );
+        setFilialInput(
+          res?.product_count_branch ? res?.product_count_branch : filialInput
+        );
       })
       .catch((err) => {
-        // console.log(res);
+        console.log(err);
       });
   };
 
   useEffect(() => {
-    // getRecipeData()
     getBranchData();
     getBadgeData();
-    if (location.search.split("?")[1] == "edit") {
+    if (location.search.split("?")[2] == "edit") {
       getItem();
     }
     if (location.search.split("?")[1] == "bistro") {
@@ -295,9 +403,521 @@ export default function Products() {
     }
   }, []);
 
-  return location.search.split("?")[1] == "edit" ? (
+
+  return location.search.split("?")[2] == "edit" ? (
     editData ? (
-      <></>
+      <div>
+        <h1 className="text-[35px] pb-3">Mahsulot tahrirlash</h1>
+        <Toaster />
+        <div className="flex gap-5">
+          <form
+            onSubmit={handleSubmitEdit}
+            className="w-1/3 flex flex-col gap-5 create-branch-form"
+          >
+            <TextField
+              label="Nomi"
+              variant="outlined"
+              size="large"
+              style={{ width: "600px" }}
+              type="text"
+              defaultValue={editData ? editData?.name : name}
+              required
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
+            <TextField
+              label="Narxi"
+              variant="outlined"
+              size="large"
+              style={{ width: "600px" }}
+              type="number"
+              value={editData ? editData?.price : price}
+              required
+              onChange={(e) => {
+                setPrice(e.target.value);
+              }}
+            />
+            <TextField
+              id="outlined-multiline-static"
+              label="Izoh"
+              multiline
+              value={editData ? editData?.description : description}
+              rows={4}
+              style={{ width: "600px" }}
+              type="text"
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
+            <TextField
+              label="Chegirmasi"
+              variant="outlined"
+              size="large"
+              style={{ width: "600px" }}
+              type="number"
+              value={editData ? editData?.discount : discount}
+              onChange={(e) => {
+                setDiscount(e.target.value);
+              }}
+            />
+            <FormControl
+              style={{ width: "600px" }}
+              sx={{ m: 1, minWidth: 120 }}
+              size="small"
+            >
+              <InputLabel id="demo-select-small-label" placholder="Kategoriya">
+                Belgi
+              </InputLabel>
+              <Select
+                value={editData ? editData?.badge : badge}
+                label="Kategoriya"
+                required
+                onChange={handleChange}
+              >
+                {badgeData?.map((item, i) => (
+                  <MenuItem key={i} value={item.id}>
+                    <p style={{ color: `${item.textColor}` }}> {item.text}</p>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <div>
+              <FormControl sx={{ m: 1, width: 600 }}>
+                <InputLabel id="demo-multiple-checkbox-label">
+                  Bog'liq kategoriyalar
+                </InputLabel>
+                <Select
+                  labelId="demo-multiple-checkbox-label"
+                  id="demo-multiple-checkbox"
+                  multiple
+                  value={product_categories}
+                  onChange={handleChangeSelect}
+                  input={<OutlinedInput label="Bog'liq kategoriyalar" />}
+                  renderValue={(selected) => selected.join(", ")}
+                  MenuProps={MenuProps}
+                >
+                  {data?.map((name) => (
+                    <MenuItem key={name} value={name.id}>
+                      <Checkbox
+                        checked={product_categories.indexOf(name.id) > -1}
+                        defaultChecked={product_categories.indexOf(name.id)}
+                      />
+                      <ListItemText primary={name.name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <label className="font-normal font-sans text-lg">Sotuvda</label>
+              <Switch
+                checked={editData ? editData?.on_sale : on_sale}
+                defaultChecked={true}
+                onChange={handleChangeActiveShop}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            </div>
+            <div>
+              <Accordion style={{ width: "600px" }}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>
+                    <label className="font-normal font-sans text-lg">
+                      Mahsulot galleriyasi :
+                    </label>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div style={{ display: "flex ", gap: "10px" }}>
+                    <div
+                      className="flex gap-3 flex-wrap"
+                      style={{ minWidth: "560px" }}
+                    >
+                      {imageData?.map((item, i) => {
+                        return (
+                          <div
+                            style={{ display: "flex", flexDirection: "column" }}
+                            key={i}
+                          >
+                            <Button
+                              style={{ width: "170px", height: "170px" }}
+                              component="label"
+                              variant="outlined"
+                            >
+                              <i
+                                class="fa-regular fa-image"
+                                style={{ fontSize: "35px" }}
+                              ></i>
+                              <input
+                                style={{ display: "none" }}
+                                onChange={(e) => setImageUrl(e.target.files[0])}
+                                type="file"
+                              />
+                            </Button>
+                            {/* <TextField
+                            label="Tartib raqam"
+                            variant="outlined"
+                            size="small"
+                            style={{
+                              height: "10px",
+                              marginBottom: "40px",
+                              marginTop: "15px",
+                              width: "170px",
+                            }}
+                            type="number"
+                            value={imageOrder}
+                            onChange={(e) => {
+                              setImageOrder(e.target.value);
+                            }}
+                          /> */}
+                            <Button
+                              onClick={() => ImageDelete(item.id)}
+                              component="label"
+                              color="error"
+                              variant="outlined"
+                              className="mt-3"
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "end",
+                        marginLeft: "-35px",
+                      }}
+                    >
+                      <Fab
+                        onClick={() => addImageInput(imageData.length + 1)}
+                        color="primary"
+                        aria-label="add"
+                      >
+                        <AddIcon />
+                      </Fab>
+                    </div>
+                  </div>
+                </AccordionDetails>
+              </Accordion>
+
+              <Accordion style={{ width: "600px" }}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>
+                    <label className="font-normal font-sans text-lg">
+                      Mahsulot atributi :
+                    </label>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div
+                    style={{ width: "600px", height: "400px" }}
+                    className="flex overflow-y-scroll border-5 flex-col"
+                  >
+                    <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
+                      <i class="fa-solid fa-flask"></i>
+                      {/* <span>Tarkibi</span> */}
+                      <TextField
+                        label="Tarkibi"
+                        variant="outlined"
+                        multiline
+                        maxRows={4}
+                        required
+                        value={
+                          editData
+                            ? editData?.product_attribute.ingredients
+                            : ingredients
+                        }
+                        style={{ marginTop: "30px" }}
+                        onChange={(e) => {
+                          setingredients(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mx-3 flex items-baseline gap-3">
+                      <i class="fa-solid fa-virus-covid"></i>
+                      <TextField
+                        label="Uglevod"
+                        variant="outlined"
+                        size="small"
+                        style={{ height: "10px", marginTop: "30px" }}
+                        type="number"
+                        value={
+                          editData
+                            ? editData?.product_attribute.carbohydrates
+                            : carbohydrates
+                        }
+                        onChange={(e) => {
+                          setCarbohydrates(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mx-3 flex items-baseline gap-3">
+                      <i class="fa-solid fa-vial-virus"></i>
+                      <TextField
+                        label="Kaloriya"
+                        variant="outlined"
+                        size="small"
+                        style={{ height: "10px", marginTop: "30px" }}
+                        type="number"
+                        value={
+                          editData
+                            ? editData?.product_attribute.kilocalories
+                            : kilocalories
+                        }
+                        onChange={(e) => {
+                          setKilocalories(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mx-3 flex items-baseline gap-3">
+                      <i class="fa-solid fa-mortar-pestle"></i>
+                      <TextField
+                        label="Yog' miqdori"
+                        variant="outlined"
+                        size="small"
+                        style={{ height: "10px", marginTop: "30px" }}
+                        type="number"
+                        value={
+                          editData ? editData?.product_attribute.fats : fats
+                        }
+                        onChange={(e) => {
+                          setFats(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mx-3 flex items-baseline gap-3">
+                      <i class="fa-solid fa-bandage"></i>
+                      <TextField
+                        label="Protien"
+                        variant="outlined"
+                        size="small"
+                        style={{ height: "10px", marginTop: "30px" }}
+                        type="number"
+                        value={
+                          editData
+                            ? editData?.product_attribute.protein
+                            : protein
+                        }
+                        onChange={(e) => {
+                          setProtein(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mx-3 flex items-baseline gap-3">
+                      <i class="fa-solid fa-hotel"></i>
+                      <TextField
+                        label="Ishlab chiqaruvchi"
+                        variant="outlined"
+                        size="small"
+                        style={{ height: "10px", marginTop: "30px" }}
+                        type="text"
+                        required
+                        value={
+                          editData
+                            ? editData?.product_attribute.manufacturer
+                            : manufacturer
+                        }
+                        onChange={(e) => {
+                          setManufacturer(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mx-3 flex items-baseline gap-3">
+                      <i class="fa-solid fa-list-ul"></i>
+                      <TextField
+                        label="Saqlash shartlari"
+                        variant="outlined"
+                        size="small"
+                        style={{ height: "10px", marginTop: "30px" }}
+                        type="text"
+                        required
+                        value={
+                          editData
+                            ? editData?.product_attribute.storageConditions
+                            : storageConditions
+                        }
+                        onChange={(e) => {
+                          setStorageConditions(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mx-3 flex items-baseline gap-3">
+                      <i class="fa-solid fa-film"></i>
+                      <TextField
+                        label="Mahsulot soni yoki hajmi"
+                        variant="outlined"
+                        size="small"
+                        style={{ height: "10px", marginTop: "30px" }}
+                        type="text"
+                        required
+                        value={
+                          editData
+                            ? editData?.product_attribute.specification
+                            : specification
+                        }
+                        onChange={(e) => {
+                          setSpecification(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="mx-3 flex items-baseline gap-3">
+                      <i class="fa-solid fa-tower-broadcast"></i>
+                      <TextField
+                        label="Saqlash muddati"
+                        variant="outlined"
+                        size="small"
+                        style={{ height: "10px", marginTop: "30px" }}
+                        type="text"
+                        required
+                        value={
+                          editData
+                            ? editData?.product_attribute.shelf_life
+                            : shelf_life
+                        }
+                        onChange={(e) => {
+                          setShelf_life(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </AccordionDetails>
+              </Accordion>
+
+              <Accordion style={{ width: "600px" }}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>
+                    <label className="font-normal font-sans text-lg mt-5">
+                      Mahsulot asosiy elementlari :
+                    </label>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div
+                    className="flex gap-x-44 p-3 mt-3"
+                    style={{ backgroundColor: "#cccccc", width: "570px" }}
+                  >
+                    <p>
+                      Asosiy element <i class="fa-regular fa-star"></i>
+                    </p>
+                    <p>
+                      Tartib raqami <i class="fa-solid fa-arrow-down-9-1"></i>
+                    </p>
+                  </div>
+
+                  {atributInput?.map((item, i) => (
+                    <AddInput
+                      dataH={item}
+                      key={i}
+                      addFilialInput={addProductHighlightInput}
+                      id={i + 1}
+                      deleteIDHighlight={deleteIDHighlight}
+                    />
+                  ))}
+
+                  <div
+                    onClick={() =>
+                      addAtributInput(
+                        { content: 0, order: 0 },
+                        atributInput.length + 1
+                      )
+                    }
+                    className="p-3"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <p>
+                      <i class="fa-solid fa-circle-plus"></i> qo'shish
+                    </p>{" "}
+                  </div>
+                </AccordionDetails>
+              </Accordion>
+
+              <Accordion style={{ width: "600px" }}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>
+                    <label className="font-normal font-sans text-lg mt-5">
+                      Filiallardagi mahsulot :
+                    </label>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div
+                    className="flex gap-x-44 p-3 mt-3"
+                    style={{ backgroundColor: "#cccccc", width: "570px" }}
+                  >
+                    <p>
+                      Filiallar <i class="fa-solid fa-folder-tree"></i>{" "}
+                    </p>
+                    <p>
+                      Soni <i class="fa-solid fa-arrow-down-9-1"></i>{" "}
+                    </p>
+                  </div>
+                  {filialInput?.map((item, i) => (
+                    <AddInput
+                      dataF={item}
+                      selectData={branchData}
+                      key={i}
+                      addFilialInput={addFilialInput}
+                      id={i + 1}
+                      deleteID={deleteID}
+                    />
+                  ))}
+                  <div
+                    onClick={() =>
+                      addFormInput(
+                        { branch: 0, quantity: 0 },
+                        filialInput.length + 1
+                      )
+                    }
+                    className="p-3"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <p>
+                      <i class="fa-solid fa-circle-plus"></i> qo'shish{" "}
+                    </p>
+                  </div>
+                </AccordionDetails>
+              </Accordion>
+            </div>
+
+            <Button
+              style={{ width: "600px" }}
+              variant="outlined"
+              size="large"
+              type="submit"
+              disabled={submiting}
+            >
+              {submiting ? "Saqlanmoqda" : "Saqlash"}
+            </Button>
+          </form>
+        </div>
+      </div>
     ) : (
       <></>
     )
@@ -366,7 +986,12 @@ export default function Products() {
               <InputLabel id="demo-select-small-label" placholder="Kategoriya">
                 Belgi
               </InputLabel>
-              <Select value={badge} label="Kategoriya" required onChange={handleChange}>
+              <Select
+                value={badge}
+                label="Kategoriya"
+                required
+                onChange={handleChange}
+              >
                 {badgeData?.map((item, i) => (
                   <MenuItem key={i} value={item.id}>
                     <p style={{ color: `${item.textColor}` }}> {item.text}</p>
@@ -676,64 +1301,20 @@ export default function Products() {
 
                   {atributInput?.map((item, i) => (
                     <AddInput
-                    key={i}
-                    addFilialInput={addProductHighlightInput}
-                    id={i + 1}
-                    deleteID={deleteIDHighlight}
+                      key={i}
+                      addFilialInput={addProductHighlightInput}
+                      id={i + 1}
+                      deleteIDHighlight={deleteIDHighlight}
                     />
-                    // <div
-                    //   key={i}
-                    //   className="flex gap-5 p-3"
-                    //   style={{ width: "570px", backgroundColor: "#ccc" }}
-                    // >
-                    //   <div className="mx-1">
-                    //     <TextField
-                    //       label="Asosiy element"
-                    //       variant="outlined"
-                    //       size="small"
-                    //       style={{ marginTop: "10px" }}
-                    //       type="text"
-                    //       // required
-                    //       value={content}
-                    //       onChange={(e) => {
-                    //         setContent(e.target.value);
-                    //       }}
-                    //     />
-                    //   </div>
-                    //   <div className="mx-1">
-                    //     <TextField
-                    //       label="Tartib raqam"
-                    //       variant="outlined"
-                    //       size="small"
-                    //       style={{ marginTop: "10px" }}
-                    //       type="number"
-                    //       value={order}
-                    //       onChange={(e) => {
-                    //         setOrder(e.target.value);
-                    //       }}
-                    //     />
-                    //   </div>
-                    //   <div
-                    //     style={{
-                    //       display: "flex",
-                    //       justifyItems: "end",
-                    //       alignItems: "center",
-                    //     }}
-                    //   >
-                    //     <button onClick={() => DeleteAtributlItem(i + 1)}>
-                    //       <i class="fa-solid fa-trash"></i>
-                    //     </button>
-                    //   </div>
-                    // </div>
                   ))}
 
                   <div
                     onClick={() =>
-                       addAtributInput(
-                        { branch: 0, quantity: 0 },
+                      addAtributInput(
+                        { content: 0, order: 0 },
                         atributInput.length + 1
                       )
-                      }
+                    }
                     className="p-3"
                     style={{
                       display: "flex",
@@ -795,11 +1376,9 @@ export default function Products() {
                       cursor: "pointer",
                     }}
                   >
-                    {" "}
                     <p>
-                      {" "}
                       <i class="fa-solid fa-circle-plus"></i> qo'shish{" "}
-                    </p>{" "}
+                    </p>
                   </div>
                 </AccordionDetails>
               </Accordion>

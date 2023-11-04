@@ -256,7 +256,7 @@ export default function Retsepts() {
                 </Select>
               </FormControl>
               <label className="text-lg  max-w-prose">
-                Galleriya uchun rasmlar
+                Galleriya uchun rasmlar 
               </label>
               <div style={{ display: "flex ", gap: "10px" }}>
                 <div
@@ -399,7 +399,7 @@ export default function Retsepts() {
               size="small"
             >
               <InputLabel id="demo-select-small-label" placholder="Kategoriya">
-                Kategoriya
+                Kategoriya *
               </InputLabel>
               <Select
                 required
@@ -415,7 +415,7 @@ export default function Retsepts() {
               </Select>
             </FormControl>
             <label className="text-lg  max-w-prose">
-              Galleriya uchun rasmlar
+              Galleriya uchun rasmlar *
             </label>
             <div style={{ display: "flex ", gap: "10px" }}>
               <div

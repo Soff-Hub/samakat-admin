@@ -19,9 +19,13 @@ import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Row } from "components/shared/Row";
-import Categories2 from "./categories2";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Row2 } from "components/shared/Row2";
 
-export default function Categories() {
+export default function Categories2() {
   const [data, setData] = useState(null);
   const [openDelete, setOpen] = useState(false);
   const [searchData, setSearchData] = useState(null);
@@ -29,17 +33,6 @@ export default function Categories() {
   const [page, setPage] = React.useState(1);
   const [type, setType] = useState("bistro");
   const [count, setCount] = useState(10);
-
-  const handleChangePag = async (event, value) => {
-    setPage(value);
-    await Client.get(`${API_ENDPOINTS.CATEGORIES}?page=${value}&type=${type}`)
-      .then((resp) => {
-        console.log(resp);
-        setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -118,10 +111,11 @@ export default function Categories() {
   useEffect(() => {
     getCategories();
   }, []);
-
+  
+    
   return (
     <div>
-      {/* <NavHeaderSelect title="Kategoriyalar" />
+      <NavHeaderSelect title="Kategoriyalar" />
       <ToggleButtonGroup
         color="primary"
         value={alignment}
@@ -148,40 +142,13 @@ export default function Categories() {
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Ko'rish</TableCell>
-              <TableCell>Nomi</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell align="right">Amallar</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <Row row={data} />
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <ResponsiveDialog
-        open={openDelete}
-        setOpen={setOpen}
-        // handleDelete={handleDelete}
-      />
-      <div className="mt-3">
-        <Stack spacing={2}>
-          <Typography> Sahifa : {page}</Typography>
-          <Pagination
-            count={Math.trunc(count / 10) < 1 ? 1 : Math.trunc(count / 10)}
-            page={page}
-            onChange={handleChangePag}
-          />
-        </Stack>
-      </div> */}
-
-      <Categories2/>
+      <div className="flex justify-between  bg-gray-300 p-2">
+        <div className="text-base font-[700]">Nomi</div>
+        <div className="text-base font-[700]">Amallar</div>
+      </div>
+      <div>
+        <Row2 row={data} />
+      </div>
     </div>
   );
 }

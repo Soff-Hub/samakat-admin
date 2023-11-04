@@ -31,9 +31,6 @@ class Client {
     return BaseService({
       url: url,
       method: "patch",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
       data: data,
     });
   }

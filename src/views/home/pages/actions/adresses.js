@@ -98,8 +98,13 @@ export default function Adresses() {
     getData(location.search.split("?")[1]);
   }, []);
 
+  const submit = () => {
+
+  }
+
+
   return (
-    <div className="flex">
+    <div className="flex g-3">
       <div className="w-1/2" style={{ height: 400 }}>
       Manzil
         <LoadScript
@@ -126,42 +131,77 @@ export default function Adresses() {
           </GoogleMap>
         </LoadScript>
       </div>
-      <form className="w-1/2 flex flex-col gap-5 create-branch-form">
+      <form onSubmit={submit} className="w-1/2 flex flex-col gap-5 mt-6 ml-4 create-branch-form">
           <TextField
             label="Filial nomi"
             variant="outlined"
             size="large"
             type="text"
-            required
-            value={data?.branch}
+            value={ data ? data.branch : ''}
           />
 
-          <h3>Manzil ma'lumotlari</h3>
-          <TextField
-            label="Yaratilgan sana"
-            variant="outlined"
-            size="large"
-            required
-            value={data?.address.created_at}
-            type="text"
-          />
-          <TextField
+          <h3>Manzil ma'lumotlari:</h3>
+          {/* <label>Yaratilgan sana</label> */}
+        <div className="flex gap-10" >
+        <TextField
             label="Latitude"
             variant="outlined"
-            size="large"
+            size="small"
             name="latitude"
-            required
-            value={data?.address.latitude}
+            value={data ? data?.address.latitude : ''}
             type="number"
           />
           <TextField
             label="Longitude"
             variant="outlined"
-            size="large"
-            required
-            value={data?.address.longitude}
+            size="small"
+            value={data ? data?.address.longitude : ''}
             type="number"
           />
+        </div>
+          <TextField
+            label="Lokatsiya"
+            variant="outlined"
+            size="large"
+            value={ data ? data?.address.location : ''}
+            type="text"
+          />
+          <TextField
+            label="Entrance"
+            variant="outlined"
+            size="large"
+            value={data ? data?.address.entrance : ''}
+            type="text"
+          />
+          <TextField
+            label="Apartment"
+            variant="outlined"
+            size="large"
+            value={ data ? data?.address.apartment : ''}
+            type="text"
+          />
+          <TextField
+            label="Floor"
+            variant="outlined"
+            size="large"
+            value={ data ? data?.address.floor : ''}
+            type="text"
+          />
+          <TextField
+            label="Domofon"
+            variant="outlined"
+            size="large"
+            value={ data ?  data?.address.domofon : ''}
+            type="text"
+          />
+           <TextField
+          id="outlined-multiline-static"
+          label="Izoh"
+          multiline
+          rows={4}
+          value={ data ?  data?.address.comment : ''}
+        />
+
         </form>
     </div>
   );

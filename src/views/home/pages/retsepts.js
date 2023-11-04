@@ -483,9 +483,9 @@ export default function EnhancedTable() {
                       <TableCell align="right">{row.title}</TableCell>
                       <TableCell align="right">
                         {row.is_active ? (
-                          <i class=" fa-regular fa-circle-check"></i>
+                          <i style={{color:'green'}} class=" fa-regular fa-circle-check"></i>
                         ) : (
-                          <i class="fa-regular fa-xmark"></i>
+                          <i style={{color:'red'}}  class="fa-regular fa-circle-xmark"></i>
                         )}{" "}
                       </TableCell>
                       <TableCell align="right"></TableCell>

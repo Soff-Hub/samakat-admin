@@ -35,15 +35,6 @@ import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 
-// export default function Retsepts() {
-//   return (
-//     <div>
-//       <NavHeader title="Retseptlar"/>
-
-//     </div>
-//   )
-// }
-
 function createData(id, name, calories, fat, carbs, protein) {
   return {
     id,
@@ -87,10 +78,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -378,19 +365,24 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
+
   const handleDelete = async () => {
+
     await Client.delete(`${API_ENDPOINTS.DELETE_PRODUCT}${deleteId}/`)
       .then((resp) => {
         console.log(resp);
         setCount(resp.count);
-        setData(resp.results);
+        setOpen(false);
+        getProductData();
       })
       .catch((err) => console.log(err));
   };
 
+
   const handleChangePag = async (event, value) => {
+    
     setPage(value);
-    await Client.get(`${API_ENDPOINTS.RETCIPE}?page=${value}&type=${type}`)
+    await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${value}&type=${type}`)
       .then((resp) => {
         console.log(resp);
         setCount(resp.count);
@@ -402,7 +394,9 @@ export default function EnhancedTable() {
   useEffect(() => {
     getProductData();
   }, []);
+
   // console.log(data);
+  
   return (
     <>
       <div className="mb-5">
@@ -497,7 +491,7 @@ export default function EnhancedTable() {
                         </span>{" "}
                       </TableCell>
                       <TableCell align="right" sx={{ position: "relative" }}>
-                        <Link to={`actions/?edit?${row.slug}`}>
+                        <Link to={`actions/?${row.type}?edit?${row.slug}`}>
                           <IconButton color="primary">
                             <DriveFileRenameOutlineOutlinedIcon />
                           </IconButton>
@@ -523,7 +517,7 @@ export default function EnhancedTable() {
             <Stack spacing={2}>
               <Typography> Sahifa : {page}</Typography>
               <Pagination
-                count={Math.trunc(count / 10) < 1 ? 1 : Math.trunc(count / 10)}
+                count={Math.trunc(count / 30) < 1 ? 1 : Math.trunc(count / 30)}
                 page={page}
                 onChange={handleChangePag}
               />

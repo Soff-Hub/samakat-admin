@@ -36,11 +36,10 @@ function Row(props) {
          <Link to={`actions/?${row.id}`} > {row.user}</Link>
         </TableCell>
         <TableCell component="th" scope="row" align="center">
-          {row.address}
+        <Link to={`actions/?${row.id}`} > {row.address}</Link>
         </TableCell>
         <TableCell component="th" scope="row" align="right">
-          {" "}
-          {row.branch}{" "}
+        <Link to={`actions/?${row.id}`} > {row.branch}</Link>
         </TableCell>
       </TableRow>
     </React.Fragment>

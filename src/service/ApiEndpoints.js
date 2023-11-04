@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
     DELETE_PRODUCT:'admin/product/delete/',
     CREATE_PRODUCT: 'admin/product/create/',
     PATCH_PRODUCT : 'admin/product/update/',
+    DETAIL_PRODUCT: 'admin/product/detail/',
 
     BADGE: 'admin/badge/',
     CREATE_BADGE: 'admin/badge/create/',
