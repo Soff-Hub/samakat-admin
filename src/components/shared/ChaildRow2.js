@@ -35,7 +35,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Row2 } from "./Row2";
 
-export function ChaildRow2({ row , setDeleteItem }) {
+export function ChaildRow2({ row , Detele }) {
   const [openContext, setOpenContext] = React.useState(false);
   const [data, setData] = useState([]);
   const [openDelete, setOpen] = useState(false);
@@ -47,7 +47,7 @@ export function ChaildRow2({ row , setDeleteItem }) {
     await Client.delete(`${API_ENDPOINTS.DELETE_CATEGORY}${deleteId}/`)
       .then((resp) => {
         setOpen(false);
-        setDeleteItem(deleteId)
+        Detele(deleteId)
         console.log(resp);
       })
       .catch((err) => console.log(err));

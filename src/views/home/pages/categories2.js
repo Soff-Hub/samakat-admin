@@ -33,6 +33,7 @@ export default function Categories2() {
   const [page, setPage] = React.useState(1);
   const [type, setType] = useState("bistro");
   const [count, setCount] = useState(10);
+  const [deteItem, setDeleteItem] = useState('')
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -108,9 +109,16 @@ export default function Categories2() {
       .catch((err) => console.log(err));
   };
 
+  const Detele = (value) => {
+    console.log('delete', value);
+    
+    setDeleteItem(value)
+  }
+
+
   useEffect(() => {
     getCategories();
-  }, []);
+  }, [deteItem, data]);
   
     
   return (
@@ -147,7 +155,7 @@ export default function Categories2() {
         <div className="text-base font-[700]">Amallar</div>
       </div>
       <div>
-        <Row2 row={data} />
+        <Row2 row={data} Detele={Detele} />
       </div>
     </div>
   );

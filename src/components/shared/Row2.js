@@ -5,7 +5,7 @@ import ResponsiveDialog from "components/shared/modal";
 import { ChaildRow } from "./chaildrow";
 import { ChaildRow2 } from "./ChaildRow2";
 
-export function Row2({row}) {
+export function Row2({row, Detele}) {
   const [data, setData] = useState(null)
   const [deleteItem, setDeleteItem] = useState('')
 
@@ -18,7 +18,7 @@ console.log('dataa', data);
     <>
       <React.Fragment>
         { data ? data?.map((item, i) => {
-          return <ChaildRow2 row={item} key={i} setDeleteItem={setDeleteItem} />
+          return <ChaildRow2 row={item} key={i} Detele={Detele} />
         }) :
         <>Loading...</>
     }

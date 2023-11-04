@@ -38,4 +38,7 @@ export const API_ENDPOINTS = {
     DELETE_USER: 'admin/user/delete/',
     DETAIL_USER: 'admin/user/detail/',
     UPDATE_USER: 'admin/user/update/',
+
+    ORDER: 'admin/order/',
+    DETAIL_ORDER: 'admin/order/detail/'
 }

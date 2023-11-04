@@ -19,11 +19,11 @@ export const navigationConfig = [
         path: '/dashboard',
         icon: <DashboardIcon />,
     },
-    {
-        name: 'Buyurtmachi mahsulotlari',
-        path: '/customer-products',
-        icon: <ShoppingBagIcon />,
-    },
+    // {
+    //     name: 'Buyurtmachi mahsulotlari',
+    //     path: '/customer-products',
+    //     icon: <ShoppingBagIcon />,
+    // },
     {
         name: 'Buyurtmalar',
         path: '/orders',
@@ -44,11 +44,11 @@ export const navigationConfig = [
         path: '/categories',
         icon: <FolderIcon />,
     },
-    {
-        name: 'Mahsulot Wishlistlar',
-        path: '/wishlists',
-        icon: <FavoriteIcon />,
-    },
+    // {
+    //     name: 'Mahsulot Wishlistlar',
+    //     path: '/wishlists',
+    //     icon: <FavoriteIcon />,
+    // },
     {
         name: 'Mahsulot Belgisi',
         path: '/product-badge',
@@ -64,21 +64,21 @@ export const navigationConfig = [
         path: '/adresses',
         icon: <MapIcon />,
     },
-    {
-        name: 'Mahsulot kategoriyalari',
-        path: '/product-categories',
-        icon: <AccountTreeIcon />,
-    },
+    // {
+    //     name: 'Mahsulot kategoriyalari',
+    //     path: '/product-categories',
+    //     icon: <AccountTreeIcon />,
+    // },
     {
         name: 'Promo Kodlar',
         path: '/promos',
         icon: <PercentIcon />,
     },
-    {
-        name: 'Retsept Wishlistlar',
-        path: '/retsept-wishlists',
-        icon: <FavoriteIcon />,
-    },
+    // {
+    //     name: 'Retsept Wishlistlar',
+    //     path: '/retsept-wishlists',
+    //     icon: <FavoriteIcon />,
+    // },
     {
         name: 'Retseptlar',
         path: '/retsepts',

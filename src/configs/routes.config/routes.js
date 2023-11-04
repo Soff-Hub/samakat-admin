@@ -26,11 +26,11 @@ export const adminActionRoutes = [
         path: '/dashboard',
         component: React.lazy(() => import('views/home/pages/dashboard'))
     },
-    {
-        key: 'customer-products',
-        path: '/customer-products/*',
-        component: React.lazy(() => import('views/home/pages/customer-products'))
-    },
+    // {
+    //     key: 'customer-products',
+    //     path: '/customer-products/*',
+    //     component: React.lazy(() => import('views/home/pages/customer-products'))
+    // },
     {
         key: 'orders',
         path: '/orders/*',

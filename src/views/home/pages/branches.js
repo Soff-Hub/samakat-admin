@@ -58,7 +58,7 @@ export default function Branches() {
       <NavHeader title="Filiallar" />
       {
         data ?
-          <div className='block w-1/2 border shadow-lg p-2 mt-5'>
+          <div className='block w-full border shadow-lg p-2 mt-5'>
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>

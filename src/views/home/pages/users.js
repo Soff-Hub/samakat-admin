@@ -27,6 +27,7 @@ import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import NavHeader from "components/shared/NavHeader";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 
 const headCells = [
@@ -45,10 +46,6 @@ const headCells = [
   {
     id: "created_at",
     label: "Yaratilgan vaqt",
-  },
-  {
-    id: "code",
-    label: "Amalllar",
   },
 ];
 
@@ -173,6 +170,10 @@ export default function Users() {
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [role, setRole] = useState("");
+  const [filial, setFilial] = useState("");
+  const [search, setSearch] = useState("");
+  const [filialData, setFilialData] = useState([]);
 
   const getUsers = async () => {
     await Client.get(API_ENDPOINTS.USERS)
@@ -226,7 +227,8 @@ export default function Users() {
 
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.RETCIPE}?search=${e}`)
+    setSearch(e)
+    await Client.get(`${API_ENDPOINTS.USERS}?search=${e}`)
       .then((resp) => {
         console.log(resp);
         setCount(resp.count);
@@ -235,34 +237,127 @@ export default function Users() {
       .catch((err) => console.log(err));
   };
 
-  const handleDelete = async () => {
-    await Client.delete(`${API_ENDPOINTS.DELETE_USER}${deleteId}/`)
-      .then((resp) => {
-        console.log(resp);
-        setOpen(false);
-      })
-      .catch((err) => console.log(err));
-  };
 
   const handleChangePag = async (event, value) => {
 
   };
 
+  const handleChangeFilial = async (event) => {
+    setFilial(event.target.value);
+    await Client.get(`${API_ENDPOINTS.USERS}?role=${role ? role : ''}&branch=${event.target.value}`)
+      .then((resp) => {
+        console.log(resp);
+        // setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleChangeRole = async (event) => {
+    setRole(event.target.value);
+    await Client.get(`${API_ENDPOINTS.USERS}?role=${event.target.value}&branch=${filial ? filial : ''}`)
+      .then((resp) => {
+        console.log(resp);
+        // setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
+
+  const getFilial = async () => {
+    await Client.get(API_ENDPOINTS.GET_BRANCHS)
+    .then((res) => {
+      console.log('res', res.results);
+    setFilialData(res.results)
+    })
+    .catch((err) => {
+      console.log(err);
+      
+    })
+  }
+
 
   useEffect(() => {
     getUsers()
-  }, [])
+    getFilial()
+  }, [search, filial, role])
 
   return (
     <div>
-      <NavHeader title="Foydalanuvchilar" />
-      <input
+       <div className="mb-5">
+        <h1 className="text-2xl">Foydalanuvchilar</h1>
+      </div>
+    <div>
+    <input
         type="text"
-        placeholder="Retsiplarni izlang..."
-        className=" px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
-        style={{ width: "100%" }}
+        placeholder="Foydalanuvchilarni izlang..."
+        className=" w-1/3 px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
         onChange={(e) => Search(e.target.value)}
       />
+       <FormControl
+              sx={{ minWidth: 80 }}
+              size="small"
+              className="mt-8 p-2"
+              style={{
+                marginTop: "2px",
+                marginLeft: "5px",
+                minWidth: "300px",
+                padding: "13px",
+              }}
+            >
+              <InputLabel
+                style={{ padding: "8px" }}
+                id="demo-select-small-label"
+                placholder="Holat bo'yicha"
+              >
+                Filial bo'yicha
+              </InputLabel>
+              <Select
+                className="pt-1"
+                value={filial}
+                label="Holat bo'yicha"
+                onChange={handleChangeFilial}
+              >
+                {
+                  filialData ? filialData?.map((item,i) => (
+                    <MenuItem key={i} value={item.id}>{item.name}</MenuItem>
+                  )) : <></>
+                }
+    
+              </Select>
+            </FormControl>
+            <FormControl
+              sx={{ minWidth: 80 }}
+              size="small"
+              className="mt-8 p-2"
+              style={{
+                marginTop: "2px",
+                marginLeft: "5px",
+                minWidth: "300px",
+                padding: "13px",
+              }}
+            >
+              <InputLabel
+                style={{ padding: "8px" }}
+                id="demo-select-small-label"
+                placholder="Holat bo'yicha"
+              >
+                Rol bo'yicha
+              </InputLabel>
+              <Select
+                className="pt-1"
+                value={role}
+                label="Holat bo'yicha"
+                onChange={handleChangeRole}
+              >
+                <MenuItem value={"customer"}>Foydalanuvchi</MenuItem>
+                <MenuItem value={"admin"}>Admin</MenuItem>
+                <MenuItem value={"kurer"}>Kurer</MenuItem>
+                <MenuItem value={"superadmin"}>Super admin</MenuItem>
+              </Select>
+            </FormControl>
+
+    </div>
       <Box sx={{ width: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <TableContainer>
@@ -308,39 +403,22 @@ export default function Users() {
                         component="th"
                         id={labelId}
                         align="left">
-                        <Link to={`actions/?edit?${row.id}`} className="hover:underline">
+                        <Link to={`actions/?detail?${row.id}`} className="hover:underline">
                           {row.id}
                         </Link>
                       </TableCell>
 
                       <TableCell align="left">
-                        <Link to={`actions/?edit?${row.id}`} className="hover:underline">
+                        <Link to={`actions/?detail?${row.id}`} className="hover:underline">
                           {row.phone}
                         </Link>
                       </TableCell>
                       <TableCell align="left">
-                        <Link to={`actions/?edit?${row.id}`} className="hover:underline">
+                        <Link to={`actions/?detail?${row.id}`} className="hover:underline">
                           {row.first_name == "" ? "No name" : row.first_name}
                         </Link>
                       </TableCell>
                       <TableCell align="left">{row.date_joined.slice(0, 10)}</TableCell>
-                      <TableCell align="left" sx={{ position: "relative" }}>
-                        <Link to={`actions/?edit?${row.id}`}>
-                          <IconButton color="primary">
-                            <DriveFileRenameOutlineOutlinedIcon />
-                          </IconButton>
-                        </Link>
-                        <IconButton
-                          color="error"
-                          onClick={() => {
-                            setDeleteId(row.slug);
-                            setOpen(true);
-                          }}
-                          aria-label="delete"
-                        >
-                          <DeleteSharpIcon />
-                        </IconButton>
-                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -359,11 +437,6 @@ export default function Users() {
           </div>
         </Paper>
       </Box>
-      <ResponsiveDialog
-        open={openDelete}
-        setOpen={setOpen}
-        handleDelete={handleDelete}
-      />
     </div>
   )
 }

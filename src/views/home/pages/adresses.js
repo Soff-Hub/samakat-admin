@@ -84,7 +84,7 @@ export default function CollapsibleTable() {
   return (
     <>
       <div className="mb-5">
-        <h1 className="text-2xl">Mahsulot belgisi</h1>
+        <h1 className="text-2xl">Manzillar</h1>
       </div>
 
       <TableContainer component={Paper}>
