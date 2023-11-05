@@ -348,7 +348,7 @@ export default function EnhancedTable() {
     setType("bistro");
     await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}&type=bistro`)
       .then((resp) => {
-        console.log(resp.results);
+        console.log(resp?.results);
         setCount(resp.count);
         setData(resp.results);
       })

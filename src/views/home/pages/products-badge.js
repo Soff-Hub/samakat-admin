@@ -32,35 +32,24 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell component="th" scope="row">
-          {row.text}
+        <TableCell scope="row"> <Link  to={`actions/?edit?${row.id}`} >
+        {row.text}
+        </Link> </TableCell>
+        <TableCell scope="row" align="right">
+        <Link to={`actions/?edit?${row.id}`} >
+        <span style={{ color: `${row.textColor}` }}>
+            <i class="fa-solid fa-certificate"></i>
+          </span>
+        </Link>
         </TableCell>
-        <TableCell component="th" scope="row" align="right">
-          <span style={{ color: `${row.textColor}` }}>{row.textColor}</span>
-        </TableCell>
-        <TableCell component="th" scope="row" align="right"></TableCell>
-        <TableCell component="th" scope="row" align="right"></TableCell>
-        <TableCell
-          component="th"
-          scope="row"
-          align="right"
-          sx={{ position: "relative" }}
-        >
+        <TableCell scope="row" align="right"></TableCell>
+        <TableCell scope="row" align="right"></TableCell>
+        <TableCell scope="row" align="right" sx={{ position: "relative" }}>
           <Link to={`actions/?edit?${row.id}`}>
             <IconButton color="primary">
               <DriveFileRenameOutlineOutlinedIcon />
             </IconButton>
           </Link>
-          {/* <IconButton
-            color="error"
-            onClick={() => {
-              setDeleteId(row.id);
-              setOpen(true);
-            }}
-            aria-label="delete"
-          >
-            <DeleteSharpIcon />
-          </IconButton> */}
         </TableCell>
       </TableRow>
     </React.Fragment>

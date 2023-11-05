@@ -121,67 +121,7 @@ export default function Categories() {
 
   return (
     <div>
-      {/* <NavHeaderSelect title="Kategoriyalar" />
-      <ToggleButtonGroup
-        color="primary"
-        value={alignment}
-        exclusive
-        onChange={handleChange}
-        // aria-label="Platform"
-        className="mt-5"
-      >
-        <ToggleButton style={{ width: "500px" }} onClick={Bistre} value="web">
-          Быстрый
-        </ToggleButton>
-        <ToggleButton
-          style={{ width: "500px" }}
-          onClick={Beauty}
-          value="android"
-        >
-          Beauty
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <input
-        type="text"
-        placeholder="Kategoriya izlang..."
-        className=" px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
-        style={{ width: "100%" }}
-        onChange={(e) => Search(e.target.value)}
-      />
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Ko'rish</TableCell>
-              <TableCell>Nomi</TableCell>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              <TableCell align="right">Amallar</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <Row row={data} />
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-      <ResponsiveDialog
-        open={openDelete}
-        setOpen={setOpen}
-        // handleDelete={handleDelete}
-      />
-      <div className="mt-3">
-        <Stack spacing={2}>
-          <Typography> Sahifa : {page}</Typography>
-          <Pagination
-            count={Math.trunc(count / 10) < 1 ? 1 : Math.trunc(count / 10)}
-            page={page}
-            onChange={handleChangePag}
-          />
-        </Stack>
-      </div> */}
-
-      <Categories2/>
+           <Categories2/>
     </div>
   );
 }

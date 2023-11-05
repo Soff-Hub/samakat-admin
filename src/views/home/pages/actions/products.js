@@ -57,7 +57,7 @@ export default function Products() {
   const [storageConditions, setStorageConditions] = React.useState("");
   const [specification, setSpecification] = React.useState("");
   const [shelf_life, setShelf_life] = React.useState("");
-  const [branchData, setBranchsData] = React.useState([]);
+  const [branchData, setBranchsData] = React.useState(null);
   const [slug, setSlug] = React.useState(null);
   const [imageOrder, setImageOrder] = React.useState(0);
   const [imageFiles, setImageFiles] = React.useState("");
@@ -156,11 +156,11 @@ export default function Products() {
     e.preventDefault();
     setSubmiting(true);
 
-    const product_branch = filialInput.map((item) => {
+    const product_branch = filialInput?.map((item) => {
       const { id, branch, quantity } = item;
       return { branch, quantity };
     });
-    const product_highlight = atributInput.map((item) => {
+    const product_highlight = atributInput?.map((item) => {
       const { id, content, order } = item;
       return { content, order };
     });
@@ -225,11 +225,11 @@ export default function Products() {
     e.preventDefault();
     setSubmiting(true);
 
-    const product_branch = filialInput.map((item) => {
+    const product_branch = filialInput?.map((item) => {
       const { id, branch, quantity } = item;
       return { branch, quantity };
     });
-    const product_highlight = atributInput.map((item) => {
+    const product_highlight = atributInput?.map((item) => {
       const { id, content, order } = item;
       return { content, order };
     });
@@ -364,7 +364,9 @@ export default function Products() {
   const getBranchData = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((res) => {
-        setBranchsData(res.results);
+        console.log('branch', res);
+        
+        setBranchsData(res?.results);
       })
       .catch((err) => {
         console.log(err);
@@ -376,7 +378,7 @@ export default function Products() {
       API_ENDPOINTS.DETAIL_PRODUCT + location.search.split("?")[3]
     )
       .then((res) => {
-        console.log( res);
+        console.log('ress=>', res);
         setEditData(res);
         setImageData(res?.recipe_gallery ? res?.recipe_gallery : imageData);
         setAtributInput(
@@ -394,7 +396,7 @@ export default function Products() {
   useEffect(() => {
     getBranchData();
     getBadgeData();
-    if (location.search.split("?")[2] == "edit") {
+    if (location.search.split("?")?.[2] == "edit") {
       getItem();
     }
     if (location.search.split("?")[1] == "bistro") {
@@ -404,8 +406,9 @@ export default function Products() {
     }
   }, []);
 
-
-  return location.search.split("?")[2] == "edit" ? (
+  console.log('product', location.search.split("?"));
+  
+  return location.search.split("?")?.[2] == "edit" ? (
     editData ? (
       <div>
         <h1 className="text-[35px] pb-3">Mahsulot tahrirlash</h1>
@@ -421,7 +424,7 @@ export default function Products() {
               size="large"
               style={{ width: "600px" }}
               type="text"
-              defaultValue={editData ? editData?.name : name}
+              defaultValue={ editData?.name || name}
               required
               onChange={(e) => {
                 setName(e.target.value);
@@ -433,7 +436,7 @@ export default function Products() {
               size="large"
               style={{ width: "600px" }}
               type="number"
-              value={editData ? editData?.price : price}
+              value={ editData?.price || price}
               required
               onChange={(e) => {
                 setPrice(e.target.value);
@@ -443,7 +446,7 @@ export default function Products() {
               id="outlined-multiline-static"
               label="Izoh"
               multiline
-              value={editData ? editData?.description : description}
+              value={ editData?.description || description}
               rows={4}
               style={{ width: "600px" }}
               type="text"
@@ -457,7 +460,7 @@ export default function Products() {
               size="large"
               style={{ width: "600px" }}
               type="number"
-              value={editData ? editData?.discount : discount}
+              value={editData?.discount || discount}
               onChange={(e) => {
                 setDiscount(e.target.value);
               }}
@@ -471,7 +474,7 @@ export default function Products() {
                 Belgi
               </InputLabel>
               <Select
-                value={editData ? editData?.badge : badge}
+                value={ editData?.badge || badge}
                 label="Kategoriya"
                 required
                 onChange={handleChange}
@@ -513,10 +516,10 @@ export default function Products() {
             <div>
               <label className="font-normal font-sans text-lg">Sotuvda</label>
               <Switch
-                checked={editData ? editData?.on_sale : on_sale}
+                checked={editData?.on_sale || on_sale}
                 defaultChecked={true}
                 onChange={handleChangeActiveShop}
-                inputProps={{ "aria-label": "controlled" }}
+                inputProps={{ "aria-label" : "controlled" }}
               />
             </div>
             <div>
@@ -559,22 +562,6 @@ export default function Products() {
                                 type="file"
                               />
                             </Button>
-                            {/* <TextField
-                            label="Tartib raqam"
-                            variant="outlined"
-                            size="small"
-                            style={{
-                              height: "10px",
-                              marginBottom: "40px",
-                              marginTop: "15px",
-                              width: "170px",
-                            }}
-                            type="number"
-                            value={imageOrder}
-                            onChange={(e) => {
-                              setImageOrder(e.target.value);
-                            }}
-                          /> */}
                             <Button
                               onClick={() => ImageDelete(item.id)}
                               component="label"
@@ -634,10 +621,8 @@ export default function Products() {
                         multiline
                         maxRows={4}
                         required
-                        value={
-                          editData
-                            ? editData?.product_attribute.ingredients
-                            : ingredients
+                        value={ editData?.product_attribute?.ingredients
+                            || ingredients
                         }
                         style={{ marginTop: "30px" }}
                         onChange={(e) => {
@@ -653,10 +638,8 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="number"
-                        value={
-                          editData
-                            ? editData?.product_attribute.carbohydrates
-                            : carbohydrates
+                        value={ editData?.product_attribute?.carbohydrates
+                            || carbohydrates
                         }
                         onChange={(e) => {
                           setCarbohydrates(e.target.value);
@@ -671,10 +654,8 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="number"
-                        value={
-                          editData
-                            ? editData?.product_attribute.kilocalories
-                            : kilocalories
+                        value={ editData?.product_attribute?.kilocalories
+                            || kilocalories
                         }
                         onChange={(e) => {
                           setKilocalories(e.target.value);
@@ -690,7 +671,7 @@ export default function Products() {
                         style={{ height: "10px", marginTop: "30px" }}
                         type="number"
                         value={
-                          editData ? editData?.product_attribute.fats : fats
+                         editData?.product_attribute?.fats || fats
                         }
                         onChange={(e) => {
                           setFats(e.target.value);
@@ -705,10 +686,8 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="number"
-                        value={
-                          editData
-                            ? editData?.product_attribute.protein
-                            : protein
+                        value={editData?.product_attribute?.protein
+                            || protein
                         }
                         onChange={(e) => {
                           setProtein(e.target.value);
@@ -724,10 +703,8 @@ export default function Products() {
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
                         required
-                        value={
-                          editData
-                            ? editData?.product_attribute.manufacturer
-                            : manufacturer
+                        value={ editData?.product_attribute?.manufacturer
+                            || manufacturer
                         }
                         onChange={(e) => {
                           setManufacturer(e.target.value);
@@ -743,10 +720,8 @@ export default function Products() {
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
                         required
-                        value={
-                          editData
-                            ? editData?.product_attribute.storageConditions
-                            : storageConditions
+                        value={ editData?.product_attribute?.storageConditions
+                            || storageConditions
                         }
                         onChange={(e) => {
                           setStorageConditions(e.target.value);
@@ -762,10 +737,8 @@ export default function Products() {
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
                         required
-                        value={
-                          editData
-                            ? editData?.product_attribute.specification
-                            : specification
+                        value={ editData?.product_attribute?.specification
+                            || specification
                         }
                         onChange={(e) => {
                           setSpecification(e.target.value);
@@ -781,10 +754,8 @@ export default function Products() {
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
                         required
-                        value={
-                          editData
-                            ? editData?.product_attribute.shelf_life
-                            : shelf_life
+                        value={ editData?.product_attribute?.shelf_life
+                            || shelf_life
                         }
                         onChange={(e) => {
                           setShelf_life(e.target.value);
@@ -1018,7 +989,7 @@ export default function Products() {
                   {data?.map((name) => (
                     <MenuItem key={name} value={name.id}>
                       <Checkbox
-                        checked={product_categories.indexOf(name.id) > -1}
+                        checked={product_categories?.indexOf(name.id) > -1}
                       />
                       <ListItemText primary={name.name} />
                     </MenuItem>
@@ -1074,22 +1045,6 @@ export default function Products() {
                                 type="file"
                               />
                             </Button>
-                            {/* <TextField
-                              label="Tartib raqam"
-                              variant="outlined"
-                              size="small"
-                              style={{
-                                height: "10px",
-                                marginBottom: "40px",
-                                marginTop: "15px",
-                                width: "170px",
-                              }}
-                              type="number"
-                              value={imageOrder}
-                              onChange={(e) => {
-                                setImageOrder(e.target.value);
-                              }}
-                            /> */}
                             <Button
                               onClick={() => ImageDelete(item.id)}
                               component="label"

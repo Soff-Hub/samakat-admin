@@ -110,7 +110,7 @@ export default function Branches() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((row) => {
+              { data?.map((row) => {
                 return (
                   <TableRow
                     key={row.id}
@@ -150,7 +150,7 @@ export default function Branches() {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/" + row.id}
+                        to={"actions/?" + row.id}
                         className="hover:underline"
                       >
                         {row.promocode === null ? (
@@ -162,7 +162,7 @@ export default function Branches() {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/" + row.id}
+                        to={"actions/?" + row.id}
                         className="hover:underline"
                       >
                         {row.status == "approved"
