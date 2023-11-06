@@ -120,11 +120,11 @@ export default function Retsepts() {
     formData.append("category", category);
     formData.append("is_active", checked);
     formData.append("related_categories", relatedCategory);
-    for (let i = 0; i < image.length; i++) {
+    for (let i = 0; i < image?.length; i++) {
       formData.append("uploaded_images", image[i].image);
     }
     setSubmiting(true);
-    await Client.put(`${API_ENDPOINTS.UPDATE_RECIPE}${location.search.split("?")[2]}/`, formData)
+    await Client.patch(`${API_ENDPOINTS.UPDATE_RECIPE}${location.search.split("?")[2]}/`, formData)
       .then((data) => {
         toast.success("Retsep muvaffaqiyatli tahrirlandi");
         setTimeout(() => {
@@ -146,11 +146,6 @@ export default function Retsepts() {
       .catch((err) => console.log(err));
   };
 
-  // const setImageF = (arr) => {
-  //   for (let value of arr) {
-  //     setImage([...image, {"image": getBase64Image(value) }]);
-  //   }
-  // }
 
   const getItem = async () => {
     await Client.get(
@@ -166,18 +161,15 @@ export default function Retsepts() {
         setEditData(res);
         setName(res?.title);
         setDescription(res?.description);
-        setCategory("salom");
+        setCategory(res?.category);
         setChecked(res?.is_active);
         setImageData(res?.recipe_gallery);
-        setImage(res?.recipe_gallery);
-        setImage(res?.recipe_gallery);
 
         setRelatedCategory(res?.related_categories);
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log("category", imageData);
   };
 
   useEffect(() => {
@@ -328,8 +320,10 @@ export default function Retsepts() {
                     value={relatedCategory}
                     onChange={handleChangeSelect}
                     input={<OutlinedInput label="Bog'liq kategoriyalar" />}
+                    renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                   >
+                    
                     {data?.map((name) => (
                       <MenuItem key={name} value={name.id}>
                         <Checkbox

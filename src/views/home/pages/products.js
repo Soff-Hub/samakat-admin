@@ -317,31 +317,18 @@ export default function EnhancedTable() {
     [order, orderBy, page, rowsPerPage]
   );
 
-  const Bistre = async () => {
+  const handleChange = async (e) => {
+    setType(e.target.value);
     setPage(1);
-    setType("bistro");
-    await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}&type=bistro`)
+    await Client.get(
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${e.target.value}`
+    )
       .then((resp) => {
         console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
-  };
-  const Beauty = async () => {
-    setPage(1);
-    setType("byute");
-    await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}&type=byuti`)
-      .then((resp) => {
-        console.log(resp);
-        setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
   };
 
   const getProductData = async () => {
@@ -366,9 +353,7 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-
   const handleDelete = async () => {
-
     await Client.delete(`${API_ENDPOINTS.DELETE_PRODUCT}${deleteId}/`)
       .then((resp) => {
         console.log(resp);
@@ -379,9 +364,7 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-
   const handleChangePag = async (event, value) => {
-    
     setPage(value);
     await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${value}&type=${type}`)
       .then((resp) => {
@@ -397,7 +380,7 @@ export default function EnhancedTable() {
   }, []);
 
   // console.log(data);
-  
+
   return (
     <>
       <div className="mb-5">
@@ -405,21 +388,16 @@ export default function EnhancedTable() {
       </div>
       <ToggleButtonGroup
         color="primary"
-        value={alignment}
+        value={type}
         exclusive
         onChange={handleChange}
-        // aria-label="Platform"
         className="mt-5"
       >
-        <ToggleButton style={{ width: "500px" }} onClick={Bistre} value="web">
-          Быстрый
+        <ToggleButton style={{ width: "500px" }} value="bistro">
+          Bistro
         </ToggleButton>
-        <ToggleButton
-          style={{ width: "500px" }}
-          onClick={Beauty}
-          value="android"
-        >
-          Beauty
+        <ToggleButton style={{ width: "500px" }} value="apteka">
+          Aptika
         </ToggleButton>
       </ToggleButtonGroup>
       <input
@@ -447,82 +425,90 @@ export default function EnhancedTable() {
                 rowCount={data?.length}
               />
               <TableBody>
-                { data ? data?.map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                {data ? (
+                  data?.map((row, index) => {
+                    const isItemSelected = isSelected(row.id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                      sx={{ cursor: "pointer" }}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell align="right">{row.name}</TableCell>
-                      <TableCell align="right">
-                        {JSON.parse(row.price)} so'm
-                      </TableCell>
-                      <TableCell align="right">
-                        {row.discount} <i class="fa-solid fa-percent"></i>{" "}
-                      </TableCell>
-                      <TableCell align="right">
-                        {true ? (
-                          <i style={{color:'green'}} class=" fa-regular fa-circle-check"></i>
-                        ) : (
-                          <i style={{color:'red'}} class="fa-regular fa-xmark"></i>
-                        )}{" "}
-                      </TableCell>
-                      <TableCell align="right">
-                        {" "}
-                        <span style={{ color: `${row?.badge?.textColor}` }}>
-                          {row?.badge?.text}
-                        </span>{" "}
-                      </TableCell>
-                      <TableCell align="right" sx={{ position: "relative" }}>
-                        <Link to={`actions/?${row.type}?edit?${row.slug}`}>
-                          <IconButton color="primary">
-                            <DriveFileRenameOutlineOutlinedIcon />
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, row.id)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell align="right">{row.name}</TableCell>
+                        <TableCell align="right">
+                          {JSON.parse(row.price)} so'm
+                        </TableCell>
+                        <TableCell align="right">
+                          {row.discount} <i class="fa-solid fa-percent"></i>{" "}
+                        </TableCell>
+                        <TableCell align="right">
+                          {true ? (
+                            <i
+                              style={{ color: "green" }}
+                              class=" fa-regular fa-circle-check"
+                            ></i>
+                          ) : (
+                            <i
+                              style={{ color: "red" }}
+                              class="fa-regular fa-xmark"
+                            ></i>
+                          )}{" "}
+                        </TableCell>
+                        <TableCell align="right">
+                          {" "}
+                          <span style={{ color: `${row?.badge?.textColor}` }}>
+                            {row?.badge?.text}
+                          </span>{" "}
+                        </TableCell>
+                        <TableCell align="right" sx={{ position: "relative" }}>
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            <IconButton color="primary">
+                              <DriveFileRenameOutlineOutlinedIcon />
+                            </IconButton>
+                          </Link>
+                          <IconButton
+                            color="error"
+                            onClick={() => {
+                              setDeleteId(row.slug);
+                              setOpen(true);
+                            }}
+                            aria-label="delete"
+                          >
+                            <DeleteSharpIcon />
                           </IconButton>
-                        </Link>
-                        <IconButton
-                          color="error"
-                          onClick={() => {
-                            setDeleteId(row.slug);
-                            setOpen(true);
-                          }}
-                          aria-label="delete"
-                        >
-                          <DeleteSharpIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                }) :
-                <Box
-                sx={{
-                  display: "flex",
-                  wdith: "100%",
-                  justifyContent: "center",
-                  padding: "150px 0",
-                  marginLeft:'400px'
-                }}
-              >
-                <CircularProgress />
-              </Box>
-                }
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                ) : (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      wdith: "100%",
+                      justifyContent: "center",
+                      padding: "150px 0",
+                      marginLeft: "400px",
+                    }}
+                  >
+                    <CircularProgress />
+                  </Box>
+                )}
               </TableBody>
             </Table>
           </TableContainer>

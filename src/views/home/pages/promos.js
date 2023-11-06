@@ -1,63 +1,41 @@
 import NavHeaderSelect from "components/shared/NavHeaderSelect";
 import React, { useEffect, useState } from "react";
-
 import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { Link } from "react-router-dom";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import NavHeader from "components/shared/NavHeader";
-import {
-  CircularProgress,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import dayjs from "dayjs";
-// import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-// import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 
-const lastMonday = dayjs().startOf("week");
+const lastSunday = dayjs().startOf("week").subtract(1, "day");
 const nextSunday = dayjs().endOf("week").startOf("day");
 
 const isWeekend = (date) => {
-  const day = date.day();
+    const day = date.day();
+  console.log('datee', date.$y ,"-", date.$M, "-", date.$D);
+  
+    return day === 0 || day === 6;
+  };
 
-  return day === 0 || day === 6;
-};
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -210,6 +188,12 @@ export default function EnhancedTable() {
   const [filialData, setFilialData] = useState(null);
   const [productData, setProductData] = useState(null);
 
+  console.log('lastSunday', lastSunday);
+  console.log('nextSunday', nextSunday);
+
+  
+  
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -323,6 +307,7 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
+
   useEffect(() => {
     getData();
   }, []);
@@ -341,34 +326,20 @@ export default function EnhancedTable() {
         <input
           type="text"
           placeholder="Mahsulotlarni izlang..."
-          className=" w-1/3 px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+          className=" w-full px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
           onChange={(e) => Search(e.target.value)}
         />
-        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer
-            components={["DatePicker", "DateTimePicker", "DateRangePicker"]}
-          >
-            <DemoItem label="DatePicker">
-              <DatePicker
-                defaultValue={nextSunday}
-                shouldDisableDate={isWeekend}
-                views={["year", "month", "day"]}
-              />
-            </DemoItem>
-            <DemoItem label="DateTimePicker">
-              <DateTimePicker
-                defaultValue={nextSunday}
-                shouldDisableDate={isWeekend}
-                views={["year", "month", "day", "hours", "minutes"]}
-              />
-            </DemoItem>
-            <DemoItem label="DateRangePicker" component="DateRangePicker">
-              <DateRangePicker
-                defaultValue={[lastMonday, nextSunday]}
-                shouldDisableDate={isWeekend}
-              />
-            </DemoItem>
-          </DemoContainer>
+        {/* <LocalizationProvider  dateAdapter={AdapterDayjs}>
+          <DateRangePicker
+            defaultValue={[lastSunday, nextSunday]}
+            shouldDisableDate={(date, position) => {
+              if (position === "end") {
+                return false;
+              }
+
+              return isWeekend(date);
+            }}
+          />
         </LocalizationProvider> */}
       </div>
       {data ? (

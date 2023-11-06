@@ -413,14 +413,14 @@ export default function EnhancedTable() {
         className="mt-5"
       >
         <ToggleButton style={{ width: "500px" }} onClick={Bistre} value="web">
-          Быстрый
+          Bistro
         </ToggleButton>
         <ToggleButton
           style={{ width: "500px" }}
           onClick={Beauty}
           value="android"
         >
-          Beauty
+          Aptika
         </ToggleButton>
       </ToggleButtonGroup>
       <input

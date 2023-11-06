@@ -21,10 +21,10 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell scope="row"> <Link  to={`actions/?edit?${row.id}`} >
+        <TableCell > <Link  to={`actions/?edit?${row.id}`} >
         {row.text}
         </Link> </TableCell>
-        <TableCell scope="row" align="right">
+        <TableCell  align="right">
         <Link to={`actions/?edit?${row.id}`} >
         <span style={{ color: `${row.textColor}` }}>
             <i class="fa-solid fa-certificate"></i>
