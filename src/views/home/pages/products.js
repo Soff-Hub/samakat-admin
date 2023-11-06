@@ -34,6 +34,7 @@ import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRen
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { CircularProgress } from "@mui/material";
 
 function createData(id, name, calories, fat, carbs, protein) {
   return {
@@ -446,7 +447,7 @@ export default function EnhancedTable() {
                 rowCount={data?.length}
               />
               <TableBody>
-                {data?.map((row, index) => {
+                { data ? data?.map((row, index) => {
                   const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -509,7 +510,19 @@ export default function EnhancedTable() {
                       </TableCell>
                     </TableRow>
                   );
-                })}
+                }) :
+                <Box
+                sx={{
+                  display: "flex",
+                  wdith: "100%",
+                  justifyContent: "center",
+                  padding: "150px 0",
+                  marginLeft:'400px'
+                }}
+              >
+                <CircularProgress />
+              </Box>
+                }
               </TableBody>
             </Table>
           </TableContainer>

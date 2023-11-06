@@ -1,27 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { API_ENDPOINTS } from "service/ApiEndpoints";
-import Client from "service/Client";
-import ResponsiveDialog from "components/shared/modal";
-import { ChaildRow } from "./chaildrow";
 import { ChaildRow2 } from "./ChaildRow2";
+import { Box, CircularProgress } from "@mui/material";
 
-export function Row2({row, Detele}) {
-  const [data, setData] = useState(null)
-  const [deleteItem, setDeleteItem] = useState('')
+export function Row2({ row, Detele }) {
+  const [data, setData] = useState(null);
+  const [deleteItem] = useState("");
 
   useEffect(() => {
-    setData(row)
-  },[deleteItem, row])
-console.log('dataa', data);
+    setData(row);
+  }, [deleteItem, row]);
 
   return (
     <>
       <React.Fragment>
-        { data ? data?.map((item, i) => {
-          return <ChaildRow2 row={item} key={i} Detele={Detele} />
-        }) :
-        <>Loading...</>
-    }
+        {data ? (
+          data?.map((item, i) => {
+            return <ChaildRow2 row={item} key={i} Detele={Detele} />;
+          })
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              wdith: "100%",
+              justifyContent: "center",
+              padding: "150px 0",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
       </React.Fragment>
     </>
   );

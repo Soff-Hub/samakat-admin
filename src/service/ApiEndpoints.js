@@ -40,5 +40,17 @@ export const API_ENDPOINTS = {
     UPDATE_USER: 'admin/user/update/',
 
     ORDER: 'admin/order/',
-    DETAIL_ORDER: 'admin/order/detail/'
+    DETAIL_ORDER: 'admin/order/detail/',
+
+    PRODUCT_COUNT_BRANCH: 'admin/product-count-branch/',
+    DETAIL_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/detail/',
+    CREATE_PRODUCT_COUNT_BRANCH: 'admin/product-count-branch/create/',
+    DELETE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/delete/',
+    UPDATE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/update/',
+
+    PROMO_CODE: 'admin/promo-code/',
+    DETAIL_PROMO_CODE: 'admin/promo-code/detail/',
+    DETAIL_CREATE: 'admin/promo-code/create/',
+    DELETE_CREATE_PROMO_CODE: 'admin/promo-code/delete/',
+    UPDATE_PROMO_CODE: 'admin/promo-code/update/',
 }

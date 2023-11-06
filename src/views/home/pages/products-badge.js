@@ -13,21 +13,10 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Link } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import { Box, CircularProgress } from "@mui/material";
 
 function Row(props) {
   const { row } = props;
-  const [openDelete, setOpen] = React.useState(false);
-  const [deleteId, setDeleteId] = React.useState(null);
-
-  const handleDelete = async (id) => {
-    await Client.delete(API_ENDPOINTS)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   return (
     <React.Fragment>
@@ -42,9 +31,9 @@ function Row(props) {
           </span>
         </Link>
         </TableCell>
-        <TableCell scope="row" align="right"></TableCell>
-        <TableCell scope="row" align="right"></TableCell>
-        <TableCell scope="row" align="right" sx={{ position: "relative" }}>
+        <TableCell  align="right"></TableCell>
+        <TableCell  align="right"></TableCell>
+        <TableCell  align="right" sx={{ position: "relative" }}>
           <Link to={`actions/?edit?${row.id}`}>
             <IconButton color="primary">
               <DriveFileRenameOutlineOutlinedIcon />
@@ -108,11 +97,30 @@ export default function CollapsibleTable() {
               <TableCell align="right">Amallar</TableCell>
             </TableRow>
           </TableHead>
+          {
+            bagdeData ?
           <TableBody>
-            {bagdeData?.map((row) => (
+            { bagdeData?.map((row) => (
               <Row key={row.name} row={row} />
-            ))}
+            )) 
+          
+            }
           </TableBody>
+          :
+          <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+            padding: "150px",
+            marginLeft:'100px'
+
+          }}
+        >
+          <CircularProgress />
+        </Box>
+
+          }
         </Table>
       </TableContainer>
     </>

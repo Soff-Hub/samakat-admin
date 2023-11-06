@@ -1,10 +1,493 @@
-import NavHeader from 'components/shared/NavHeader'
-import React from 'react'
+import NavHeaderSelect from "components/shared/NavHeaderSelect";
+import React, { useEffect, useState } from "react";
 
-export default function Promos() {
-    return (
-        <div>
-            <NavHeader title="Promo kodlar"/>
-        </div>
+import PropTypes from "prop-types";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { visuallyHidden } from "@mui/utils";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Client from "service/Client";
+import { API_ENDPOINTS } from "service/ApiEndpoints";
+import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
+import { Link } from "react-router-dom";
+import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
+import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import ResponsiveDialog from "components/shared/modal";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import NavHeader from "components/shared/NavHeader";
+import {
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import dayjs from "dayjs";
+// import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+// import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+
+const lastMonday = dayjs().startOf("week");
+const nextSunday = dayjs().endOf("week").startOf("day");
+
+const isWeekend = (date) => {
+  const day = date.day();
+
+  return day === 0 || day === 6;
+};
+
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
+const headCells = [
+  {
+    id: "name",
+    numeric: false,
+    disablePadding: true,
+    label: "Id",
+  },
+  {
+    id: "calories",
+    numeric: true,
+    disablePadding: false,
+    label: "Nomi",
+  },
+  {
+    id: "fat",
+    numeric: true,
+    disablePadding: false,
+    label: "Kodi",
+  },
+  {
+    id: "carbs",
+    numeric: true,
+    disablePadding: false,
+    label: "Foiz",
+  },
+  {
+    id: "protein",
+    numeric: true,
+    disablePadding: false,
+    label: "Reklamachi",
+  },
+  {
+    id: "protein",
+    numeric: true,
+    disablePadding: false,
+    label: "Boshlanish vaqti",
+  },
+  {
+    id: "protein",
+    numeric: true,
+    disablePadding: false,
+    label: "Tugash vaqti",
+  },
+  {
+    id: "protein",
+    numeric: true,
+    disablePadding: true,
+    label: "Amallar",
+  },
+];
+
+function EnhancedTableHead(props) {
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              "aria-label": "select all desserts",
+            }}
+          />
+        </TableCell>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? "right" : "left"}
+            padding={headCell.disablePadding ? "none" : "normal"}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            {headCell.label}
+            {orderBy === headCell.id ? (
+              <Box component="span" sx={visuallyHidden}>
+                {order === "desc" ? "sorted descending" : "sorted ascending"}
+              </Box>
+            ) : null}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
+
+EnhancedTableHead.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+  onRequestSort: PropTypes.func.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  orderBy: PropTypes.string.isRequired,
+  rowCount: PropTypes.number.isRequired,
+};
+
+export default function EnhancedTable() {
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("calories");
+  const [selected, setSelected] = React.useState([]);
+  const [page, setPage] = React.useState(1);
+  const [type, setType] = React.useState("bistro");
+  const [data, setData] = React.useState(null);
+  const [count, setCount] = useState(10);
+  const [openDelete, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [branch, setBranch] = useState("");
+  const [product, setProduct] = useState("");
+  const [search, setSearch] = useState("");
+  const [filialData, setFilialData] = useState(null);
+  const [productData, setProductData] = useState(null);
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const handleSelectAllClick = (event) => {
+    console.log(event.target.checked);
+    if (event.target.checked) {
+      const newSelected = data?.map((n) => n.id);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
+
+  const handleChangePage = (newPage) => {
+    // setPage(newPage);
+  };
+  const isSelected = (id) => selected.indexOf(id) !== -1;
+
+  const Search = async (e) => {
+    setSearch(e);
+    await Client.get(`${API_ENDPOINTS.PROMO_CODE}?search=${e}`)
+      .then((resp) => {
+        setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleChangeFilial = async (event) => {
+    setBranch(event.target.value);
+    await Client.get(
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event.target.value}&product=${product}&product__type=${type}`
     )
+      .then((resp) => {
+        // setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleChangeProductFilter = async (event) => {
+    setProduct(event.target.value);
+    await Client.get(
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&product=${event.target.value}&product__type=${type}`
+    )
+      .then((resp) => {
+        // setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getData = async () => {
+    setPage(1);
+    setType("bistro");
+    await Client.get(`${API_ENDPOINTS.PROMO_CODE}`)
+      .then((resp) => {
+        setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+  const getFilial = async () => {
+    await Client.get(API_ENDPOINTS.GET_BRANCHS)
+      .then((res) => {
+        setFilialData(res.results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getProduct = async () => {
+    await Client.get(API_ENDPOINTS.PRODUCT)
+      .then((res) => {
+        setProductData(res.results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDelete = async () => {
+    await Client.delete(`${API_ENDPOINTS.DELETE_CREATE_PROMO_CODE}${deleteId}/`)
+      .then((resp) => {
+        console.log(resp);
+        setOpen(false);
+        getData();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    getFilial();
+    getProduct();
+  }, []);
+
+  return (
+    <>
+      <div className="mb-5">
+        <NavHeader title="Promo kodlar" />
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="Mahsulotlarni izlang..."
+          className=" w-1/3 px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+          onChange={(e) => Search(e.target.value)}
+        />
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer
+            components={["DatePicker", "DateTimePicker", "DateRangePicker"]}
+          >
+            <DemoItem label="DatePicker">
+              <DatePicker
+                defaultValue={nextSunday}
+                shouldDisableDate={isWeekend}
+                views={["year", "month", "day"]}
+              />
+            </DemoItem>
+            <DemoItem label="DateTimePicker">
+              <DateTimePicker
+                defaultValue={nextSunday}
+                shouldDisableDate={isWeekend}
+                views={["year", "month", "day", "hours", "minutes"]}
+              />
+            </DemoItem>
+            <DemoItem label="DateRangePicker" component="DateRangePicker">
+              <DateRangePicker
+                defaultValue={[lastMonday, nextSunday]}
+                shouldDisableDate={isWeekend}
+              />
+            </DemoItem>
+          </DemoContainer>
+        </LocalizationProvider> */}
+      </div>
+      {data ? (
+        <Box sx={{ width: "100%" }}>
+          <Paper sx={{ width: "100%", mb: 2 }}>
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 750 }}
+                aria-labelledby="tableTitle"
+                size="medium"
+              >
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={handleRequestSort}
+                  rowCount={data?.length}
+                />
+                <TableBody>
+                  {data?.map((row, index) => {
+                    const isItemSelected = isSelected(row.id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
+
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, row.id)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          {row.id}
+                        </TableCell>
+                        <TableCell align="right">{row.title}</TableCell>
+                        <TableCell align="right">{row.code}</TableCell>
+                        <TableCell align="right">{row.percentage} </TableCell>
+                        <TableCell align="right">{row.advertiser} </TableCell>
+                        <TableCell align="right">{row.start_date} </TableCell>
+                        <TableCell align="right">{row.end_date} </TableCell>
+                        <TableCell align="right" sx={{ position: "relative" }}>
+                          {/* <Link  to={`actions/?edit?${row.id}`}>
+                            <IconButton color="primary">
+                              <DriveFileRenameOutlineOutlinedIcon />
+                            </IconButton>
+                          </Link> */}
+                          <IconButton
+                            color="error"
+                            onClick={() => {
+                              setDeleteId(row.id);
+                              setOpen(true);
+                            }}
+                            aria-label="delete"
+                          >
+                            <DeleteSharpIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            {data?.length !== 0 ? (
+              <div className="m-3 mb-5">
+                <Stack spacing={2}>
+                  <Typography> Sahifa : {page}</Typography>
+                  <Pagination
+                    count={
+                      Math.trunc(count / 30) < 1 ? 1 : Math.trunc(count / 30)
+                    }
+                    page={page}
+                    onChange={handleChangePage}
+                  />
+                </Stack>
+              </div>
+            ) : (
+              <></>
+            )}
+          </Paper>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+            padding: "150px 0",
+            margin: "0 auto",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+
+      <ResponsiveDialog
+        open={openDelete}
+        setOpen={setOpen}
+        handleDelete={handleDelete}
+      />
+    </>
+  );
 }

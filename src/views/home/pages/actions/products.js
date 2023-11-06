@@ -470,12 +470,12 @@ export default function Products() {
               sx={{ m: 1, minWidth: 120 }}
               size="small"
             >
-              <InputLabel id="demo-select-small-label" placholder="Kategoriya">
+              <InputLabel id="demo-select-small-label" placholder="Belgi">
                 Belgi
               </InputLabel>
               <Select
                 value={ editData?.badge || badge}
-                label="Kategoriya"
+                label="Belgi"
                 required
                 onChange={handleChange}
               >

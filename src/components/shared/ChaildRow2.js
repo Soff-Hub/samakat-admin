@@ -11,7 +11,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
-import { Row } from "./Row";
 import ResponsiveDialog from "components/shared/modal";
 import IconButton from "@mui/material/IconButton";
 import PropTypes from "prop-types";
@@ -41,7 +40,6 @@ export function ChaildRow2({ row , Detele }) {
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [rowData, setRowData] = useState([])
-//   const [deleteItem, setDeleteItem] = useState('')
 
   async function handleDelete() {
     await Client.delete(`${API_ENDPOINTS.DELETE_CATEGORY}${deleteId}/`)

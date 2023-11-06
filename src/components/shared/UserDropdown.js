@@ -37,7 +37,6 @@ export default function UserDropdown() {
         if (user === null) {
             getUser()
         }
-        // eslint-disable-next-line
     }, [user])
 
     return (
