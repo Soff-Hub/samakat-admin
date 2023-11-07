@@ -35,10 +35,10 @@ function Row(props) {
         <TableCell component="th" scope="row">
          <Link to={`actions/?${row.id}`} > {row.user}</Link>
         </TableCell>
-        <TableCell component="th" scope="row" align="center">
+        <TableCell  scope="row" align="center">
         <Link to={`actions/?${row.id}`} > {row.address}</Link>
         </TableCell>
-        <TableCell component="th" scope="row" align="right">
+        <TableCell  scope="row" align="right">
         <Link to={`actions/?${row.id}`} > {row.branch}</Link>
         </TableCell>
       </TableRow>

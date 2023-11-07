@@ -53,7 +53,7 @@ export default function NavHeader({ title }) {
                 className="hover:bg-gray"
                 sx={{ p: 2 }}
               >
-                    Aptika
+                    Apteka
               </Typography>
                     </Link>
             </Paper>

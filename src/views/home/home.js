@@ -124,7 +124,7 @@ export default function MiniDrawer() {
   }, [location.pathname, navigationConfig])
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', minWidth: 650 }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar className='bg-blue-500'>

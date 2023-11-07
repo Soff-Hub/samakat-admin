@@ -59,7 +59,7 @@ export default function Users() {
       <h1 className="text-[35px] pb-3">Foydalanuvchi</h1>
 
       <form className="flex gap-[40px]">
-        <div className="w-4/5">
+        <div className="w-full">
           <Accordion
             expanded={expanded === "panel1"}
             onChange={handleChangeAcc("panel1")}
@@ -182,7 +182,7 @@ export default function Users() {
               id="panel3bh-header"
             >
               <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                Retsip savati
+                Retsipt savati
               </Typography>
             </AccordionSummary>
             <AccordionDetails>

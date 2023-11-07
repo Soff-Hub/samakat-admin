@@ -346,8 +346,18 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-  const handleChange = (newAlignment) => {
-    setAlignment(newAlignment);
+  const handleChange = async (e) => {
+    setPage(1);
+    setType(e.target.value);
+    await Client.get(
+      `${API_ENDPOINTS.RETCIPE}?page=${page}&type=${e.target.value}`
+    )
+      .then((resp) => {
+        console.log(resp);
+        setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
   };
 
   const getRetsipeData = async () => {
@@ -406,20 +416,15 @@ export default function EnhancedTable() {
       </div>
       <ToggleButtonGroup
         color="primary"
-        value={alignment}
+        value={type}
         exclusive
         onChange={handleChange}
-        // aria-label="Platform"
-        className="mt-5"
+        className="mt-5 flex items-center w-full"
       >
-        <ToggleButton style={{ width: "500px" }} onClick={Bistre} value="web">
+        <ToggleButton className="w-full" onClick={Bistre} value="bistro">
           Bistro
         </ToggleButton>
-        <ToggleButton
-          style={{ width: "500px" }}
-          onClick={Beauty}
-          value="android"
-        >
+        <ToggleButton className="w-full" onClick={Beauty} value="apteka">
           Aptika
         </ToggleButton>
       </ToggleButtonGroup>
@@ -483,9 +488,15 @@ export default function EnhancedTable() {
                       <TableCell align="right">{row.title}</TableCell>
                       <TableCell align="right">
                         {row.is_active ? (
-                          <i style={{color:'green'}} class=" fa-regular fa-circle-check"></i>
+                          <i
+                            style={{ color: "green" }}
+                            class=" fa-regular fa-circle-check"
+                          ></i>
                         ) : (
-                          <i style={{color:'red'}}  class="fa-regular fa-circle-xmark"></i>
+                          <i
+                            style={{ color: "red" }}
+                            class="fa-regular fa-circle-xmark"
+                          ></i>
                         )}{" "}
                       </TableCell>
                       <TableCell align="right"></TableCell>

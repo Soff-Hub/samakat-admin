@@ -9,7 +9,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import NavHeader from "components/shared/NavHeader";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
@@ -40,7 +39,7 @@ export default function Branches() {
   };
 
   const Search = async (e) => {
-    setSarch(e)
+    setSarch(e);
     await Client.get(`${API_ENDPOINTS.ORDER}?search=${e}`)
       .then((resp) => {
         console.log(resp);
@@ -61,26 +60,19 @@ export default function Branches() {
       </div>
       {data ? (
         <div className="block w-full border shadow-lg p-2 mt-5">
-          <div>
+          <div className="flex items-center gap-1">
             <input
               type="text"
-              placeholder="Buyurtmalarni izlang..."
-              className=" w-2/3 px-3 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+              placeholder="Izlash"
+              className="sm:w-full w-1/2 px-3 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
               onChange={(e) => Search(e.target.value)}
             />
             <FormControl
-              sx={{ minWidth: 80 }}
+              sx={{ minWidth: 100 }}
               size="small"
-              className="mt-8 p-2"
-              style={{
-                marginTop: "2px",
-                marginLeft: "5px",
-                minWidth: "300px",
-                padding: "13px",
-              }}
+              className="sm:w-full  w-1/2"
             >
               <InputLabel
-                style={{ padding: "8px" }}
                 id="demo-select-small-label"
                 placholder="Holat bo'yicha"
               >
@@ -98,19 +90,19 @@ export default function Branches() {
               </Select>
             </FormControl>
           </div>
-          <Table aria-label="simple table">
+          <Table sx={{ minWidth: 300 }} aria-label="caption table">
             <TableHead>
               <TableRow>
                 <TableCell>Id</TableCell>
-                <TableCell align="">Foydalanuvchi</TableCell>
-                <TableCell align="">Umumiy so'mma</TableCell>
-                <TableCell align="">Manzil</TableCell>
-                <TableCell align="">Promo kod</TableCell>
-                <TableCell align="">Holat</TableCell>
+                <TableCell>Foydalanuvchi</TableCell>
+                <TableCell>Umumiy so'mma</TableCell>
+                <TableCell>Manzil</TableCell>
+                <TableCell>Promo kod</TableCell>
+                <TableCell>Holat</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              { data?.map((row) => {
+              {data?.map((row) => {
                 return (
                   <TableRow
                     key={row.id}

@@ -391,19 +391,19 @@ export default function EnhancedTable() {
         value={type}
         exclusive
         onChange={handleChange}
-        className="mt-5"
+        className="mt-5 flex items-center w-full"
       >
-        <ToggleButton style={{ width: "500px" }} value="bistro">
+        <ToggleButton className="w-full" value="bistro">
           Bistro
         </ToggleButton>
-        <ToggleButton style={{ width: "500px" }} value="apteka">
-          Aptika
+        <ToggleButton className="w-full" value="apteka">
+          Apteka
         </ToggleButton>
       </ToggleButtonGroup>
       <input
         type="text"
-        placeholder="Retsiplarni izlang..."
-        className=" px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+        placeholder="Izlash"
+        className=" px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />

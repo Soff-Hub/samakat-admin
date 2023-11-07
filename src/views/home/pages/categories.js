@@ -12,10 +12,19 @@ export default function Categories2() {
   const [page, setPage] = React.useState(1);
   const [type, setType] = useState("bistro");
   const [count, setCount] = useState(10);
-  const [deteItem, setDeleteItem] = useState('')
+  const [deteItem, setDeleteItem] = useState("");
 
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+  const handleChange = async (e) => {
+    setType(e.target.value);
+    setPage(1);
+    await Client.get(
+      `${API_ENDPOINTS.CATEGORIES}?page=${page}&type=${e.target.value}&parent_is_null=true`
+    )
+      .then((resp) => {
+        setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
   };
 
   async function getCategories() {
@@ -36,34 +45,7 @@ export default function Categories2() {
     await Client.get(`${API_ENDPOINTS.CATEGORIES}?search=${e}`)
       .then((resp) => {
         console.log(resp);
-        getCategories()
-        setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const Bistre = async () => {
-    setPage(1);
-    setType("bistro");
-    await Client.get(
-      `${API_ENDPOINTS.CATEGORIES}?page=${page}&type=bistro&parent_is_null=true`
-    )
-      .then((resp) => {
-        console.log(resp);
-        setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-  const Beauty = async () => {
-    setPage(1);
-    setType("byute");
-    await Client.get(
-      `${API_ENDPOINTS.CATEGORIES}?page=${page}&type=byuti&parent_is_null=true`
-    )
-      .then((resp) => {
-        console.log(resp);
+        getCategories();
         setCount(resp.count);
         setData(resp.results);
       })
@@ -71,40 +53,34 @@ export default function Categories2() {
   };
 
   const Detele = (value) => {
-    console.log('delete', value); 
-    setDeleteItem(value)
-  }
-
+    console.log("delete", value);
+    setDeleteItem(value);
+  };
 
   useEffect(() => {
     getCategories();
   }, [deteItem, data]);
-  
-    
+
   return (
     <div>
       <NavHeaderSelect title="Kategoriyalar" />
       <ToggleButtonGroup
         color="primary"
-        value={alignment}
+        value={type}
         exclusive
         onChange={handleChange}
-        className="mt-5"
+        className="mt-5 flex items-center w-full"
       >
-        <ToggleButton style={{ width: "500px" }} onClick={Bistre} value="web">
+        <ToggleButton className="mt-5 flex items-center w-full" value="bistro">
           Bistro
         </ToggleButton>
-        <ToggleButton
-          style={{ width: "500px" }}
-          onClick={Beauty}
-          value="android"
-        >
-          Aptika
+        <ToggleButton className="mt-5 flex items-center w-full" value="byuti">
+          Apteka
         </ToggleButton>
       </ToggleButtonGroup>
       <input
         type="text"
-        placeholder="Kategoriya izlang..."
+        placeholder="Izlash"
         className=" px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}

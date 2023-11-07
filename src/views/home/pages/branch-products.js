@@ -245,10 +245,10 @@ export default function EnhancedTable() {
   const handleChangePage = (newPage) => {
     setPage(newPage);
   };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
@@ -371,97 +371,84 @@ export default function EnhancedTable() {
         value={type}
         exclusive
         onChange={handleChange}
-        className="mt-5"
+        className="mt-5 flex items-center w-full"
       >
-        <ToggleButton style={{ width: "500px" }} value="bistro">
+        <ToggleButton className="w-full"  value="bistro">
           Быстрый
         </ToggleButton>
-        <ToggleButton style={{ width: "500px" }} value="apteka">
-          Aptika
+        <ToggleButton className="w-full"  value="apteka">
+          Apteka
         </ToggleButton>
       </ToggleButtonGroup>
-      <div>
-        <input
-          type="text"
-          placeholder="Mahsulotlarni izlang..."
-          className=" w-1/3 px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
-          onChange={(e) => Search(e.target.value)}
-        />
-        <FormControl
-          sx={{ minWidth: 80 }}
-          size="small"
-          className="mt-8 p-2"
-          style={{
-            marginTop: "2px",
-            marginLeft: "5px",
-            minWidth: "300px",
-            padding: "13px",
-          }}
-        >
-          <InputLabel
-            style={{ padding: "8px" }}
-            id="demo-select-small-label"
-            placholder="Holat bo'yicha"
-          >
-            Filial bo'yicha
-          </InputLabel>
-          <Select
-            className="pt-1"
-            value={branch}
-            label="Holat bo'yicha"
-            onChange={handleChangeFilial}
-          >
-            {filialData ? (
-              filialData?.map((item, i) => (
-                <MenuItem key={i} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
-            ) : (
-              <></>
-            )}
-          </Select>
-        </FormControl>
-        <FormControl
-          sx={{ minWidth: 80 }}
-          size="small"
-          className="mt-8 p-2"
-          style={{
-            marginTop: "2px",
-            marginLeft: "5px",
-            minWidth: "300px",
-            padding: "13px",
-          }}
-        >
-          <InputLabel
-            style={{ padding: "8px" }}
-            id="demo-select-small-label"
-            placholder="Holat bo'yicha"
-          >
-            Mahsulot bo'yicha
-          </InputLabel>
-          <Select
-            className="pt-1"
-            value={product}
-            label="Holat bo'yicha"
-            onChange={handleChangeProductFilter}
-          >
-            {productData ? (
-              productData?.map((item) => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
-            ) : (
-              <></>
-            )}
-          </Select>
-        </FormControl>
-      </div>
+
       {data ? (
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", minWidth: 650 }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
             <TableContainer>
+              <div className="flex items-center gap-1">
+                <input
+                  type="text"
+                  placeholder="Izlash"
+                  className="sm:w-full  w-1/3 px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+                  onChange={(e) => Search(e.target.value)}
+                />
+                <FormControl
+                  sx={{ minWidth: 100 }}
+                  size="small"
+                  className="sm:w-full  w-1/3"
+                >
+                  <InputLabel
+                    id="demo-select-small-label"
+                    placholder="Holat bo'yicha"
+                  >
+                    Filial bo'yicha
+                  </InputLabel>
+                  <Select
+                  className="py-0.5"
+                    value={branch}
+                    label="Holat bo'yicha"
+                    onChange={handleChangeFilial}
+                  >
+                    {filialData ? (
+                      filialData?.map((item, i) => (
+                        <MenuItem key={i} value={item.id}>
+                          {item.name}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <></>
+                    )}
+                  </Select>
+                </FormControl>
+                <FormControl
+                 sx={{ minWidth: 100 }}
+                 size="small"
+                 className="sm:w-full  w-1/3"
+                >
+                  <InputLabel
+                    id="demo-select-small-label"
+                    placholder="Holat bo'yicha"
+                  >
+                    Mahsulot bo'yicha
+                  </InputLabel>
+                  <Select
+                    className="py-0.5"
+                    value={product}
+                    label="Holat bo'yicha"
+                    onChange={handleChangeProductFilter}
+                  >
+                    {productData ? (
+                      productData?.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.name}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <></>
+                    )}
+                  </Select>
+                </FormControl>
+              </div>
               <Table
                 sx={{ minWidth: 750 }}
                 aria-labelledby="tableTitle"

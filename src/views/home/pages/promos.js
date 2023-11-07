@@ -325,8 +325,8 @@ export default function EnhancedTable() {
       <div>
         <input
           type="text"
-          placeholder="Mahsulotlarni izlang..."
-          className=" w-full px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+          placeholder="Izlash"
+          className=" w-full px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
           onChange={(e) => Search(e.target.value)}
         />
         {/* <LocalizationProvider  dateAdapter={AdapterDayjs}>
