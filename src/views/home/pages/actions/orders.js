@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import { Switch, TextField } from "@mui/material";
+import { Button, Switch, TextField } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function Orders() {
   const location = useLocation();
@@ -29,7 +30,19 @@ export default function Orders() {
 
   return (
     <div>
-      <h3 className="text-center font-medium text-lg"> Buyurtma tavsifi </h3>
+      <div className="flex items-center justify-between">
+        <h1 className="text-[28px] pb-3">Buyurtma</h1>
+        <Link to="/orders">
+          <Button
+            variant="contained"
+            color="info"
+            size="large"
+            startIcon={<ArrowBackIcon />}
+          >
+            Orqaga
+          </Button>
+        </Link>
+      </div>
       <div>
         {data ? (
           <div

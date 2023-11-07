@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -14,6 +14,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -39,7 +40,7 @@ export default function Retsepts() {
   const [description, setDescription] = useState("");
   const [editData, setEditData] = useState(null);
   const location = useLocation();
-  const [optionChecked, setOptionChecked] = useState(false)
+  const [optionChecked, setOptionChecked] = useState(false);
   const [imageData, setImageData] = useState([
     {
       id: 1,
@@ -65,7 +66,7 @@ export default function Retsepts() {
 
   const handleChange = (event) => {
     setCategory(event.target.value);
-    setOptionChecked(true)
+    setOptionChecked(true);
   };
 
   const addImageInput = async (e) => {
@@ -78,7 +79,7 @@ export default function Retsepts() {
   };
 
   const setImageUrl = async (e) => {
-    setImage([...image, {"image": e}]);
+    setImage([...image, { image: e }]);
     console.log(e);
   };
 
@@ -124,7 +125,10 @@ export default function Retsepts() {
       formData.append("uploaded_images", image[i].image);
     }
     setSubmiting(true);
-    await Client.patch(`${API_ENDPOINTS.UPDATE_RECIPE}${location.search.split("?")[2]}/`, formData)
+    await Client.patch(
+      `${API_ENDPOINTS.UPDATE_RECIPE}${location.search.split("?")[2]}/`,
+      formData
+    )
       .then((data) => {
         toast.success("Retsep muvaffaqiyatli tahrirlandi");
         setTimeout(() => {
@@ -146,7 +150,6 @@ export default function Retsepts() {
       .catch((err) => console.log(err));
   };
 
-
   const getItem = async () => {
     await Client.get(
       API_ENDPOINTS.DETAIL_RECIPE + location.search.split("?")[2]
@@ -155,7 +158,7 @@ export default function Retsepts() {
         console.log(res);
         if (res?.type == "bistro") {
           getCategory("bistro");
-        } else if ( res?.type == "byuti") {
+        } else if (res?.type == "byuti") {
           getCategory("byuti");
         }
         setEditData(res);
@@ -183,12 +186,23 @@ export default function Retsepts() {
     }
   }, []);
 
-  console.log("=>", image, imageData);
   return location.search.split("?")[1] == "edit" ? (
     editData ? (
       <div>
         <div>
-          <h1 className="text-[35px] pb-3">Retsept tahrirlash</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-[28px] pb-3">Retsiptni tahrirlash</h1>
+            <Link to="/retsepts">
+              <Button
+                variant="contained"
+                color="info"
+                size="large"
+                startIcon={<ArrowBackIcon />}
+              >
+                Orqaga
+              </Button>
+            </Link>
+          </div>
           <Toaster />
           <div className="flex gap-5">
             <form
@@ -238,17 +252,15 @@ export default function Retsepts() {
                   label="Kategoriya"
                   onChange={handleChange}
                 >
-                  {
-                 data?.map((item, i) => (
-                  <MenuItem key={i} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                )) 
-                  }
+                  {data?.map((item, i) => (
+                    <MenuItem key={i} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <label className="text-lg  max-w-prose">
-                Galleriya uchun rasmlar 
+                Galleriya uchun rasmlar
               </label>
               <div style={{ display: "flex ", gap: "10px" }}>
                 <div
@@ -323,7 +335,6 @@ export default function Retsepts() {
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                   >
-                    
                     {data?.map((name) => (
                       <MenuItem key={name} value={name.id}>
                         <Checkbox

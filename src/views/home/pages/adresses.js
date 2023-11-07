@@ -32,13 +32,13 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell  scope="row">
+        <TableCell component="th" scope="row">
          <Link to={`actions/?${row.id}`} > {row.user}</Link>
         </TableCell>
-        <TableCell  scope="row" align="center">
+        <TableCell component="th" scope="row" align="center">
         <Link to={`actions/?${row.id}`} > {row.address}</Link>
         </TableCell>
-        <TableCell  scope="row" align="right">
+        <TableCell component="th" scope="row" align="right">
         <Link to={`actions/?${row.id}`} > {row.branch}</Link>
         </TableCell>
       </TableRow>

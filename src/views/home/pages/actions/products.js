@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -20,6 +20,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddInput from "components/shared/addInput";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -392,10 +393,9 @@ export default function Products() {
   useEffect(() => {
     getBranchData();
     getBadgeData();
-  }, [])
+  }, []);
 
   useEffect(() => {
-  
     if (location.search.split("?")?.[2] == "edit") {
       getItem();
     }
@@ -409,7 +409,19 @@ export default function Products() {
   return location.search.split("?")?.[2] == "edit" ? (
     editData ? (
       <div>
-        <h1 className="text-[35px] pb-3">Mahsulot tahrirlash</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-[28px] pb-3">Mahsulotni tahrirlash</h1>
+          <Link to="/products">
+            <Button
+              variant="contained"
+              color="info"
+              size="large"
+              startIcon={<ArrowBackIcon />}
+            >
+              Orqaga
+            </Button>
+          </Link>
+        </div>
         <Toaster />
         <div className="flex gap-5">
           <form
@@ -871,7 +883,7 @@ export default function Products() {
                     }}
                   >
                     <p>
-                      <i class="fa-solid fa-circle-plus"></i> qo'shish{" "}
+                      <i class="fa-solid fa-circle-plus"></i> qo'shish
                     </p>
                   </div>
                 </AccordionDetails>
@@ -1325,7 +1337,7 @@ export default function Products() {
                         filialInput.length + 1
                       )
                     }
-                    className="p-3" 
+                    className="p-3"
                     style={{
                       display: "flex",
                       justifyContent: "flex-end",

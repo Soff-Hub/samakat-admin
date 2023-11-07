@@ -4,26 +4,20 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import SaveIcon from "@mui/icons-material/Save";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SendIcon from "@mui/icons-material/Send";
+
 import {
   Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Formik } from "formik";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 
 export default function Users() {
   const location = useLocation();
   const [expanded, setExpanded] = React.useState(false);
-  const [errPhone, setErrPhone] = React.useState(false);
   const [data, setData] = React.useState(null);
 
   const handleChangeAcc = (panel) => (event, isExpanded) => {
@@ -56,7 +50,19 @@ export default function Users() {
 
   return (
     <div>
-      <h1 className="text-[35px] pb-3">Foydalanuvchi</h1>
+      <div className="flex items-center justify-between">
+            <h1 className="text-[28px] pb-3">Foydalanuvchi</h1>
+            <Link to="/users">
+              <Button
+                variant="contained"
+                color="info"
+                size="large"
+                startIcon={<ArrowBackIcon />}
+              >
+                Orqaga
+              </Button>
+            </Link>
+          </div>
 
       <form className="flex gap-[40px]">
         <div className="w-full">

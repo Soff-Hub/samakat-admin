@@ -5,15 +5,15 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 function Categories() {
   const [submiting, setSubmiting] = useState(false);
   const [formVal, setFormVal] = useState({
     name: "",
     order: 0,
-    parent: '',
-    type : ''
+    parent: "",
+    type: "",
   });
   const [itemData, setItemData] = useState(null);
   const [img, setImage] = useState(null);
@@ -32,7 +32,7 @@ function Categories() {
     }
     formData.append("type", loaction.search.split("?")[1]);
     setSubmiting(true);
-    
+
     await Client.post(API_ENDPOINTS.CREATE_CATEGORY, formData)
       .then((data) => {
         toast.success("Kategoriya muvaffaqiyatli qo'shildi");
@@ -72,7 +72,9 @@ function Categories() {
   };
 
   const getItem = async () => {
-    await Client.get(`${API_ENDPOINTS.CATEGORIES}detail/${loaction.search.split("?")[3]}/`)
+    await Client.get(
+      `${API_ENDPOINTS.CATEGORIES}detail/${loaction.search.split("?")[3]}/`
+    )
       .then((resp) => {
         console.log("detail", resp, formVal);
         setFormVal(resp);
@@ -86,15 +88,18 @@ function Categories() {
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
     setSubmiting(true);
-    const formData = new FormData()
-    formData.append('name', formVal.name);
-    formData.append('order', formVal.order);
+    const formData = new FormData();
+    formData.append("name", formVal.name);
+    formData.append("order", formVal.order);
     // formData.append('parent', formVal.parent);
-    formData.append('type', formVal.type)
+    formData.append("type", formVal.type);
     if (img) {
       formData.append("image", img);
     }
-    await Client.put(`${API_ENDPOINTS.UPDATE_CATEGORY}${loaction.search.split("?")[3]}/`, formData)
+    await Client.put(
+      `${API_ENDPOINTS.UPDATE_CATEGORY}${loaction.search.split("?")[3]}/`,
+      formData
+    )
       .then((data) => {
         toast.success("Kategoriya muvaffaqiyatli tahrirlandi");
         setTimeout(() => {
@@ -112,70 +117,82 @@ function Categories() {
     if (loaction.search.split("?").length == 4) {
       getItem();
     }
-    if (
-      loaction.search.split("?").length == 4
-    ) {
+    if (loaction.search.split("?").length == 4) {
       setFormVal((c) => ({ ...c, type: loaction.search.split("?")[1] }));
     }
     // eslint-disable-next-line
   }, []);
-  console.log('location', loaction.search.split("?"),'=>', query["*"]);
+  console.log("location", loaction.search.split("?"), "=>", query["*"]);
 
   return loaction.search.split("?").length == 4 ? (
     itemData ? (
       <div>
-        <h1 className="text-[35px] pb-3">Kategoriya tahrirlash</h1>
-        <Toaster />
-        <div className="flex gap-5">
-          <form
-            onSubmit={handleSubmitEdit}
-            className="w-1/3 flex flex-col gap-5 create-branch-form"
-          >
-            <TextField
-              label="Kategoriya nomi"
-              variant="outlined"
-              size="large"
-              type="text"
-              required
-              defaultValue={itemData.name}
-              onChange={(e) => {
-                setFormVal((c) => ({ ...c, name: e.target.value }));
-              }}
-            />
-
-            <TextField
-              label="Tartib raqami"
-              variant="outlined"
-              size="large"
-              name="order"
-              required
-              defaultValue={itemData.order}
-              onChange={(e) => {
-                setFormVal((c) => ({ ...c, order: e.target.value }));
-              }}
-              type="number"
-            />
-             <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-          >
-            File yuklash
-            <input
-              style={{ display: "none" }}
-              onChange={(e) => setImage(e.target.files[0])}
-              type="file"
-            />
-          </Button>
+        <div className="flex items-center justify-between">
+          <h1 className="text-[28px] pb-3">Kategoriyani tahrirlash</h1>
+          <Link to="/categories">
             <Button
-              variant="outlined"
+              variant="contained"
+              color="info"
               size="large"
-              type="submit"
-              disabled={submiting}
+              startIcon={<ArrowBackIcon />}
             >
-              {submiting ? "Saqlanmoqda" : "Saqlash"}
+              Orqaga
             </Button>
-          </form>
+          </Link>
+        </div>
+        <div className=" m-auto">
+          <Toaster />
+          <div className="flex gap-5">
+            <form
+              onSubmit={handleSubmitEdit}
+              className="w-1/2 m-auto mt-6 flex flex-col gap-5 create-branch-form"
+            >
+              <TextField
+                label="Kategoriya nomi"
+                variant="outlined"
+                size="large"
+                type="text"
+                required
+                defaultValue={itemData.name}
+                onChange={(e) => {
+                  setFormVal((c) => ({ ...c, name: e.target.value }));
+                }}
+              />
+
+              <TextField
+                label="Tartib raqami"
+                variant="outlined"
+                size="large"
+                name="order"
+                required
+                defaultValue={itemData.order}
+                onChange={(e) => {
+                  setFormVal((c) => ({ ...c, order: e.target.value }));
+                }}
+                type="number"
+              />
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+              >
+                File yuklash
+                <input
+                  style={{ display: "none" }}
+                  onChange={(e) => setImage(e.target.files[0])}
+                  type="file"
+                />
+              </Button>
+              <Button
+                variant="outlined"
+                size="large"
+                type="submit"
+                disabled={submiting}
+              >
+                {submiting ? "Saqlanmoqda" : "Saqlash"}
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
     ) : (
@@ -183,7 +200,7 @@ function Categories() {
     )
   ) : (
     <div>
-      <h1 className="text-[35px] pb-3">Kategoriya qo'shish</h1>
+      <h1 className="text-[35px] pb-3 text-center">Kategoriya qo'shish</h1>
       <Toaster />
       <div className="flex gap-5">
         <form
@@ -194,7 +211,7 @@ function Categories() {
               ? handleCHaildSubmit
               : ""
           }
-          className="w-1/3 flex flex-col gap-5 create-branch-form"
+          className="w-1/2 m-auto mt-6 flex flex-col gap-5 create-branch-form"
         >
           <TextField
             label="Kategoriya nomi"

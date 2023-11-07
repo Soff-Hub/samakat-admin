@@ -1,9 +1,10 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function Retsepts() {
   const [submiting, setSubmiting] = useState(false);
@@ -60,12 +61,24 @@ export default function Retsepts() {
     data ? (
       <div>
         <div>
-          <h1 className="text-[35px] pb-3">Mahsulot belgisini tahrirlash</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-[28px] pb-3">Mahsulot belgisini tahrirlash</h1>
+            <Link to="/product-badge">
+              <Button
+                variant="contained"
+                color="info"
+                size="large"
+                startIcon={<ArrowBackIcon />}
+              >
+                Orqaga
+              </Button>
+            </Link>
+          </div>
           <Toaster />
           <div className="flex gap-5">
             <form
               onSubmit={handleSubmitAdd}
-              className="w-1/3 flex flex-col gap-5 create-branch-form"
+              className="w-1/3 flex mt-4 flex-col gap-5 create-branch-form"
             >
               <TextField
                 label="Belgi matni"

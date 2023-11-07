@@ -1,6 +1,6 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -8,6 +8,7 @@ import Select from "@mui/material/Select";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function Retsepts() {
   const [submiting, setSubmiting] = useState(false);
@@ -127,20 +128,24 @@ export default function Retsepts() {
 
   return location.search.split("?")[1] == "edit" ? (
     editData ? (
+      <div>
+       <div className="flex items-center justify-between">
+        <h1 className="text-[28px] pb-3">Filiallardagi mahsulotlarni tahrirlash</h1>
+        <Link to="/branch-products">
+          <Button
+            variant="contained"
+            color="info"
+            size="large"
+            startIcon={<ArrowBackIcon />}
+          >
+            Orqaga
+          </Button>
+        </Link>
+      </div>
       <div 
-      style={{
-        display:'flex',
-        justifyContent:'content',
-        maxWidth:'500px',
-        width:'100%',
-        margin:'0 auto',
-  
-      }}
+      className="w-1/2 m-auto"
       >
         <div>
-          <h1 className="text-[35px] pb-6 text-center">
-            Filiallardagi mahsulotlarni tahrirlash
-          </h1>
           <Toaster />
           <div className="flex gap-5">
             <form
@@ -204,6 +209,8 @@ export default function Retsepts() {
             </form>
           </div>
         </div>
+      </div>
+      
       </div>
     ) : (
       <Box

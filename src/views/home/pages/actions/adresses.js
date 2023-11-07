@@ -1,4 +1,4 @@
-import { Box, CircularProgress, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import {
   GoogleMap,
   LoadScript,
@@ -6,8 +6,9 @@ import {
   OverlayView,
 } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Client from "service/Client";
 
 export default function Adresses() {
@@ -98,116 +99,135 @@ export default function Adresses() {
     getData(location.search.split("?")[1]);
   }, []);
 
-  const submit = () => {
+  const submit = () => {};
 
-  }
-
-
-  return data ?
-    <div className="flex g-3">
-      <div className="w-1/2" style={{ height: 400 }}>
-        Manzil
-        <LoadScript
-          googleMapsApiKey={"AIzaSyDJEtT1hiuEuRHOy366iwruiyFl0vcaBTM"}
-        >
-          <GoogleMap
-            onLoad={handleMapLoad}
-            onDragEnd={handleDragOver}
-            mapContainerStyle={mapStyles}
-            zoom={11}
-            center={defaultCenter}
+  return data ? (
+    <div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-[28px] pb-3">Manzil</h1>
+        <Link to="/adresses">
+          <Button
+            variant="contained"
+            color="info"
+            size="large"
+            startIcon={<ArrowBackIcon />}
           >
-            <Marker
-              position={position}
-              options={markerOptions}
-              draggable
-              onDrag={handleMarkerDrag}
-              onDragEnd={handleMarkerDragOver}
-            >
-              <OverlayView position={position} mapPaneName={"overlayLayer"}>
-                <div style={overlayViewStyles}>{data?.user}</div>
-              </OverlayView>
-            </Marker>
-          </GoogleMap>
-        </LoadScript>
+            Orqaga
+          </Button>
+        </Link>
       </div>
-      <form onSubmit={submit} className="w-1/2 flex flex-col gap-5 mt-6 ml-4 create-branch-form">
-        <TextField
-          label="Filial nomi"
-          variant="outlined"
-          size="large"
-          type="text"
-          value={data ? data.branch : ''}
-        />
-
-        <h3>Manzil ma'lumotlari:</h3>
-        {/* <label>Yaratilgan sana</label> */}
-        <div className="flex gap-10" >
-          <TextField
-            label="Latitude"
-            variant="outlined"
-            size="small"
-            name="latitude"
-            value={data ? data?.address.latitude : ''}
-            type="number"
-          />
-          <TextField
-            label="Longitude"
-            variant="outlined"
-            size="small"
-            value={data ? data?.address.longitude : ''}
-            type="number"
-          />
+      <div className="flex g-3">
+        <div className="w-1/2" style={{ height: 400 }}>
+          <LoadScript
+            googleMapsApiKey={"AIzaSyDJEtT1hiuEuRHOy366iwruiyFl0vcaBTM"}
+          >
+            <GoogleMap
+              onLoad={handleMapLoad}
+              onDragEnd={handleDragOver}
+              mapContainerStyle={mapStyles}
+              zoom={11}
+              center={defaultCenter}
+            >
+              <Marker
+                position={position}
+                options={markerOptions}
+                draggable
+                onDrag={handleMarkerDrag}
+                onDragEnd={handleMarkerDragOver}
+              >
+                <OverlayView position={position} mapPaneName={"overlayLayer"}>
+                  <div style={overlayViewStyles}>{data?.user}</div>
+                </OverlayView>
+              </Marker>
+            </GoogleMap>
+          </LoadScript>
         </div>
-        <TextField
-          label="Lokatsiya"
-          variant="outlined"
-          size="large"
-          value={data ? data?.address.location : ''}
-          type="text"
-        />
-        <TextField
-          label="Entrance"
-          variant="outlined"
-          size="large"
-          value={data ? data?.address.entrance : ''}
-          type="text"
-        />
-        <TextField
-          label="Apartment"
-          variant="outlined"
-          size="large"
-          value={data ? data?.address.apartment : ''}
-          type="text"
-        />
-        <TextField
-          label="Floor"
-          variant="outlined"
-          size="large"
-          value={data ? data?.address.floor : ''}
-          type="text"
-        />
-        <TextField
-          label="Domofon"
-          variant="outlined"
-          size="large"
-          value={data ? data?.address.domofon : ''}
-          type="text"
-        />
-        <TextField
-          id="outlined-multiline-static"
-          label="Izoh"
-          multiline
-          rows={4}
-          value={data ? data?.address.comment : ''}
-        />
+        <form
+          onSubmit={submit}
+          className="w-1/2 flex flex-col gap-5 mt-6 ml-4 create-branch-form"
+        >
+          <TextField
+            label="Filial nomi"
+            variant="outlined"
+            size="large"
+            type="text"
+            value={data ? data.branch : ""}
+          />
 
-      </form>
-    </div> :
-    <Box sx={{ display: 'flex', wdith: '100%', justifyContent: 'center', padding: '150px 0' }}>
+          <h3>Manzil ma'lumotlari:</h3>
+          {/* <label>Yaratilgan sana</label> */}
+          <div className="flex gap-10">
+            <TextField
+              label="Latitude"
+              variant="outlined"
+              size="small"
+              name="latitude"
+              value={data ? data?.address.latitude : ""}
+              type="number"
+            />
+            <TextField
+              label="Longitude"
+              variant="outlined"
+              size="small"
+              value={data ? data?.address.longitude : ""}
+              type="number"
+            />
+          </div>
+          <TextField
+            label="Lokatsiya"
+            variant="outlined"
+            size="large"
+            value={data ? data?.address.location : ""}
+            type="text"
+          />
+          <TextField
+            label="Entrance"
+            variant="outlined"
+            size="large"
+            value={data ? data?.address.entrance : ""}
+            type="text"
+          />
+          <TextField
+            label="Apartment"
+            variant="outlined"
+            size="large"
+            value={data ? data?.address.apartment : ""}
+            type="text"
+          />
+          <TextField
+            label="Floor"
+            variant="outlined"
+            size="large"
+            value={data ? data?.address.floor : ""}
+            type="text"
+          />
+          <TextField
+            label="Domofon"
+            variant="outlined"
+            size="large"
+            value={data ? data?.address.domofon : ""}
+            type="text"
+          />
+          <TextField
+            id="outlined-multiline-static"
+            label="Izoh"
+            multiline
+            rows={4}
+            value={data ? data?.address.comment : ""}
+          />
+        </form>
+      </div>
+    </div>
+  ) : (
+    <Box
+      sx={{
+        display: "flex",
+        wdith: "100%",
+        justifyContent: "center",
+        padding: "150px 0",
+      }}
+    >
       <CircularProgress />
     </Box>
-
+  );
 }
-
-
