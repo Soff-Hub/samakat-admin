@@ -13,6 +13,7 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Link } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import { Box, CircularProgress } from "@mui/material";
 
 function Row(props) {
   const { row } = props;
@@ -33,13 +34,13 @@ function Row(props) {
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell component="th" scope="row">
-         <Link to={`actions/?${row.id}`} > {row.user}</Link>
+          <Link to={`actions/?${row.id}`}> {row.user}</Link>
         </TableCell>
         <TableCell component="th" scope="row" align="center">
-        <Link to={`actions/?${row.id}`} > {row.address}</Link>
+          <Link to={`actions/?${row.id}`}> {row.address}</Link>
         </TableCell>
         <TableCell component="th" scope="row" align="right">
-        <Link to={`actions/?${row.id}`} > {row.branch}</Link>
+          <Link to={`actions/?${row.id}`}> {row.branch}</Link>
         </TableCell>
       </TableRow>
     </React.Fragment>
@@ -86,23 +87,36 @@ export default function CollapsibleTable() {
       <div className="mb-5">
         <h1 className="text-2xl">Manzillar</h1>
       </div>
-
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <TableCell>User</TableCell>
-              <TableCell align="center">Address</TableCell>
-              <TableCell align="right">Branch</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data?.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {data?.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell>User</TableCell>
+                <TableCell align="center">Address</TableCell>
+                <TableCell align="right">Branch</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data?.map((row) => (
+                <Row key={row.name} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+            padding: "150px 0",
+            margin: "0 auto",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
 }

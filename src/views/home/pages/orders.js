@@ -51,7 +51,7 @@ export default function Branches() {
 
   useEffect(() => {
     getBranches();
-  }, [search, select]);
+  }, []);
 
   return (
     <div>

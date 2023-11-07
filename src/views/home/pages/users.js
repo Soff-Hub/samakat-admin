@@ -27,7 +27,7 @@ import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import NavHeader from "components/shared/NavHeader";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const headCells = [
   {
@@ -342,93 +342,107 @@ export default function Users() {
           </Select>
         </FormControl>
       </div>
-      <Box sx={{ width: "100%" }}>
-        <Paper sx={{ width: "100%", mb: 2 }}>
-          <TableContainer>
-            <Table
-              sx={{ minWidth: 750 }}
-              aria-labelledby="tableTitle"
-              size="medium"
-            >
-              <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={data?.length || 0}
-              />
-              <TableBody>
-                {data?.map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                      sx={{ cursor: "pointer" }}
+              {
+                data?.length > 0 ?
+                <Box sx={{ width: "100%" }}>
+                <Paper sx={{ width: "100%", mb: 2 }}>
+                  <TableContainer>
+                    <Table
+                      sx={{ minWidth: 750 }}
+                      aria-labelledby="tableTitle"
+                      size="medium"
                     >
-                      <TableCell padding="checkbox" align="left">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell component="th" id={labelId} align="left">
-                        <Link
-                          to={`actions/?detail?${row.id}`}
-                          className="hover:underline"
-                        >
-                          {row.id}
-                        </Link>
-                      </TableCell>
-
-                      <TableCell align="left">
-                        <Link
-                          to={`actions/?detail?${row.id}`}
-                          className="hover:underline"
-                        >
-                          {row.phone}
-                        </Link>
-                      </TableCell>
-                      <TableCell align="left">
-                        <Link
-                          to={`actions/?detail?${row.id}`}
-                          className="hover:underline"
-                        >
-                          {row.first_name == "" ? "No name" : row.first_name}
-                        </Link>
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.date_joined.slice(0, 10)}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <div className="m-3 mb-5">
-            <Stack spacing={2}>
-              <Typography> Sahifa : {page}</Typography>
-              <Pagination
-                count={Math.trunc(count / 10) < 1 ? 1 : Math.trunc(count / 10)}
-                page={page}
-                onChange={handleChangePag}
-              />
-            </Stack>
-          </div>
-        </Paper>
-      </Box>
+                      <EnhancedTableHead
+                        numSelected={selected.length}
+                        order={order}
+                        orderBy={orderBy}
+                        onSelectAllClick={handleSelectAllClick}
+                        onRequestSort={handleRequestSort}
+                        rowCount={data?.length || 0}
+                      />
+                      <TableBody>
+                        {data?.map((row, index) => {
+                          const isItemSelected = isSelected(row.id);
+                          const labelId = `enhanced-table-checkbox-${index}`;
+        
+                          return (
+                            <TableRow
+                              hover
+                              onClick={(event) => handleClick(event, row.id)}
+                              role="checkbox"
+                              aria-checked={isItemSelected}
+                              tabIndex={-1}
+                              key={row.id}
+                              selected={isItemSelected}
+                              sx={{ cursor: "pointer" }}
+                            >
+                              <TableCell padding="checkbox" align="left">
+                                <Checkbox
+                                  color="primary"
+                                  checked={isItemSelected}
+                                  inputProps={{
+                                    "aria-labelledby": labelId,
+                                  }}
+                                />
+                              </TableCell>
+                              <TableCell component="th" id={labelId} align="left">
+                                <Link
+                                  to={`actions/?detail?${row.id}`}
+                                  className="hover:underline"
+                                >
+                                  {row.id}
+                                </Link>
+                              </TableCell>
+        
+                              <TableCell align="left">
+                                <Link
+                                  to={`actions/?detail?${row.id}`}
+                                  className="hover:underline"
+                                >
+                                  {row.phone}
+                                </Link>
+                              </TableCell>
+                              <TableCell align="left">
+                                <Link
+                                  to={`actions/?detail?${row.id}`}
+                                  className="hover:underline"
+                                >
+                                  {row.first_name == "" ? "No name" : row.first_name}
+                                </Link>
+                              </TableCell>
+                              <TableCell align="left">
+                                {row.date_joined.slice(0, 10)}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <div className="m-3 mb-5">
+                    <Stack spacing={2}>
+                      <Typography> Sahifa : {page}</Typography>
+                      <Pagination
+                        count={Math.trunc(count / 10) < 1 ? 1 : Math.trunc(count / 10)}
+                        page={page}
+                        onChange={handleChangePag}
+                      />
+                    </Stack>
+                  </div>
+                </Paper>
+              </Box>
+              :
+              <Box
+              sx={{
+                display: "flex",
+                wdith: "100%",
+                justifyContent: "center",
+                padding: "150px 0",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+              }
     </div>
   );
 }

@@ -34,6 +34,7 @@ import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRen
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { CircularProgress } from "@mui/material";
 
 // export default function Retsepts() {
 //   return (
@@ -435,106 +436,123 @@ export default function EnhancedTable() {
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />
-      <Box sx={{ width: "100%" }}>
-        <Paper sx={{ width: "100%", mb: 2 }}>
-          {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
-          <TableContainer>
-            <Table
-              sx={{ minWidth: 750 }}
-              aria-labelledby="tableTitle"
-              size="medium"
-            >
-              <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={data?.length}
-              />
-              <TableBody>
-                {data?.map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                      sx={{ cursor: "pointer" }}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
+      {data?.length > 0 ? (
+        <Box sx={{ width: "100%" }}>
+          <Paper sx={{ width: "100%", mb: 2 }}>
+            {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 750 }}
+                aria-labelledby="tableTitle"
+                size="medium"
+              >
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={handleRequestSort}
+                  rowCount={data?.length}
+                />
+                <TableBody>
+                  {data?.map((row, index) => {
+                    const isItemSelected = isSelected(row.id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
+
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, row.id)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                        sx={{ cursor: "pointer" }}
                       >
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="right">{row.title}</TableCell>
-                      <TableCell align="right">
-                        {row.is_active ? (
-                          <i
-                            style={{ color: "green" }}
-                            class=" fa-regular fa-circle-check"
-                          ></i>
-                        ) : (
-                          <i
-                            style={{ color: "red" }}
-                            class="fa-regular fa-circle-xmark"
-                          ></i>
-                        )}{" "}
-                      </TableCell>
-                      <TableCell align="right"></TableCell>
-                      <TableCell align="right" sx={{ position: "relative" }}>
-                        <Link to={`actions/?edit?${row.slug}`}>
-                          <IconButton color="primary">
-                            <DriveFileRenameOutlineOutlinedIcon />
-                          </IconButton>
-                        </Link>
-                        <IconButton
-                          color="error"
-                          onClick={() => {
-                            setDeleteId(row.slug);
-                            setOpen(true);
-                          }}
-                          aria-label="delete"
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
                         >
-                          <DeleteSharpIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <div className="m-3 mb-5">
-            <Stack spacing={2}>
-              <Typography> Sahifa : {page}</Typography>
-              <Pagination
-                count={Math.trunc(count / 10) < 1 ? 1 : Math.trunc(count / 10)}
-                page={page}
-                onChange={handleChangePag}
-              />
-            </Stack>
-          </div>
-        </Paper>
-      </Box>
+                          {row.id}
+                        </TableCell>
+                        <TableCell align="right">{row.title}</TableCell>
+                        <TableCell align="right">
+                          {row.is_active ? (
+                            <i
+                              style={{ color: "green" }}
+                              class=" fa-regular fa-circle-check"
+                            ></i>
+                          ) : (
+                            <i
+                              style={{ color: "red" }}
+                              class="fa-regular fa-circle-xmark"
+                            ></i>
+                          )}{" "}
+                        </TableCell>
+                        <TableCell align="right"></TableCell>
+                        <TableCell align="right" sx={{ position: "relative" }}>
+                          <Link to={`actions/?edit?${row.slug}`}>
+                            <IconButton color="primary">
+                              <DriveFileRenameOutlineOutlinedIcon />
+                            </IconButton>
+                          </Link>
+                          <IconButton
+                            color="error"
+                            onClick={() => {
+                              setDeleteId(row.slug);
+                              setOpen(true);
+                            }}
+                            aria-label="delete"
+                          >
+                            <DeleteSharpIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <div className="m-3 mb-5">
+              <Stack spacing={2}>
+                <Typography> Sahifa : {page}</Typography>
+                <Pagination
+                  count={
+                    Math.trunc(count / 10) < 1 ? 1 : Math.trunc(count / 10)
+                  }
+                  page={page}
+                  onChange={handleChangePag}
+                />
+              </Stack>
+            </div>
+          </Paper>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            wdith: "100%",
+            justifyContent: "center",
+            padding: "150px 0",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+
       <ResponsiveDialog
         open={openDelete}
         setOpen={setOpen}

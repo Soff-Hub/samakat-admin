@@ -110,17 +110,18 @@ const headCells = [
     label: "Id",
   },
   {
-    id: "calories",
-    numeric: true,
-    disablePadding: false,
-    label: "Filial",
-  },
-  {
     id: "fat",
     numeric: true,
     disablePadding: false,
     label: "Mahsulot",
   },
+  {
+    id: "calories",
+    numeric: true,
+    disablePadding: false,
+    label: "Filial",
+  },
+ 
   {
     id: "carbs",
     numeric: true,
@@ -435,7 +436,7 @@ export default function EnhancedTable() {
                   <Select
                     className="py-0.5"
                     value={product}
-                    label="Holat bo'yicha"
+                    label="Mahsulot bo'yicha"
                     onChange={handleChangeProductFilter}
                   >
                     {productData ? (
@@ -496,8 +497,8 @@ export default function EnhancedTable() {
                         >
                           {row.id}
                         </TableCell>
-                        <TableCell align="right">{row.branch}</TableCell>
                         <TableCell align="right">{row.product}</TableCell>
+                        <TableCell align="right">{row.branch}</TableCell>
                         <TableCell align="right">{row.quantity} </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link to={`actions/?edit?${row.id}`}>

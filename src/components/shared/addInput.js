@@ -12,11 +12,20 @@ export default function AddInput({
   addFilialInput,
   id,
   deleteID,
-  deleteIDHighlight
+  deleteIDHighlight,
+  setChangeBranchCunt,
+  setChangeBranch
 }) {
   const [obj, setObj] = useState({ branch: 0, quantity: 0, id });
 
   function changeObj(e, key) {
+    console.log('key', key);
+    if (key == "quantity") {
+      setChangeBranchCunt(true)
+    }
+    if (key == "branch") {
+      setChangeBranch(true)
+    }
     let keyName = {};
     keyName[`${key}`] = e;
     addFilialInput({ ...obj, ...keyName }, id);
@@ -70,7 +79,7 @@ export default function AddInput({
           size="small"
           style={{ height: "10px", marginTop: "10px" }}
           type="number"
-          value={dataF ? dataF?.quantity : ''}
+          value={dataF ? dataF?.quantity : obj?.quantity}
           onChange={(e) => {
             changeObj(+e.target.value, "quantity");
           }}
@@ -111,7 +120,8 @@ export default function AddInput({
           size="small"
           style={{ marginTop: "10px" }}
           type="number"
-          value={dataH?.order}
+          // defaultValue={dataH?.order ? dataH?.order : obj?.order}
+          value={dataH?.order ? dataH?.order : obj?.order}
           onChange={(e) => {
             changeObj(+e.target.value, "order");
           }}

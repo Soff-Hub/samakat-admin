@@ -38,17 +38,12 @@ export default function Products() {
   const [data, setData] = useState(null);
   const [editData, setEditData] = useState(null);
   const location = useLocation();
-
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState(0);
   const [badge, setBadge] = React.useState([]);
   const [on_sale, setOn_sale] = React.useState(null);
-  const [branch, setBranch] = React.useState(0);
-  const [quantity, setQuantity] = React.useState(0);
-  const [content, setContent] = React.useState("");
-  const [order, setOrder] = React.useState(0);
   const [carbohydrates, setCarbohydrates] = React.useState(0);
   const [ingredients, setingredients] = React.useState(0);
   const [fats, setFats] = React.useState(0);
@@ -59,14 +54,10 @@ export default function Products() {
   const [specification, setSpecification] = React.useState("");
   const [shelf_life, setShelf_life] = React.useState("");
   const [branchData, setBranchsData] = React.useState(null);
-  const [slug, setSlug] = React.useState(null);
-  const [imageOrder, setImageOrder] = React.useState(0);
-  const [imageFiles, setImageFiles] = React.useState("");
-
   const [product_categories, setProduct_categories] = React.useState([]);
-  const [product_highlight, setProduct_highlight] = useState([]);
-
   const [image, setImage] = useState("");
+  const [changeBranch, setChangeBranch] = useState(false);
+  const [changeBranchCount, setChangeBranchCunt] = useState(false);
   const [imageData, setImageData] = useState([
     {
       id: 1,
@@ -170,13 +161,17 @@ export default function Products() {
       formData.append("product_galereya", image[i]);
     }
 
+    if (changeBranch === true && changeBranchCount === true) {
+      
+    }
+
     const data = {
       name: name,
       price: price,
       description: description,
       discount: discount,
       badge: badge,
-      on_sale: on_sale,
+      on_sale: on_sale !== null ? on_sale : false ,
       product_attribute: {
         carbohydrates: carbohydrates,
         ingredients: ingredients,
@@ -192,6 +187,9 @@ export default function Products() {
       product_highlight: product_highlight,
       product_categories: product_categories,
     };
+
+    console.log('hhhhhhhh', product_branch, product_highlight);
+    
 
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, data)
       .then((data) => {
@@ -405,7 +403,8 @@ export default function Products() {
       getCategory("byuti");
     }
   }, []);
-
+  console.log('jhdfgjshgdfjhdgu', changeBranch, changeBranchCount);
+  
   return location.search.split("?")?.[2] == "edit" ? (
     editData ? (
       <div>
@@ -435,7 +434,6 @@ export default function Products() {
               style={{ width: "600px" }}
               type="text"
               defaultValue={editData?.name || name}
-              required
               onChange={(e) => {
                 setName(e.target.value);
               }}
@@ -447,7 +445,6 @@ export default function Products() {
               style={{ width: "600px" }}
               type="number"
               value={editData?.price || price}
-              required
               onChange={(e) => {
                 setPrice(e.target.value);
               }}
@@ -486,7 +483,6 @@ export default function Products() {
               <Select
                 value={editData?.badge || badge}
                 label="Belgi"
-                required
                 onChange={handleChange}
               >
                 {badgeData?.map((item, i) => (
@@ -624,13 +620,11 @@ export default function Products() {
                   >
                     <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
                       <i class="fa-solid fa-flask"></i>
-                      {/* <span>Tarkibi</span> */}
                       <TextField
                         label="Tarkibi"
                         variant="outlined"
                         multiline
                         maxRows={4}
-                        required
                         value={
                           editData?.product_attribute?.ingredients ||
                           ingredients
@@ -711,7 +705,6 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
-                        required
                         value={
                           editData?.product_attribute?.manufacturer ||
                           manufacturer
@@ -729,7 +722,6 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
-                        required
                         value={
                           editData?.product_attribute?.storageConditions ||
                           storageConditions
@@ -747,7 +739,6 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
-                        required
                         value={
                           editData?.product_attribute?.specification ||
                           specification
@@ -765,7 +756,6 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
-                        required
                         value={
                           editData?.product_attribute?.shelf_life || shelf_life
                         }
@@ -1108,13 +1098,12 @@ export default function Products() {
                   >
                     <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
                       <i class="fa-solid fa-flask"></i>
-                      {/* <span>Tarkibi</span> */}
                       <TextField
                         label="Tarkibi"
                         variant="outlined"
                         multiline
                         maxRows={4}
-                        required
+                        
                         value={ingredients}
                         style={{ marginTop: "30px" }}
                         onChange={(e) => {
@@ -1186,7 +1175,7 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
-                        required
+                        
                         value={manufacturer}
                         onChange={(e) => {
                           setManufacturer(e.target.value);
@@ -1201,7 +1190,7 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
-                        required
+                        
                         value={storageConditions}
                         onChange={(e) => {
                           setStorageConditions(e.target.value);
@@ -1216,7 +1205,7 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
-                        required
+                        
                         value={specification}
                         onChange={(e) => {
                           setSpecification(e.target.value);
@@ -1231,7 +1220,7 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
-                        required
+                        
                         value={shelf_life}
                         onChange={(e) => {
                           setShelf_life(e.target.value);
@@ -1273,6 +1262,8 @@ export default function Products() {
                       addFilialInput={addProductHighlightInput}
                       id={i + 1}
                       deleteIDHighlight={deleteIDHighlight}
+                      setChangeBranchCunt={setChangeBranchCunt}
+                      setChangeBranch={setChangeBranch}
                     />
                   ))}
 
@@ -1328,6 +1319,8 @@ export default function Products() {
                       addFilialInput={addFilialInput}
                       id={i + 1}
                       deleteID={deleteID}
+                      setChangeBranchCunt={setChangeBranchCunt}
+                      setChangeBranch={setChangeBranch}
                     />
                   ))}
                   <div
