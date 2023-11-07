@@ -56,6 +56,7 @@ export default function AddInput({
           </InputLabel>
           <Select
             label="Filial"
+            required
             value={dataF?.branch}
             onChange={(e) => changeObj(e.target.value, "branch")}
             defaultValue={dataF?.brach}
@@ -106,6 +107,7 @@ export default function AddInput({
         <TextField
           label="Asosiy element"
           variant="outlined"
+          required
           size="small"
           style={{ marginTop: "10px" }}
           type="text"

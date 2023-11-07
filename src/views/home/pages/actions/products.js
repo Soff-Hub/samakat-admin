@@ -162,7 +162,6 @@ export default function Products() {
     }
 
     if (changeBranch === true && changeBranchCount === true) {
-      
     }
 
     const data = {
@@ -171,7 +170,7 @@ export default function Products() {
       description: description,
       discount: discount,
       badge: badge,
-      on_sale: on_sale !== null ? on_sale : false ,
+      on_sale: on_sale !== null ? on_sale : false,
       product_attribute: {
         carbohydrates: carbohydrates,
         ingredients: ingredients,
@@ -188,8 +187,7 @@ export default function Products() {
       product_categories: product_categories,
     };
 
-    console.log('hhhhhhhh', product_branch, product_highlight);
-    
+    console.log("hhhhhhhh", product_branch, product_highlight);
 
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, data)
       .then((data) => {
@@ -403,8 +401,8 @@ export default function Products() {
       getCategory("byuti");
     }
   }, []);
-  console.log('jhdfgjshgdfjhdgu', changeBranch, changeBranchCount);
-  
+  console.log("jhdfgjshgdfjhdgu", changeBranch, changeBranchCount);
+
   return location.search.split("?")?.[2] == "edit" ? (
     editData ? (
       <div>
@@ -932,6 +930,7 @@ export default function Products() {
             <TextField
               id="outlined-multiline-static"
               label="Izoh"
+              required
               multiline
               value={description}
               rows={4}
@@ -958,7 +957,7 @@ export default function Products() {
               size="small"
             >
               <InputLabel id="demo-select-small-label" placholder="Kategoriya">
-                Belgi
+                Belgi *
               </InputLabel>
               <Select
                 value={badge}
@@ -1079,7 +1078,153 @@ export default function Products() {
                 </AccordionDetails>
               </Accordion>
 
-              <Accordion style={{ width: "600px" }}>
+              <div
+                style={{ border: "1px solid #ccc", minWidth: "590px" }}
+                className="p-2 my-6"
+              >
+                <h2 className="text-[18px] pl-3.5 font-normal">
+                  Mahsulot atributi :{" "}
+                </h2>
+                <hr />
+                <div
+                  style={{ width: "600px", height: "400px" }}
+                  className="flex overflow-y-scroll border-5 flex-col"
+                >
+                  <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
+                    <i class="fa-solid fa-flask"></i>
+                    <TextField
+                      label="Tarkibi"
+                      variant="outlined"
+                      multiline
+                      maxRows={4}
+                      required
+                      value={ingredients}
+                      style={{ marginTop: "30px" }}
+                      onChange={(e) => {
+                        setingredients(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mx-3 flex items-baseline gap-3">
+                    <i class="fa-solid fa-virus-covid"></i>
+                    <TextField
+                      label="Uglevod"
+                      variant="outlined"
+                      size="small"
+                      style={{ height: "10px", marginTop: "30px" }}
+                      type="number"
+                      value={carbohydrates}
+                      onChange={(e) => {
+                        setCarbohydrates(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mx-3 flex items-baseline gap-3">
+                    <i class="fa-solid fa-vial-virus"></i>
+                    <TextField
+                      label="Kaloriya"
+                      variant="outlined"
+                      size="small"
+                      style={{ height: "10px", marginTop: "30px" }}
+                      type="number"
+                      value={kilocalories}
+                      onChange={(e) => {
+                        setKilocalories(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mx-3 flex items-baseline gap-3">
+                    <i class="fa-solid fa-mortar-pestle"></i>
+                    <TextField
+                      label="Yog' miqdori"
+                      variant="outlined"
+                      size="small"
+                      style={{ height: "10px", marginTop: "30px" }}
+                      type="number"
+                      value={fats}
+                      onChange={(e) => {
+                        setFats(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mx-3 flex items-baseline gap-3">
+                    <i class="fa-solid fa-bandage"></i>
+                    <TextField
+                      label="Protien"
+                      variant="outlined"
+                      size="small"
+                      style={{ height: "10px", marginTop: "30px" }}
+                      type="number"
+                      value={protein}
+                      onChange={(e) => {
+                        setProtein(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mx-3 flex items-baseline gap-3">
+                    <i class="fa-solid fa-hotel"></i>
+                    <TextField
+                      label="Ishlab chiqaruvchi"
+                      variant="outlined"
+                      size="small"
+                      style={{ height: "10px", marginTop: "30px" }}
+                      type="text"
+                      required
+                      value={manufacturer}
+                      onChange={(e) => {
+                        setManufacturer(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mx-3 flex items-baseline gap-3">
+                    <i class="fa-solid fa-list-ul"></i>
+                    <TextField
+                      label="Saqlash shartlari"
+                      variant="outlined"
+                      size="small"
+                      style={{ height: "10px", marginTop: "30px" }}
+                      type="text"
+                      required
+                      value={storageConditions}
+                      onChange={(e) => {
+                        setStorageConditions(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mx-3 flex items-baseline gap-3">
+                    <i class="fa-solid fa-film"></i>
+                    <TextField
+                      label="Mahsulot soni yoki hajmi"
+                      variant="outlined"
+                      size="small"
+                      style={{ height: "10px", marginTop: "30px" }}
+                      type="text"
+                      required
+                      value={specification}
+                      onChange={(e) => {
+                        setSpecification(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="mx-3 flex items-baseline gap-3">
+                    <i class="fa-solid fa-tower-broadcast"></i>
+                    <TextField
+                      label="Saqlash muddati"
+                      variant="outlined"
+                      size="small"
+                      style={{ height: "10px", marginTop: "30px" }}
+                      type="text"
+                      required
+                      value={shelf_life}
+                      onChange={(e) => {
+                        setShelf_life(e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* <Accordion style={{ width: "600px" }}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
@@ -1229,9 +1374,60 @@ export default function Products() {
                     </div>
                   </div>
                 </AccordionDetails>
-              </Accordion>
+              </Accordion> */}
 
-              <Accordion style={{ width: "600px" }}>
+              <div
+                style={{ border: "1px solid #ccc", minWidth: "590px" }}
+                className="p-2 my-4"
+              >
+                <h2 className="text-[18px] pl-3.5 font-normal">
+                  Mahsulot asosiy elementlari :{" "}
+                </h2>
+                <hr />
+                <div
+                  className="flex gap-x-44 p-3 mt-3"
+                  style={{ backgroundColor: "#cccccc", width: "570px" }}
+                >
+                  <p>
+                    Asosiy element <i class="fa-regular fa-star"></i>
+                  </p>
+                  <p>
+                    Tartib raqami <i class="fa-solid fa-arrow-down-9-1"></i>
+                  </p>
+                </div>
+
+                {atributInput?.map((item, i) => (
+                  <AddInput
+                    key={i}
+                    addFilialInput={addProductHighlightInput}
+                    id={i + 1}
+                    deleteIDHighlight={deleteIDHighlight}
+                    setChangeBranchCunt={setChangeBranchCunt}
+                    setChangeBranch={setChangeBranch}
+                  />
+                ))}
+
+                <div
+                  onClick={() =>
+                    addAtributInput(
+                      { content: 0, order: 0 },
+                      atributInput.length + 1
+                    )
+                  }
+                  className="p-3"
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    cursor: "pointer",
+                  }}
+                >
+                  <p>
+                    <i class="fa-solid fa-circle-plus"></i> qo'shish
+                  </p>{" "}
+                </div>
+              </div>
+
+              {/* <Accordion style={{ width: "600px" }}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
@@ -1286,9 +1482,59 @@ export default function Products() {
                     </p>{" "}
                   </div>
                 </AccordionDetails>
-              </Accordion>
+              </Accordion> */}
 
-              <Accordion style={{ width: "600px" }}>
+              <div
+                style={{ border: "1px solid #ccc", minWidth: "590px" }}
+                className="p-2 my-4"
+              >
+                <h2 className="text-[18px] pl-3.5 font-normal">
+                  Filiallardagi mahsulot :{" "}
+                </h2>
+                <hr />
+                <div
+                  className="flex gap-x-44 p-3 mt-3"
+                  style={{ backgroundColor: "#cccccc", width: "570px" }}
+                >
+                  <p>
+                    Filiallar <i class="fa-solid fa-folder-tree"></i>{" "}
+                  </p>
+                  <p>
+                    Soni <i class="fa-solid fa-arrow-down-9-1"></i>{" "}
+                  </p>
+                </div>
+                {filialInput?.map((item, i) => (
+                  <AddInput
+                    selectData={branchData}
+                    key={i}
+                    addFilialInput={addFilialInput}
+                    id={i + 1}
+                    deleteID={deleteID}
+                    setChangeBranchCunt={setChangeBranchCunt}
+                    setChangeBranch={setChangeBranch}
+                  />
+                ))}
+                <div
+                  onClick={() =>
+                    addFormInput(
+                      { branch: 0, quantity: 0 },
+                      filialInput.length + 1
+                    )
+                  }
+                  className="p-3"
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    cursor: "pointer",
+                  }}
+                >
+                  <p>
+                    <i class="fa-solid fa-circle-plus"></i> qo'shish{" "}
+                  </p>
+                </div>
+              </div>
+
+              {/* <Accordion style={{ width: "600px" }}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
@@ -1342,7 +1588,7 @@ export default function Products() {
                     </p>
                   </div>
                 </AccordionDetails>
-              </Accordion>
+              </Accordion> */}
             </div>
 
             <Button
