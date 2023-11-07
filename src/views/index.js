@@ -1,4 +1,5 @@
 import AppRoute from 'components/route/AppRoute'
+import Loader from 'components/shared/loader'
 import { adminRoutes, authRoutes } from 'configs/routes.config/routes'
 import React, { Suspense } from 'react'
 import { useEffect } from 'react'
@@ -19,7 +20,7 @@ export default function Views() {
   }, [isLoginning])
 
   return (
-    <Suspense fallback={<h1>Loading...</h1>}>
+    <Suspense fallback={<Loader/>}>
       <Routes>
         {
           isLoginning ? (
