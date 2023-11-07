@@ -47,7 +47,7 @@ export default function AddInput({
           </InputLabel>
           <Select
             label="Filial"
-            value={dataF.branch}
+            value={dataF?.branch}
             onChange={(e) => changeObj(e.target.value, "branch")}
             defaultValue={dataF?.brach}
           >
@@ -70,7 +70,7 @@ export default function AddInput({
           size="small"
           style={{ height: "10px", marginTop: "10px" }}
           type="number"
-          value={dataF ? dataF.quantity : ''}
+          value={dataF ? dataF?.quantity : ''}
           onChange={(e) => {
             changeObj(+e.target.value, "quantity");
           }}

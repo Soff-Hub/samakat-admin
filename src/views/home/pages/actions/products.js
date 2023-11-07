@@ -131,8 +131,7 @@ export default function Products() {
     setFilialInput([...filialInput, { id, ...value }]);
   };
 
-
-  const addAtributInput = async ( value , id) => {
+  const addAtributInput = async (value, id) => {
     setAtributInput([...atributInput, { id, ...value }]);
   };
 
@@ -188,11 +187,10 @@ export default function Products() {
         specification: specification,
         shelf_life: shelf_life,
       },
-      product_count_branch : product_branch,
+      product_count_branch: product_branch,
       product_highlight: product_highlight,
       product_categories: product_categories,
     };
-
 
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, data)
       .then((data) => {
@@ -313,7 +311,6 @@ export default function Products() {
       Object.assign(EDiteddata, addObj);
     }
 
-
     await Client.patch(
       `${API_ENDPOINTS.PATCH_PRODUCT}${location.search.split("?")[3]}/`,
       EDiteddata
@@ -364,8 +361,8 @@ export default function Products() {
   const getBranchData = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((res) => {
-        console.log('branch', res);
-        
+        console.log("branch", res);
+
         setBranchsData(res?.results);
       })
       .catch((err) => {
@@ -378,7 +375,7 @@ export default function Products() {
       API_ENDPOINTS.DETAIL_PRODUCT + location.search.split("?")[3]
     )
       .then((res) => {
-        console.log('ress=>', res);
+        console.log("ress=>", res);
         setEditData(res);
         setImageData(res?.recipe_gallery ? res?.recipe_gallery : imageData);
         setAtributInput(
@@ -392,10 +389,13 @@ export default function Products() {
         console.log(err);
       });
   };
-
   useEffect(() => {
     getBranchData();
     getBadgeData();
+  }, [])
+
+  useEffect(() => {
+  
     if (location.search.split("?")?.[2] == "edit") {
       getItem();
     }
@@ -406,8 +406,6 @@ export default function Products() {
     }
   }, []);
 
-  console.log('product', location.search.split("?"));
-  
   return location.search.split("?")?.[2] == "edit" ? (
     editData ? (
       <div>
@@ -424,7 +422,7 @@ export default function Products() {
               size="large"
               style={{ width: "600px" }}
               type="text"
-              defaultValue={ editData?.name || name}
+              defaultValue={editData?.name || name}
               required
               onChange={(e) => {
                 setName(e.target.value);
@@ -436,7 +434,7 @@ export default function Products() {
               size="large"
               style={{ width: "600px" }}
               type="number"
-              value={ editData?.price || price}
+              value={editData?.price || price}
               required
               onChange={(e) => {
                 setPrice(e.target.value);
@@ -446,7 +444,7 @@ export default function Products() {
               id="outlined-multiline-static"
               label="Izoh"
               multiline
-              value={ editData?.description || description}
+              value={editData?.description || description}
               rows={4}
               style={{ width: "600px" }}
               type="text"
@@ -474,7 +472,7 @@ export default function Products() {
                 Belgi
               </InputLabel>
               <Select
-                value={ editData?.badge || badge}
+                value={editData?.badge || badge}
                 label="Belgi"
                 required
                 onChange={handleChange}
@@ -519,7 +517,7 @@ export default function Products() {
                 checked={editData?.on_sale || on_sale}
                 defaultChecked={true}
                 onChange={handleChangeActiveShop}
-                inputProps={{ "aria-label" : "controlled" }}
+                inputProps={{ "aria-label": "controlled" }}
               />
             </div>
             <div>
@@ -621,8 +619,9 @@ export default function Products() {
                         multiline
                         maxRows={4}
                         required
-                        value={ editData?.product_attribute?.ingredients
-                            || ingredients
+                        value={
+                          editData?.product_attribute?.ingredients ||
+                          ingredients
                         }
                         style={{ marginTop: "30px" }}
                         onChange={(e) => {
@@ -638,8 +637,9 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="number"
-                        value={ editData?.product_attribute?.carbohydrates
-                            || carbohydrates
+                        value={
+                          editData?.product_attribute?.carbohydrates ||
+                          carbohydrates
                         }
                         onChange={(e) => {
                           setCarbohydrates(e.target.value);
@@ -654,8 +654,9 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="number"
-                        value={ editData?.product_attribute?.kilocalories
-                            || kilocalories
+                        value={
+                          editData?.product_attribute?.kilocalories ||
+                          kilocalories
                         }
                         onChange={(e) => {
                           setKilocalories(e.target.value);
@@ -670,9 +671,7 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="number"
-                        value={
-                         editData?.product_attribute?.fats || fats
-                        }
+                        value={editData?.product_attribute?.fats || fats}
                         onChange={(e) => {
                           setFats(e.target.value);
                         }}
@@ -686,9 +685,7 @@ export default function Products() {
                         size="small"
                         style={{ height: "10px", marginTop: "30px" }}
                         type="number"
-                        value={editData?.product_attribute?.protein
-                            || protein
-                        }
+                        value={editData?.product_attribute?.protein || protein}
                         onChange={(e) => {
                           setProtein(e.target.value);
                         }}
@@ -703,8 +700,9 @@ export default function Products() {
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
                         required
-                        value={ editData?.product_attribute?.manufacturer
-                            || manufacturer
+                        value={
+                          editData?.product_attribute?.manufacturer ||
+                          manufacturer
                         }
                         onChange={(e) => {
                           setManufacturer(e.target.value);
@@ -720,8 +718,9 @@ export default function Products() {
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
                         required
-                        value={ editData?.product_attribute?.storageConditions
-                            || storageConditions
+                        value={
+                          editData?.product_attribute?.storageConditions ||
+                          storageConditions
                         }
                         onChange={(e) => {
                           setStorageConditions(e.target.value);
@@ -737,8 +736,9 @@ export default function Products() {
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
                         required
-                        value={ editData?.product_attribute?.specification
-                            || specification
+                        value={
+                          editData?.product_attribute?.specification ||
+                          specification
                         }
                         onChange={(e) => {
                           setSpecification(e.target.value);
@@ -754,8 +754,8 @@ export default function Products() {
                         style={{ height: "10px", marginTop: "30px" }}
                         type="text"
                         required
-                        value={ editData?.product_attribute?.shelf_life
-                            || shelf_life
+                        value={
+                          editData?.product_attribute?.shelf_life || shelf_life
                         }
                         onChange={(e) => {
                           setShelf_life(e.target.value);
@@ -1325,7 +1325,7 @@ export default function Products() {
                         filialInput.length + 1
                       )
                     }
-                    className="p-3"
+                    className="p-3" 
                     style={{
                       display: "flex",
                       justifyContent: "flex-end",
