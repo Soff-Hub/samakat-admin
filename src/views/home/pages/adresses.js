@@ -32,7 +32,7 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell component="th" scope="row">
+        <TableCell  scope="row">
          <Link to={`actions/?${row.id}`} > {row.user}</Link>
         </TableCell>
         <TableCell  scope="row" align="center">

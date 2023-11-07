@@ -430,7 +430,7 @@ export default function EnhancedTable() {
       </ToggleButtonGroup>
       <input
         type="text"
-        placeholder="Retsiplarni izlang..."
+        placeholder="Izlash"
         className=" px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
