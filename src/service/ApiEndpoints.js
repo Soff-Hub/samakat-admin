@@ -53,4 +53,6 @@ export const API_ENDPOINTS = {
     DETAIL_CREATE: 'admin/promo-code/create/',
     DELETE_CREATE_PROMO_CODE: 'admin/promo-code/delete/',
     UPDATE_PROMO_CODE: 'admin/promo-code/update/',
+
+    DASHBOARD:'admin/dashboard/statistic/'
 }

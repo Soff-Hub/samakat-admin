@@ -38,14 +38,11 @@ export default function Categories2() {
       .catch((err) => console.log(err));
   }
   console.log(count);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
 
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.CATEGORIES}?search=${e}`)
       .then((resp) => {
         console.log(resp);
-        getCategories();
         setCount(resp.count);
         setData(resp.results);
       })
@@ -59,7 +56,7 @@ export default function Categories2() {
 
   useEffect(() => {
     getCategories();
-  }, [deteItem, data]);
+  }, [deteItem]);
 
   return (
     <div>
@@ -85,10 +82,11 @@ export default function Categories2() {
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />
-      <div className="flex justify-between  bg-gray-300 p-2">
+      <div className="flex justify-between bg-[#EDF4FB] p-2 px-3">
         <div className="text-base font-[700]">Nomi</div>
         <div className="text-base font-[700]">Amallar</div>
       </div>
+      <hr/>
       <div>
         <Row2 row={data} Detele={Detele} />
       </div>

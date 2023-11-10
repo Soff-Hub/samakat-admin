@@ -364,7 +364,7 @@ export default function EnhancedTable() {
   }, []);
 
   return (
-    <>
+    <div className="w-auto">
       <div className="mb-5">
         <NavHeader title="Filiallardagi mahsulotlar" />
       </div>
@@ -384,9 +384,9 @@ export default function EnhancedTable() {
       </ToggleButtonGroup>
 
       {data ? (
-        <Box sx={{ width: "100%", minWidth: 650 }}>
-          <Paper sx={{ width: "100%", mb: 2 }}>
-            <TableContainer>
+        <Box sx={{minWidth: 300 }}>
+          <Paper sx={{ mb: 2 }}>
+            <TableContainer >
               <div className="flex items-center gap-1">
                 <input
                   type="text"
@@ -561,6 +561,6 @@ export default function EnhancedTable() {
         setOpen={setOpen}
         handleDelete={handleDelete}
       />
-    </>
+    </div>
   );
 }

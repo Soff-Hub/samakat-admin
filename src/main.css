@@ -23,3 +23,7 @@
 .MuiPaper-root .MuiPaper-elevation {
     box-shadow: none;
 }
+
+.acc-parent{
+    height: 10px;
+}

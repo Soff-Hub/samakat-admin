@@ -29,14 +29,6 @@ import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 const lastSunday = dayjs().startOf("week").subtract(1, "day");
 const nextSunday = dayjs().endOf("week").startOf("day");
 
-const isWeekend = (date) => {
-    const day = date.day();
-  console.log('datee', date.$y ,"-", date.$M, "-", date.$D);
-  
-    return day === 0 || day === 6;
-  };
-
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -183,16 +175,6 @@ export default function EnhancedTable() {
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [branch, setBranch] = useState("");
-  const [product, setProduct] = useState("");
-  const [search, setSearch] = useState("");
-  const [filialData, setFilialData] = useState(null);
-  const [productData, setProductData] = useState(null);
-
-  console.log('lastSunday', lastSunday);
-  console.log('nextSunday', nextSunday);
-
-  
-  
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -230,39 +212,14 @@ export default function EnhancedTable() {
   };
 
   const handleChangePage = (newPage) => {
-    // setPage(newPage);
+    setPage( 'page', newPage);
   };
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const Search = async (e) => {
-    setSearch(e);
     await Client.get(`${API_ENDPOINTS.PROMO_CODE}?search=${e}`)
       .then((resp) => {
         setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleChangeFilial = async (event) => {
-    setBranch(event.target.value);
-    await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event.target.value}&product=${product}&product__type=${type}`
-    )
-      .then((resp) => {
-        // setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleChangeProductFilter = async (event) => {
-    setProduct(event.target.value);
-    await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&product=${event.target.value}&product__type=${type}`
-    )
-      .then((resp) => {
-        // setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -278,24 +235,6 @@ export default function EnhancedTable() {
       })
       .catch((err) => console.log(err));
   };
-  const getFilial = async () => {
-    await Client.get(API_ENDPOINTS.GET_BRANCHS)
-      .then((res) => {
-        setFilialData(res.results);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const getProduct = async () => {
-    await Client.get(API_ENDPOINTS.PRODUCT)
-      .then((res) => {
-        setProductData(res.results);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   const handleDelete = async () => {
     await Client.delete(`${API_ENDPOINTS.DELETE_CREATE_PROMO_CODE}${deleteId}/`)
@@ -307,14 +246,25 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
+  const isWeekend = async (date) => {
+    const day = `${date[0]?.$y}-${date[0]?.$M + 1}-${date[0]?.$D}`;
+    const nextday = `${date[1]?.$y}-${date[1]?.$M + 1}-${date[1]?.$D}`;
+    console.log("date", day);
+
+    await Client.get(
+      `${API_ENDPOINTS.PROMO_CODE}?start_date=${day}&end_date=${nextday}`
+    )
+      .then((resp) => {
+        // setCount(resp.count);
+        console.log(resp.results);
+        
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     getData();
-  }, []);
-
-  useEffect(() => {
-    getFilial();
-    getProduct();
   }, []);
 
   return (
@@ -329,18 +279,12 @@ export default function EnhancedTable() {
           className=" w-full px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
           onChange={(e) => Search(e.target.value)}
         />
-        {/* <LocalizationProvider  dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateRangePicker
             defaultValue={[lastSunday, nextSunday]}
-            shouldDisableDate={(date, position) => {
-              if (position === "end") {
-                return false;
-              }
-
-              return isWeekend(date);
-            }}
+            onChange={isWeekend}
           />
-        </LocalizationProvider> */}
+        </LocalizationProvider>
       </div>
       {data ? (
         <Box sx={{ width: "100%" }}>

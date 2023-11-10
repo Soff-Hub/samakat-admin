@@ -14,7 +14,8 @@ export default function AddInput({
   deleteID,
   deleteIDHighlight,
   setChangeBranchCunt,
-  setChangeBranch
+  setChangeBranch,
+  change
 }) {
   const [obj, setObj] = useState({ branch: 0, quantity: 0, id });
 
@@ -112,7 +113,7 @@ export default function AddInput({
           style={{ marginTop: "10px" }}
           type="text"
            value={dataH?.content}
-          onChange={(e) => changeObj(e.target.value, "content")}
+          onChange={(e) => (changeObj(e.target.value, "content"),change())}
         />
       </div>
       <div className="mx-1">
@@ -125,7 +126,7 @@ export default function AddInput({
           // defaultValue={dataH?.order ? dataH?.order : obj?.order}
           value={dataH?.order ? dataH?.order : obj?.order}
           onChange={(e) => {
-            changeObj(+e.target.value, "order");
+           ( changeObj(+e.target.value, "order"), change());
           }}
         />
       </div>

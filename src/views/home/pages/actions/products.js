@@ -58,6 +58,8 @@ export default function Products() {
   const [image, setImage] = useState("");
   const [changeBranch, setChangeBranch] = useState(false);
   const [changeBranchCount, setChangeBranchCunt] = useState(false);
+  const [elements, setElements] = useState("");
+  const [lifeImage, setLifeImage] = useState("");
   const [imageData, setImageData] = useState([
     {
       id: 1,
@@ -115,7 +117,6 @@ export default function Products() {
     let findItem = atributInput.find((elem) => elem.id == id);
     findItem.content = value?.content;
     findItem.order = value?.order;
-
     setAtributInput([...atributInput]);
   };
 
@@ -139,8 +140,13 @@ export default function Products() {
     setFilialInput(atributInput.filter((item) => item.id !== i));
   };
 
-  const setImageUrl = async (e) => {
+  const setImageUrl = async (e, id) => {
     setImage([...image, e]);
+    for (let i = 0; i < imageData.length; i++) {
+      if (imageData[i].id == id) {
+        Object.assign(imageData[i], { image: window.URL.createObjectURL(e) });
+      }
+    }
   };
 
   const handleSubmitAdd = async (e) => {
@@ -358,8 +364,6 @@ export default function Products() {
   const getBranchData = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((res) => {
-        console.log("branch", res);
-
         setBranchsData(res?.results);
       })
       .catch((err) => {
@@ -401,7 +405,20 @@ export default function Products() {
       getCategory("byuti");
     }
   }, []);
-  console.log("jhdfgjshgdfjhdgu", changeBranch, changeBranchCount);
+
+  const change = () => {
+    const product_highlight = atributInput?.map((item) => {
+      const { id, content, order } = item;
+      return { content, order };
+    });
+    setElements(product_highlight);
+  };
+
+  const lifeImagee = (e) => {
+    let img = window.URL.createObjectURL(e.target.files[0]);
+    setLifeImage(img);
+  };
+
 
   return location.search.split("?")?.[2] == "edit" ? (
     editData ? (
@@ -894,14 +911,14 @@ export default function Products() {
       <></>
     )
   ) : (
-    <div>
-      <div>
+    <div className="flex">
+      <div className="w-2/3">
         <h1 className="text-[35px] pb-3">Mahsulot qo'shish</h1>
         <Toaster />
-        <div className="flex gap-5">
+        <div className="flex gap-2">
           <form
             onSubmit={handleSubmitAdd}
-            className="w-1/3 flex flex-col gap-5 create-branch-form"
+            className="w-2/3 flex flex-col gap-5 create-branch-form"
           >
             <TextField
               label="Nomi"
@@ -1032,17 +1049,30 @@ export default function Products() {
                             key={i}
                           >
                             <Button
-                              style={{ width: "170px", height: "170px" }}
                               component="label"
                               variant="outlined"
+                              style={{
+                                maxWidth: "150px",
+                                width: "150px",
+                                height: "170px",
+                                backgroundImage: `url(${
+                                  item?.image ? item?.image : ""
+                                })`,
+                                backgroundSize: "cover",
+                                height: "120px",
+                                width: "150px",
+                              }}
                             >
-                              <i
+                              {/* <i
                                 class="fa-regular fa-image"
                                 style={{ fontSize: "35px" }}
-                              ></i>
+                              ></i> */}
                               <input
                                 style={{ display: "none" }}
-                                onChange={(e) => setImageUrl(e.target.files[0])}
+                                onChange={(e) => (
+                                  setImageUrl(e.target.files[0], item.id),
+                                  lifeImagee(e)
+                                )}
                                 type="file"
                               />
                             </Button>
@@ -1063,7 +1093,7 @@ export default function Products() {
                       style={{
                         display: "flex",
                         alignItems: "end",
-                        marginLeft: "-35px",
+                        marginLeft: "-55px",
                       }}
                     >
                       <Fab
@@ -1381,7 +1411,7 @@ export default function Products() {
                 className="p-2 my-4"
               >
                 <h2 className="text-[18px] pl-3.5 font-normal">
-                  Mahsulot asosiy elementlari :{" "}
+                  Mahsulot asosiy elementlari :
                 </h2>
                 <hr />
                 <div
@@ -1404,6 +1434,7 @@ export default function Products() {
                     deleteIDHighlight={deleteIDHighlight}
                     setChangeBranchCunt={setChangeBranchCunt}
                     setChangeBranch={setChangeBranch}
+                    change={change}
                   />
                 ))}
 
@@ -1601,6 +1632,230 @@ export default function Products() {
               {submiting ? "Qo'shilmoqda" : "Qo'shish"}
             </Button>
           </form>
+        </div>
+      </div>
+      <div className="w-1/3 font-sans">
+        <h1 className="text-[22px] pb-5">Mahsulotning saytda ko'rinishi</h1>
+        <div className="border rounded p-2.5">
+          <h3
+            style={{
+              maxWidth: "320px",
+              width: "100%",
+            }}
+            className="text-[22px] font-serif font-bold text-center text-slate-600"
+          >
+            {name ? name : "Mahsulot nomi"}
+          </h3>
+         {
+          price ?
+          <h3 className="text-[20px] text-end font-bold text-slate-400 mb-2">
+          {price ? `${price} so'm` : "Mahsulot narxi"}
+        </h3>:
+        <></>
+         }
+        
+          <div className="text-center w-full flex justify-center">
+            <img
+              className="rounded border"
+              src={`${
+                lifeImage
+                  ? lifeImage
+                  : "https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg"
+              }`}
+              alt="samokat image"
+            />
+          </div>
+          {description ? (
+            <>
+              <p className="text-[15px] font-medium text-slate-400 pt-2 max-w-xs">
+                Izoh
+              </p>
+              <p
+                style={{
+                  maxWidth: "320px",
+                  width: "100%",
+                }}
+                className="text-[16px] font-serif font-medium text-slate-600 pb-2 max-w-xs"
+              >
+                {description ? description : ""}
+              </p>
+            </>
+          ) : (
+            <></>
+          )}
+           {
+          discount ?
+          <h3 className="text-[20px]  font-bold text-slate-400 mb-2">
+         <span className="text-[17px]   font-bold text-slate-350 mb-2" >Mahsulot chegirmasi :</span> {discount ? `${discount} %` : "Mahsulot chegirmasi"}
+        </h3>:
+        <></>
+         }
+          <p className="text-[17px]  font-bold text-slate-400 pt-2 max-w-xs">
+            Mahsulot malumotlari :
+          </p>
+          <div
+            className="flex flex-wrap"
+            style={{
+              maxWidth: "330px",
+              width: "100%",
+            }}
+          >
+            {ingredients ? (
+              <div className="w-1/3 flex flex-col justify-center">
+                <span className="text-[28px] text-center block font-bold text-slate-700 pt-2 max-w-xs">
+                  {ingredients ? ingredients : "..."}
+                </span>
+                <p className="text-[18px]  text-center font-medium text-slate-400 max-w-xs">
+                  tarkibi
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+            {carbohydrates ? (
+              <div className="w-1/3 flex flex-col justify-center">
+                <span className="text-[28px] text-center block font-bold text-slate-700 pt-2 max-w-xs">
+                  {carbohydrates ? carbohydrates : "..."}
+                </span>
+                <p className="text-[18px] text-center font-medium text-slate-400 max-w-xs">
+                  uglevod
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+            {kilocalories ? (
+              <div className="w-1/3 flex flex-col justify-center">
+                <span className="text-[28px] text-center block font-bold text-slate-700 pt-2 max-w-xs">
+                  {kilocalories ? kilocalories : "..."}
+                </span>
+                <p className="text-[18px] text-center font-medium text-slate-400 max-w-xs">
+                  kaloriya
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+            {fats ? (
+              <div className="w-1/3 flex flex-col justify-center">
+                <span className="text-[28px] text-center block font-bold text-slate-700 pt-2 max-w-xs">
+                  {fats ? fats : "..."}
+                </span>
+                <p className="text-[18px] text-center font-medium text-slate-400 max-w-xs">
+                  yog'
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+            {protein ? (
+              <div className="w-1/3 flex flex-col justify-center">
+                <span className="text-[28px] text-center block font-bold text-slate-700 pt-2 max-w-xs">
+                  {protein ? protein : "..."}
+                </span>
+                <p className="text-[18px] text-center font-medium text-slate-400 max-w-xs">
+                  protien
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+          {manufacturer ? (
+            <>
+              <p className="text-[15px] font-medium text-slate-400 pt-2 max-w-xs">
+                Ishlab chiqaruvchi :
+              </p>
+              <p
+                style={{
+                  maxWidth: "320px",
+                  width: "100%",
+                }}
+                className="text-[17px] font-medium text-slate-600 pb-2 max-w-xs"
+              >
+                {manufacturer ? manufacturer : "..."}{" "}
+              </p>
+            </>
+          ) : (
+            <></>
+          )}
+          {storageConditions ? (
+            <>
+              <p className="text-[15px] font-medium text-slate-400 pt-2 max-w-xs">
+                Saqlash shartlari :
+              </p>
+              <p
+                style={{
+                  maxWidth: "320px",
+                  width: "100%",
+                }}
+                className="text-[17px] font-medium text-slate-600 pb-2 max-w-xs"
+              >
+                {storageConditions ? storageConditions : "..."}{" "}
+              </p>
+            </>
+          ) : (
+            <></>
+          )}
+          {specification ? (
+            <>
+              <p className="text-[15px] font-medium text-slate-400 pt-2 max-w-xs">
+                Mahsulot soni yoki hakmi :
+              </p>
+              <p
+                style={{
+                  maxWidth: "320px",
+                  width: "100%",
+                }}
+                className="text-[17px] font-medium text-slate-600 pb-2 max-w-xs"
+              >
+                {specification ? specification : "..."}{" "}
+              </p>
+            </>
+          ) : (
+            <></>
+          )}
+          {shelf_life ? (
+            <>
+              <p className="text-[15px] font-medium text-slate-400 pt-2 max-w-xs">
+                Saqlash muddati :
+              </p>
+              <p
+                style={{
+                  maxWidth: "320px",
+                  width: "100%",
+                }}
+                className="text-[17px] font-medium text-slate-600 pb-2 max-w-xs"
+              >
+                {shelf_life ? shelf_life : "..."}{" "}
+              </p>
+            </>
+          ) : (
+            <></>
+          )}
+          {elements ? (
+            <>
+              <p className="text-[15px] font-medium text-slate-400 pt-2 max-w-xs">
+                Asosiy elementlari :
+              </p>
+              {elements?.map((item, i) => (
+                <p
+                  style={{
+                    maxWidth: "320px",
+                    width: "100%",
+                  }}
+                  className="text-[17px] font-medium text-slate-600 pb-2 max-w-xs"
+                >
+                  {item?.order ? item?.order : ""} -{" "}
+                  <span className="text-[16px] font-serif  font-medium text-slate-500 pb-2 max-w-xs">
+                    {item?.content ? item?.content : ""}{" "}
+                  </span>
+                </p>
+              ))}
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
