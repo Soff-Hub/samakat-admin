@@ -91,7 +91,6 @@ function Categories() {
     const formData = new FormData();
     formData.append("name", formVal.name);
     formData.append("order", formVal.order);
-    // formData.append('parent', formVal.parent);
     formData.append("type", formVal.type);
     if (img) {
       formData.append("image", img);
@@ -120,7 +119,6 @@ function Categories() {
     if (loaction.search.split("?").length == 4) {
       setFormVal((c) => ({ ...c, type: loaction.search.split("?")[1] }));
     }
-    // eslint-disable-next-line
   }, []);
   console.log("location", loaction.search.split("?"), "=>", query["*"]);
 
@@ -244,6 +242,7 @@ function Categories() {
             File yuklash
             <input
               style={{ display: "none" }}
+              required
               onChange={(e) => setImage(e.target.files[0])}
               type="file"
             />

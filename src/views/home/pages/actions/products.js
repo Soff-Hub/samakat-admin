@@ -485,26 +485,7 @@ export default function Products() {
                   setDiscount(e.target.value);
                 }}
               />
-              <FormControl
-                style={{ width: "600px" }}
-                sx={{ m: 1, minWidth: 120 }}
-                size="small"
-              >
-                <InputLabel id="demo-select-small-label" placholder="Belgi">
-                  Belgi
-                </InputLabel>
-                <Select
-                  defaultValue={editData?.badge || badge}
-                  label="Belgi"
-                  onChange={handleChange}
-                >
-                  {badgeData?.map((item, i) => (
-                    <MenuItem key={i} value={item.id}>
-                      <p style={{ color: `${item.textColor}` }}> {item.text}</p>
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+
               <div>
                 <FormControl sx={{ m: 1, width: 600 }}>
                   <InputLabel id="demo-multiple-checkbox-label">
@@ -532,6 +513,28 @@ export default function Products() {
                   </Select>
                 </FormControl>
               </div>
+
+              <FormControl
+                style={{ width: "600px" }}
+                sx={{ m: 1, minWidth: 120 }}
+                size="small"
+              >
+                <InputLabel id="demo-select-small-label" placholder="Belgi">
+                  Belgi
+                </InputLabel>
+                <Select
+                  defaultValue={editData?.badge || badge}
+                  label="Belgi"
+                  onChange={handleChange}
+                >
+                  {badgeData?.map((item, i) => (
+                    <MenuItem key={i} value={item.id}>
+                      <p style={{ color: `${item.textColor}` }}> {item.text}</p>
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
               <div>
                 <label className="font-normal font-sans text-lg">Sotuvda</label>
                 <Switch
@@ -1198,6 +1201,35 @@ export default function Products() {
                 setDiscount(e.target.value);
               }}
             />
+
+            <FormControl
+              sx={{ m: 1 }}
+              style={{ minWidth: "300px", width: "100%" }}
+            >
+              <InputLabel id="demo-multiple-checkbox-label">
+                Bog'liq kategoriyalar
+              </InputLabel>
+              <Select
+                labelId="demo-multiple-checkbox-label"
+                id="demo-multiple-checkbox"
+                multiple
+                value={product_categories}
+                onChange={handleChangeSelect}
+                input={<OutlinedInput label="Bog'liq kategoriyalar" />}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={MenuProps}
+              >
+                {data?.map((name) => (
+                  <MenuItem key={name} value={name.id}>
+                    <Checkbox
+                      checked={product_categories?.indexOf(name.id) > -1}
+                    />
+                    <ListItemText primary={name.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
               <InputLabel id="demo-select-small-label" placholder="Kategoriya">
                 Belgi *
@@ -1215,35 +1247,6 @@ export default function Products() {
                 ))}
               </Select>
             </FormControl>
-            <div>
-              <FormControl
-                sx={{ m: 1 }}
-                style={{ minWidth: "300px", width: "100%" }}
-              >
-                <InputLabel id="demo-multiple-checkbox-label">
-                  Bog'liq kategoriyalar
-                </InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  value={product_categories}
-                  onChange={handleChangeSelect}
-                  input={<OutlinedInput label="Bog'liq kategoriyalar" />}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                >
-                  {data?.map((name) => (
-                    <MenuItem key={name} value={name.id}>
-                      <Checkbox
-                        checked={product_categories?.indexOf(name.id) > -1}
-                      />
-                      <ListItemText primary={name.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
             <div>
               <label className="font-normal font-sans text-lg">Sotuvda</label>
               <Switch
@@ -1282,14 +1285,14 @@ export default function Products() {
                               variant="outlined"
                               style={{
                                 maxWidth: "150px",
-                                width: "150px",
+                                width: "120px",
                                 height: "170px",
                                 backgroundImage: `url(${
                                   item?.image ? item?.image : ""
                                 })`,
                                 backgroundSize: "cover",
                                 height: "120px",
-                                width: "150px",
+                                width: "120px",
                               }}
                             >
                               <input
@@ -1318,7 +1321,7 @@ export default function Products() {
                       style={{
                         display: "flex",
                         alignItems: "end",
-                        marginLeft: "-55px",
+                        marginRight: "55px",
                       }}
                     >
                       <Fab
@@ -1922,21 +1925,9 @@ export default function Products() {
               width: "100%",
             }}
           >
-            {ingredients ? (
-              <div className="w-1/5 flex flex-col justify-center">
-                <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
-                  {ingredients ? ingredients : "..."}
-                </span>
-                <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
-                  tarkibi
-                </p>
-              </div>
-            ) : (
-              ""
-            )}
             {carbohydrates ? (
               <div className="w-1/5 flex flex-col justify-center">
-                <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
+                <span className="text-[18px] leading-[22px]  text-center block font-semibold text-[#595959] pt-2 max-w-xs">
                   {carbohydrates ? carbohydrates : "..."}
                 </span>
                 <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
@@ -1983,6 +1974,24 @@ export default function Products() {
               ""
             )}
           </div>
+          {ingredients ? (
+            <>
+              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                Tarkibi :
+              </p>
+              <p
+                style={{
+                  maxWidth: "320px",
+                  width: "100%",
+                }}
+                className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
+              >
+                {ingredients ? ingredients : "..."}{" "}
+              </p>
+            </>
+          ) : (
+            <></>
+          )}
           {manufacturer ? (
             <>
               <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">

@@ -14,7 +14,7 @@ export default function AddInput({
   deleteID,
   deleteIDHighlight,
   setChangeBranchCunt,
-  change,
+  // change,
 }) {
   const [obj, setObj] = useState({ branch: 0, quantity: 0, id });
 
@@ -48,7 +48,7 @@ export default function AddInput({
             label="Filial"
             required
             onChange={(e) => changeObj(e.target.value, "branch")}
-            defaultValue={dataF?.brach }
+            defaultValue={dataF?.brach}
           >
             {selectData?.map((item, i) => (
               <MenuItem key={i} value={item.id}>
@@ -95,7 +95,7 @@ export default function AddInput({
           style={{ marginTop: "10px" }}
           type="text"
           defaultValue={dataH?.content}
-          onChange={(e) => (changeObj(e.target.value, "content"), change())}
+          onChange={(e) => (changeObj(e.target.value, "content"))}
         />
       </div>
       <div className="mx-1">
@@ -108,7 +108,7 @@ export default function AddInput({
           defaultValue={dataH?.order ? dataH?.order : obj?.order}
           // value={dataH?.order ? dataH?.order : obj?.order}
           onChange={(e) => {
-            changeObj(+e.target.value, "order"), change();
+            changeObj(+e.target.value, "order");
           }}
         />
       </div>
