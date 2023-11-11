@@ -1,27 +1,16 @@
-import NavHeaderSelect from "components/shared/NavHeaderSelect";
 import React, { useEffect, useState } from "react";
-
 import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -29,7 +18,6 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import { Link } from "react-router-dom";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
@@ -43,64 +31,36 @@ import {
   Select,
 } from "@mui/material";
 
-// function createData(id, name, calories, fat, carbs, protein) {
-//   return {
-//     id,
-//     name,
-//     calories,
-//     fat,
-//     carbs,
-//     protein,
-//   };
+// function descendingComparator(a, b, orderBy) {
+//   if (b[orderBy] < a[orderBy]) {
+//     return -1;
+//   }
+//   if (b[orderBy] > a[orderBy]) {
+//     return 1;
+//   }
+//   return 0;
 // }
 
-// const rows = [
-//   createData(1, "Cupcake", 305, 3.7, 67, 4.3),
-//   createData(2, "Donut", 452, 25.0, 51, 4.9),
-//   createData(3, "Eclair", 262, 16.0, 24, 6.0),
-//   createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
-//   createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
-//   createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
-//   createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
-//   createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
-//   createData(9, "KitKat", 518, 26.0, 65, 7.0),
-//   createData(10, "Lollipop", 392, 0.2, 98, 0.0),
-//   createData(11, "Marshmallow", 318, 0, 81, 2.0),
-//   createData(12, "Nougat", 360, 19.0, 9, 37.0),
-//   createData(13, "Oreo", 437, 18.0, 63, 4.0),
-// ];
+// function getComparator(order, orderBy) {
+//   return order === "desc"
+//     ? (a, b) => descendingComparator(a, b, orderBy)
+//     : (a, b) => -descendingComparator(a, b, orderBy);
+// }
+// function stableSort(array, comparator) {
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) {
+//       return order;
+//     }
+//     return a[1] - b[1];
+//   });
+//   return stabilizedThis.map((el) => el[0]);
+// }
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+// const createSortHandler = (property) => (event) => {
+//   onRequestSort(event, property);
+// };
 
 const headCells = [
   {
@@ -121,7 +81,7 @@ const headCells = [
     disablePadding: false,
     label: "Filial",
   },
- 
+
   {
     id: "carbs",
     numeric: true,
@@ -145,9 +105,8 @@ function EnhancedTableHead(props) {
     rowCount,
     onRequestSort,
   } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
+
+ 
 
   return (
     <TableHead>
@@ -243,15 +202,6 @@ export default function EnhancedTable() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (newPage) => {
-    setPage(newPage);
-  };
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-
-
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const handleChange = async (e) => {
@@ -271,7 +221,6 @@ export default function EnhancedTable() {
     setSearch(e);
     await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?search=${e}`)
       .then((resp) => {
-        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -282,7 +231,6 @@ export default function EnhancedTable() {
       `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event.target.value}&product=${product}&product__type=${type}`
     )
       .then((resp) => {
-        // setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -293,7 +241,6 @@ export default function EnhancedTable() {
       `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&product=${event.target.value}&product__type=${type}`
     )
       .then((resp) => {
-        // setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -375,18 +322,18 @@ export default function EnhancedTable() {
         onChange={handleChange}
         className="mt-5 flex items-center w-full"
       >
-        <ToggleButton className="w-full"  value="bistro">
+        <ToggleButton className="w-full" value="bistro">
           Быстрый
         </ToggleButton>
-        <ToggleButton className="w-full"  value="apteka">
+        <ToggleButton className="w-full" value="apteka">
           Apteka
         </ToggleButton>
       </ToggleButtonGroup>
 
       {data ? (
-        <Box sx={{minWidth: 300 }}>
+        <Box sx={{ minWidth: 300 }}>
           <Paper sx={{ mb: 2 }}>
-            <TableContainer >
+            <TableContainer>
               <div className="flex items-center gap-1">
                 <input
                   type="text"
@@ -406,7 +353,7 @@ export default function EnhancedTable() {
                     Filial bo'yicha
                   </InputLabel>
                   <Select
-                  className="py-0.5"
+                    className="py-0.5"
                     value={branch}
                     label="Holat bo'yicha"
                     onChange={handleChangeFilial}
@@ -423,9 +370,9 @@ export default function EnhancedTable() {
                   </Select>
                 </FormControl>
                 <FormControl
-                 sx={{ minWidth: 100 }}
-                 size="small"
-                 className="sm:w-full  w-1/3"
+                  sx={{ minWidth: 100 }}
+                  size="small"
+                  className="sm:w-full  w-1/3"
                 >
                   <InputLabel
                     id="demo-select-small-label"
@@ -524,21 +471,21 @@ export default function EnhancedTable() {
               </Table>
             </TableContainer>
 
-            {data?.length !== 0 ? (
+            {count && Math.ceil(count / 30) <= 1 ? (
+              <></>
+            ) : (
               <div className="m-3 mb-5">
                 <Stack spacing={2}>
                   <Typography> Sahifa : {page}</Typography>
                   <Pagination
                     count={
-                      Math.trunc(count / 30) < 1 ? 1 : Math.trunc(count / 30)
+                      Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)
                     }
                     page={page}
-                    onChange={handleChangePage}
+                    onChange={handleChangePag}
                   />
                 </Stack>
               </div>
-            ) : (
-              <></>
             )}
           </Paper>
         </Box>

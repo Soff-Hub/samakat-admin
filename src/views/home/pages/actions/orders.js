@@ -57,24 +57,6 @@ export default function Orders() {
                 type="text"
                 value={data ? data.user : ""}
               />
-
-              {/* <div className="flex gap-10" >
-        <TextField
-            label="Latitude"
-            variant="outlined"
-            size="small"
-            name="latitude"
-            value={data ? data?.total_amount : ''}
-            type="number"
-          />
-          <TextField
-            label="Longitude"
-            variant="outlined"
-            size="small"
-            value={data ? data?.address.longitude : ''}
-            type="number"
-          />
-        </div> */}
               <TextField
                 label="Umumiy so'mma"
                 variant="outlined"
@@ -121,6 +103,7 @@ export default function Orders() {
                 />
               </div>
             </form>
+            
           </div>
         ) : (
           <Box

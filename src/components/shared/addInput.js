@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 export default function AddInput({
-  dataH ,
+  dataH,
   dataF,
   selectData,
   addFilialInput,
@@ -14,18 +14,14 @@ export default function AddInput({
   deleteID,
   deleteIDHighlight,
   setChangeBranchCunt,
-  setChangeBranch,
-  change
+  change,
 }) {
   const [obj, setObj] = useState({ branch: 0, quantity: 0, id });
 
   function changeObj(e, key) {
-    console.log('key', key);
+    console.log("key", key, e);
     if (key == "quantity") {
-      setChangeBranchCunt(true)
-    }
-    if (key == "branch") {
-      setChangeBranch(true)
+      setChangeBranchCunt(true);
     }
     let keyName = {};
     keyName[`${key}`] = e;
@@ -34,42 +30,31 @@ export default function AddInput({
   }
 
   const DeleteFilialItem = () => {
-    deleteID(id);    
+    deleteID(id);
   };
 
   const DeleteIDHighlight = () => {
-    deleteIDHighlight(id)
-  }
+    deleteIDHighlight(id);
+  };
 
   return selectData ? (
-    <div
-      style={{ backgroundColor: "#ccc", width: "570px" }}
-      className="flex gap-3 p-3  "
-    >
+    <div style={{ backgroundColor: "#ccc" }} className="flex gap-3 p-3  ">
       <div className="mx-1">
-        <FormControl
-          style={{ width: "200px" }}
-          sx={{ m: 1, minWidth: 120 }}
-          size="small"
-        >
+        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
           <InputLabel id="demo-select-small-label" placholder="Kategoriya">
             Filial
           </InputLabel>
           <Select
             label="Filial"
             required
-            value={dataF?.branch}
             onChange={(e) => changeObj(e.target.value, "branch")}
-            defaultValue={dataF?.brach}
+            defaultValue={dataF?.brach }
           >
-            {
-              selectData?.map((item, i) => (
-                <MenuItem key={i} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
-              
-            }
+            {selectData?.map((item, i) => (
+              <MenuItem key={i} value={item.id}>
+                {item.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </div>
@@ -81,7 +66,7 @@ export default function AddInput({
           size="small"
           style={{ height: "10px", marginTop: "10px" }}
           type="number"
-          value={dataF ? dataF?.quantity : obj?.quantity}
+          defaultValue={dataF ? dataF?.quantity : obj?.quantity}
           onChange={(e) => {
             changeObj(+e.target.value, "quantity");
           }}
@@ -100,10 +85,7 @@ export default function AddInput({
       </div>
     </div>
   ) : (
-    <div
-      className="flex gap-5 p-3"
-      style={{ width: "570px", backgroundColor: "#ccc" }}
-    >
+    <div className="flex gap-5 p-3" style={{ backgroundColor: "#ccc" }}>
       <div className="mx-1">
         <TextField
           label="Asosiy element"
@@ -112,8 +94,8 @@ export default function AddInput({
           size="small"
           style={{ marginTop: "10px" }}
           type="text"
-           value={dataH?.content}
-          onChange={(e) => (changeObj(e.target.value, "content"),change())}
+          defaultValue={dataH?.content}
+          onChange={(e) => (changeObj(e.target.value, "content"), change())}
         />
       </div>
       <div className="mx-1">
@@ -123,10 +105,10 @@ export default function AddInput({
           size="small"
           style={{ marginTop: "10px" }}
           type="number"
-          // defaultValue={dataH?.order ? dataH?.order : obj?.order}
-          value={dataH?.order ? dataH?.order : obj?.order}
+          defaultValue={dataH?.order ? dataH?.order : obj?.order}
+          // value={dataH?.order ? dataH?.order : obj?.order}
           onChange={(e) => {
-           ( changeObj(+e.target.value, "order"), change());
+            changeObj(+e.target.value, "order"), change();
           }}
         />
       </div>

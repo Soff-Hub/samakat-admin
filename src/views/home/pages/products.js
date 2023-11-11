@@ -36,33 +36,6 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { CircularProgress } from "@mui/material";
 
-function createData(id, name, calories, fat, carbs, protein) {
-  return {
-    id,
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
-
-const rows = [
-  createData(1, "Cupcake", 305, 3.7, 67, 4.3),
-  createData(2, "Donut", 452, 25.0, 51, 4.9),
-  createData(3, "Eclair", 262, 16.0, 24, 6.0),
-  createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
-  createData(6, "Honeycomb", 408, 3.2, 87, 6.5),
-  createData(7, "Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData(8, "Jelly Bean", 375, 0.0, 94, 0.0),
-  createData(9, "KitKat", 518, 26.0, 65, 7.0),
-  createData(10, "Lollipop", 392, 0.2, 98, 0.0),
-  createData(11, "Marshmallow", 318, 0, 81, 2.0),
-  createData(12, "Nougat", 360, 19.0, 9, 37.0),
-  createData(13, "Oreo", 437, 18.0, 63, 4.0),
-];
-
 const headCells = [
   {
     id: "calories",
@@ -223,7 +196,7 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(1);
   const [type, setType] = React.useState("bistro");
   const [data, setData] = React.useState(null);
-  const [count, setCount] = useState(10);
+  const [count, setCount] = useState("");
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
@@ -263,10 +236,6 @@ export default function EnhancedTable() {
   };
   console.log(">", selected);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const handleChange = async (e) => {
@@ -299,7 +268,6 @@ export default function EnhancedTable() {
     await Client.get(`${API_ENDPOINTS.PRODUCT}?search=${e}`)
       .then((resp) => {
         console.log(resp);
-        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -309,7 +277,6 @@ export default function EnhancedTable() {
     await Client.delete(`${API_ENDPOINTS.DELETE_PRODUCT}${deleteId}/`)
       .then((resp) => {
         console.log(resp);
-        setCount(resp.count);
         setOpen(false);
         getProductData();
       })
@@ -331,6 +298,7 @@ export default function EnhancedTable() {
     getProductData();
   }, []);
 
+  console.log("count", count);
 
   return (
     <>
@@ -463,16 +431,20 @@ export default function EnhancedTable() {
               </TableBody>
             </Table>
           </TableContainer>
-          <div className="m-3 mb-5">
-            <Stack spacing={2}>
-              <Typography> Sahifa : {page}</Typography>
-              <Pagination
-                count={Math.trunc(count / 30) < 1 ? 1 : Math.trunc(count / 30)}
-                page={page}
-                onChange={handleChangePag}
-              />
-            </Stack>
-          </div>
+          {Math.ceil(count / 30) <= 1 ? (
+            <></>
+          ) : (
+            <div className="m-3 mb-5">
+              <Stack spacing={2}>
+                <Typography> Sahifa : {page}</Typography>
+                <Pagination
+                  count={Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)}
+                  page={page}
+                  onChange={handleChangePag}
+                />
+              </Stack>
+            </div>
+          )}
         </Paper>
       </Box>
       <ResponsiveDialog

@@ -13,7 +13,7 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Link } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Pagination, Stack, Typography } from "@mui/material";
 
 function Row(props) {
   const { row } = props;
@@ -67,16 +67,31 @@ Row.propTypes = {
 
 export default function CollapsibleTable() {
   const [data, setData] = React.useState(null);
+  const [count, setCount] = React.useState("");
+  const [page, setPage] = React.useState(1);
 
   const getData = async () => {
     await Client.get(API_ENDPOINTS.ADDRESS)
       .then((res) => {
         setData(res.results);
+        setCount(res.count)
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const handleChangePag = async (event, value) => {
+    setPage(value);
+    await Client.get(`${API_ENDPOINTS.ADDRESS}?page=${value}`)
+      .then((resp) => {
+        console.log(resp);
+        setCount(resp.count);
+        setBadgeData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
 
   React.useEffect(() => {
     getData();
@@ -103,6 +118,20 @@ export default function CollapsibleTable() {
               ))}
             </TableBody>
           </Table>
+          {count && Math.ceil(count / 30) <= 1 ? (
+            <></>
+          ) : (
+            <div className="m-3 mb-5">
+              <Stack spacing={2}>
+                <Typography> Sahifa : {page}</Typography>
+                <Pagination
+                  count={Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)}
+                  page={page}
+                  onChange={handleChangePag}
+                />
+              </Stack>
+            </div>
+          )}
         </TableContainer>
       ) : (
         <Box

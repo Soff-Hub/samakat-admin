@@ -174,7 +174,7 @@ export default function EnhancedTable() {
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [branch, setBranch] = useState("");
+  
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -211,9 +211,18 @@ export default function EnhancedTable() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (newPage) => {
-    setPage( 'page', newPage);
+  const handleChangePag = async (event, value) => {
+    setPage(value);
+    await Client.get(`${API_ENDPOINTS.ADDRESS}?page=${value}`)
+      .then((resp) => {
+        console.log(resp);
+        setCount(resp.count);
+        setBadgeData(resp.results);
+      })
+      .catch((err) => console.log(err));
   };
+
+
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const Search = async (e) => {
@@ -366,22 +375,20 @@ export default function EnhancedTable() {
               </Table>
             </TableContainer>
 
-            {data?.length !== 0 ? (
-              <div className="m-3 mb-5">
-                <Stack spacing={2}>
-                  <Typography> Sahifa : {page}</Typography>
-                  <Pagination
-                    count={
-                      Math.trunc(count / 30) < 1 ? 1 : Math.trunc(count / 30)
-                    }
-                    page={page}
-                    onChange={handleChangePage}
-                  />
-                </Stack>
-              </div>
-            ) : (
-              <></>
-            )}
+            {count && Math.ceil(count / 30) <= 1 ? (
+            <></>
+          ) : (
+            <div className="m-3 mb-5">
+              <Stack spacing={2}>
+                <Typography> Sahifa : {page}</Typography>
+                <Pagination
+                  count={Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)}
+                  page={page}
+                  onChange={handleChangePag}
+                />
+              </Stack>
+            </div>
+          )}
           </Paper>
         </Box>
       ) : (

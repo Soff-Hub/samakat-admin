@@ -13,7 +13,13 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Link } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
-import { Box, CircularProgress } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Pagination,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 function Row(props) {
   const { row } = props;
@@ -21,19 +27,20 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell > <Link  to={`actions/?edit?${row.id}`} >
-        {row.text}
-        </Link> </TableCell>
-        <TableCell  align="right">
-        <Link to={`actions/?edit?${row.id}`} >
-        <span style={{ color: `${row.textColor}` }}>
-            <i class="fa-solid fa-certificate"></i>
-          </span>
-        </Link>
+        <TableCell>
+          {" "}
+          <Link to={`actions/?edit?${row.id}`}>{row.text}</Link>{" "}
         </TableCell>
-        <TableCell  align="right"></TableCell>
-        <TableCell  align="right"></TableCell>
-        <TableCell  align="right" sx={{ position: "relative" }}>
+        <TableCell align="right">
+          <Link to={`actions/?edit?${row.id}`}>
+            <span style={{ color: `${row.textColor}` }}>
+              <i class="fa-solid fa-certificate"></i>
+            </span>
+          </Link>
+        </TableCell>
+        <TableCell align="right"></TableCell>
+        <TableCell align="right"></TableCell>
+        <TableCell align="right" sx={{ position: "relative" }}>
           <Link to={`actions/?edit?${row.id}`}>
             <IconButton color="primary">
               <DriveFileRenameOutlineOutlinedIcon />
@@ -65,15 +72,29 @@ Row.propTypes = {
 
 export default function CollapsibleTable() {
   const [bagdeData, setBadgeData] = React.useState(null);
+  const [count, setCount] = React.useState("");
+  const [page, setPage] = React.useState(1);
 
   const getBadge = async () => {
     await Client.get(API_ENDPOINTS.BADGE)
       .then((res) => {
         setBadgeData(res.results);
+        setCount(res.count);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleChangePag = async (event, value) => {
+    setPage(value);
+    await Client.get(`${API_ENDPOINTS.BADGE}?page=${value}`)
+      .then((resp) => {
+        console.log(resp);
+        setCount(resp.count);
+        setBadgeData(resp.results);
+      })
+      .catch((err) => console.log(err));
   };
 
   React.useEffect(() => {
@@ -97,30 +118,41 @@ export default function CollapsibleTable() {
               <TableCell align="right">Amallar</TableCell>
             </TableRow>
           </TableHead>
-          {
-            bagdeData ?
-          <TableBody>
-            { bagdeData?.map((row) => (
-              <Row key={row.name} row={row} />
-            )) 
-          
-            }
-          </TableBody>
-          :
-          <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-            padding: "150px",
-            marginLeft:'100px'
-
-          }}
-        >
-          <CircularProgress />
-        </Box>
-
-          }
+          {bagdeData ? (
+            <TableBody>
+              {bagdeData?.map((row) => (
+                <Row key={row.name} row={row} />
+              ))}
+              {count && Math.ceil(count / 30) <= 1 ? (
+                <></>
+              ) : (
+                <div className="m-3 mb-5">
+                  <Stack spacing={2}>
+                    <Typography> Sahifa : {page}</Typography>
+                    <Pagination
+                      count={
+                        Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)
+                      }
+                      page={page}
+                      onChange={handleChangePag}
+                    />
+                  </Stack>
+                </div>
+              )}
+            </TableBody>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+                padding: "150px",
+                marginLeft: "100px",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          )}
         </Table>
       </TableContainer>
     </>

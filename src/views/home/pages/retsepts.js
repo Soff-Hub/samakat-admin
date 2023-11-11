@@ -301,14 +301,6 @@ export default function EnhancedTable() {
   };
   console.log(">", selected);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -377,7 +369,6 @@ export default function EnhancedTable() {
     await Client.get(`${API_ENDPOINTS.RETCIPE}?search=${e}`)
       .then((resp) => {
         console.log(resp);
-        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -389,8 +380,6 @@ export default function EnhancedTable() {
         console.log(resp);
         setOpen(false);
         getRetsipeData();
-        // setCount(resp.count);
-        // setData(resp.results);
       })
       .catch((err) => console.log(err));
   };
@@ -409,7 +398,6 @@ export default function EnhancedTable() {
   useEffect(() => {
     getRetsipeData();
   }, []);
-  // console.log(data);
   return (
     <>
       <div className="mb-5">
@@ -526,18 +514,20 @@ export default function EnhancedTable() {
                 </TableBody>
               </Table>
             </TableContainer>
+            {count && Math.ceil(count / 30) <= 1 ? (
+            <></>
+          ) : (
             <div className="m-3 mb-5">
               <Stack spacing={2}>
                 <Typography> Sahifa : {page}</Typography>
                 <Pagination
-                  count={
-                    Math.trunc(count / 10) < 1 ? 1 : Math.trunc(count / 10)
-                  }
+                  count={Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)}
                   page={page}
                   onChange={handleChangePag}
                 />
               </Stack>
             </div>
+          )}
           </Paper>
         </Box>
       ) : (
