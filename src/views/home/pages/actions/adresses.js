@@ -97,6 +97,7 @@ export default function Adresses() {
 
   useEffect(() => {
     getData(location.search.split("?")[1]);
+    // eslint-disable-next-line
   }, []);
 
   const submit = () => {};

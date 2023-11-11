@@ -52,15 +52,21 @@ export default function ChartComponent() {
 
   return (
     <div className="app ">
-      <div className="row">
-        <div className="mixed-chart text-center ">
+      <div className="row w-full">
+        <div
+          className="mixed-chart"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Chart
             options={options}
             series={series}
             type="bar"
             className="w-full"
             style={{
-              maxWidth: "1000px",
+              maxWidth: "1200px",
               with: "100%",
             }}
           />

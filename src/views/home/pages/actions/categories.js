@@ -118,6 +118,7 @@ function Categories() {
     if (loaction.search.split("?").length === 4) {
       setFormVal((c) => ({ ...c, type: loaction.search.split("?")[1] }));
     }
+    // eslint-disable-next-line
   }, []);
   console.log("location", loaction.search.split("?"), "=>", query["*"]);
 

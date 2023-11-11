@@ -22,7 +22,13 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
-import { CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 
 const headCells = [
   {
@@ -44,13 +50,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-  } = props;
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
 
   return (
     <TableHead>
@@ -167,6 +167,7 @@ export default function Users() {
   const getUsers = async () => {
     await Client.get(API_ENDPOINTS.USERS)
       .then((resp) => {
+        setCount(resp.count)
         console.log(resp.results);
         setData(resp.results);
       })
@@ -217,13 +218,19 @@ export default function Users() {
     await Client.get(`${API_ENDPOINTS.USERS}?search=${e}`)
       .then((resp) => {
         console.log(resp);
-        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
   };
 
-  const handleChangePag = async (event, value) => {};
+  const handleChangePag = async (event, value) => {
+    setPage(value);
+    await Client.get(`${API_ENDPOINTS.USERS}?page=${value}`)
+      .then((resp) => {
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleChangeFilial = async (event) => {
     setFilial(event.target.value);
@@ -234,11 +241,11 @@ export default function Users() {
     )
       .then((resp) => {
         console.log(resp);
-        // setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
   };
+
   const handleChangeRole = async (event) => {
     setRole(event.target.value);
     await Client.get(
@@ -248,7 +255,6 @@ export default function Users() {
     )
       .then((resp) => {
         console.log(resp);
-        // setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -257,7 +263,6 @@ export default function Users() {
   const getFilial = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((res) => {
-        console.log("res", res.results);
         setFilialData(res.results);
       })
       .catch((err) => {
@@ -275,7 +280,7 @@ export default function Users() {
       <div className="mb-5">
         <h1 className="text-2xl">Foydalanuvchilar</h1>
       </div>
-      <div className="flex items-center gap-1" >
+      <div className="flex items-center gap-1">
         <input
           type="text"
           placeholder="Izlash"
@@ -287,14 +292,11 @@ export default function Users() {
           size="small"
           className="sm:w-full  w-1/3"
         >
-          <InputLabel
-            id="demo-select-small-label"
-            placholder="Holat bo'yicha"
-          >
+          <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
             Filial bo'yicha
           </InputLabel>
           <Select
-           className="py-0.5"
+            className="py-0.5"
             value={filial}
             label="Holat bo'yicha"
             onChange={handleChangeFilial}
@@ -311,14 +313,11 @@ export default function Users() {
           </Select>
         </FormControl>
         <FormControl
-         sx={{ minWidth: 100 }}
-         size="small"
-         className="sm:w-full  w-1/3"
+          sx={{ minWidth: 100 }}
+          size="small"
+          className="sm:w-full  w-1/3"
         >
-          <InputLabel
-            id="demo-select-small-label"
-            placholder="Holat bo'yicha"
-          >
+          <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
             Rol bo'yicha
           </InputLabel>
           <Select
@@ -334,107 +333,112 @@ export default function Users() {
           </Select>
         </FormControl>
       </div>
-              {
-                data?.length > 0 ?
-                <Box sx={{ width: "100%" }}>
-                <Paper sx={{ width: "100%", mb: 2 }}>
-                  <TableContainer>
-                    <Table
-                      sx={{ minWidth: 750 }}
-                      aria-labelledby="tableTitle"
-                      size="medium"
-                    >
-                      <EnhancedTableHead
-                        numSelected={selected.length}
-                        order={order}
-                        orderBy={orderBy}
-                        onSelectAllClick={handleSelectAllClick}
-                        onRequestSort={handleRequestSort}
-                        rowCount={data?.length || 0}
-                      />
-                      <TableBody>
-                        {data?.map((row, index) => {
-                          const isItemSelected = isSelected(row.id);
-                          const labelId = `enhanced-table-checkbox-${index}`;
-        
-                          return (
-                            <TableRow
-                              hover
-                              onClick={(event) => handleClick(event, row.id)}
-                              role="checkbox"
-                              aria-checked={isItemSelected}
-                              tabIndex={-1}
-                              key={row.id}
-                              selected={isItemSelected}
-                              sx={{ cursor: "pointer" }}
-                            >
-                              <TableCell padding="checkbox" align="left">
-                                <Checkbox
-                                  color="primary"
-                                  checked={isItemSelected}
-                                  inputProps={{
-                                    "aria-labelledby": labelId,
-                                  }}
-                                />
-                              </TableCell>
-                              <TableCell component="th" id={labelId} align="left">
-                                <Link
-                                  to={`actions/?detail?${row.id}`}
-                                  className="hover:underline"
-                                >
-                                  {row.id}
-                                </Link>
-                              </TableCell>
-        
-                              <TableCell align="left">
-                                <Link
-                                  to={`actions/?detail?${row.id}`}
-                                  className="hover:underline"
-                                >
-                                  {row.phone}
-                                </Link>
-                              </TableCell>
-                              <TableCell align="left">
-                                <Link
-                                  to={`actions/?detail?${row.id}`}
-                                  className="hover:underline"
-                                >
-                                  {row.first_name === "" ? "No name" : row.first_name}
-                                </Link>
-                              </TableCell>
-                              <TableCell align="left">
-                                {row.date_joined.slice(0, 10)}
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  <div className="m-3 mb-5">
-                    <Stack spacing={2}>
-                      <Typography> Sahifa : {page}</Typography>
-                      <Pagination
-                        count={Math.trunc(count / 10) < 1 ? 1 : Math.trunc(count / 10)}
-                        page={page}
-                        onChange={handleChangePag}
-                      />
-                    </Stack>
-                  </div>
-                </Paper>
-              </Box>
-              :
-              <Box
-              sx={{
-                display: "flex",
-                wdith: "100%",
-                justifyContent: "center",
-                padding: "150px 0",
-              }}
-            >
-              <CircularProgress />
-            </Box>
-              }
+      {data?.length > 0 ? (
+        <Box sx={{ width: "100%" }}>
+          <Paper sx={{ width: "100%", mb: 2 }}>
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 750 }}
+                aria-labelledby="tableTitle"
+                size="medium"
+              >
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={handleRequestSort}
+                  rowCount={data?.length || 0}
+                />
+                <TableBody>
+                  {data?.map((row, index) => {
+                    const isItemSelected = isSelected(row.id);
+                    const labelId = `enhanced-table-checkbox-${index}`;
+
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, row.id)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                        sx={{ cursor: "pointer" }}
+                      >
+                        <TableCell padding="checkbox" align="left">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell component="th" id={labelId} align="left">
+                          <Link
+                            to={`actions/?detail?${row.id}`}
+                            className="hover:underline"
+                          >
+                            {row.id}
+                          </Link>
+                        </TableCell>
+
+                        <TableCell align="left">
+                          <Link
+                            to={`actions/?detail?${row.id}`}
+                            className="hover:underline"
+                          >
+                            {row.phone}
+                          </Link>
+                        </TableCell>
+                        <TableCell align="left">
+                          <Link
+                            to={`actions/?detail?${row.id}`}
+                            className="hover:underline"
+                          >
+                            {row.first_name === "" ? "No name" : row.first_name}
+                          </Link>
+                        </TableCell>
+                        <TableCell align="left">
+                          {row.date_joined.slice(0, 10)}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {Math.ceil(count / 30) <= 1 ? (
+              <></>
+            ) : (
+              <div className="m-3 mb-5">
+                <Stack spacing={2}>
+                  <Typography> Sahifa : {page}</Typography>
+                  <Pagination
+                    count={
+                      Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)
+                    }
+                    page={page}
+                    onChange={handleChangePag}
+                  />
+                </Stack>
+              </div>
+            )}
+          </Paper>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            wdith: "100%",
+            justifyContent: "center",
+            padding: "150px 0",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </div>
   );
 }

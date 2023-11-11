@@ -300,6 +300,7 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     getRetsipeData();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

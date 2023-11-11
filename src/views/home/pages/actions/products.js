@@ -155,11 +155,11 @@ export default function Products() {
     setSubmiting(true);
 
     const product_branch = filialInput?.map((item) => {
-      const { id, branch, quantity } = item;
+      const { branch, quantity } = item;
       return { branch, quantity };
     });
     const product_highlight = atributInput?.map((item) => {
-      const { id, content, order } = item;
+      const {content, order } = item;
       return { content, order };
     });
 
@@ -228,11 +228,11 @@ export default function Products() {
     setSubmiting(true);
 
     const product_branch = filialInput?.map((item) => {
-      const { id, branch, quantity } = item;
+      const { branch, quantity } = item;
       return { branch, quantity };
     });
     const product_highlight = atributInput?.map((item) => {
-      const { id, content, order } = item;
+      const { content, order } = item;
       return { content, order };
     });
 
@@ -405,11 +405,12 @@ export default function Products() {
     } else if (location.search.split("?")[1] === "byuti") {
       getCategory("byuti");
     }
+     // eslint-disable-next-line
   }, []);
 
   const change = () => {
     const product_highlight = atributInput?.map((item) => {
-      const { id, content, order } = item;
+      const {content, order } = item;
       return { content, order };
     });
     setElements(product_highlight);
@@ -576,13 +577,11 @@ export default function Products() {
                                 style={{
                                   maxWidth: "150px",
                                   width: "150px",
-                                  height: "170px",
                                   backgroundImage: `url(${
                                     item?.image ? item?.image : ""
                                   })`,
                                   backgroundSize: "cover",
                                   height: "120px",
-                                  width: "150px",
                                 }}
                               >
                                 <input
@@ -955,7 +954,7 @@ export default function Products() {
                     ? editData?.product_galereya?.[0]?.image_url
                     : "https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg"
                 }`}
-                alt="samokat image"
+                alt="samokat"
               />
             </div>
             <h3
@@ -1284,22 +1283,20 @@ export default function Products() {
                               style={{
                                 maxWidth: "150px",
                                 width: "120px",
-                                height: "170px",
                                 backgroundImage: `url(${
                                   item?.image ? item?.image : ""
                                 })`,
                                 backgroundSize: "cover",
                                 height: "120px",
-                                width: "120px",
                               }}
                             >
                               <input
+                                type="file"
                                 style={{ display: "none" }}
                                 onChange={(e) => (
                                   setImageUrl(e.target.files[0], item.id),
                                   lifeImagee(e)
                                 )}
-                                type="file"
                               />
                             </Button>
                             <Button
@@ -1860,7 +1857,7 @@ export default function Products() {
                   ? lifeImage
                   : "https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg"
               }`}
-              alt="samokat image"
+              alt="samokat"
             />
           </div>
           <h3

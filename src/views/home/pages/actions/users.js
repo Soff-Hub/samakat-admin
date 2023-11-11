@@ -36,6 +36,7 @@ export default function Users() {
 
   React.useEffect(() => {
     getItem(location.search.split("?")[2]);
+    // eslint-disable-next-line
   }, [location.search.split("?")[2]]);
 
   return (

@@ -39,7 +39,7 @@ export default function Retsepts() {
   const [description, setDescription] = useState("");
   const [editData, setEditData] = useState(null);
   const location = useLocation();
-  const [optionChecked, setOptionChecked] = useState(false);
+  // const [optionChecked, setOptionChecked] = useState(false);
   const [imageData, setImageData] = useState([
     {
       id: 1,
@@ -65,7 +65,7 @@ export default function Retsepts() {
 
   const handleChange = (event) => {
     setCategory(event.target.value);
-    setOptionChecked(true);
+    // setOptionChecked(true);
   };
 
   const addImageInput = async (e) => {
@@ -183,6 +183,7 @@ export default function Retsepts() {
     } else if (location.search.split("?")[1] === "byuti") {
       getCategory("byuti");
     }
+    // eslint-disable-next-line
   }, []);
 
   return location.search.split("?")[1] === "edit" ? (

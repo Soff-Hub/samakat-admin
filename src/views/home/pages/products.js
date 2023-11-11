@@ -255,6 +255,7 @@ export default function EnhancedTable() {
       })
       .catch((err) => console.log(err));
   };
+  
 
   const handleDelete = async () => {
     await Client.delete(`${API_ENDPOINTS.DELETE_PRODUCT}${deleteId}/`)
@@ -278,6 +279,7 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     getProductData();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -308,7 +310,6 @@ export default function EnhancedTable() {
       />
       <Box sx={{ width: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
-          {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
           <TableContainer>
             <Table
               sx={{ minWidth: 750 }}

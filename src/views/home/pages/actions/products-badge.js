@@ -55,6 +55,7 @@ export default function Retsepts() {
     if (location.search.split("?")[1] === "edit") {
       getBadge();
     }
+    // eslint-disable-next-line
   }, []);
 
   return location.search.split("?")[1] === "edit" ? (

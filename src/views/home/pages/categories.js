@@ -55,6 +55,7 @@ export default function Categories2() {
 
   useEffect(() => {
     getCategories();
+    // eslint-disable-next-line
   }, [deteItem]);
 
   return (

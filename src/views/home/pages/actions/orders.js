@@ -24,6 +24,7 @@ export default function Orders() {
 
   useEffect(() => {
     getData(location.search.split("?")[1]);
+    // eslint-disable-next-line
   }, []);
 
   console.log("log", location.search);

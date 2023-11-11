@@ -124,6 +124,7 @@ export default function Retsepts() {
     if (location.search.split("?")[1] === "edit") {
       getItem();
     }
+    // eslint-disable-next-line
   }, []);
 
   return location.search.split("?")[1] === "edit" ? (
