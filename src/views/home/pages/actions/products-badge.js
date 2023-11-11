@@ -52,7 +52,7 @@ export default function Retsepts() {
   };
 
   useEffect(() => {
-    if (location.search.split("?")[1] == "edit") {
+    if (location.search.split("?")[1] === "edit") {
       getBadge();
     }
   }, []);

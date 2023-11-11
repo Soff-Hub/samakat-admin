@@ -83,11 +83,11 @@ export default function Orders() {
                 variant="outlined"
                 size="large"
                 value={
-                  data && data?.status == "approved"
+                  data && data?.status === "approved"
                     ? "tasdiqlangan"
-                    : data && data?.status == "pending"
+                    : data && data?.status === "pending"
                     ? "jarayonda"
-                    : data && data?.status == "cancelled"
+                    : data && data?.status === "cancelled"
                     ? "bekor qilingan"
                     : ""
                 }

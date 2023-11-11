@@ -1,5 +1,5 @@
-import { Button, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import {  TextField } from "@mui/material";
+import React, { useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -20,7 +20,7 @@ export default function AddInput({
 
   function changeObj(e, key) {
     console.log("key", key, e);
-    if (key == "quantity") {
+    if (key === "quantity") {
       setChangeBranchCunt(true);
     }
     let keyName = {};

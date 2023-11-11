@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -106,7 +106,7 @@ export default function Products() {
   };
 
   const addFilialInput = (value, id) => {
-    let findItem = filialInput.find((elem) => elem.id == id);
+    let findItem = filialInput.find((elem) => elem.id === id);
     findItem.branch = Number(value?.branch);
     findItem.quantity = value?.quantity;
 
@@ -114,7 +114,7 @@ export default function Products() {
   };
 
   const addProductHighlightInput = (value, id) => {
-    let findItem = atributInput.find((elem) => elem.id == id);
+    let findItem = atributInput.find((elem) => elem.id === id);
     findItem.content = value?.content;
     findItem.order = value?.order;
     setAtributInput([...atributInput]);
@@ -144,7 +144,7 @@ export default function Products() {
   const setImageUrl = async (e, id) => {
     setImage([...image, e]);
     for (let i = 0; i < imageData.length; i++) {
-      if (imageData[i].id == id) {
+      if (imageData[i].id === id) {
         Object.assign(imageData[i], { image: window.URL.createObjectURL(e) });
       }
     }
@@ -397,12 +397,12 @@ export default function Products() {
   }, []);
 
   useEffect(() => {
-    if (location.search.split("?")?.[2] == "edit") {
+    if (location.search.split("?")?.[2] === "edit") {
       getItem();
     }
-    if (location.search.split("?")[1] == "bistro") {
+    if (location.search.split("?")[1] === "bistro") {
       getCategory("bistro");
-    } else if (location.search.split("?")[1] == "byuti") {
+    } else if (location.search.split("?")[1] === "byuti") {
       getCategory("byuti");
     }
   }, []);
@@ -429,7 +429,7 @@ export default function Products() {
 
   console.log("addfilialInput", addFilialInput);
 
-  return location.search.split("?")?.[2] == "edit" ? (
+  return location.search.split("?")?.[2] === "edit" ? (
     editData ? (
       <div className="flex">
         <div className="w-2/3">

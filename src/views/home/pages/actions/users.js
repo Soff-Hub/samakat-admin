@@ -10,7 +10,6 @@ import {
   TextField,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Formik } from "formik";
 import { Link, useLocation } from "react-router-dom";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
@@ -23,16 +22,7 @@ export default function Users() {
   const handleChangeAcc = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
-  // const handleSubmit = (e) => {
-  //   console.log(e);
-  // };
-
-  const [loading, setLoading] = React.useState(true);
-  function handleClick() {
-    setLoading(true);
-  }
-
+  
   const getItem = async (id) => {
     await Client.get(`${API_ENDPOINTS.DETAIL_USER}${id}`)
       .then((res) => {

@@ -9,17 +9,13 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
@@ -29,7 +25,6 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import { Link } from "react-router-dom";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
@@ -76,17 +71,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
 
   return (
     <TableHead>
@@ -257,7 +242,6 @@ export default function EnhancedTable() {
     setType("bistro");
     await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}&type=bistro`)
       .then((resp) => {
-        console.log(resp?.results);
         setCount(resp.count);
         setData(resp.results);
       })
@@ -267,7 +251,6 @@ export default function EnhancedTable() {
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.PRODUCT}?search=${e}`)
       .then((resp) => {
-        console.log(resp);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -287,7 +270,6 @@ export default function EnhancedTable() {
     setPage(value);
     await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${value}&type=${type}`)
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })
@@ -297,8 +279,6 @@ export default function EnhancedTable() {
   useEffect(() => {
     getProductData();
   }, []);
-
-  console.log("count", count);
 
   return (
     <>

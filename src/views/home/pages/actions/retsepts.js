@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -28,7 +28,6 @@ const MenuProps = {
 };
 
 export default function Retsepts() {
-  const query = useParams();
   const [submiting, setSubmiting] = useState(false);
   const [category, setCategory] = React.useState("");
   const [image, setImage] = useState([]);
@@ -156,9 +155,9 @@ export default function Retsepts() {
     )
       .then((res) => {
         console.log(res);
-        if (res?.type == "bistro") {
+        if (res?.type === "bistro") {
           getCategory("bistro");
-        } else if (res?.type == "byuti") {
+        } else if (res?.type === "byuti") {
           getCategory("byuti");
         }
         setEditData(res);
@@ -176,17 +175,17 @@ export default function Retsepts() {
   };
 
   useEffect(() => {
-    if (location.search.split("?")[1] == "edit") {
+    if (location.search.split("?")[1] === "edit") {
       getItem();
     }
-    if (location.search.split("?")[1] == "bistro") {
+    if (location.search.split("?")[1] === "bistro") {
       getCategory("bistro");
-    } else if (location.search.split("?")[1] == "byuti") {
+    } else if (location.search.split("?")[1] === "byuti") {
       getCategory("byuti");
     }
   }, []);
 
-  return location.search.split("?")[1] == "edit" ? (
+  return location.search.split("?")[1] === "edit" ? (
     editData ? (
       <div>
         <div>

@@ -8,7 +8,6 @@ import { Row2 } from "components/shared/Row2";
 
 export default function Categories2() {
   const [data, setData] = useState(null);
-  const [alignment, setAlignment] = React.useState("web");
   const [page, setPage] = React.useState(1);
   const [type, setType] = useState("bistro");
   const [count, setCount] = useState(10);

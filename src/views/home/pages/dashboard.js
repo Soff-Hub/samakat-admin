@@ -1,11 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import { navigationConfig } from "configs/navigationConfig";
-import { Link } from "react-router-dom";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import ChartComponent from "components/shared/chart";
@@ -16,7 +9,6 @@ export default function Dashboard() {
   const getData = async () => {
     await Client.get(API_ENDPOINTS.DASHBOARD)
       .then((res) => {
-        console.log(res);
         setData(res);
       })
       .catch((err) => {

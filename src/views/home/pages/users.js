@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -20,13 +19,9 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
-import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import { Link } from "react-router-dom";
-import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
-import ResponsiveDialog from "components/shared/modal";
-import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import NavHeader from "components/shared/NavHeader";
+import Pagination from "@mui/material/Pagination";
 import { CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const headCells = [
@@ -55,7 +50,6 @@ function EnhancedTableHead(props) {
     orderBy,
     numSelected,
     rowCount,
-    onRequestSort,
   } = props;
 
   return (
@@ -165,8 +159,6 @@ export default function Users() {
   const [page, setPage] = React.useState(1);
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState(10);
-  const [openDelete, setOpen] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
   const [role, setRole] = useState("");
   const [filial, setFilial] = useState("");
   const [search, setSearch] = useState("");
@@ -407,7 +399,7 @@ export default function Users() {
                                   to={`actions/?detail?${row.id}`}
                                   className="hover:underline"
                                 >
-                                  {row.first_name == "" ? "No name" : row.first_name}
+                                  {row.first_name === "" ? "No name" : row.first_name}
                                 </Link>
                               </TableCell>
                               <TableCell align="left">

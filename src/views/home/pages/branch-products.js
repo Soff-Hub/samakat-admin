@@ -103,7 +103,6 @@ function EnhancedTableHead(props) {
     orderBy,
     numSelected,
     rowCount,
-    onRequestSort,
   } = props;
 
  
@@ -163,7 +162,6 @@ export default function EnhancedTable() {
   const [deleteId, setDeleteId] = useState(null);
   const [branch, setBranch] = useState("");
   const [product, setProduct] = useState("");
-  const [search, setSearch] = useState("");
   const [filialData, setFilialData] = useState(null);
   const [productData, setProductData] = useState(null);
 
@@ -218,7 +216,6 @@ export default function EnhancedTable() {
   };
 
   const Search = async (e) => {
-    setSearch(e);
     await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?search=${e}`)
       .then((resp) => {
         setData(resp.results);

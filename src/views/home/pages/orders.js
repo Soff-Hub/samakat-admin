@@ -22,7 +22,6 @@ import Box from "@mui/material/Box";
 export default function Branches() {
   const [data, setData] = useState(null);
   const [select, setSelect] = useState("");
-  const [search, setSarch] = useState("");
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
 
@@ -47,7 +46,6 @@ export default function Branches() {
   };
 
   const Search = async (e) => {
-    setSarch(e);
     await Client.get(`${API_ENDPOINTS.ORDER}?search=${e}`)
       .then((resp) => {
         console.log(resp);
@@ -178,11 +176,11 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.status == "approved"
+                        {row.status === "approved"
                           ? "tasdiqlangan"
-                          : row.status == "pending"
+                          : row.status === "pending"
                           ? "jarayonda"
-                          : row.status == "cancelled"
+                          : row.status === "cancelled"
                           ? "bekor qilingan"
                           : ""}
                       </Link>

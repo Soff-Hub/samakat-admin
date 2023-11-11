@@ -20,7 +20,6 @@ function Categories() {
   const query = useParams();
   const navigate = useNavigate();
   const loaction = useLocation();
-  const [openDelete, setOpen] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,16 +112,16 @@ function Categories() {
   };
 
   useEffect(() => {
-    if (loaction.search.split("?").length == 4) {
+    if (loaction.search.split("?").length === 4) {
       getItem();
     }
-    if (loaction.search.split("?").length == 4) {
+    if (loaction.search.split("?").length === 4) {
       setFormVal((c) => ({ ...c, type: loaction.search.split("?")[1] }));
     }
   }, []);
   console.log("location", loaction.search.split("?"), "=>", query["*"]);
 
-  return loaction.search.split("?").length == 4 ? (
+  return loaction.search.split("?").length === 4 ? (
     itemData ? (
       <div>
         <div className="flex items-center justify-between">
@@ -203,9 +202,9 @@ function Categories() {
       <div className="flex gap-5">
         <form
           onSubmit={
-            loaction.search.split("?").length == 2
+            loaction.search.split("?").length === 2
               ? handleSubmit
-              : loaction.search.split("?").length == 3
+              : loaction.search.split("?").length === 3
               ? handleCHaildSubmit
               : ""
           }

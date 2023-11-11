@@ -121,12 +121,12 @@ export default function Retsepts() {
   useEffect(() => {
     getBranch();
     getProduct();
-    if (location.search.split("?")[1] == "edit") {
+    if (location.search.split("?")[1] === "edit") {
       getItem();
     }
   }, []);
 
-  return location.search.split("?")[1] == "edit" ? (
+  return location.search.split("?")[1] === "edit" ? (
     editData ? (
       <div>
        <div className="flex items-center justify-between">
