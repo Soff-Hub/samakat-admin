@@ -217,7 +217,7 @@ export default function EnhancedTable() {
       .then((resp) => {
         console.log(resp);
         setCount(resp.count);
-        setBadgeData(resp.results);
+        setData(resp.results);
       })
       .catch((err) => console.log(err));
   };
