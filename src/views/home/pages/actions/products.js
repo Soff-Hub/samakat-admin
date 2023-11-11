@@ -486,37 +486,35 @@ export default function Products() {
                 }}
               />
 
-              <div>
-                <FormControl sx={{ m: 1, width: 600 }}>
-                  <InputLabel id="demo-multiple-checkbox-label">
-                    Bog'liq kategoriyalar
-                  </InputLabel>
-                  <Select
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    multiple
-                    defaultValue={product_categories}
-                    onChange={handleChangeSelect}
-                    input={<OutlinedInput label="Bog'liq kategoriyalar" />}
-                    renderValue={(selected) => selected.join(", ")}
-                    MenuProps={MenuProps}
-                  >
-                    {data?.map((name) => (
-                      <MenuItem key={name} value={name.id}>
-                        <Checkbox
-                          checked={product_categories.indexOf(name.id) > -1}
-                          defaultChecked={product_categories.indexOf(name.id)}
-                        />
-                        <ListItemText primary={name.name} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
+              <FormControl sx={{ m: 0, width: 600 }}>
+                <InputLabel id="demo-multiple-checkbox-label">
+                  Bog'liq kategoriyalar
+                </InputLabel>
+                <Select
+                  labelId="demo-multiple-checkbox-label"
+                  id="demo-multiple-checkbox"
+                  multiple
+                  defaultValue={product_categories}
+                  onChange={handleChangeSelect}
+                  input={<OutlinedInput label="Bog'liq kategoriyalar" />}
+                  renderValue={(selected) => selected.join(", ")}
+                  MenuProps={MenuProps}
+                >
+                  {data?.map((name) => (
+                    <MenuItem key={name} value={name.id}>
+                      <Checkbox
+                        checked={product_categories.indexOf(name.id) > -1}
+                        defaultChecked={product_categories.indexOf(name.id)}
+                      />
+                      <ListItemText primary={name.name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
               <FormControl
                 style={{ width: "600px" }}
-                sx={{ m: 1, minWidth: 120 }}
+                sx={{ m: 0, minWidth: 120 }}
                 size="small"
               >
                 <InputLabel id="demo-select-small-label" placholder="Belgi">
@@ -1203,7 +1201,7 @@ export default function Products() {
             />
 
             <FormControl
-              sx={{ m: 1 }}
+              sx={{ m: 0 }}
               style={{ minWidth: "300px", width: "100%" }}
             >
               <InputLabel id="demo-multiple-checkbox-label">
@@ -1230,7 +1228,7 @@ export default function Products() {
               </Select>
             </FormControl>
 
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+            <FormControl sx={{ m: 0, minWidth: 120 }} size="small">
               <InputLabel id="demo-select-small-label" placholder="Kategoriya">
                 Belgi *
               </InputLabel>
@@ -1272,7 +1270,7 @@ export default function Products() {
                   <div style={{ display: "flex ", gap: "10px" }}>
                     <div
                       className="flex gap-3 flex-wrap"
-                      style={{ minWidth: "560px" }}
+                      style={{ minWidth: "392px" }}
                     >
                       {imageData.map((item, i) => {
                         return (
@@ -1321,7 +1319,6 @@ export default function Products() {
                       style={{
                         display: "flex",
                         alignItems: "end",
-                        marginRight: "55px",
                       }}
                     >
                       <Fab

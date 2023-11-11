@@ -44,6 +44,7 @@ export function ChaildRow2({ row, Detele, getchildData }) {
 
   useEffect(() => {
     setRowData(row);
+    // eslint-disable-next-line
   }, [data]);
 
   return (
