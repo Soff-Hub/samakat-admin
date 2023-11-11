@@ -80,7 +80,7 @@ export default function AddInput({
         }}
       >
         <button type="button" onClick={() => DeleteFilialItem()}>
-          <i class="fa-solid fa-trash"></i>
+          <i className="fa-solid fa-trash"></i>
         </button>
       </div>
     </div>
@@ -120,7 +120,7 @@ export default function AddInput({
         }}
       >
         <button type="button" onClick={() => DeleteIDHighlight()}>
-          <i class="fa-solid fa-trash"></i>
+          <i className="fa-solid fa-trash"></i>
         </button>
       </div>
     </div>

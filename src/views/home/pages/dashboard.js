@@ -43,11 +43,11 @@ export default function Dashboard() {
             </p>
             <i
               style={{ color: "#FFC107  ", fontSize: "28px" }}
-              class="fa-solid fa-money-check-dollar"
+              className="fa-solid fa-money-check-dollar"
             ></i>
           </div>
           <p className="text-[16px]">
-            <i style={{ color: "#FFC107" }} class="fa-solid fa-coins mr-1"></i>
+            <i style={{ color: "#FFC107" }} className="fa-solid fa-coins mr-1"></i>
             {data?.todays_amount}
           </p>
         </div>
@@ -61,11 +61,11 @@ export default function Dashboard() {
             </p>
             <i
               style={{ color: "#FFC107  ", fontSize: "28px" }}
-              class="fa-solid fa-money-check-dollar"
+              className="fa-solid fa-money-check-dollar"
             ></i>
           </div>
           <p className="text-[16px]">
-            <i style={{ color: "#FFC107" }} class="fa-solid fa-coins"></i>{" "}
+            <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>{" "}
             {data?.total_amount}
           </p>
         </div>
@@ -79,11 +79,11 @@ export default function Dashboard() {
             </p>
             <i
               style={{ color: "#FFC107  ", fontSize: "28px" }}
-              class="fa-solid fa-money-check-dollar"
+              className="fa-solid fa-money-check-dollar"
             ></i>
           </div>
           <p className="text-[16px]">
-            <i style={{ color: "#FFC107" }} class="fa-solid fa-coins"></i>
+            <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>
             {data?.total_for_last_month}
           </p>
         </div>
@@ -97,11 +97,11 @@ export default function Dashboard() {
             </p>
             <i
               style={{ color: "#FFC107  ", fontSize: "28px" }}
-              class="fa-solid fa-money-check-dollar"
+              className="fa-solid fa-money-check-dollar"
             ></i>
           </div>
           <p className="text-[16px]">
-            <i style={{ color: "#FFC107" }} class="fa-solid fa-coins"></i>{" "}
+            <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>{" "}
            {data?.total_sold_products}
           </p>
         </div>

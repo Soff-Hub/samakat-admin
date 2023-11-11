@@ -647,7 +647,7 @@ export default function Products() {
                       className="flex overflow-y-scroll border-5 flex-col"
                     >
                       <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
-                        <i class="fa-solid fa-flask"></i>
+                        <i className="fa-solid fa-flask"></i>
                         <TextField
                           label="Tarkibi"
                           variant="outlined"
@@ -664,7 +664,7 @@ export default function Products() {
                         />
                       </div>
                       <div className="mx-3 flex items-baseline gap-3">
-                        <i class="fa-solid fa-virus-covid"></i>
+                        <i className="fa-solid fa-virus-covid"></i>
                         <TextField
                           label="Uglevod"
                           variant="outlined"
@@ -681,7 +681,7 @@ export default function Products() {
                         />
                       </div>
                       <div className="mx-3 flex items-baseline gap-3">
-                        <i class="fa-solid fa-vial-virus"></i>
+                        <i className="fa-solid fa-vial-virus"></i>
                         <TextField
                           label="Kaloriya"
                           variant="outlined"
@@ -698,7 +698,7 @@ export default function Products() {
                         />
                       </div>
                       <div className="mx-3 flex items-baseline gap-3">
-                        <i class="fa-solid fa-mortar-pestle"></i>
+                        <i className="fa-solid fa-mortar-pestle"></i>
                         <TextField
                           label="Yog' miqdori"
                           variant="outlined"
@@ -714,7 +714,7 @@ export default function Products() {
                         />
                       </div>
                       <div className="mx-3 flex items-baseline gap-3">
-                        <i class="fa-solid fa-bandage"></i>
+                        <i className="fa-solid fa-bandage"></i>
                         <TextField
                           label="Protien"
                           variant="outlined"
@@ -730,7 +730,7 @@ export default function Products() {
                         />
                       </div>
                       <div className="mx-3 flex items-baseline gap-3">
-                        <i class="fa-solid fa-hotel"></i>
+                        <i className="fa-solid fa-hotel"></i>
                         <TextField
                           label="Ishlab chiqaruvchi"
                           variant="outlined"
@@ -747,7 +747,7 @@ export default function Products() {
                         />
                       </div>
                       <div className="mx-3 flex items-baseline gap-3">
-                        <i class="fa-solid fa-list-ul"></i>
+                        <i className="fa-solid fa-list-ul"></i>
                         <TextField
                           label="Saqlash shartlari"
                           variant="outlined"
@@ -764,7 +764,7 @@ export default function Products() {
                         />
                       </div>
                       <div className="mx-3 flex items-baseline gap-3">
-                        <i class="fa-solid fa-film"></i>
+                        <i className="fa-solid fa-film"></i>
                         <TextField
                           label="Mahsulot soni yoki hajmi"
                           variant="outlined"
@@ -781,7 +781,7 @@ export default function Products() {
                         />
                       </div>
                       <div className="mx-3 flex items-baseline gap-3">
-                        <i class="fa-solid fa-tower-broadcast"></i>
+                        <i className="fa-solid fa-tower-broadcast"></i>
                         <TextField
                           label="Saqlash muddati"
                           variant="outlined"
@@ -819,10 +819,10 @@ export default function Products() {
                       style={{ backgroundColor: "#cccccc", width: "570px" }}
                     >
                       <p>
-                        Asosiy element <i class="fa-regular fa-star"></i>
+                        Asosiy element <i className="fa-regular fa-star"></i>
                       </p>
                       <p>
-                        Tartib raqami <i class="fa-solid fa-arrow-down-9-1"></i>
+                        Tartib raqami <i className="fa-solid fa-arrow-down-9-1"></i>
                       </p>
                     </div>
 
@@ -852,7 +852,7 @@ export default function Products() {
                       }}
                     >
                       <p>
-                        <i class="fa-solid fa-circle-plus"></i> qo'shish
+                        <i className="fa-solid fa-circle-plus"></i> qo'shish
                       </p>{" "}
                     </div>
                   </AccordionDetails>
@@ -876,10 +876,10 @@ export default function Products() {
                       style={{ backgroundColor: "#cccccc", width: "570px" }}
                     >
                       <p>
-                        Filiallar <i class="fa-solid fa-folder-tree"></i>{" "}
+                        Filiallar <i className="fa-solid fa-folder-tree"></i>{" "}
                       </p>
                       <p>
-                        Soni <i class="fa-solid fa-arrow-down-9-1"></i>{" "}
+                        Soni <i className="fa-solid fa-arrow-down-9-1"></i>{" "}
                       </p>
                     </div>
                     {filialInput?.map((item, i) => (
@@ -910,7 +910,7 @@ export default function Products() {
                       }}
                     >
                       <p>
-                        <i class="fa-solid fa-circle-plus"></i> qo'shish
+                        <i className="fa-solid fa-circle-plus"></i> qo'shish
                       </p>
                     </div>
                   </AccordionDetails>
@@ -980,7 +980,7 @@ export default function Products() {
                     className="text-[13px] leading-[18px] font-medium text-slate-600  max-w-xs flex items-baseline gap-2 "
                   >
                     {" "}
-                    <i class="fa-solid fa-circle text-[3px] text-[#ababab]"></i>{" "}
+                    <i className="fa-solid fa-circle text-[3px] text-[#ababab]"></i>{" "}
                     {item.content}
                   </li>
                 ))}
@@ -993,7 +993,7 @@ export default function Products() {
                     className="text-[13px] leading-[18px] font-medium text-slate-600  max-w-xs flex items-baseline gap-2 "
                   >
                     {" "}
-                    <i class="fa-solid fa-circle text-[3px] text-[#ababab]"></i>{" "}
+                    <i className="fa-solid fa-circle text-[3px] text-[#ababab]"></i>{" "}
                     {item.content}
                   </li>
                 ))}
@@ -1343,7 +1343,7 @@ export default function Products() {
                   className="flex overflow-y-scroll border-5 flex-col"
                 >
                   <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
-                    <i class="fa-solid fa-flask"></i>
+                    <i className="fa-solid fa-flask"></i>
                     <TextField
                       label="Tarkibi"
                       variant="outlined"
@@ -1358,7 +1358,7 @@ export default function Products() {
                     />
                   </div>
                   <div className="mx-3 flex items-baseline gap-3">
-                    <i class="fa-solid fa-virus-covid"></i>
+                    <i className="fa-solid fa-virus-covid"></i>
                     <TextField
                       label="Uglevod"
                       variant="outlined"
@@ -1372,7 +1372,7 @@ export default function Products() {
                     />
                   </div>
                   <div className="mx-3 flex items-baseline gap-3">
-                    <i class="fa-solid fa-vial-virus"></i>
+                    <i className="fa-solid fa-vial-virus"></i>
                     <TextField
                       label="Kaloriya"
                       variant="outlined"
@@ -1386,7 +1386,7 @@ export default function Products() {
                     />
                   </div>
                   <div className="mx-3 flex items-baseline gap-3">
-                    <i class="fa-solid fa-mortar-pestle"></i>
+                    <i className="fa-solid fa-mortar-pestle"></i>
                     <TextField
                       label="Yog' miqdori"
                       variant="outlined"
@@ -1400,7 +1400,7 @@ export default function Products() {
                     />
                   </div>
                   <div className="mx-3 flex items-baseline gap-3">
-                    <i class="fa-solid fa-bandage"></i>
+                    <i className="fa-solid fa-bandage"></i>
                     <TextField
                       label="Protien"
                       variant="outlined"
@@ -1414,7 +1414,7 @@ export default function Products() {
                     />
                   </div>
                   <div className="mx-3 flex items-baseline gap-3">
-                    <i class="fa-solid fa-hotel"></i>
+                    <i className="fa-solid fa-hotel"></i>
                     <TextField
                       label="Ishlab chiqaruvchi"
                       variant="outlined"
@@ -1429,7 +1429,7 @@ export default function Products() {
                     />
                   </div>
                   <div className="mx-3 flex items-baseline gap-3">
-                    <i class="fa-solid fa-list-ul"></i>
+                    <i className="fa-solid fa-list-ul"></i>
                     <TextField
                       label="Saqlash shartlari"
                       variant="outlined"
@@ -1444,7 +1444,7 @@ export default function Products() {
                     />
                   </div>
                   <div className="mx-3 flex items-baseline gap-3">
-                    <i class="fa-solid fa-film"></i>
+                    <i className="fa-solid fa-film"></i>
                     <TextField
                       label="Mahsulot soni yoki hajmi"
                       variant="outlined"
@@ -1459,7 +1459,7 @@ export default function Products() {
                     />
                   </div>
                   <div className="mx-3 flex items-baseline gap-3">
-                    <i class="fa-solid fa-tower-broadcast"></i>
+                    <i className="fa-solid fa-tower-broadcast"></i>
                     <TextField
                       label="Saqlash muddati"
                       variant="outlined"
@@ -1494,7 +1494,7 @@ export default function Products() {
                     className="flex overflow-y-scroll border-5 flex-col"
                   >
                     <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
-                      <i class="fa-solid fa-flask"></i>
+                      <i className="fa-solid fa-flask"></i>
                       <TextField
                         label="Tarkibi"
                         variant="outlined"
@@ -1509,7 +1509,7 @@ export default function Products() {
                       />
                     </div>
                     <div className="mx-3 flex items-baseline gap-3">
-                      <i class="fa-solid fa-virus-covid"></i>
+                      <i className="fa-solid fa-virus-covid"></i>
                       <TextField
                         label="Uglevod"
                         variant="outlined"
@@ -1523,7 +1523,7 @@ export default function Products() {
                       />
                     </div>
                     <div className="mx-3 flex items-baseline gap-3">
-                      <i class="fa-solid fa-vial-virus"></i>
+                      <i className="fa-solid fa-vial-virus"></i>
                       <TextField
                         label="Kaloriya"
                         variant="outlined"
@@ -1537,7 +1537,7 @@ export default function Products() {
                       />
                     </div>
                     <div className="mx-3 flex items-baseline gap-3">
-                      <i class="fa-solid fa-mortar-pestle"></i>
+                      <i className="fa-solid fa-mortar-pestle"></i>
                       <TextField
                         label="Yog' miqdori"
                         variant="outlined"
@@ -1551,7 +1551,7 @@ export default function Products() {
                       />
                     </div>
                     <div className="mx-3 flex items-baseline gap-3">
-                      <i class="fa-solid fa-bandage"></i>
+                      <i className="fa-solid fa-bandage"></i>
                       <TextField
                         label="Protien"
                         variant="outlined"
@@ -1565,7 +1565,7 @@ export default function Products() {
                       />
                     </div>
                     <div className="mx-3 flex items-baseline gap-3">
-                      <i class="fa-solid fa-hotel"></i>
+                      <i className="fa-solid fa-hotel"></i>
                       <TextField
                         label="Ishlab chiqaruvchi"
                         variant="outlined"
@@ -1580,7 +1580,7 @@ export default function Products() {
                       />
                     </div>
                     <div className="mx-3 flex items-baseline gap-3">
-                      <i class="fa-solid fa-list-ul"></i>
+                      <i className="fa-solid fa-list-ul"></i>
                       <TextField
                         label="Saqlash shartlari"
                         variant="outlined"
@@ -1595,7 +1595,7 @@ export default function Products() {
                       />
                     </div>
                     <div className="mx-3 flex items-baseline gap-3">
-                      <i class="fa-solid fa-film"></i>
+                      <i className="fa-solid fa-film"></i>
                       <TextField
                         label="Mahsulot soni yoki hajmi"
                         variant="outlined"
@@ -1610,7 +1610,7 @@ export default function Products() {
                       />
                     </div>
                     <div className="mx-3 flex items-baseline gap-3">
-                      <i class="fa-solid fa-tower-broadcast"></i>
+                      <i className="fa-solid fa-tower-broadcast"></i>
                       <TextField
                         label="Saqlash muddati"
                         variant="outlined"
@@ -1638,10 +1638,10 @@ export default function Products() {
                   style={{ backgroundColor: "#cccccc" }}
                 >
                   <p>
-                    Asosiy element <i class="fa-regular fa-star"></i>
+                    Asosiy element <i className="fa-regular fa-star"></i>
                   </p>
                   <p>
-                    Tartib raqami <i class="fa-solid fa-arrow-down-9-1"></i>
+                    Tartib raqami <i className="fa-solid fa-arrow-down-9-1"></i>
                   </p>
                 </div>
 
@@ -1672,7 +1672,7 @@ export default function Products() {
                   }}
                 >
                   <p>
-                    <i class="fa-solid fa-circle-plus"></i> qo'shish
+                    <i className="fa-solid fa-circle-plus"></i> qo'shish
                   </p>{" "}
                 </div>
               </div>
@@ -1695,10 +1695,10 @@ export default function Products() {
                     style={{ backgroundColor: "#cccccc", width: "570px" }}
                   >
                     <p>
-                      Asosiy element <i class="fa-regular fa-star"></i>
+                      Asosiy element <i className="fa-regular fa-star"></i>
                     </p>
                     <p>
-                      Tartib raqami <i class="fa-solid fa-arrow-down-9-1"></i>
+                      Tartib raqami <i className="fa-solid fa-arrow-down-9-1"></i>
                     </p>
                   </div>
 
@@ -1728,7 +1728,7 @@ export default function Products() {
                     }}
                   >
                     <p>
-                      <i class="fa-solid fa-circle-plus"></i> qo'shish
+                      <i className="fa-solid fa-circle-plus"></i> qo'shish
                     </p>{" "}
                   </div>
                 </AccordionDetails>
@@ -1744,10 +1744,10 @@ export default function Products() {
                   style={{ backgroundColor: "#cccccc" }}
                 >
                   <p>
-                    Filiallar <i class="fa-solid fa-folder-tree"></i>{" "}
+                    Filiallar <i className="fa-solid fa-folder-tree"></i>{" "}
                   </p>
                   <p>
-                    Soni <i class="fa-solid fa-arrow-down-9-1"></i>{" "}
+                    Soni <i className="fa-solid fa-arrow-down-9-1"></i>{" "}
                   </p>
                 </div>
                 {filialInput?.map((item, i) => (
@@ -1776,7 +1776,7 @@ export default function Products() {
                   }}
                 >
                   <p>
-                    <i class="fa-solid fa-circle-plus"></i> qo'shish{" "}
+                    <i className="fa-solid fa-circle-plus"></i> qo'shish{" "}
                   </p>
                 </div>
               </div>
@@ -1799,10 +1799,10 @@ export default function Products() {
                     style={{ backgroundColor: "#cccccc", width: "570px" }}
                   >
                     <p>
-                      Filiallar <i class="fa-solid fa-folder-tree"></i>{" "}
+                      Filiallar <i className="fa-solid fa-folder-tree"></i>{" "}
                     </p>
                     <p>
-                      Soni <i class="fa-solid fa-arrow-down-9-1"></i>{" "}
+                      Soni <i className="fa-solid fa-arrow-down-9-1"></i>{" "}
                     </p>
                   </div>
                   {filialInput?.map((item, i) => (
@@ -1831,7 +1831,7 @@ export default function Products() {
                     }}
                   >
                     <p>
-                      <i class="fa-solid fa-circle-plus"></i> qo'shish{" "}
+                      <i className="fa-solid fa-circle-plus"></i> qo'shish{" "}
                     </p>
                   </div>
                 </AccordionDetails>
@@ -1885,7 +1885,7 @@ export default function Products() {
                   className="text-[13px] leading-[18px] font-medium text-slate-600  max-w-xs flex items-baseline gap-2 "
                 >
                   {" "}
-                  <i class="fa-solid fa-circle text-[3px] text-[#ababab]"></i>{" "}
+                  <i className="fa-solid fa-circle text-[3px] text-[#ababab]"></i>{" "}
                   {item.content}
                 </li>
               ))}

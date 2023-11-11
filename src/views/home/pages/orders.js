@@ -167,7 +167,7 @@ export default function Branches() {
                         className="hover:underline"
                       >
                         {row.promocode === null ? (
-                          <i class="fa-solid fa-minus"></i>
+                          <i className="fa-solid fa-minus"></i>
                         ) : (
                           row.promocode
                         )}

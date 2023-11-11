@@ -279,7 +279,7 @@ export default function Retsepts() {
                           variant="outlined"
                         >
                           <i
-                            class="fa-regular fa-image"
+                            className="fa-regular fa-image"
                             style={{ fontSize: "35px" }}
                           ></i>
                           <input
@@ -439,7 +439,7 @@ export default function Retsepts() {
                         variant="outlined"
                       >
                         <i
-                          class="fa-regular fa-image"
+                          className="fa-regular fa-image"
                           style={{ fontSize: "35px" }}
                         ></i>
                         <input

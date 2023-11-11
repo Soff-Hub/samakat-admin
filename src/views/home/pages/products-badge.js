@@ -34,7 +34,7 @@ function Row(props) {
         <TableCell align="right">
           <Link to={`actions/?edit?${row.id}`}>
             <span style={{ color: `${row.textColor}` }}>
-              <i class="fa-solid fa-certificate"></i>
+              <i className="fa-solid fa-certificate"></i>
             </span>
           </Link>
         </TableCell>

@@ -374,18 +374,18 @@ export default function EnhancedTable() {
                           {JSON.parse(row.price)} so'm
                         </TableCell>
                         <TableCell align="right">
-                          {row.discount} <i class="fa-solid fa-percent"></i>{" "}
+                          {row.discount} <i className="fa-solid fa-percent"></i>{" "}
                         </TableCell>
                         <TableCell align="right">
                           {true ? (
                             <i
                               style={{ color: "green" }}
-                              class=" fa-regular fa-circle-check"
+                              className=" fa-regular fa-circle-check"
                             ></i>
                           ) : (
                             <i
                               style={{ color: "red" }}
-                              class="fa-regular fa-xmark"
+                              className="fa-regular fa-xmark"
                             ></i>
                           )}{" "}
                         </TableCell>

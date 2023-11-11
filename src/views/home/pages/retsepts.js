@@ -481,12 +481,12 @@ export default function EnhancedTable() {
                           {row.is_active ? (
                             <i
                               style={{ color: "green" }}
-                              class=" fa-regular fa-circle-check"
+                              className=" fa-regular fa-circle-check"
                             ></i>
                           ) : (
                             <i
                               style={{ color: "red" }}
-                              class="fa-regular fa-circle-xmark"
+                              className="fa-regular fa-circle-xmark"
                             ></i>
                           )}{" "}
                         </TableCell>
