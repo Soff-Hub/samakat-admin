@@ -33,7 +33,7 @@ export function ChaildRow2({ row, Detele, getchildData }) {
       .then((resp) => {
         setOpen(false);
         Detele(deleteId);
-        location.reload();
+        window.location.reload();
         console.log(resp);
       })
       .catch((err) => {
