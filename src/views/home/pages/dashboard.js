@@ -8,6 +8,7 @@ import { navigationConfig } from "configs/navigationConfig";
 import { Link } from "react-router-dom";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
+import ChartComponent from "components/shared/chart";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
@@ -105,6 +106,7 @@ export default function Dashboard() {
           </p>
         </div>
       </div>
-    </div>
+    <ChartComponent/>
+  </div>
   );
 }
