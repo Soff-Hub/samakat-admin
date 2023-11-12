@@ -29,9 +29,8 @@ export default function Dashboard() {
           <div className="flex justify-between">
             <p>
               <span className="text-[18px] block font-semibold text-slate-900">
-                Jami hisob
+                Bugungi daromad
               </span>
-              <span className="text-[15px]"> Bugungi kun bo'yicha </span>
             </p>
             <i
               style={{ color: "#FFC107  ", fontSize: "28px" }}
@@ -47,13 +46,12 @@ export default function Dashboard() {
           <div className="flex justify-between">
             <p>
               <span className="text-[18px] block font-semibold text-slate-900">
-                Jami hisob
+                Jami daromad
               </span>
-              <span className="text-[15px]"> Jami daromad </span>
             </p>
             <i
               style={{ color: "#FFC107  ", fontSize: "28px" }}
-              className="fa-solid fa-money-check-dollar"
+                class="fa-solid fa-sack-dollar"
             ></i>
           </div>
           <p className="text-[16px]">
@@ -65,13 +63,12 @@ export default function Dashboard() {
           <div className="flex justify-between">
             <p>
               <span className="text-[18px] block font-semibold text-slate-900">
-                Jami hisob
+                Oxirgi 30 kunlik
               </span>
-              <span className="text-[15px]"> Oxirgi oy ichida </span>
             </p>
             <i
               style={{ color: "#FFC107  ", fontSize: "28px" }}
-              className="fa-solid fa-money-check-dollar"
+              className="fa-solid fa-money-bill-trend-up"
             ></i>
           </div>
           <p className="text-[16px]">
@@ -83,13 +80,12 @@ export default function Dashboard() {
           <div className="flex justify-between">
             <p>
               <span className="text-[18px] block font-semibold text-slate-900">
-                Umumiy soni
+              Sotilgan mahsulotning soni
               </span>
-              <span className="text-[15px]">Sotilgan mahsulotning soni </span>
             </p>
             <i
               style={{ color: "#FFC107  ", fontSize: "28px" }}
-              className="fa-solid fa-money-check-dollar"
+              className="fa-solid fa-list-ol"
             ></i>
           </div>
           <p className="text-[16px]">

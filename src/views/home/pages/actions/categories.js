@@ -52,7 +52,9 @@ function Categories() {
     formData.append("name", formVal.name);
     formData.append("parent", loaction.search.split("?")[2]);
     formData.append("order", formVal.order);
-    formData.append("image", img);
+    if (img) {
+      formData.append("image", img)
+    }
     formData.append("type", loaction.search.split("?")[1]);
 
     setSubmiting(true);
@@ -242,7 +244,6 @@ function Categories() {
             File yuklash
             <input
               style={{ display: "none" }}
-              required
               onChange={(e) => setImage(e.target.files[0])}
               type="file"
             />

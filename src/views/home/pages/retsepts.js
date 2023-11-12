@@ -31,8 +31,6 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { CircularProgress } from "@mui/material";
 
-
-
 const headCells = [
   {
     id: "name",
@@ -67,14 +65,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-  } = props;
-
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
 
   return (
     <TableHead>
@@ -226,7 +217,6 @@ export default function EnhancedTable() {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-
   const Bistre = async () => {
     setPage(1);
     setType("bistro");
@@ -279,7 +269,6 @@ export default function EnhancedTable() {
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.RETCIPE}?search=${e}`)
       .then((resp) => {
-        console.log(resp);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -425,20 +414,22 @@ export default function EnhancedTable() {
                 </TableBody>
               </Table>
             </TableContainer>
-            {count && Math.ceil(count / 30) <= 1 ? (
-            <></>
-          ) : (
-            <div className="m-3 mb-5">
-              <Stack spacing={2}>
-                <Typography> Sahifa : {page}</Typography>
-                <Pagination
-                  count={Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)}
-                  page={page}
-                  onChange={handleChangePag}
-                />
-              </Stack>
-            </div>
-          )}
+            {(count && Math.ceil(count / 30) <= 1) || count === 0 ? (
+              <></>
+            ) : (
+              <div className="m-3 mb-5">
+                <Stack spacing={2}>
+                  <Typography> Sahifa : {page}</Typography>
+                  <Pagination
+                    count={
+                      Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)
+                    }
+                    page={page}
+                    onChange={handleChangePag}
+                  />
+                </Stack>
+              </div>
+            )}
           </Paper>
         </Box>
       ) : (

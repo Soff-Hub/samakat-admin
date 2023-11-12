@@ -168,7 +168,6 @@ export default function Users() {
     await Client.get(API_ENDPOINTS.USERS)
       .then((resp) => {
         setCount(resp.count)
-        console.log(resp.results);
         setData(resp.results);
       })
       .catch((err) => {
@@ -214,10 +213,8 @@ export default function Users() {
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const Search = async (e) => {
-    setSearch(e);
     await Client.get(`${API_ENDPOINTS.USERS}?search=${e}`)
       .then((resp) => {
-        console.log(resp);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -240,7 +237,6 @@ export default function Users() {
       }`
     )
       .then((resp) => {
-        console.log(resp);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -254,7 +250,6 @@ export default function Users() {
       }`
     )
       .then((resp) => {
-        console.log(resp);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -273,7 +268,7 @@ export default function Users() {
   useEffect(() => {
     getUsers();
     getFilial();
-  }, [search, filial, role]);
+  }, []);
 
   return (
     <div>

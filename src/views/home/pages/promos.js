@@ -28,7 +28,6 @@ import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 const lastSunday = dayjs().startOf("week").subtract(1, "day");
 const nextSunday = dayjs().endOf("week").startOf("day");
 
-
 const headCells = [
   {
     id: "name",
@@ -81,13 +80,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-  } = props;
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
 
   return (
     <TableHead>
@@ -141,7 +134,6 @@ export default function EnhancedTable() {
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -189,7 +181,6 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const Search = async (e) => {
@@ -232,7 +223,7 @@ export default function EnhancedTable() {
       .then((resp) => {
         // setCount(resp.count);
         console.log(resp.results);
-        
+
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -318,11 +309,6 @@ export default function EnhancedTable() {
                         <TableCell align="right">{row.start_date} </TableCell>
                         <TableCell align="right">{row.end_date} </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
-                          {/* <Link  to={`actions/?edit?${row.id}`}>
-                            <IconButton color="primary">
-                              <DriveFileRenameOutlineOutlinedIcon />
-                            </IconButton>
-                          </Link> */}
                           <IconButton
                             color="error"
                             onClick={() => {
@@ -341,20 +327,22 @@ export default function EnhancedTable() {
               </Table>
             </TableContainer>
 
-            {count && Math.ceil(count / 30) <= 1 ? (
-            <></>
-          ) : (
-            <div className="m-3 mb-5">
-              <Stack spacing={2}>
-                <Typography> Sahifa : {page}</Typography>
-                <Pagination
-                  count={Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)}
-                  page={page}
-                  onChange={handleChangePag}
-                />
-              </Stack>
-            </div>
-          )}
+            {(count && Math.ceil(count / 30) <= 1) || count === 0 ? (
+              <></>
+            ) : (
+              <div className="m-3 mb-5">
+                <Stack spacing={2}>
+                  <Typography> Sahifa : {page}</Typography>
+                  <Pagination
+                    count={
+                      Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)
+                    }
+                    page={page}
+                    onChange={handleChangePag}
+                  />
+                </Stack>
+              </div>
+            )}
           </Paper>
         </Box>
       ) : (

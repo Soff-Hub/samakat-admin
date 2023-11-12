@@ -29,7 +29,7 @@ export default function Branches() {
     await Client.get(API_ENDPOINTS.ORDER)
       .then((resp) => {
         setData(resp.results);
-        setCount(resp.count)
+        setCount(resp.count);
       })
       .catch((err) => console.log(err));
   }
@@ -38,7 +38,6 @@ export default function Branches() {
     setSelect(event.target.value);
     await Client.get(`${API_ENDPOINTS.ORDER}?status=${event.target.value}`)
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })
@@ -48,14 +47,12 @@ export default function Branches() {
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.ORDER}?search=${e}`)
       .then((resp) => {
-        console.log(resp);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
   };
 
   const handleChangePag = async (event, value) => {
-    
     setPage(value);
     await Client.get(`${API_ENDPOINTS.ORDER}?page=${value}`)
       .then((resp) => {
@@ -64,13 +61,13 @@ export default function Branches() {
         setData(resp.results);
       })
       .catch((err) => console.log(err));
-  }
+  };
 
   useEffect(() => {
     getOrders();
   }, []);
 
-  
+  console.log("count", count);
 
   return (
     <div>
@@ -190,14 +187,14 @@ export default function Branches() {
               })}
             </TableBody>
           </Table>
-          {count && Math.ceil(count / 30) <= 1 ? (
+          {(count && Math.ceil(count / 30) <= 1) || count === 0 ? (
             <></>
           ) : (
             <div className="m-3 mb-5">
               <Stack spacing={2}>
                 <Typography> Sahifa : {page}</Typography>
                 <Pagination
-                  count={Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)}
+                  count={Math.ceil(count / 30) <= 1 ? 1 : Math.ceil(count / 30)}
                   page={page}
                   onChange={handleChangePag}
                 />

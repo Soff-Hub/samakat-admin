@@ -97,15 +97,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-  } = props;
-
- 
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
 
   return (
     <TableHead>
@@ -309,7 +301,7 @@ export default function EnhancedTable() {
   }, []);
 
   return (
-    <div className="w-auto">
+    <div>
       <div className="mb-5">
         <NavHeader title="Filiallardagi mahsulotlar" />
       </div>
@@ -469,7 +461,7 @@ export default function EnhancedTable() {
               </Table>
             </TableContainer>
 
-            {count && Math.ceil(count / 30) <= 1 ? (
+            {(count && Math.ceil(count / 30) <= 1) || count === 0 ? (
               <></>
             ) : (
               <div className="m-3 mb-5">
