@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import ChartComponent from "components/shared/chart";
+import { Box, CircularProgress } from "@mui/material";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
+  const [statistic, setStatistic] = useState(null)
 
   const getData = async () => {
     await Client.get(API_ENDPOINTS.DASHBOARD)
@@ -16,8 +18,21 @@ export default function Dashboard() {
       });
   };
 
+  const getStatistic = async () => {
+    await Client.get(API_ENDPOINTS.MOTHLY_STATISTIC)
+    .then((res) => {
+      setStatistic(res.result)
+    })
+    .catch((err) => {
+      console.log(err);
+      
+    })
+  }
+
+
   useEffect(() => {
     getData();
+    getStatistic()
   }, []);
 
 
@@ -94,7 +109,21 @@ export default function Dashboard() {
           </p>
         </div>
       </div>
-    <ChartComponent/>
+      {
+        statistic?.length > 0 ?
+        <ChartComponent data={statistic} />
+        :
+        <Box
+        sx={{
+          display: "flex",
+          wdith: "100%",
+          justifyContent: "center",
+          padding: "150px 0",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+      }
   </div>
   );
 }

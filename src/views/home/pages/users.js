@@ -72,12 +72,9 @@ function EnhancedTableHead(props) {
             align="left"
             sortDirection={orderBy === headCell.id ? order : false}
           >
+            <span className="font-bold text-[16px]" >
             {headCell.label}
-            {orderBy === headCell.id ? (
-              <Box component="span" sx={visuallyHidden}>
-                {order === "desc" ? "sorted descending" : "sorted ascending"}
-              </Box>
-            ) : null}
+            </span>
           </TableCell>
         ))}
       </TableRow>

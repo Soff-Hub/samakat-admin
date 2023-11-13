@@ -87,7 +87,6 @@ export default function Retsepts() {
       API_ENDPOINTS.DETAIL_PRODUCT_COUNT_BRANCH + location.search.split("?")[2]
     )
       .then((res) => {
-        console.log("item =>", res);
         setEditData(res);
         setBranch(res.branch);
         setProduct(res.product);
@@ -101,7 +100,6 @@ export default function Retsepts() {
   const getBranch = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((res) => {
-        console.log("res", res.results);
         setBranchData(res.results);
       })
       .catch((err) => {

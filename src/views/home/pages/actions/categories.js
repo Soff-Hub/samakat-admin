@@ -53,7 +53,7 @@ function Categories() {
     formData.append("parent", loaction.search.split("?")[2]);
     formData.append("order", formVal.order);
     if (img) {
-      formData.append("image", img)
+      formData.append("image", img);
     }
     formData.append("type", loaction.search.split("?")[1]);
 
@@ -176,7 +176,7 @@ function Categories() {
                 variant="contained"
                 startIcon={<CloudUploadIcon />}
               >
-                File yuklash
+                Rasm yuklash
                 <input
                   style={{ display: "none" }}
                   onChange={(e) => setImage(e.target.files[0])}
@@ -213,6 +213,19 @@ function Categories() {
           }
           className="w-1/2 m-auto mt-6 flex flex-col gap-5 create-branch-form"
         >
+          {loaction.search.split("?").length === 3 ? (
+            <TextField
+              label="Ota kategoriya"
+              variant="outlined"
+              size="large"
+              type="text"
+              required
+              value="Ota kategoriya"
+            />
+          ) : (
+            ""
+          )}
+
           <TextField
             label="Kategoriya nomi"
             variant="outlined"
@@ -241,7 +254,7 @@ function Categories() {
             variant="contained"
             startIcon={<CloudUploadIcon />}
           >
-            File yuklash
+            Rasm yuklash
             <input
               style={{ display: "none" }}
               onChange={(e) => setImage(e.target.files[0])}

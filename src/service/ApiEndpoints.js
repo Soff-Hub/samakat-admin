@@ -54,5 +54,6 @@ export const API_ENDPOINTS = {
     DELETE_CREATE_PROMO_CODE: 'admin/promo-code/delete/',
     UPDATE_PROMO_CODE: 'admin/promo-code/update/',
 
-    DASHBOARD:'admin/dashboard/statistic/'
+    DASHBOARD:'admin/dashboard/statistic/',
+    MOTHLY_STATISTIC:'admin/monthly/statistic/'
 }

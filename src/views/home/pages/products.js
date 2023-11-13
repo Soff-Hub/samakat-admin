@@ -94,12 +94,7 @@ function EnhancedTableHead(props) {
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            {headCell.label}
-            {orderBy === headCell.id ? (
-              <Box component="span" sx={visuallyHidden}>
-                {order === "desc" ? "sorted descending" : "sorted ascending"}
-              </Box>
-            ) : null}
+            <span className="font-bold text-[16px]"> {headCell.label}</span>
           </TableCell>
         ))}
       </TableRow>
@@ -255,7 +250,6 @@ export default function EnhancedTable() {
       })
       .catch((err) => console.log(err));
   };
-  
 
   const handleDelete = async () => {
     await Client.delete(`${API_ENDPOINTS.DELETE_PRODUCT}${deleteId}/`)

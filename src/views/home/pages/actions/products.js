@@ -106,7 +106,9 @@ export default function Products() {
   };
 
   const addFilialInput = (value, id) => {
+    console.log('finditem', value, id);
     let findItem = filialInput.find((elem) => elem.id === id);
+    
     findItem.branch = Number(value?.branch);
     findItem.quantity = value?.quantity;
 

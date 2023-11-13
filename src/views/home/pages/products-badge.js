@@ -111,11 +111,11 @@ export default function CollapsibleTable() {
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell>Belgi matni</TableCell>
-              <TableCell align="right">Belgi rangi</TableCell>
+              <TableCell><span className="font-bold text-[16px]" >Belgi matni</span></TableCell>
+              <TableCell align="right"><span className="font-bold text-[16px]" >Belgi rangi</span></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
-              <TableCell align="right">Amallar</TableCell>
+              <TableCell align="right"><span className="font-bold text-[16px]" >Amallar</span></TableCell>
             </TableRow>
           </TableHead>
           {bagdeData ? (

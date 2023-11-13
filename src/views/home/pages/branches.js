@@ -32,7 +32,7 @@ export default function Branches() {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((resp) => {
         setData(resp.results);
-        setCount(resp.count)
+        setCount(resp.count);
       })
       .catch((err) => console.log(err));
   }
@@ -83,9 +83,9 @@ export default function Branches() {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Filial Nomi</TableCell>
-                <TableCell align="">Aniq Manzil</TableCell>
-                <TableCell align="right">Amallar</TableCell>
+                <TableCell><span className="font-bold text-[16px]" >Filial Nomi</span></TableCell>
+                <TableCell align=""><span className="font-bold text-[16px]" >Aniq Manzil</span></TableCell>
+                <TableCell align="right"><span className="font-bold text-[16px]" >Amallar</span></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -139,9 +139,9 @@ export default function Branches() {
                           },
                         }}
                       >
-                        <MenuItem onClick={handleClose}>
-                          <Link to={"actions/" + row.uuid}>Tahrirlash</Link>
-                        </MenuItem>
+                        <Link to={"actions/" + row.uuid}>
+                          <MenuItem onClick={handleClose}>Tahrirlash</MenuItem>
+                        </Link>
                         <MenuItem
                           onClick={() => {
                             setDeleteId(row.uuid);

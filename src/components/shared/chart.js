@@ -1,54 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
+import PropTypes from 'prop-types'
 
-export default function ChartComponent() {
+export default function ChartComponent({ data }) {
+  const [arrMonth, setArrMonth] = useState([]);
+  const [arrMonthValue, setArrMonthValue] = useState([]);
   const [options, setOptions] = useState({
     chart: {
       id: "basic-bar",
     },
     xaxis: {
-      categories: [
-        "yanvar",
-        "fevral",
-        "mart",
-        "aprel",
-        "may",
-        "iyun",
-        "iyul",
-        "avgust",
-        "sentabr",
-        "oktabr",
-        "noyabr",
-        "dekabr",
-      ],
+      categories: arrMonth,
     },
   });
   const [series, setSeries] = useState([
     {
-      name: "daromad",
-      data: [30, 40, 45, 50, 49, 60, 70, 91, 33, 55, 80, 99],
+      name: "mahsulot soni",
+      data: arrMonthValue,
     },
   ]);
-  // constructor(props) {
-  //   super(props);
 
-  //   this.state = {
-  //     options: {
-  //       chart: {
-  //         id: "basic-bar"
-  //       },
-  //       xaxis: {
-  //         categories: ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul' , 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr']
-  //       }
-  //     },
-  //     series: [
-  //       {
-  //         name: "daromad",
-  //         data: [30, 40, 45, 50, 49, 60, 70, 91, 33, 55, 80, 99]
-  //       }
-  //     ]
-  //   };
-  // }
+  const sortData = (data) => {
+    for (const item of data) {
+      arrMonth.push(item.month);
+      arrMonthValue.push(item.monthly_amount)
+    }
+    console.log("statistic", arrMonthValue);
+  };
+
+  useEffect(() => {
+    if (data?.length > 0) {
+      sortData(data);
+    }
+  }, []);
+
+  console.log(options , series);
 
   return (
     <div className="app ">
@@ -60,18 +46,26 @@ export default function ChartComponent() {
             justifyContent: "center",
           }}
         >
+         {
+          data?.length > 0 ? 
           <Chart
-            options={options}
-            series={series}
-            type="bar"
-            className="w-full"
-            style={{
-              maxWidth: "1200px",
-              with: "100%",
-            }}
-          />
+          options={options}
+          series={series}
+          type="bar"
+          className="w-full"
+          style={{
+            maxWidth: "1200px",
+            with: "100%",
+          }}
+        /> :
+        <>load</>
+         }
         </div>
       </div>
     </div>
   );
+}
+
+ChartComponent.propTypes = {
+  month: PropTypes.string
 }

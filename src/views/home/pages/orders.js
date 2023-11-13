@@ -67,8 +67,6 @@ export default function Branches() {
     getOrders();
   }, []);
 
-  console.log("count", count);
-
   return (
     <div>
       <div className="mb-5">
@@ -96,25 +94,43 @@ export default function Branches() {
               </InputLabel>
               <Select
                 className="pt-1"
+                style={{
+                  color: `${
+                    select == "approved"
+                      ? "green"
+                      : select == "pending"
+                      ? "#F4CA16"
+                      : select == "cancelled"
+                      ? "red"
+                      : "black"
+                  }`,
+                }}
                 value={select}
                 label="Holat bo'yicha"
                 onChange={handleChange}
               >
-                <MenuItem value={"approved"}>tasdiqlangan</MenuItem>
-                <MenuItem value={"pending"}>jarayonda</MenuItem>
-                <MenuItem value={"cancelled"}>bekor qilingan</MenuItem>
+                <MenuItem value={"approved"} style={{ color: "green" }}>
+                  tasdiqlangan
+                </MenuItem>
+                <MenuItem value={"pending"} style={{ color: "#F4CA16" }}>
+                  jarayonda
+                </MenuItem>
+                <MenuItem value={"cancelled"} style={{ color: "red" }}>
+                  bekor qilingan
+                </MenuItem>
               </Select>
             </FormControl>
           </div>
           <Table sx={{ minWidth: 300 }} aria-label="caption table">
             <TableHead>
-              <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell>Foydalanuvchi</TableCell>
-                <TableCell>Umumiy so'mma</TableCell>
-                <TableCell>Manzil</TableCell>
-                <TableCell>Promo kod</TableCell>
-                <TableCell>Holat</TableCell>
+              <TableRow >
+                <TableCell ><span className="font-bold text-[16px]" >Id</span></TableCell>
+                <TableCell><span className="font-bold text-[16px]" >Foydalanuvchi nomi</span></TableCell>
+                <TableCell><span className="font-bold text-[16px]" >Telefon raqam</span></TableCell>
+                <TableCell><span className="font-bold text-[16px]" >Umumiy so'mma</span></TableCell>
+                <TableCell><span className="font-bold text-[16px]" >Manzil</span></TableCell>
+                <TableCell><span className="font-bold text-[16px]" >Promo kod</span></TableCell>
+                <TableCell><span className="font-bold text-[16px]" >Holat</span></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -137,7 +153,16 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.user}
+                        {row.user.first_name}
+                        {row.user.last_name}
+                      </Link>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Link
+                        to={"actions/?" + row.id}
+                        className="hover:underline"
+                      >
+                        {row.user.phone}
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
