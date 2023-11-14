@@ -117,7 +117,7 @@ export default function Retsepts() {
       });
   };
   const getProduct = async () => {
-    await Client.get(API_ENDPOINTS.PRODUCT)
+    await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST)
       .then((res) => {
         setProductOption(
           res.results.map((el) => ({

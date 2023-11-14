@@ -11,7 +11,6 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import { visuallyHidden } from "@mui/utils";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
@@ -28,39 +27,8 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select,
 } from "@mui/material";
-
-// function descendingComparator(a, b, orderBy) {
-//   if (b[orderBy] < a[orderBy]) {
-//     return -1;
-//   }
-//   if (b[orderBy] > a[orderBy]) {
-//     return 1;
-//   }
-//   return 0;
-// }
-
-// function getComparator(order, orderBy) {
-//   return order === "desc"
-//     ? (a, b) => descendingComparator(a, b, orderBy)
-//     : (a, b) => -descendingComparator(a, b, orderBy);
-// }
-// function stableSort(array, comparator) {
-//   const stabilizedThis = array.map((el, index) => [el, index]);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) {
-//       return order;
-//     }
-//     return a[1] - b[1];
-//   });
-//   return stabilizedThis.map((el) => el[0]);
-// }
-
-// const createSortHandler = (property) => (event) => {
-//   onRequestSort(event, property);
-// };
+import { Select } from "antd";
 
 const headCells = [
   {
@@ -210,9 +178,9 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
   const handleChangeFilial = async (event) => {
-    setBranch(event.target.value);
+    setBranch(event);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event.target.value}&product=${product}&product__type=${type}`
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event}&product=${product}&product__type=${type}`
     )
       .then((resp) => {
         setData(resp.results);
@@ -220,9 +188,9 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
   const handleChangeProductFilter = async (event) => {
-    setProduct(event.target.value);
+    setProduct(event);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&product=${event.target.value}&product__type=${type}`
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&product=${event}&product__type=${type}`
     )
       .then((resp) => {
         setData(resp.results);
@@ -256,17 +224,25 @@ export default function EnhancedTable() {
   const getFilial = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((res) => {
-        console.log("res", res.results);
-        setFilialData(res.results);
+        setFilialData(
+          res.results.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const getProduct = async () => {
-    await Client.get(API_ENDPOINTS.PRODUCT)
+    await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST)
       .then((res) => {
-        setProductData(res.results);
+        setProductData(res.results?.map((el) => ({
+          label : el.name,
+          value : el.id
+        }))
+          );
       })
       .catch((err) => {
         console.log(err);
@@ -326,62 +302,32 @@ export default function EnhancedTable() {
                   className="sm:w-full  w-1/3 px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
                   onChange={(e) => Search(e.target.value)}
                 />
-                <FormControl
-                  sx={{ minWidth: 100 }}
-                  size="small"
-                  className="sm:w-full  w-1/3"
-                >
-                  <InputLabel
-                    id="demo-select-small-label"
-                    placholder="Holat bo'yicha"
-                  >
-                    Filial bo'yicha
-                  </InputLabel>
-                  <Select
-                    className="py-0.5"
-                    value={branch}
-                    label="Holat bo'yicha"
-                    onChange={handleChangeFilial}
-                  >
-                    {filialData ? (
-                      filialData?.map((item, i) => (
-                        <MenuItem key={i} value={item.id}>
-                          {item.name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <></>
-                    )}
-                  </Select>
-                </FormControl>
-                <FormControl
-                  sx={{ minWidth: 100 }}
-                  size="small"
-                  className="sm:w-full  w-1/3"
-                >
-                  <InputLabel
-                    id="demo-select-small-label"
-                    placholder="Holat bo'yicha"
-                  >
-                    Mahsulot bo'yicha
-                  </InputLabel>
-                  <Select
-                    className="py-0.5"
-                    value={product}
-                    label="Mahsulot bo'yicha"
-                    onChange={handleChangeProductFilter}
-                  >
-                    {productData ? (
-                      productData?.map((item) => (
-                        <MenuItem key={item.id} value={item.id}>
-                          {item.name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <></>
-                    )}
-                  </Select>
-                </FormControl>
+                <Select
+                  mode="select"
+                  placeholder="Filial"
+                  style={{
+                    width: "100%",
+                    height: "47px",
+                  }}
+                  onChange={handleChangeFilial}
+                  options={filialData}
+                ></Select>
+                <Select
+                  mode="select"
+                  placeholder="Mahsulot"
+                  style={{
+                    width: "100%",
+                    height: "47px",
+                  }}
+                  showSearch
+                  allowClear
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  onChange={handleChangeProductFilter}
+                  options={productData}
+                ></Select>
               </div>
               <Table
                 sx={{ minWidth: 750 }}
