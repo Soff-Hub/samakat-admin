@@ -1,10 +1,6 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-// import Select from "@mui/material/Select";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
@@ -25,13 +21,6 @@ export default function Retsepts() {
   const [error, setError] = useState(false);
   const [errorProduct, setErrorProduct] = useState(false);
   const [productOption, setProductOption] = useState([]);
-
-  const handleChangeProduct = (event) => {
-    setProduct(event.target.value);
-  };
-  const handleChangeBranch = (event) => {
-    setBranch(event.target.value);
-  };
 
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
@@ -116,7 +105,12 @@ export default function Retsepts() {
   const getBranch = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((res) => {
-        setBranchData(res.results);
+        setBranchData(
+          res.results.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -139,18 +133,6 @@ export default function Retsepts() {
       });
   };
 
-  const onSearchProduct = async (e) => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT}?search=${e}`)
-      .then((res) => {
-        setProductOption(
-          res.results.map((el) => ({
-            label: el.name,
-            value: el.id,
-          }))
-        );
-      })
-      .catch((err) => console.log(err));
-  };
 
   useEffect(() => {
     getBranch();
@@ -160,15 +142,6 @@ export default function Retsepts() {
     }
     // eslint-disable-next-line
   }, []);
-
-  const branchOption = [];
-  for (let i = 0; i < branchData?.length; i++) {
-    branchOption.push(
-      <Option value={branchData[i].id} key={branchData[i].id}>
-        {branchData[i].name}
-      </Option>
-    );
-  }
 
   const onChangeProduct = (e) => {
     setProduct(e);
@@ -221,8 +194,8 @@ export default function Retsepts() {
                     error ? "rounded-md border border-rose-500" : ""
                   }`}
                   onChange={onChangeBranch}
+                  options={branchData}
                 >
-                  {branchOption}
                 </Select>
                 <Select
                   mode="select"
@@ -310,13 +283,8 @@ export default function Retsepts() {
               }}
               className={`${error ? "rounded-md border border-rose-500" : ""}`}
               onChange={onChangeBranch}
-            >
-              {branchData?.map((item) => (
-                <Option value={item.id} key={item.id}>
-                  {item.name}
-                </Option>
-              ))}
-            </Select>
+              options={branchData}
+            ></Select>
             <Select
               mode="select"
               placeholder="Mahsulot"

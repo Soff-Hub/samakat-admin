@@ -10,7 +10,6 @@ export default function Categories2() {
   const [data, setData] = useState(null);
   const [page, setPage] = React.useState(1);
   const [type, setType] = useState("bistro");
-  const [count, setCount] = useState(10);
   const [deteItem, setDeleteItem] = useState("");
 
   const handleChange = async (e) => {
@@ -20,7 +19,6 @@ export default function Categories2() {
       `${API_ENDPOINTS.CATEGORIES}?page=${page}&type=${e.target.value}&parent_is_null=true`
     )
       .then((resp) => {
-        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -32,7 +30,6 @@ export default function Categories2() {
     )
       .then((resp) => {
         setData(resp.results);
-        setCount(resp.count);
       })
       .catch((err) => console.log(err));
   }
@@ -41,7 +38,6 @@ export default function Categories2() {
     await Client.get(`${API_ENDPOINTS.CATEGORIES}?search=${e}`)
       .then((resp) => {
         console.log(resp);
-        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));

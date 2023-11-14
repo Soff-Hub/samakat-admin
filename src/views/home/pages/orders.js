@@ -96,11 +96,11 @@ export default function Branches() {
                 className="pt-1"
                 style={{
                   color: `${
-                    select == "approved"
+                    select === "approved"
                       ? "green"
-                      : select == "pending"
+                      : select === "pending"
                       ? "#F4CA16"
-                      : select == "cancelled"
+                      : select === "cancelled"
                       ? "red"
                       : "black"
                   }`,
