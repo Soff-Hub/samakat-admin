@@ -16,7 +16,6 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { visuallyHidden } from "@mui/utils";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Link } from "react-router-dom";
@@ -158,7 +157,6 @@ export default function Users() {
   const [count, setCount] = useState(10);
   const [role, setRole] = useState("");
   const [filial, setFilial] = useState("");
-  const [search, setSearch] = useState("");
   const [filialData, setFilialData] = useState([]);
 
   const getUsers = async () => {

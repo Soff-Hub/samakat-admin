@@ -11,7 +11,6 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import { visuallyHidden } from "@mui/utils";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";

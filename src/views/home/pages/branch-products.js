@@ -22,12 +22,7 @@ import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import NavHeader from "components/shared/NavHeader";
-import {
-  CircularProgress,
-  FormControl,
-  InputLabel,
-  MenuItem,
-} from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { Select } from "antd";
 
 const headCells = [
@@ -238,11 +233,12 @@ export default function EnhancedTable() {
   const getProduct = async () => {
     await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST)
       .then((res) => {
-        setProductData(res.results?.map((el) => ({
-          label : el.name,
-          value : el.id
-        }))
-          );
+        setProductData(
+          res.results?.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
       })
       .catch((err) => {
         console.log(err);

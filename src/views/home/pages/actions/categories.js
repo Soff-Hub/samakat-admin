@@ -18,7 +18,6 @@ function Categories() {
   const [itemData, setItemData] = useState(null);
   const [img, setImage] = useState(null);
   const [parentName, setParentName] = useState(null);
-  const query = useParams();
   const navigate = useNavigate();
   const loaction = useLocation();
 
