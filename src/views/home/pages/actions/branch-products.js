@@ -4,11 +4,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+// import Select from "@mui/material/Select";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Select } from "antd";
 
 export default function Retsepts() {
   const [submiting, setSubmiting] = useState(false);
@@ -21,6 +22,9 @@ export default function Retsepts() {
   const [branch, setBranch] = useState("");
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [error, setError] = useState(false);
+  const [errorProduct, setErrorProduct] = useState(false);
+  const [productOption, setProductOption] = useState([]);
 
   const handleChangeProduct = (event) => {
     setProduct(event.target.value);
@@ -31,26 +35,38 @@ export default function Retsepts() {
 
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
+    if (branch !== "" && product !== "") {
+      if (branch !== "") {
+        setError(false);
+      } else if (product !== "") {
+        setErrorProduct(false);
+      }
+      const data = {
+        branch: branch,
+        product: product,
+        quantity: +quantity,
+      };
+      setSubmiting(true);
+      await Client.post(API_ENDPOINTS.CREATE_PRODUCT_COUNT_BRANCH, data)
+        .then((data) => {
+          toast.success("Fillarlardagi mahsulot soni muvaffaqiyatli qo'shildi");
+          setTimeout(() => {
+            navigate("/branch-products");
+          }, 300);
+        })
+        .catch((err) => {
+          toast.error("Xatolik! Qayta urinib ko'ring");
+        });
 
-    const data = {
-      branch: branch,
-      product: product,
-      quantity: +quantity,
-    };
-    setSubmiting(true);
-    await Client.post(API_ENDPOINTS.CREATE_PRODUCT_COUNT_BRANCH, data)
-      .then((data) => {
-        toast.success("Fillarlardagi mahsulot soni muvaffaqiyatli qo'shildi");
-        setTimeout(() => {
-          navigate("/branch-products");
-        }, 300);
-      })
-      .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
-      });
-
-    setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
+      setSubmiting(false);
+      document.querySelector(".create-branch-form").reset();
+    } else {
+      if (branch === "") {
+        setError(true);
+      } else if (product === "") {
+        setErrorProduct(true);
+      }
+    }
   };
 
   const handleSubmitEdit = async (e) => {
@@ -109,11 +125,31 @@ export default function Retsepts() {
   const getProduct = async () => {
     await Client.get(API_ENDPOINTS.PRODUCT)
       .then((res) => {
+        setProductOption(
+          res.results.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
+
         setProductData(res.results);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const onSearchProduct = async (e) => {
+    await Client.get(`${API_ENDPOINTS.PRODUCT}?search=${e}`)
+      .then((res) => {
+        setProductOption(
+          res.results.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -125,91 +161,114 @@ export default function Retsepts() {
     // eslint-disable-next-line
   }, []);
 
+  const branchOption = [];
+  for (let i = 0; i < branchData?.length; i++) {
+    branchOption.push(
+      <Option value={branchData[i].id} key={branchData[i].id}>
+        {branchData[i].name}
+      </Option>
+    );
+  }
+
+  const onChangeProduct = (e) => {
+    setProduct(e);
+    setErrorProduct(false);
+  };
+  const onChangeBranch = (e) => {
+    setBranch(e);
+    setError(false);
+  };
+
+  console.log("product", productData);
+
   return location.search.split("?")[1] === "edit" ? (
     editData ? (
       <div>
-       <div className="flex items-center justify-between">
-        <h1 className="text-[28px] pb-3">Filiallardagi mahsulotlarni tahrirlash</h1>
-        <Link to="/branch-products">
-          <Button
-            variant="contained"
-            color="info"
-            size="large"
-            startIcon={<ArrowBackIcon />}
-          >
-            Orqaga
-          </Button>
-        </Link>
-      </div>
-      <div 
-      className="w-1/2 m-auto"
-      >
-        <div>
-          <Toaster />
-          <div className="flex gap-5">
-            <form
-              onSubmit={handleSubmitEdit}
-              className="w-full flex flex-col gap-5 create-branch-form"
+        <div className="flex items-center justify-between">
+          <h1 className="text-[28px] pb-3">
+            Filiallardagi mahsulotlarni tahrirlash
+          </h1>
+          <Link to="/branch-products">
+            <Button
+              variant="contained"
+              color="info"
+              size="large"
+              startIcon={<ArrowBackIcon />}
             >
-              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="demo-select-small-label" placholder="Filial">
-                  Filial *
-                </InputLabel>
-                <Select
-                  required
-                  value={editData?.branch}
-                  label="Filial"
-                  onChange={handleChangeBranch}
-                >
-                  {branchData?.map((item, i) => (
-                    <MenuItem key={i} value={item.id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="demo-select-small-label" placholder="Mahsulot">
-                  Mahsulot *
-                </InputLabel>
-                <Select
-                  required
-                  value={product}
-                  label="Mahsulot"
-                  onChange={handleChangeProduct}
-                >
-                  {productData?.map((item, i) => (
-                    <MenuItem key={i} value={item.id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <TextField
-                label="Soni"
-                variant="outlined"
-                size="small"
-                type="number"
-                value={quantity}
-                sx={{ m: 1, minWidth: 120 }}
-                onChange={(e) => {
-                  setQuantity(e.target.value);
-                }}
-              />
-
-              <Button
-                variant="outlined"
-                size="large"
-                type="submit"
-                disabled={submiting}
+              Orqaga
+            </Button>
+          </Link>
+        </div>
+        <div className="w-1/2 m-auto">
+          <div>
+            <Toaster />
+            <div className="flex gap-5">
+              <form
+                onSubmit={handleSubmitEdit}
+                className="w-full flex flex-col gap-5 create-branch-form"
               >
-                {submiting ? "Saqlanmoqda" : "Saqlash"}
-              </Button>
-            </form>
+                <Select
+                  mode="select"
+                  placeholder="Filial *"
+                  required
+                  defaultValue={editData?.branch}
+                  style={{
+                    width: "100%",
+                    height: "47px",
+                    marginTop: "25px",
+                  }}
+                  className={`${
+                    error ? "rounded-md border border-rose-500" : ""
+                  }`}
+                  onChange={onChangeBranch}
+                >
+                  {branchOption}
+                </Select>
+                <Select
+                  mode="select"
+                  placeholder="Mahsulot"
+                  showSearch
+                  allowClear
+                  defaultValue={product}
+                  style={{
+                    width: "100%",
+                    height: "47px",
+                  }}
+                  onChange={onChangeProduct}
+                  className={`${
+                    errorProduct ? "rounded-md border border-rose-500" : ""
+                  }`}
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  options={productOption}
+                ></Select>
+
+                <TextField
+                  label="Soni"
+                  variant="outlined"
+                  size="small"
+                  type="number"
+                  value={quantity}
+                  sx={{ m: 1, minWidth: 120 }}
+                  onChange={(e) => {
+                    setQuantity(e.target.value);
+                  }}
+                />
+
+                <Button
+                  variant="outlined"
+                  size="large"
+                  type="submit"
+                  disabled={submiting}
+                >
+                  {submiting ? "Saqlanmoqda" : "Saqlash"}
+                </Button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-      
       </div>
     ) : (
       <Box
@@ -224,14 +283,15 @@ export default function Retsepts() {
       </Box>
     )
   ) : (
-    <div style={{
-      display:'flex',
-      justifyContent:'content',
-      maxWidth:'500px',
-      width:'100%',
-      margin:'0 auto',
-
-    }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "content",
+        maxWidth: "500px",
+        width: "100%",
+        margin: "0 auto",
+      }}
+    >
       <div>
         <h1 className="text-[35px] pb-3">Filiallardagi mahsulotlar</h1>
         <Toaster />
@@ -240,40 +300,42 @@ export default function Retsepts() {
             onSubmit={handleSubmitAdd}
             className="w-full flex flex-col gap-5 create-branch-form"
           >
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="demo-select-small-label" placholder="Filial">
-                Filial *
-              </InputLabel>
-              <Select
-                required
-                value={branch}
-                label="Filial"
-                onChange={handleChangeBranch}
-              >
-                {branchData?.map((item, i) => (
-                  <MenuItem key={i} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="demo-select-small-label" placholder="Mahsulot">
-                Mahsulot *
-              </InputLabel>
-              <Select
-                required
-                value={product}
-                label="Mahsulot"
-                onChange={handleChangeProduct}
-              >
-                {productData?.map((item, i) => (
-                  <MenuItem key={i} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Select
+              mode="select"
+              placeholder="Filial *"
+              required
+              style={{
+                width: "100%",
+                height: "47px",
+              }}
+              className={`${error ? "rounded-md border border-rose-500" : ""}`}
+              onChange={onChangeBranch}
+            >
+              {branchData?.map((item) => (
+                <Option value={item.id} key={item.id}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
+            <Select
+              mode="select"
+              placeholder="Mahsulot"
+              showSearch
+              allowClear
+              style={{
+                width: "100%",
+                height: "47px",
+              }}
+              onChange={onChangeProduct}
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.label ?? "").includes(input)
+              }
+              className={`${
+                errorProduct ? "rounded-md border border-rose-500" : ""
+              }`}
+              options={productOption}
+            ></Select>
             <TextField
               label="Soni"
               variant="outlined"
@@ -285,7 +347,6 @@ export default function Retsepts() {
                 setQuantity(e.target.value);
               }}
             />
-
             <Button
               variant="outlined"
               size="large"

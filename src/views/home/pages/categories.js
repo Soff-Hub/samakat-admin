@@ -36,7 +36,6 @@ export default function Categories2() {
       })
       .catch((err) => console.log(err));
   }
-  console.log(count);
 
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.CATEGORIES}?search=${e}`)

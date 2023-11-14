@@ -62,7 +62,7 @@ export function ChaildRow2({ row, Detele, getchildData }) {
           <div className="flex justify-between w-full">
             <div>{rowData.name}</div>
             <div>
-              <Link to={`actions/?${rowData.type}?${rowData.id}`}>
+              <Link to={`actions/?${rowData.type}?${rowData.id}?chaild?${rowData.slug}`}>
                 <IconButton color="primary" aria-label="delete">
                   <AddCircleOutlinedIcon />
                 </IconButton>

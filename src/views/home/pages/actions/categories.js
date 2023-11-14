@@ -17,6 +17,7 @@ function Categories() {
   });
   const [itemData, setItemData] = useState(null);
   const [img, setImage] = useState(null);
+  const [parentName, setParentName] = useState(null);
   const query = useParams();
   const navigate = useNavigate();
   const loaction = useLocation();
@@ -83,6 +84,16 @@ function Categories() {
       })
       .catch((err) => console.log(err));
   };
+  const getParentName = async () => {
+    await Client.get(
+      `${API_ENDPOINTS.CATEGORIES}detail/${loaction.search.split("?")[4]}/`
+    )
+      .then((resp) => {
+        console.log("detail", resp);
+        setParentName(resp);
+      })
+      .catch((err) => console.log(err));
+  };
 
   console.log(loaction.search.split("?"));
 
@@ -117,12 +128,15 @@ function Categories() {
     if (loaction.search.split("?").length === 4) {
       getItem();
     }
+    if (loaction.search.split("?").length === 5) {
+      getParentName();
+    }
     if (loaction.search.split("?").length === 4) {
       setFormVal((c) => ({ ...c, type: loaction.search.split("?")[1] }));
     }
     // eslint-disable-next-line
   }, []);
-  console.log("location", loaction.search.split("?"), "=>", query["*"]);
+  console.log("location", parentName, loaction.search.split("?"));
 
   return loaction.search.split("?").length === 4 ? (
     itemData ? (
@@ -147,6 +161,13 @@ function Categories() {
               onSubmit={handleSubmitEdit}
               className="w-1/2 m-auto mt-6 flex flex-col gap-5 create-branch-form"
             >
+              <TextField
+                label="Ota kategoriya"
+                variant="outlined"
+                size="large"
+                type="text"
+                value={itemData?.parent !== null ? itemData?.parent : "yo'q"}
+              />
               <TextField
                 label="Kategoriya nomi"
                 variant="outlined"
@@ -207,20 +228,19 @@ function Categories() {
           onSubmit={
             loaction.search.split("?").length === 2
               ? handleSubmit
-              : loaction.search.split("?").length === 3
+              : loaction.search.split("?").length === 5
               ? handleCHaildSubmit
               : ""
           }
           className="w-1/2 m-auto mt-6 flex flex-col gap-5 create-branch-form"
         >
-          {loaction.search.split("?").length === 3 ? (
+          {loaction.search.split("?").length === 5 ? (
             <TextField
               label="Ota kategoriya"
               variant="outlined"
               size="large"
               type="text"
-              required
-              value="Ota kategoriya"
+              value={parentName ? parentName?.name : ""}
             />
           ) : (
             ""
