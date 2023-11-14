@@ -56,27 +56,27 @@ export default function Orders() {
                 variant="outlined"
                 size="large"
                 type="text"
-                value={data ? data.user : ""}
+                value={data.user.name ? data.user.name : "-"}
               />
               <TextField
                 label="Umumiy so'mma"
                 variant="outlined"
                 size="large"
-                value={data ? data?.total_amount : ""}
+                value={data.total_amount ? data?.total_amount : "-"}
                 type="text"
               />
               <TextField
                 label="Manzil"
                 variant="outlined"
                 size="large"
-                value={data ? data?.address : ""}
+                value={data.address ? data?.address : "-"}
                 type="text"
               />
               <TextField
                 label="Promo kod"
                 variant="outlined"
                 size="large"
-                value={data ? data?.promocode : ""}
+                value={data.promocode ? data?.promocode : "-"}
                 type="text"
               />
               <TextField

@@ -26,21 +26,21 @@ import { CircularProgress } from "@mui/material";
 import { Select } from "antd";
 
 const headCells = [
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Id",
-  },
+  // {
+  //   id: "name",
+  //   numeric: false,
+  //   disablePadding: true,
+  //   label: "Id",
+  // },
   {
     id: "fat",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Mahsulot",
   },
   {
     id: "calories",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Filial",
   },
@@ -60,12 +60,12 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
+  const { order, orderBy, numSelected, rowCount } = props;
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -75,7 +75,7 @@ function EnhancedTableHead(props) {
               "aria-label": "select all desserts",
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -354,7 +354,7 @@ export default function EnhancedTable() {
                         selected={isItemSelected}
                         sx={{ cursor: "pointer" }}
                       >
-                        <TableCell padding="checkbox">
+                        {/* <TableCell padding="checkbox">
                           <Checkbox
                             color="primary"
                             checked={isItemSelected}
@@ -362,17 +362,17 @@ export default function EnhancedTable() {
                               "aria-labelledby": labelId,
                             }}
                           />
-                        </TableCell>
-                        <TableCell
+                        </TableCell> */}
+                        {/* <TableCell
                           component="th"
                           id={labelId}
                           scope="row"
                           padding="none"
                         >
                           {row.id}
-                        </TableCell>
-                        <TableCell align="right">{row.product}</TableCell>
-                        <TableCell align="right">{row.branch}</TableCell>
+                        </TableCell> */}
+                        <TableCell align="left">{row.product}</TableCell>
+                        <TableCell align="left">{row.branch}</TableCell>
                         <TableCell align="right">{row.quantity} </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link to={`actions/?edit?${row.id}`}>

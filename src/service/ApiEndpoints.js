@@ -56,5 +56,7 @@ export const API_ENDPOINTS = {
     UPDATE_PROMO_CODE: 'admin/promo-code/update/',
 
     DASHBOARD:'admin/dashboard/statistic/',
-    MOTHLY_STATISTIC:'admin/monthly/statistic/'
+    MOTHLY_STATISTIC:'admin/monthly/statistic/',
+
+    YEAR:'admin/year/list'
 }

@@ -196,7 +196,14 @@ export default function Branches() {
                     <TableCell component="th" scope="row">
                       <Link
                         to={"actions/?" + row.id}
-                        className="hover:underline"
+                        className={`hover:underline ${ row.status === "approved"
+                        ? " text-[green]"
+                        : row.status === "pending"
+                        ? "text-[#F4CA16]"
+                        : row.status === "cancelled"
+                        ? "text-[red]"
+                        : "black"
+                    }`}
                       >
                         {row.status === "approved"
                           ? "tasdiqlangan"

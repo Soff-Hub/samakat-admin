@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import ChartComponent from "components/shared/chart";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
   const [statistic, setStatistic] = useState(null)
+  const [year, setYear] = useState(null)
 
   const getData = async () => {
     await Client.get(API_ENDPOINTS.DASHBOARD)
@@ -28,11 +29,22 @@ export default function Dashboard() {
       
     })
   }
+  const getYear = async () => {
+    await Client.get(API_ENDPOINTS.YEAR)
+    .then((res) => {
+      setYear(res.result)
+    })
+    .catch((err) => {
+      console.log(err);
+      
+    })
+  }
 
 
   useEffect(() => {
     getData();
-    getStatistic()
+    getStatistic();
+    getYear()
   }, []);
 
 
@@ -111,7 +123,36 @@ export default function Dashboard() {
       </div>
       {
         statistic?.length > 0 ?
+        <>
+        <div>
+        {/* <FormControl
+          sx={{ minWidth: 100 }}
+          size="small"
+          className="sm:w-full  w-1/3"
+        >
+          <InputLabel id="demo-select-small-label" placholder="Yillar bo'yicha">
+            Yillar bo'yicha
+          </InputLabel>
+          <Select
+            className="py-0.5"
+            value={''}
+            label="Holat bo'yicha"
+            // onChange={handleChangeFilial}
+          >
+            {year ? (
+              year?.map((item) => (
+                <MenuItem key={item} value={item}>
+                  {item}
+                </MenuItem>
+              ))
+            ) : (
+              <></>
+            )}
+          </Select>
+        </FormControl> */}
+        </div>
         <ChartComponent data={statistic} />
+        </>
         :
         <Box
         sx={{
