@@ -13,7 +13,6 @@ import TableRow from "@mui/material/TableRow";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -23,7 +22,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
@@ -32,28 +31,16 @@ import { CircularProgress } from "@mui/material";
 
 const headCells = [
   {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Id",
-  },
-  {
     id: "calories",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Nomi",
   },
   {
     id: "fat",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Aktiv",
-  },
-  {
-    id: "carbs",
-    numeric: true,
-    disablePadding: false,
-    label: "",
   },
   {
     id: "protein",
@@ -64,31 +51,23 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align={
+              headCell.numeric === true
+                ? "right"
+                : headCell.numeric === null
+                ? "center"
+                : "left"
+            }
             padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
-            <span className="font-bold text-[16px]" >  {headCell.label} </span>
-            
+            <span className="font-bold text-[16px]"> {headCell.label} </span>
           </TableCell>
         ))}
       </TableRow>
@@ -154,75 +133,16 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [type, setType] = React.useState("bistro");
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const navigate = useNavigate();
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    console.log(event.target.checked);
-    if (event.target.checked) {
-      const newSelected = data?.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-  console.log(">", selected);
-
-  const isSelected = (id) => selected.indexOf(id) !== -1;
-
-  const Bistre = async () => {
-    setPage(1);
-    setType("bistro");
-    await Client.get(`${API_ENDPOINTS.RETCIPE}?page=${page}&type=bistro`)
-      .then((resp) => {
-        console.log(resp);
-        setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-  const Beauty = async () => {
-    setPage(1);
-    setType("byute");
-    await Client.get(`${API_ENDPOINTS.RETCIPE}?page=${page}&type=byuti`)
-      .then((resp) => {
-        console.log(resp);
-        setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
+  const handleClick = (id) => {
+    navigate(`actions/?edit?${id}`);
   };
 
   const handleChange = async (e) => {
@@ -294,10 +214,10 @@ export default function EnhancedTable() {
         onChange={handleChange}
         className="mt-5 flex items-center w-full"
       >
-        <ToggleButton className="w-full" onClick={Bistre} value="bistro">
+        <ToggleButton className="w-full" value="bistro">
           Bistro
         </ToggleButton>
-        <ToggleButton className="w-full" onClick={Beauty} value="apteka">
+        <ToggleButton className="w-full" value="apteka">
           Aptika
         </ToggleButton>
       </ToggleButtonGroup>
@@ -309,10 +229,9 @@ export default function EnhancedTable() {
         onChange={(e) => Search(e.target.value)}
       />
 
-      {data?.length > 0 ? (
+      {data?.length >= 0 ? (
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
-            {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
             <TableContainer>
               <Table
                 sx={{ minWidth: 750 }}
@@ -320,48 +239,20 @@ export default function EnhancedTable() {
                 size="medium"
               >
                 <EnhancedTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
                   rowCount={data?.length}
                 />
                 <TableBody>
                   {data?.map((row, index) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = `enhanced-table-checkbox-${index}`;
-
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.id)}
+                        onClick={() => handleClick(row.slug)}
                         role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
                         key={row.id}
-                        selected={isItemSelected}
                         sx={{ cursor: "pointer" }}
                       >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          padding="none"
-                        >
-                          {row.id}
-                        </TableCell>
-                        <TableCell align="right">{row.title}</TableCell>
-                        <TableCell align="right">
+                        <TableCell align="left">{row.title}</TableCell>
+                        <TableCell align="left">
                           {row.is_active ? (
                             <i
                               style={{ color: "green" }}
@@ -374,7 +265,6 @@ export default function EnhancedTable() {
                             ></i>
                           )}{" "}
                         </TableCell>
-                        <TableCell align="right"></TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link to={`actions/?edit?${row.slug}`}>
                             <IconButton color="primary">

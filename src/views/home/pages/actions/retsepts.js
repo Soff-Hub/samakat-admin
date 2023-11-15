@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
@@ -361,7 +361,16 @@ export default function Retsepts() {
         </div>
       </div>
     ) : (
-      <></>
+      <Box
+      sx={{
+        display: "flex",
+        wdith: "100%",
+        justifyContent: "center",
+        padding: "150px 0",
+      }}
+    >
+      <CircularProgress />
+    </Box>
     )
   ) : (
     <div>

@@ -9,7 +9,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
@@ -19,30 +18,17 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import NavHeader from "components/shared/NavHeader";
 import { CircularProgress } from "@mui/material";
-import dayjs from "dayjs";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
-
-const lastSunday = dayjs().startOf("week").subtract(1, "day");
-const nextSunday = dayjs().endOf("week").startOf("day");
 
 const headCells = [
   {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Id",
-  },
-  {
     id: "calories",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Nomi",
   },
   {
     id: "fat",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Kodi",
   },
@@ -72,37 +58,26 @@ const headCells = [
   },
   {
     id: "protein",
-    numeric: true,
+    numeric: false,
     disablePadding: true,
     label: "Amallar",
   },
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
+  const { order, orderBy, numSelected } = props;
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align={headCell.numeric ? "right" : "center"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            <span className="font-bold text-[16px]" >  {headCell.label} </span>
+            <span className="font-bold text-[16px]"> {headCell.label} </span>
           </TableCell>
         ))}
       </TableRow>
@@ -129,39 +104,10 @@ export default function EnhancedTable() {
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    console.log(event.target.checked);
-    if (event.target.checked) {
-      const newSelected = data?.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
   const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
+    console.log('ee', event, id);
+    
+    setSelected();
   };
 
   const handleChangePag = async (event, value) => {
@@ -175,7 +121,6 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.PROMO_CODE}?search=${e}`)
@@ -206,23 +151,6 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-  const isWeekend = async (date) => {
-    const day = `${date[0]?.$y}-${date[0]?.$M + 1}-${date[0]?.$D}`;
-    const nextday = `${date[1]?.$y}-${date[1]?.$M + 1}-${date[1]?.$D}`;
-    console.log("date", day);
-
-    await Client.get(
-      `${API_ENDPOINTS.PROMO_CODE}?start_date=${day}&end_date=${nextday}`
-    )
-      .then((resp) => {
-        // setCount(resp.count);
-        console.log(resp.results);
-
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-
   useEffect(() => {
     getData();
   }, []);
@@ -239,12 +167,6 @@ export default function EnhancedTable() {
           className=" w-full px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
           onChange={(e) => Search(e.target.value)}
         />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateRangePicker
-            defaultValue={[lastSunday, nextSunday]}
-            onChange={isWeekend}
-          />
-        </LocalizationProvider>
       </div>
       {data ? (
         <Box sx={{ width: "100%" }}>
@@ -256,46 +178,21 @@ export default function EnhancedTable() {
                 size="medium"
               >
                 <EnhancedTableHead
-                  numSelected={selected.length}
                   order={order}
                   orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
                   rowCount={data?.length}
                 />
                 <TableBody>
                   {data?.map((row, index) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
                       <TableRow
                         hover
                         onClick={(event) => handleClick(event, row.id)}
                         role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
                         key={row.id}
-                        selected={isItemSelected}
                         sx={{ cursor: "pointer" }}
                       >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          padding="none"
-                        >
-                          {row.id}
-                        </TableCell>
                         <TableCell align="right">{row.title}</TableCell>
                         <TableCell align="right">{row.code}</TableCell>
                         <TableCell align="right">{row.percentage} </TableCell>

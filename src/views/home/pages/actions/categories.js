@@ -3,7 +3,7 @@ import { Button, TextField } from "@mui/material";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
@@ -18,6 +18,7 @@ function Categories() {
   const [itemData, setItemData] = useState(null);
   const [img, setImage] = useState(null);
   const [parentName, setParentName] = useState(null);
+  const [lifeImage, setLifeImage] = useState(null);
   const navigate = useNavigate();
   const loaction = useLocation();
 
@@ -77,12 +78,13 @@ function Categories() {
       `${API_ENDPOINTS.CATEGORIES}detail/${loaction.search.split("?")[3]}/`
     )
       .then((resp) => {
-        console.log("detail", resp, formVal);
         setFormVal(resp);
         setItemData(resp);
+        setLifeImage(resp.image)
       })
       .catch((err) => console.log(err));
   };
+
   const getParentName = async () => {
     await Client.get(
       `${API_ENDPOINTS.CATEGORIES}detail/${loaction.search.split("?")[4]}/`
@@ -90,11 +92,11 @@ function Categories() {
       .then((resp) => {
         console.log("detail", resp);
         setParentName(resp);
+        
       })
       .catch((err) => console.log(err));
   };
 
-  console.log(loaction.search.split("?"));
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -135,7 +137,14 @@ function Categories() {
     }
     // eslint-disable-next-line
   }, []);
-  console.log("location", parentName, loaction.search.split("?"));
+
+  const LifeImage = (e) => {
+    let img = window.URL.createObjectURL(e.target.files[0]);
+    setLifeImage(img);
+  };
+
+  console.log('image', lifeImage);
+  
 
   return loaction.search.split("?").length === 4 ? (
     itemData ? (
@@ -191,18 +200,26 @@ function Categories() {
                 }}
                 type="number"
               />
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-              >
-                Rasm yuklash
-                <input
-                  style={{ display: "none" }}
-                  onChange={(e) => setImage(e.target.files[0])}
-                  type="file"
-                />
-              </Button>
+             <Button
+            component="label"
+            variant="contained"
+            startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
+            style={{
+              maxWidth: "550px",
+              width: "100%",
+              backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: `${lifeImage ? "220px" : "40px"}`,
+            }}
+          >
+            {lifeImage === null ? " Rasm yuklash" : ""}
+            <input
+              style={{ display: "none" }}
+              onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
+              type="file"
+            />
+          </Button>
               <Button
                 variant="outlined"
                 size="large"
@@ -271,12 +288,20 @@ function Categories() {
           <Button
             component="label"
             variant="contained"
-            startIcon={<CloudUploadIcon />}
+            startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
+            style={{
+              maxWidth: "550px",
+              width: "100%",
+              backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: `${lifeImage ? "220px" : "40px"}`,
+            }}
           >
-            Rasm yuklash
+            {lifeImage === null ? " Rasm yuklash" : ""}
             <input
               style={{ display: "none" }}
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
               type="file"
             />
           </Button>

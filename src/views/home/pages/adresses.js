@@ -17,17 +17,17 @@ function Row(props) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell component="th" scope="row">
-          <Link to={`actions/?${row.id}`}> {row.user?.first_name}  {row.user?.last_name} </Link>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}  >
+        <TableCell component="th" scope="row" align="left">
+          <Link to={`actions/?${row.id}`}> {row.user?.first_name ? row.user?.first_name : "-"}  {row.user?.last_name} </Link>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell scope="row" align="right">
           <Link to={`actions/?${row.id}`}> {row.user?.phone}</Link>
         </TableCell>
-        <TableCell component="th" scope="row" align="center">
+        <TableCell scope="row" align="center">
           <Link to={`actions/?${row.id}`}> {row.address}</Link>
         </TableCell>
-        <TableCell component="th" scope="row" align="right">
+        <TableCell scope="row" align="right">
           <Link to={`actions/?${row.id}`}> {row.branch}</Link>
         </TableCell>
       </TableRow>
@@ -84,7 +84,6 @@ export default function CollapsibleTable() {
   React.useEffect(() => {
     getData();
   }, []);
-  console.log(data);
   return (
     <>
       <div className="mb-5">
@@ -95,8 +94,8 @@ export default function CollapsibleTable() {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell><span className="font-bold text-[16px]" >Foydalanuvchi</span></TableCell>
-                <TableCell><span className="font-bold text-[16px]" >Telefon raqam</span></TableCell>
+                <TableCell align="left"><span className="font-bold text-[16px]" >Foydalanuvchi</span></TableCell>
+                <TableCell align="right" ><span className="font-bold text-[16px]" >Telefon raqam</span></TableCell>
                 <TableCell align="center"><span className="font-bold text-[16px]" >Address</span></TableCell>
                 <TableCell align="right"><span className="font-bold text-[16px]" >Branch</span></TableCell>
               </TableRow>

@@ -44,7 +44,7 @@ export default function Retsepts() {
           }, 300);
         })
         .catch((err) => {
-          toast.error("Xatolik! Qayta urinib ko'ring");
+          toast.error(`${err?.response?.data?.non_field_errors?.[0]}`);
         });
 
       setSubmiting(false);

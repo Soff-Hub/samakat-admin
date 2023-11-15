@@ -123,14 +123,27 @@ export default function Branches() {
           </div>
           <Table sx={{ minWidth: 300 }} aria-label="caption table">
             <TableHead>
-              <TableRow >
-                <TableCell ><span className="font-bold text-[16px]" >Id</span></TableCell>
-                <TableCell><span className="font-bold text-[16px]" >Foydalanuvchi nomi</span></TableCell>
-                <TableCell><span className="font-bold text-[16px]" >Telefon raqam</span></TableCell>
-                <TableCell><span className="font-bold text-[16px]" >Umumiy so'mma</span></TableCell>
-                <TableCell><span className="font-bold text-[16px]" >Manzil</span></TableCell>
-                <TableCell><span className="font-bold text-[16px]" >Promo kod</span></TableCell>
-                <TableCell><span className="font-bold text-[16px]" >Holat</span></TableCell>
+              <TableRow>
+                <TableCell>
+                  <span className="font-bold text-[16px]">Id</span>
+                </TableCell>
+                <TableCell>
+                  <span className="font-bold text-[16px]">
+                    Foydalanuvchi nomi
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <span className="font-bold text-[16px]">Telefon raqam</span>
+                </TableCell>
+                <TableCell>
+                  <span className="font-bold text-[16px]">Umumiy so'mma</span>
+                </TableCell>
+                <TableCell>
+                  <span className="font-bold text-[16px]">Promo kod</span>
+                </TableCell>
+                <TableCell>
+                  <span className="font-bold text-[16px]">Holat</span>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -153,7 +166,7 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.user.first_name}
+                        {row.user.first_name ? row.user.first_name :  <i className="fa-solid fa-minus"></i>}
                         {row.user.last_name}
                       </Link>
                     </TableCell>
@@ -178,14 +191,6 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.address}
-                      </Link>
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      <Link
-                        to={"actions/?" + row.id}
-                        className="hover:underline"
-                      >
                         {row.promocode === null ? (
                           <i className="fa-solid fa-minus"></i>
                         ) : (
@@ -196,14 +201,15 @@ export default function Branches() {
                     <TableCell component="th" scope="row">
                       <Link
                         to={"actions/?" + row.id}
-                        className={`hover:underline ${ row.status === "approved"
-                        ? " text-[green]"
-                        : row.status === "pending"
-                        ? "text-[#F4CA16]"
-                        : row.status === "cancelled"
-                        ? "text-[red]"
-                        : "black"
-                    }`}
+                        className={`hover:underline ${
+                          row.status === "approved"
+                            ? " text-[green]"
+                            : row.status === "pending"
+                            ? "text-[#F4CA16]"
+                            : row.status === "cancelled"
+                            ? "text-[red]"
+                            : "black"
+                        }`}
                       >
                         {row.status === "approved"
                           ? "tasdiqlangan"
