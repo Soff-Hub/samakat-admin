@@ -30,13 +30,14 @@ const headCells = [
     label: "Id",
   },
   {
-    id: "phone_number",
-    label: "Telefon raqam",
-  },
-  {
     id: "first_name",
     label: "To'liq ismi",
   },
+  {
+    id: "phone_number",
+    label: "Telefon raqam",
+  },
+
   {
     id: "created_at",
     label: "Ro'yxatdan o'tgan sana",
@@ -198,7 +199,10 @@ export default function Users() {
             label="Holat bo'yicha"
             onChange={handleChangeFilial}
           >
-             <MenuItem value={""}> <i className="fa-solid fa-minus"></i> </MenuItem>
+            <MenuItem value={""}>
+              {" "}
+              <i className="fa-solid fa-minus"></i>{" "}
+            </MenuItem>
             {filialData ? (
               filialData?.map((item, i) => (
                 <MenuItem key={i} value={item.id}>
@@ -224,7 +228,10 @@ export default function Users() {
             label="Holat bo'yicha"
             onChange={handleChangeRole}
           >
-            <MenuItem value={""}> <i className="fa-solid fa-minus"></i> </MenuItem>
+            <MenuItem value={""}>
+              {" "}
+              <i className="fa-solid fa-minus"></i>{" "}
+            </MenuItem>
             <MenuItem value={"customer"}>Foydalanuvchi</MenuItem>
             <MenuItem value={"admin"}>Admin</MenuItem>
             <MenuItem value={"kurer"}>Kurer</MenuItem>
@@ -261,12 +268,17 @@ export default function Users() {
                             {row.id}
                           </Link>
                         </TableCell>
+
                         <TableCell align="left">
                           <Link
                             to={`actions/?detail?${row.id}`}
                             className="hover:underline"
                           >
-                            {row.phone}
+                            {row.first_name ? (
+                              row.first_name
+                            ) : (
+                              <i className="fa-solid fa-minus"></i>
+                            )}
                           </Link>
                         </TableCell>
                         <TableCell align="left">
@@ -274,7 +286,7 @@ export default function Users() {
                             to={`actions/?detail?${row.id}`}
                             className="hover:underline"
                           >
-                            {row.first_name ? row.first_name : <i className="fa-solid fa-minus"></i>}
+                            {row.phone}
                           </Link>
                         </TableCell>
                         <TableCell align="left">

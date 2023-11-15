@@ -19,7 +19,7 @@ function Row(props) {
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}  >
         <TableCell component="th" scope="row" align="left">
-          <Link to={`actions/?${row.id}`}> {row.user?.first_name ? row.user?.first_name : "-"}  {row.user?.last_name} </Link>
+          <Link to={`actions/?${row.id}`}> {row.user?.first_name ? row.user?.first_name : <i className="fa-solid fa-minus"></i>}  {row.user?.last_name} </Link>
         </TableCell>
         <TableCell scope="row" align="right">
           <Link to={`actions/?${row.id}`}> {row.user?.phone}</Link>

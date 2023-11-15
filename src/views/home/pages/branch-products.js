@@ -80,9 +80,6 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function EnhancedTable() {
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [type, setType] = React.useState("bistro");
   const [data, setData] = React.useState(null);
@@ -95,9 +92,9 @@ export default function EnhancedTable() {
   const [productData, setProductData] = useState(null);
   const navigate = useNavigate();
 
-  const handleClick = (id) => {
-    navigate(`/branch-products/actions/?edit?${id}`);
-  };
+  // const handleClick = (id) => {
+  //   navigate(`/branch-products/actions/?edit?${id}`);
+  // };
 
   const handleChange = async (e) => {
     setType(e.target.value);
@@ -283,14 +280,23 @@ export default function EnhancedTable() {
                     return (
                       <TableRow
                         hover
-                        onClick={() => handleClick(row.id)}
-                        role="checkbox"
                         key={row.id}
-                        sx={{ cursor: "pointer" }}
                       >
-                        <TableCell align="left">{row.product}</TableCell>
-                        <TableCell align="left">{row.branch}</TableCell>
-                        <TableCell align="right">{row.quantity} </TableCell>
+                        <TableCell align="left">
+                          <Link to={`actions/?edit?${row.id}`} >
+                          {row.product}
+                          </Link>
+                        </TableCell>
+                        <TableCell align="left">
+                          <Link to={`actions/?edit?${row.id}`}>
+                          {row.branch}
+                          </Link>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Link to={`actions/?edit?${row.id}`} >
+                          {row.quantity} 
+                          </Link>
+                        </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link to={`actions/?edit?${row.id}`}>
                             <IconButton color="primary">

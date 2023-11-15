@@ -246,14 +246,17 @@ export default function EnhancedTable() {
                     return (
                       <TableRow
                         hover
-                        onClick={() => handleClick(row.slug)}
-                        role="checkbox"
                         key={row.id}
-                        sx={{ cursor: "pointer" }}
                       >
-                        <TableCell align="left">{row.title}</TableCell>
                         <TableCell align="left">
-                          {row.is_active ? (
+                        <Link to={`actions/?edit?${row.slug}`}>
+                        {row.title}
+                          </Link>
+                        </TableCell>
+                        <TableCell align="left">
+                         
+                            <Link to={`actions/?edit?${row.slug}`}>
+                            {row.is_active ? (
                             <i
                               style={{ color: "green" }}
                               className=" fa-regular fa-circle-check"
@@ -263,7 +266,8 @@ export default function EnhancedTable() {
                               style={{ color: "red" }}
                               className="fa-regular fa-circle-xmark"
                             ></i>
-                          )}{" "}
+                          )}
+                          </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link to={`actions/?edit?${row.slug}`}>

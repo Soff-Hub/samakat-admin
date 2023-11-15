@@ -362,31 +362,30 @@ export default function Retsepts() {
       </div>
     ) : (
       <Box
-      sx={{
-        display: "flex",
-        wdith: "100%",
-        justifyContent: "center",
-        padding: "150px 0",
-      }}
-    >
-      <CircularProgress />
-    </Box>
+        sx={{
+          display: "flex",
+          wdith: "100%",
+          justifyContent: "center",
+          padding: "150px 0",
+        }}
+      >
+        <CircularProgress />
+      </Box>
     )
   ) : (
     <div>
-      <div>
+      <div className="text-center">
         <h1 className="text-[35px] pb-3">Retsept qo'shish</h1>
         <Toaster />
         <div className="flex gap-5">
           <form
             onSubmit={handleSubmitAddRecipe}
-            className="w-1/3 flex flex-col gap-5 create-branch-form"
+            className="w-1/2 m-auto flex flex-col gap-5 create-branch-form"
           >
             <TextField
               label="Nomi"
               variant="outlined"
               size="large"
-              style={{ width: "600px" }}
               type="text"
               required
               value={name}
@@ -401,15 +400,13 @@ export default function Retsepts() {
               required
               value={description}
               rows={4}
-              style={{ width: "600px" }}
               type="text"
               onChange={(e) => {
                 setDescription(e.target.value);
               }}
             />
             <FormControl
-              style={{ width: "600px" }}
-              sx={{ m: 1, minWidth: 120 }}
+              sx={{ minWidth: 120 }}
               size="small"
             >
               <InputLabel id="demo-select-small-label" placholder="Kategoriya">
@@ -428,7 +425,7 @@ export default function Retsepts() {
                 ))}
               </Select>
             </FormControl>
-            <label className="text-lg  max-w-prose">
+            <label className="font-normal font-sans text-lg mr-auto">
               Galleriya uchun rasmlar *
             </label>
             <div style={{ display: "flex ", gap: "10px" }}>
@@ -446,6 +443,15 @@ export default function Retsepts() {
                         style={{ width: "170px", height: "170px" }}
                         component="label"
                         variant="outlined"
+                        // style={{
+                        //   maxWidth: "150px",
+                        //   width: "150px",
+                        //   backgroundImage: `url(${
+                        //     item?.image ? item?.image : ""
+                        //   })`,
+                        //   backgroundSize: "cover",
+                        //   height: "120px",
+                        // }}
                       >
                         <i
                           className="fa-regular fa-image"
@@ -480,7 +486,7 @@ export default function Retsepts() {
                 </Fab>
               </div>
             </div>
-            <div>
+            <div className="mr-auto" >
               <label className="font-normal font-sans text-lg">Aktiv</label>
               <Switch
                 checked={checked}
@@ -489,7 +495,7 @@ export default function Retsepts() {
               />
             </div>
             <div>
-              <FormControl sx={{ m: 1, width: 600 }}>
+              <FormControl sx={{ width: 600 }}>
                 <InputLabel id="demo-multiple-checkbox-label">
                   Bog'liq kategoriyalar
                 </InputLabel>
@@ -517,7 +523,6 @@ export default function Retsepts() {
             </div>
 
             <Button
-              style={{ width: "600px" }}
               variant="outlined"
               size="large"
               type="submit"

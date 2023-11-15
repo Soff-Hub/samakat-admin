@@ -27,8 +27,7 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
-          {" "}
+        <TableCell align="left">
           <Link to={`actions/?edit?${row.id}`}>{row.text}</Link>{" "}
         </TableCell>
         <TableCell align="center">
@@ -109,7 +108,7 @@ export default function CollapsibleTable() {
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell>
+              <TableCell align="left">
                 <span className="font-bold text-[16px]">Belgi matni</span>
               </TableCell>
               <TableCell align="center">
@@ -120,7 +119,7 @@ export default function CollapsibleTable() {
               </TableCell>
             </TableRow>
           </TableHead>
-          {bagdeData ? (
+          {bagdeData?.length >= 0 ? (
             <TableBody>
               {bagdeData?.map((row) => (
                 <Row key={row.name} row={row} />

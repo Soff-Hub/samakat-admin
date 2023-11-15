@@ -17,7 +17,7 @@ export default function Retsepts() {
   const [productData, setProductData] = useState([]);
   const [branch, setBranch] = useState("");
   const [product, setProduct] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState("");
   const [error, setError] = useState(false);
   const [errorProduct, setErrorProduct] = useState(false);
   const [productOption, setProductOption] = useState([]);
@@ -44,7 +44,7 @@ export default function Retsepts() {
           }, 300);
         })
         .catch((err) => {
-          toast.error(`${err?.response?.data?.non_field_errors?.[0]}`);
+          toast.error(`${err?.response?.data?.msg}`);
         });
 
       setSubmiting(false);
@@ -61,17 +61,24 @@ export default function Retsepts() {
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
 
-    const data = {
-      branch: branch,
-      product: product,
-      quantity: +quantity,
-    };
+    const data = {};
+
+    if (branch !== "") {
+      Object.assign(data,{branch: branch})
+    }
+    if (product !== "") {
+      Object.assign(data,{product: product})
+    }
+    if (quantity !== "") {
+      Object.assign(data,{quantity: +quantity})
+    }
+
     setSubmiting(true);
-    await Client.put(
+    await Client.patch(
       `${API_ENDPOINTS.UPDATE_PRODUCT_COUNT_BRANCH}${
         location.search.split("?")[2]
       }/`,
-      data
+      data 
     )
       .then((data) => {
         toast.success("Filiallardagi mahsulot muvaffaqiyatli tahrirlandi");
@@ -93,9 +100,6 @@ export default function Retsepts() {
     )
       .then((res) => {
         setEditData(res);
-        setBranch(res.branch);
-        setProduct(res.product);
-        setQuantity(res.quantity);
       })
       .catch((err) => {
         console.log(err);
@@ -205,7 +209,7 @@ export default function Retsepts() {
                     placeholder="Mahsulot"
                     showSearch
                     allowClear
-                    defaultValue={product}
+                    defaultValue={editData?.product}
                     style={{
                       width: "100%",
                       height: "47px",
@@ -227,7 +231,7 @@ export default function Retsepts() {
                   variant="outlined"
                   size="small"
                   type="number"
-                  value={quantity}
+                  defaultValue={editData?.quantity}
                   sx={{ minWidth: 120 }}
                   onChange={(e) => {
                     setQuantity(e.target.value);

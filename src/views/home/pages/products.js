@@ -205,19 +205,29 @@ export default function EnhancedTable() {
                     return (
                       <TableRow
                         hover
-                        onClick={() => handleClick( row.type, row.slug)}
+                        // onClick={() => handleClick( row.type, row.slug)}
                         key={row.id}
-                        sx={{ cursor: "pointer" }}
+                        // sx={{ cursor: "pointer" }}
                       >
-                        <TableCell align="left">{row.name}</TableCell>
+                        <TableCell align="left">
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
+                          {row.name}
+                          </Link>
+                        </TableCell>
                         <TableCell align="right">
+                          
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
                           {JSON.parse(row.price)} so'm
+                          </Link>
                         </TableCell>
                         <TableCell align="right">
-                          {row.discount} <i className="fa-solid fa-percent"></i>{" "}
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
+                          {row.discount !== 0 ? <>{row.discount} <i className="fa-solid fa-percent"></i> </> : <i className="fa-solid fa-minus"></i>} 
+                          </Link>
                         </TableCell>
                         <TableCell align="right">
-                          {true ? (
+                           <Link to={`actions/?${row.type}?edit?${row.slug}`} >
+                           {row.on_sale ? (
                             <i
                               style={{ color: "green" }}
                               className=" fa-regular fa-circle-check"
@@ -225,15 +235,17 @@ export default function EnhancedTable() {
                           ) : (
                             <i
                               style={{ color: "red" }}
-                              className="fa-regular fa-xmark"
+                              className="fa-regular fa-circle-xmark"
                             ></i>
-                          )}{" "}
+                          )}
+                          </Link>
                         </TableCell>
                         <TableCell align="right">
-                          {" "}
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
                           <span style={{ color: `${row?.badge?.textColor}` }}>
                             {row?.badge?.text}
-                          </span>{" "}
+                          </span>
+                          </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link to={`actions/?${row.type}?edit?${row.slug}`}>
