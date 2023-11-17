@@ -469,8 +469,8 @@ export default function Products() {
               <TextField
                 id="outlined-multiline-static"
                 label="Izoh"
-                multiline
                 defaultValue={editData?.description || description}
+                multiline
                 rows={4}
                 style={{ width: "600px" }}
                 type="text"

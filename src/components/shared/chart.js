@@ -1,43 +1,99 @@
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
+import Client from "service/Client";
+import { API_ENDPOINTS } from "service/ApiEndpoints";
+import { Select } from "antd";
 
 export default function ChartComponent({ data }) {
-  const [arrMonth, setArrMonth] = useState([]);
-  const [arrMonthValue, setArrMonthValue] = useState([]);
-  const [options, setOptions] = useState({
-    chart: {
-      id: "basic-bar",
-    },
-    xaxis: {
-      categories: arrMonth,
-    },
-  });
-  const [series, setSeries] = useState([
-    {
-      name: "mahsulot soni",
-      data: arrMonthValue,
-    },
-  ]);
+  const [options, setOptions] = useState({});
+  const [series, setSeries] = useState([]);
+  const [year, setYear] = useState(null);
+  const [yearSelect, setYearSelect] = useState("");
 
-  const sortData = (data) => {
-    for (const item of data) {
-      arrMonth.push(item.month);
-      arrMonthValue.push(item.monthly_amount)
-    }
-    console.log("statistic", arrMonthValue);
+  const getYear = async () => {
+    await Client.get(API_ENDPOINTS.YEAR)
+      .then((res) => {
+        setYear(
+          res?.map((el) => ({
+            label: el,
+            value: el,
+          }))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getStatistic = async () => {
+    await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}`)
+      .then((res) => {
+        setSeries([
+          {
+            name: "Daromad",
+            data: res.result.map((el) => el.monthly_amount),
+          },
+        ]);
+        setOptions({
+          chart: {
+            id: "basic-bar",
+          },
+          xaxis: {
+            categories: res.result.map((el) => el.month),
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleChangeSelect = async (year) => {
+    await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}?year=${year}`)
+    .then((res) => {
+      setSeries([
+        {
+          name: "Daromad",
+          data: res.result.map((el) => el.monthly_amount),
+        },
+      ]);
+      setOptions({
+        chart: {
+          id: "basic-bar",
+        },
+        xaxis: {
+          categories: res.result.map((el) => el.month),
+        },
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   };
 
   useEffect(() => {
-    if (data?.length > 0) {
-      sortData(data);
-    }
+    getStatistic();
+    getYear();
   }, []);
-
-  console.log(options , series);
 
   return (
     <div className="app ">
+      <Select
+        allowClear
+        style={{
+          width: "25%",
+          paddingLeft: "10px",
+          margin: "8px 0",
+        }}
+        showSearch
+        optionFilterProp="children"
+        filterOption={(input, option) => (option?.label ?? "").includes(input)}
+        placeholder="Yillar"
+        onChange={handleChangeSelect}
+        options={year}
+      />
+
       <div className="row w-full">
         <div
           className="mixed-chart"
@@ -46,20 +102,20 @@ export default function ChartComponent({ data }) {
             justifyContent: "center",
           }}
         >
-         {
-          data?.length > 0 ? 
-          <Chart
-          options={options}
-          series={series}
-          type="bar"
-          className="w-full"
-          style={{
-            maxWidth: "1200px",
-            with: "100%",
-          }}
-        /> :
-        <>load</>
-         }
+          {1 ? (
+            <Chart
+              options={options}
+              series={series}
+              type="bar"
+              className="w-full"
+              style={{
+                with: "100%",
+                height: "auto",
+              }}
+            />
+          ) : (
+            <>load</>
+          )}
         </div>
       </div>
     </div>
@@ -67,5 +123,5 @@ export default function ChartComponent({ data }) {
 }
 
 ChartComponent.propTypes = {
-  month: PropTypes.string
-}
+  month: PropTypes.string,
+};

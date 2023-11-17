@@ -15,7 +15,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
@@ -87,20 +87,18 @@ export default function EnhancedTable() {
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [branch, setBranch] = useState("");
-  const [product, setProduct] = useState("");
-  const [filialData, setFilialData] = useState(null);
-  const [productData, setProductData] = useState(null);
-  const navigate = useNavigate();
-
-  // const handleClick = (id) => {
-  //   navigate(`/branch-products/actions/?edit?${id}`);
-  // };
+  const [filialData, setFilialData] = useState([
+    {
+      label: "All",
+      value: "",
+    },
+  ]);
 
   const handleChange = async (e) => {
     setType(e.target.value);
     setPage(1);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?page=${page}&branch=${branch}&product=${product}&product__type=${e.target.value}`
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?page=${page}&branch=${branch}&product__type=${e.target.value}`
     )
       .then((resp) => {
         setCount(resp.count);
@@ -110,7 +108,9 @@ export default function EnhancedTable() {
   };
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?search=${e}`)
+    await Client.get(
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&search=${e}`
+    )
       .then((resp) => {
         setData(resp.results);
       })
@@ -119,17 +119,7 @@ export default function EnhancedTable() {
   const handleChangeFilial = async (event) => {
     setBranch(event);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event}&product=${product}&product__type=${type}`
-    )
-      .then((resp) => {
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-  const handleChangeProductFilter = async (event) => {
-    setProduct(event);
-    await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&product=${event}&product__type=${type}`
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event}&product__type=${type}`
     )
       .then((resp) => {
         setData(resp.results);
@@ -163,26 +153,12 @@ export default function EnhancedTable() {
   const getFilial = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((res) => {
-        setFilialData(
-          res.results.map((el) => ({
-            label: el.name,
-            value: el.id,
-          }))
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const getProduct = async () => {
-    await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST)
-      .then((res) => {
-        setProductData(
-          res.results?.map((el) => ({
-            label: el.name,
-            value: el.id,
-          }))
-        );
+          res.results.forEach((el) =>
+            filialData.push({
+              label: el.name,
+              value: el.id,
+            })
+          )
       })
       .catch((err) => {
         console.log(err);
@@ -194,7 +170,6 @@ export default function EnhancedTable() {
       `${API_ENDPOINTS.DELETE_PRODUCT_COUNT_BRANCH}${deleteId}/`
     )
       .then((resp) => {
-        console.log(resp);
         setOpen(false);
         getRetsipeData();
       })
@@ -208,7 +183,6 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     getFilial();
-    getProduct();
   }, []);
 
   return (
@@ -252,22 +226,6 @@ export default function EnhancedTable() {
                   onChange={handleChangeFilial}
                   options={filialData}
                 ></Select>
-                <Select
-                  mode="select"
-                  placeholder="Mahsulot"
-                  style={{
-                    width: "100%",
-                    height: "47px",
-                  }}
-                  showSearch
-                  allowClear
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  onChange={handleChangeProductFilter}
-                  options={productData}
-                ></Select>
               </div>
               <Table
                 sx={{ minWidth: 750 }}
@@ -278,23 +236,20 @@ export default function EnhancedTable() {
                 <TableBody>
                   {data?.map((row, index) => {
                     return (
-                      <TableRow
-                        hover
-                        key={row.id}
-                      >
+                      <TableRow hover key={row.id}>
                         <TableCell align="left">
-                          <Link to={`actions/?edit?${row.id}`} >
-                          {row.product}
+                          <Link to={`actions/?edit?${row.id}`}>
+                            {row.product}
                           </Link>
                         </TableCell>
                         <TableCell align="left">
                           <Link to={`actions/?edit?${row.id}`}>
-                          {row.branch}
+                            {row.branch}
                           </Link>
                         </TableCell>
                         <TableCell align="right">
-                          <Link to={`actions/?edit?${row.id}`} >
-                          {row.quantity} 
+                          <Link to={`actions/?edit?${row.id}`}>
+                            {row.quantity}
                           </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>

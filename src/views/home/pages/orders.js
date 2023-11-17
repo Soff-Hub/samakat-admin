@@ -142,6 +142,9 @@ export default function Branches() {
                   <span className="font-bold text-[16px]">Promo kod</span>
                 </TableCell>
                 <TableCell>
+                  <span className="font-bold text-[16px]">Manzil</span>
+                </TableCell>
+                <TableCell>
                   <span className="font-bold text-[16px]">Holat</span>
                 </TableCell>
               </TableRow>
@@ -195,6 +198,18 @@ export default function Branches() {
                           <i className="fa-solid fa-minus"></i>
                         ) : (
                           row.promocode
+                        )}
+                      </Link>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Link
+                        to={"actions/?" + row.id}
+                        className="hover:underline"
+                      >
+                        {row.address === null ? (
+                          <i className="fa-solid fa-minus"></i>
+                        ) : (
+                          row.address
                         )}
                       </Link>
                     </TableCell>
