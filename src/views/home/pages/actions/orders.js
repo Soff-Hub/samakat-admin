@@ -4,8 +4,17 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import { Button, Switch, TextField } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Switch,
+  TextField,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Timeline } from "antd";
+// import { Radio } from "antd";
 
 export default function Orders() {
   const location = useLocation();
@@ -27,7 +36,6 @@ export default function Orders() {
     // eslint-disable-next-line
   }, []);
 
-  console.log("log", location.search);
 
   return (
     <div>
@@ -47,8 +55,8 @@ export default function Orders() {
       <div>
         {data ? (
           <div
-            style={{ display: "flex", justifyContent: "center" }}
-            className="text-center w-full 	"
+            style={{ display: "flex", justifyContent: "center", alignItems:'center' }}
+            className="text-center w-full flex flex-col	"
           >
             <form className="w-2/3 bg-slate-200 p-6  flex flex-col gap-5 mt-6  create-branch-form">
               <TextField
@@ -94,15 +102,43 @@ export default function Orders() {
                 }
                 type="text"
               />
-              <div className="text-left">
-                <label className="font-normal font-sans text-base">
+
+              <TextField
+                label="Izoh"
+                variant="outlined"
+                size="large"
+                value={data.commentary ? data?.commentary : "-"}
+                type="text"
+                multiline
+                rows={4}
+              />
+              <div className="text-left flex align-center">
+                <label className="font-normal font-sans text-base pt-2 pr-2">
                   Eshik oldida qoldirish
                 </label>
-                <Switch
-                  checked={data ? data?.leave : ""}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
+                <RadioGroup
+                  aria-label="gender"
+                  name="gender1"
+                  value={data ? data?.leave : ""}
+                >
+                  <FormControlLabel
+                    value={data ? data?.leave : ""}
+                    control={<Radio />}
+                  />
+                </RadioGroup>
               </div>
+            </form>
+            <form className="w-2/3 mt-2  bg-slate-200 p-6 mt-6 ">
+              <p className="font-normal font-sans text-start text-lg pb-2" >Buyurtmalar:</p>
+              <ul className="border-[#AEB2B8] py-2 text-start border rounded">
+              {
+                  data?.product_count?.map((el,i) => (
+                    <li className="font-normal font-sans text-base pl-2" >
+                     {i+1}. {el.product} {el.amount !== null ? ` - ${ el.amount}` : ''}
+                    </li>
+                  ))
+                }
+              </ul>
             </form>
           </div>
         ) : (
