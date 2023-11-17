@@ -76,7 +76,7 @@ export default function Products() {
     {
       id: 1,
       branch: 0,
-      quantity: 0,
+      quantity: 1,
     },
   ]);
   const [atributInput, setAtributInput] = useState([
@@ -166,12 +166,14 @@ export default function Products() {
       formData.append("product_galereya", image[i]);
     }
 
+
+
     const data = {
       name: name,
       price: price,
       description: description,
       discount: discount,
-      badge: badge,
+      badge: badge?.length > 0 ? badge : "" ,
       on_sale: on_sale !== null ? on_sale : false,
       product_attribute: {
         carbohydrates: carbohydrates,
@@ -184,11 +186,17 @@ export default function Products() {
         specification: specification,
         shelf_life: shelf_life,
       },
-      product_count_branch: product_branch,
-      product_highlight: product_highlight,
       product_categories: product_categories,
       type: location.search.split("?")[1],
     };
+
+    if (product_highlight?.[0]?.content !== "" ){
+      Object.assign(data, {product_highlight:  product_highlight});
+    }
+    if (product_branch?.[0]?.branch !== 0 ){
+      Object.assign(data, { product_count_branch: product_branch});
+    }
+
 
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, data)
       .then((data) => {
