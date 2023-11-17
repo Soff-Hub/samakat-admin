@@ -226,7 +226,7 @@ export default function EnhancedTable() {
         <ToggleButton className="w-full" value="bistro">
           Быстрый
         </ToggleButton>
-        <ToggleButton className="w-full" value="apteka">
+        <ToggleButton className="w-full" value="byuti">
           Apteka
         </ToggleButton>
       </ToggleButtonGroup>

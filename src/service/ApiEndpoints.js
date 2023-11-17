@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
     CATEGORIES_DETAIL: 'admin/category/detail/',
     UPDATE_CATEGORY: 'admin/category/update/',
     DELETE_CATEGORY: 'admin/category/delete/',
+    CATEGORIES_CHAILD: 'admin/category/list/childe/',
 
     RETCIPE: 'admin/recipe/',
     CAREATE_RECIPE: 'admin/recipe/create/',

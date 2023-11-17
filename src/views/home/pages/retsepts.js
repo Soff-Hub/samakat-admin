@@ -139,11 +139,6 @@ export default function EnhancedTable() {
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const navigate = useNavigate();
-
-  const handleClick = (id) => {
-    navigate(`actions/?edit?${id}`);
-  };
 
   const handleChange = async (e) => {
     setPage(1);
@@ -217,7 +212,7 @@ export default function EnhancedTable() {
         <ToggleButton className="w-full" value="bistro">
           Bistro
         </ToggleButton>
-        <ToggleButton className="w-full" value="apteka">
+        <ToggleButton className="w-full" value="byuti">
           Aptika
         </ToggleButton>
       </ToggleButtonGroup>

@@ -318,7 +318,7 @@ export default function Retsepts() {
               size="small"
               type="number"
               value={quantity}
-              sx={{ m: 1, minWidth: 120 }}
+              sx={{ minWidth: 120 }}
               onChange={(e) => {
                 setQuantity(e.target.value);
               }}

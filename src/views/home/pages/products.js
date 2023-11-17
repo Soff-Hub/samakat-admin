@@ -97,12 +97,6 @@ export default function EnhancedTable() {
   const [count, setCount] = useState("");
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const navigate = useNavigate()
-
-  const handleClick = (type, slug) => {
-    navigate(`actions/?${type}?edit?${slug}`)
-  };
-
 
   const handleChange = async (e) => {
     setType(e.target.value);
@@ -176,7 +170,7 @@ export default function EnhancedTable() {
         <ToggleButton className="w-full" value="bistro">
           Bistro
         </ToggleButton>
-        <ToggleButton className="w-full" value="apteka">
+        <ToggleButton className="w-full" value="byuti">
           Apteka
         </ToggleButton>
       </ToggleButtonGroup>
@@ -248,12 +242,9 @@ export default function EnhancedTable() {
                           </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
-                            <IconButton color="primary">
-                              <DriveFileRenameOutlineOutlinedIcon />
-                            </IconButton>
-                          </Link>
-                          <IconButton
+                            {
+                            row.is_delete ?
+                            <IconButton
                             color="error"
                             onClick={() => {
                               setDeleteId(row.slug);
@@ -262,7 +253,16 @@ export default function EnhancedTable() {
                             aria-label="delete"
                           >
                             <DeleteSharpIcon />
-                          </IconButton>
+                          </IconButton> :
+                          ""
+                          }
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            <IconButton color="primary">
+                              <DriveFileRenameOutlineOutlinedIcon />
+                            </IconButton>
+                          </Link>
+                        
+                         
                         </TableCell>
                       </TableRow>
                     );
