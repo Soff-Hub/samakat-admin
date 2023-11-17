@@ -482,7 +482,7 @@ export default function Products() {
                 }}
               />
 
-              <FormControl sx={{ m: 0, width: 600 }}>
+              {/* <FormControl sx={{ m: 0, width: 600 }}>
                 <InputLabel id="demo-multiple-checkbox-label">
                   Bog'liq kategoriyalar
                 </InputLabel>
@@ -506,7 +506,7 @@ export default function Products() {
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>
+              </FormControl> */}
 
               <FormControl
                 style={{ width: "600px" }}
