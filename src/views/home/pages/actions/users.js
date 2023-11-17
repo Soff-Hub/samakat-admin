@@ -26,7 +26,6 @@ export default function Users() {
   const getItem = async (id) => {
     await Client.get(`${API_ENDPOINTS.DETAIL_USER}${id}`)
       .then((res) => {
-        console.log("res", res);
         setData(res);
       })
       .catch((err) => {
@@ -124,12 +123,10 @@ export default function Users() {
                     <div key={i}>
                       <hr className="py-2" />
                       <h3>
-                        {" "}
-                        <span className="font-medium">Location</span> :{" "}
+                        <span className="font-medium"> Location</span> :{" "}
                         {item?.branch}
                       </h3>
                       <h3>
-                        {" "}
                         <span className="font-medium">Filial</span> :{" "}
                         {item?.address?.location}
                       </h3>
@@ -186,10 +183,12 @@ export default function Users() {
               {data?.recipe_wishlist ? (
                 data?.recipe_wishlist?.map((item, i) => {
                   return (
+                    <Link to={`/retsepts/actions/?edit?${item.slug}`} key={item.id}>
                     <div>
                       <span className="font-medium">{i + 1}.</span>
                       {item.recipe}
                     </div>
+                    </Link>
                   );
                 })
               ) : (

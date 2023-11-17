@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
-export default function ResponsiveDialog({ open, setOpen, handleDelete }) {
+export default function ResponsiveDialog({errorData, open, setOpen, handleDelete }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -33,7 +33,7 @@ export default function ResponsiveDialog({ open, setOpen, handleDelete }) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Bu amalni ortga qaytarishni iloji yo'q
+            {errorData ? errorData : " Bu amalni ortga qaytarishni iloji yo'q"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

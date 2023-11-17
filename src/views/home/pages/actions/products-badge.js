@@ -79,13 +79,12 @@ export default function Retsepts() {
           <div className="flex gap-5">
             <form
               onSubmit={handleSubmitAdd}
-              className="w-1/3 flex mt-4 flex-col gap-5 create-branch-form"
+              className="w-1/2 m-auto flex mt-4 flex-col gap-5 create-branch-form"
             >
               <TextField
                 label="Belgi matni"
                 variant="outlined"
                 size="large"
-                style={{ width: "600px" }}
                 type="text"
                 required
                 value={text}
@@ -97,7 +96,6 @@ export default function Retsepts() {
                 label="Belgi rangi"
                 variant="outlined"
                 size="large"
-                style={{ width: "600px" }}
                 type="color"
                 value={badge}
                 onChange={(e) => {
@@ -106,7 +104,6 @@ export default function Retsepts() {
               />
 
               <Button
-                style={{ width: "600px" }}
                 variant="outlined"
                 size="large"
                 type="submit"
@@ -132,19 +129,18 @@ export default function Retsepts() {
     )
   ) : (
     <div>
-      <div>
+      <div className="text-center">
         <h1 className="text-[35px] pb-3">Mahsulot belgisini qo'shish</h1>
         <Toaster />
         <div className="flex gap-5">
           <form
             onSubmit={handleSubmitAdd}
-            className="w-1/3 flex flex-col gap-5 create-branch-form"
+            className="w-1/2 m-auto  flex flex-col gap-5 create-branch-form"
           >
             <TextField
               label="Belgi matni"
               variant="outlined"
               size="large"
-              style={{ width: "600px" }}
               type="text"
               required
               value={text}
@@ -156,7 +152,6 @@ export default function Retsepts() {
               label="Belgi rangi"
               variant="outlined"
               size="large"
-              style={{ width: "600px" }}
               type="color"
               value={badge}
               onChange={(e) => {
@@ -165,7 +160,6 @@ export default function Retsepts() {
             />
 
             <Button
-              style={{ width: "600px" }}
               variant="outlined"
               size="large"
               type="submit"

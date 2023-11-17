@@ -17,7 +17,7 @@ export default function Retsepts() {
   const [productData, setProductData] = useState([]);
   const [branch, setBranch] = useState("");
   const [product, setProduct] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState("");
   const [error, setError] = useState(false);
   const [errorProduct, setErrorProduct] = useState(false);
   const [productOption, setProductOption] = useState([]);
@@ -44,7 +44,7 @@ export default function Retsepts() {
           }, 300);
         })
         .catch((err) => {
-          toast.error("Xatolik! Qayta urinib ko'ring");
+          toast.error(`${err?.response?.data?.msg}`);
         });
 
       setSubmiting(false);
@@ -61,17 +61,24 @@ export default function Retsepts() {
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
 
-    const data = {
-      branch: branch,
-      product: product,
-      quantity: +quantity,
-    };
+    const data = {};
+
+    if (branch !== "") {
+      Object.assign(data,{branch: branch})
+    }
+    if (product !== "") {
+      Object.assign(data,{product: product})
+    }
+    if (quantity !== "") {
+      Object.assign(data,{quantity: +quantity})
+    }
+
     setSubmiting(true);
-    await Client.put(
+    await Client.patch(
       `${API_ENDPOINTS.UPDATE_PRODUCT_COUNT_BRANCH}${
         location.search.split("?")[2]
       }/`,
-      data
+      data 
     )
       .then((data) => {
         toast.success("Filiallardagi mahsulot muvaffaqiyatli tahrirlandi");
@@ -93,9 +100,6 @@ export default function Retsepts() {
     )
       .then((res) => {
         setEditData(res);
-        setBranch(res.branch);
-        setProduct(res.product);
-        setQuantity(res.quantity);
       })
       .catch((err) => {
         console.log(err);
@@ -132,7 +136,6 @@ export default function Retsepts() {
         console.log(err);
       });
   };
-
 
   useEffect(() => {
     getBranch();
@@ -180,51 +183,56 @@ export default function Retsepts() {
                 onSubmit={handleSubmitEdit}
                 className="w-full flex flex-col gap-5 create-branch-form"
               >
-                <Select
-                  mode="select"
-                  placeholder="Filial *"
-                  required
-                  defaultValue={editData?.branch}
-                  style={{
-                    width: "100%",
-                    height: "47px",
-                    marginTop: "25px",
-                  }}
-                  className={`${
-                    error ? "rounded-md border border-rose-500" : ""
-                  }`}
-                  onChange={onChangeBranch}
-                  options={branchData}
-                >
-                </Select>
-                <Select
-                  mode="select"
-                  placeholder="Mahsulot"
-                  showSearch
-                  allowClear
-                  defaultValue={product}
-                  style={{
-                    width: "100%",
-                    height: "47px",
-                  }}
-                  onChange={onChangeProduct}
-                  className={`${
-                    errorProduct ? "rounded-md border border-rose-500" : ""
-                  }`}
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  options={productOption}
-                ></Select>
+                <div>
+                  <label className="text-slate-400">Filial :</label>
+                  <Select
+                    mode="select"
+                    placeholder="Filial *"
+                    required
+                    defaultValue={editData?.branch}
+                    style={{
+                      width: "100%",
+                      height: "47px",
+                      // marginTop: "25px",
+                    }}
+                    className={`${
+                      error ? "rounded-md border border-rose-500" : ""
+                    }`}
+                    onChange={onChangeBranch}
+                    options={branchData}
+                  ></Select>
+                </div>
+                <div>
+                  <label className="text-slate-400">Mahsulot :</label>
+                  <Select
+                    mode="select"
+                    placeholder="Mahsulot"
+                    showSearch
+                    allowClear
+                    defaultValue={editData?.product}
+                    style={{
+                      width: "100%",
+                      height: "47px",
+                    }}
+                    onChange={onChangeProduct}
+                    className={`${
+                      errorProduct ? "rounded-md border border-rose-500" : ""
+                    }`}
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      (option?.label ?? "").includes(input)
+                    }
+                    options={productOption}
+                  ></Select>
+                </div>
 
                 <TextField
                   label="Soni"
                   variant="outlined"
                   size="small"
                   type="number"
-                  value={quantity}
-                  sx={{ m: 1, minWidth: 120 }}
+                  defaultValue={editData?.quantity}
+                  sx={{ minWidth: 120 }}
                   onChange={(e) => {
                     setQuantity(e.target.value);
                   }}
@@ -310,7 +318,7 @@ export default function Retsepts() {
               size="small"
               type="number"
               value={quantity}
-              sx={{ m: 1, minWidth: 120 }}
+              sx={{ minWidth: 120 }}
               onChange={(e) => {
                 setQuantity(e.target.value);
               }}

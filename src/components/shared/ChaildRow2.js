@@ -12,13 +12,13 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Row2 } from "./Row2";
-import toast, { Toaster } from "react-hot-toast";
 
 export function ChaildRow2({ row, Detele, getchildData }) {
   const [data, setData] = useState([]);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [rowData, setRowData] = useState([]);
+  const [errorData, setErrorData] = useState('')
 
   const getCatgeoryChaild = async (id) => {
     await Client.get(`${API_ENDPOINTS.CATEGORIES}?parent=${id}`)
@@ -38,7 +38,7 @@ export function ChaildRow2({ row, Detele, getchildData }) {
       })
       .catch((err) => {
         console.log(err);
-        toast.success(`${err?.response?.data?.[0]}`);
+        setErrorData(`${err?.response?.data?.[0]}`);
       });
   }
 
@@ -49,7 +49,6 @@ export function ChaildRow2({ row, Detele, getchildData }) {
 
   return (
     <>
-      <Toaster />
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -97,6 +96,7 @@ export function ChaildRow2({ row, Detele, getchildData }) {
         open={openDelete}
         setOpen={setOpen}
         handleDelete={handleDelete}
+        errorData={errorData}
       />
     </>
   );

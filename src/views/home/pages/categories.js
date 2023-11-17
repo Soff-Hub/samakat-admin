@@ -14,6 +14,8 @@ export default function Categories2() {
 
   const handleChange = async (e) => {
     setType(e.target.value);
+    console.log('value =>', e.target.value);
+    
     setPage(1);
     await Client.get(
       `${API_ENDPOINTS.CATEGORIES}?page=${page}&type=${e.target.value}&parent_is_null=true`
@@ -53,6 +55,9 @@ export default function Categories2() {
     // eslint-disable-next-line
   }, [deteItem]);
 
+  console.log('category data', data);
+  
+
   return (
     <div>
       <NavHeaderSelect title="Kategoriyalar" />
@@ -77,11 +82,11 @@ export default function Categories2() {
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />
-      <div className="flex justify-between bg-[#EDF4FB] p-2 px-3">
+      <div className="flex justify-between bg-[#EDF4FB] p-2 px-4 mb-1">
         <div className="font-bold text-[16px]">Nomi</div>
         <div className="font-bold text-[16px]">Amallar</div>
       </div>
-      <hr/>
+      <hr />
       <div>
         <Row2 row={data} Detele={Detele} />
       </div>

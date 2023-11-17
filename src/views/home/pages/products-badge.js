@@ -27,19 +27,16 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
-          {" "}
+        <TableCell align="left">
           <Link to={`actions/?edit?${row.id}`}>{row.text}</Link>{" "}
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="center">
           <Link to={`actions/?edit?${row.id}`}>
             <span style={{ color: `${row.textColor}` }}>
               <i className="fa-solid fa-certificate"></i>
             </span>
           </Link>
         </TableCell>
-        <TableCell align="right"></TableCell>
-        <TableCell align="right"></TableCell>
         <TableCell align="right" sx={{ position: "relative" }}>
           <Link to={`actions/?edit?${row.id}`}>
             <IconButton color="primary">
@@ -111,14 +108,18 @@ export default function CollapsibleTable() {
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell><span className="font-bold text-[16px]" >Belgi matni</span></TableCell>
-              <TableCell align="right"><span className="font-bold text-[16px]" >Belgi rangi</span></TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"><span className="font-bold text-[16px]" >Amallar</span></TableCell>
+              <TableCell align="left">
+                <span className="font-bold text-[16px]">Belgi matni</span>
+              </TableCell>
+              <TableCell align="center">
+                <span className="font-bold text-[16px]">Belgi rangi</span>
+              </TableCell>
+              <TableCell align="right">
+                <span className="font-bold text-[16px]">Amallar</span>
+              </TableCell>
             </TableRow>
           </TableHead>
-          {bagdeData ? (
+          {bagdeData?.length >= 0 ? (
             <TableBody>
               {bagdeData?.map((row) => (
                 <Row key={row.name} row={row} />

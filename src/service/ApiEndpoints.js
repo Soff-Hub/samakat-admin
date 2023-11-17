@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
     CATEGORIES_DETAIL: 'admin/category/detail/',
     UPDATE_CATEGORY: 'admin/category/update/',
     DELETE_CATEGORY: 'admin/category/delete/',
+    CATEGORIES_CHAILD: 'admin/category/list/childe/',
 
     RETCIPE: 'admin/recipe/',
     CAREATE_RECIPE: 'admin/recipe/create/',
@@ -56,5 +57,7 @@ export const API_ENDPOINTS = {
     UPDATE_PROMO_CODE: 'admin/promo-code/update/',
 
     DASHBOARD:'admin/dashboard/statistic/',
-    MOTHLY_STATISTIC:'admin/monthly/statistic/'
+    MOTHLY_STATISTIC:'admin/monthly/statistic/',
+
+    YEAR:'admin/year/list'
 }

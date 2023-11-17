@@ -2,7 +2,6 @@ import NavHeaderSelect from "components/shared/NavHeaderSelect";
 import React, { useEffect, useState } from "react";
 
 import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,21 +9,15 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { visuallyHidden } from "@mui/utils";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
@@ -34,7 +27,7 @@ import { CircularProgress } from "@mui/material";
 const headCells = [
   {
     id: "calories",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Nomi",
   },
@@ -70,29 +63,15 @@ const headCells = [
   },
 ];
 
-function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
+function EnhancedTableHead() {
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
             <span className="font-bold text-[16px]"> {headCell.label}</span>
           </TableCell>
@@ -111,112 +90,13 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Nutrition
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-}
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
 export default function EnhancedTable() {
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [type, setType] = React.useState("bistro");
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState("");
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    console.log(event.target.checked);
-    if (event.target.checked) {
-      const newSelected = data?.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-  console.log(">", selected);
-
-  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const handleChange = async (e) => {
     setType(e.target.value);
@@ -225,7 +105,6 @@ export default function EnhancedTable() {
       `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${e.target.value}`
     )
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })
@@ -291,7 +170,7 @@ export default function EnhancedTable() {
         <ToggleButton className="w-full" value="bistro">
           Bistro
         </ToggleButton>
-        <ToggleButton className="w-full" value="apteka">
+        <ToggleButton className="w-full" value="byuti">
           Apteka
         </ToggleButton>
       </ToggleButtonGroup>
@@ -311,48 +190,38 @@ export default function EnhancedTable() {
               size={"medium"}
             >
               <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
                 rowCount={data?.length}
               />
               <TableBody>
-                {data ? (
+                {data?.length >= 0 ? (
                   data?.map((row, index) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.id)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
+                        // onClick={() => handleClick( row.type, row.slug)}
                         key={row.id}
-                        selected={isItemSelected}
-                        sx={{ cursor: "pointer" }}
+                        // sx={{ cursor: "pointer" }}
                       >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
+                        <TableCell align="left">
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
+                          {row.name}
+                          </Link>
                         </TableCell>
-                        <TableCell align="right">{row.name}</TableCell>
                         <TableCell align="right">
+                          
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
                           {JSON.parse(row.price)} so'm
+                          </Link>
                         </TableCell>
                         <TableCell align="right">
-                          {row.discount} <i className="fa-solid fa-percent"></i>{" "}
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
+                          {row.discount !== 0 ? <>{row.discount} <i className="fa-solid fa-percent"></i> </> : <i className="fa-solid fa-minus"></i>} 
+                          </Link>
                         </TableCell>
                         <TableCell align="right">
-                          {true ? (
+                           <Link to={`actions/?${row.type}?edit?${row.slug}`} >
+                           {row.on_sale ? (
                             <i
                               style={{ color: "green" }}
                               className=" fa-regular fa-circle-check"
@@ -360,23 +229,22 @@ export default function EnhancedTable() {
                           ) : (
                             <i
                               style={{ color: "red" }}
-                              className="fa-regular fa-xmark"
+                              className="fa-regular fa-circle-xmark"
                             ></i>
-                          )}{" "}
+                          )}
+                          </Link>
                         </TableCell>
                         <TableCell align="right">
-                          {" "}
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
                           <span style={{ color: `${row?.badge?.textColor}` }}>
                             {row?.badge?.text}
-                          </span>{" "}
+                          </span>
+                          </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
-                            <IconButton color="primary">
-                              <DriveFileRenameOutlineOutlinedIcon />
-                            </IconButton>
-                          </Link>
-                          <IconButton
+                            {
+                            row.is_delete ?
+                            <IconButton
                             color="error"
                             onClick={() => {
                               setDeleteId(row.slug);
@@ -385,7 +253,16 @@ export default function EnhancedTable() {
                             aria-label="delete"
                           >
                             <DeleteSharpIcon />
-                          </IconButton>
+                          </IconButton> :
+                          ""
+                          }
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            <IconButton color="primary">
+                              <DriveFileRenameOutlineOutlinedIcon />
+                            </IconButton>
+                          </Link>
+                        
+                         
                         </TableCell>
                       </TableRow>
                     );

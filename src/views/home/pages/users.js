@@ -11,14 +11,9 @@ import TableRow from "@mui/material/TableRow";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import {
@@ -35,45 +30,27 @@ const headCells = [
     label: "Id",
   },
   {
-    id: "phone_number",
-    label: "Telefon raqam",
-  },
-  {
     id: "first_name",
     label: "To'liq ismi",
   },
   {
+    id: "phone_number",
+    label: "Telefon raqam",
+  },
+
+  {
     id: "created_at",
-    label: "Yaratilgan vaqt",
+    label: "Ro'yxatdan o'tgan sana",
   },
 ];
 
-function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
-
+function EnhancedTableHead() {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align="left"
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <span className="font-bold text-[16px]" >
-            {headCell.label}
-            </span>
+          <TableCell key={headCell.id} align="left">
+            <span className="font-bold text-[16px]">{headCell.label}</span>
           </TableCell>
         ))}
       </TableRow>
@@ -106,41 +83,7 @@ function EnhancedTableToolbar(props) {
             ),
         }),
       }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Nutrition
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
+    ></Toolbar>
   );
 }
 
@@ -149,20 +92,18 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function Users() {
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState(10);
   const [role, setRole] = useState("");
   const [filial, setFilial] = useState("");
   const [filialData, setFilialData] = useState([]);
+  const navigate = useNavigate();
 
   const getUsers = async () => {
     await Client.get(API_ENDPOINTS.USERS)
       .then((resp) => {
-        setCount(resp.count)
+        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => {
@@ -170,42 +111,9 @@ export default function Users() {
       });
   };
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+  const handleClick = (id) => {
+    navigate(`actions/?detail?${id}`);
   };
-
-  const handleSelectAllClick = (event) => {
-    console.log(event.target.checked);
-    if (event.target.checked) {
-      const newSelected = data?.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
-  const isSelected = (id) => selected.indexOf(id) !== -1;
 
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.USERS}?search=${e}`)
@@ -291,6 +199,10 @@ export default function Users() {
             label="Holat bo'yicha"
             onChange={handleChangeFilial}
           >
+            <MenuItem value={""}>
+              {" "}
+              <i className="fa-solid fa-minus"></i>{" "}
+            </MenuItem>
             {filialData ? (
               filialData?.map((item, i) => (
                 <MenuItem key={i} value={item.id}>
@@ -316,6 +228,10 @@ export default function Users() {
             label="Holat bo'yicha"
             onChange={handleChangeRole}
           >
+            <MenuItem value={""}>
+              {" "}
+              <i className="fa-solid fa-minus"></i>{" "}
+            </MenuItem>
             <MenuItem value={"customer"}>Foydalanuvchi</MenuItem>
             <MenuItem value={"admin"}>Admin</MenuItem>
             <MenuItem value={"kurer"}>Kurer</MenuItem>
@@ -323,7 +239,7 @@ export default function Users() {
           </Select>
         </FormControl>
       </div>
-      {data?.length > 0 ? (
+      {data?.length >= 0 ? (
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
             <TableContainer>
@@ -332,40 +248,19 @@ export default function Users() {
                 aria-labelledby="tableTitle"
                 size="medium"
               >
-                <EnhancedTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
-                  rowCount={data?.length || 0}
-                />
+                <EnhancedTableHead rowCount={data?.length || 0} />
                 <TableBody>
                   {data?.map((row, index) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = `enhanced-table-checkbox-${index}`;
-
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.id)}
+                        onClick={() => handleClick(row.id)}
                         role="checkbox"
-                        aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={row.id}
-                        selected={isItemSelected}
                         sx={{ cursor: "pointer" }}
                       >
-                        <TableCell padding="checkbox" align="left">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell component="th" id={labelId} align="left">
+                        <TableCell component="th" align="left">
                           <Link
                             to={`actions/?detail?${row.id}`}
                             className="hover:underline"
@@ -379,7 +274,11 @@ export default function Users() {
                             to={`actions/?detail?${row.id}`}
                             className="hover:underline"
                           >
-                            {row.phone}
+                            {row.first_name ? (
+                              row.first_name
+                            ) : (
+                              <i className="fa-solid fa-minus"></i>
+                            )}
                           </Link>
                         </TableCell>
                         <TableCell align="left">
@@ -387,7 +286,7 @@ export default function Users() {
                             to={`actions/?detail?${row.id}`}
                             className="hover:underline"
                           >
-                            {row.first_name === "" ? "No name" : row.first_name}
+                            {row.phone}
                           </Link>
                         </TableCell>
                         <TableCell align="left">

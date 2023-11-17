@@ -1,10 +1,9 @@
-import { Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Switch from "@mui/material/Switch";
@@ -15,17 +14,11 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Select, Space } from "antd";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 700,
-    },
-  },
-};
+
 
 export default function Retsepts() {
   const [submiting, setSubmiting] = useState(false);
@@ -39,7 +32,7 @@ export default function Retsepts() {
   const [description, setDescription] = useState("");
   const [editData, setEditData] = useState(null);
   const location = useLocation();
-  // const [optionChecked, setOptionChecked] = useState(false);
+  const [categoryData, setCategoryData] = useState([]);
   const [imageData, setImageData] = useState([
     {
       id: 1,
@@ -51,21 +44,22 @@ export default function Retsepts() {
       id: 3,
     },
   ]);
+  const [errorCategory, setErrorCategory] = useState(false);
+  const [errorImage, setErrorImage] = useState(false);
+  const [selectImage, setSelectImage] = useState("");
 
-  const handleChangeSelect = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setRelatedCategory(value);
-    console.log("=>", value);
+  const handleChangeRelatedCategory = (event) => {
+    setRelatedCategory(event);
+    console.log(event);
+    
   };
   const handleChangeActive = (event) => {
     setChecked(event.target.checked);
   };
 
   const handleChange = (event) => {
-    setCategory(event.target.value);
-    // setOptionChecked(true);
+    setCategory(event);
+    setErrorCategory(false);
   };
 
   const addImageInput = async (e) => {
@@ -77,38 +71,58 @@ export default function Retsepts() {
     imageData.pop();
   };
 
-  const setImageUrl = async (e) => {
-    setImage([...image, { image: e }]);
-    console.log(e);
+  const setImageUrl = async (e, id) => {
+    setSelectImage(e);
+    setImage([...image, e]);
+    for (let i = 0; i < imageData.length; i++) {
+      if (imageData[i].id === id) {
+        Object.assign(imageData[i], { image: window.URL.createObjectURL(e) });
+      }
+    }
   };
 
   const handleSubmitAddRecipe = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("title", name);
-    formData.append("description", description);
-    formData.append("category", category);
-    formData.append("is_active", checked);
-    formData.append("related_categories", relatedCategory);
-    for (let i = 0; i < image.length; i++) {
-      formData.append("uploaded_images", image[i].image);
+    if (category !== "" && selectImage !== "") {
+      if (category !== "") {
+        setErrorCategory(false);
+      } else if (selectImage !== "") {
+        setErrorImage(false);
+      }
+      const formData = new FormData();
+      formData.append("title", name);
+      formData.append("description", description);
+      formData.append("category", category);
+      formData.append("is_active", checked);
+      if (relatedCategory) {
+        formData.append("related_categories", relatedCategory);
+      }
+      for (let i = 0; i < image.length; i++) {
+        formData.append("uploaded_images", image[i]);
+      }
+
+      setSubmiting(true);
+      await Client.post(API_ENDPOINTS.CAREATE_RECIPE, formData)
+        .then((data) => {
+          toast.success("Retsep muvaffaqiyatli qo'shildi");
+          setTimeout(() => {
+            navigate("/retsepts");
+          }, 300);
+        })
+        .catch((err) => {
+          toast.error("Xatolik! Qayta urinib ko'ring");
+        });
+
+      setSubmiting(false);
+      document.querySelector(".create-branch-form").reset();
+    } else {
+      if (category === "") {
+        setErrorCategory(true);
+      }
+      if (selectImage !== "") {
+        setErrorImage(true);
+      }
     }
-
-    setSubmiting(true);
-
-    await Client.post(API_ENDPOINTS.CAREATE_RECIPE, formData)
-      .then((data) => {
-        toast.success("Retsep muvaffaqiyatli qo'shildi");
-        setTimeout(() => {
-          navigate("/retsepts");
-        }, 300);
-      })
-      .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
-      });
-
-    setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
   };
 
   const handleEditItemRecipe = async (e) => {
@@ -119,9 +133,11 @@ export default function Retsepts() {
     formData.append("description", description);
     formData.append("category", category);
     formData.append("is_active", checked);
-    formData.append("related_categories", relatedCategory);
+    if (relatedCategory?.length > 0) {
+      formData.append("related_categories", relatedCategory);
+    }
     for (let i = 0; i < image?.length; i++) {
-      formData.append("uploaded_images", image[i].image);
+      formData.append("uploaded_images", image[i]);
     }
     setSubmiting(true);
     await Client.patch(
@@ -142,9 +158,15 @@ export default function Retsepts() {
   };
 
   const getCategory = async (e) => {
-    await Client.get(`${API_ENDPOINTS.CATEGORIES}?type=${e}`)
+    await Client.get(`${API_ENDPOINTS.CATEGORIES_CHAILD}?type=${e}`)
       .then((resp) => {
         setData(resp.results);
+        setCategoryData(
+          resp.results?.map((el) => ({
+            value: el.id,
+            label: el.name,
+          }))
+        );
       })
       .catch((err) => console.log(err));
   };
@@ -204,16 +226,15 @@ export default function Retsepts() {
             </Link>
           </div>
           <Toaster />
-          <div className="flex gap-5">
+          <div>
             <form
               onSubmit={handleEditItemRecipe}
-              className="w-1/3 flex flex-col gap-5 create-branch-form"
+              className="w-1/2 m-auto flex flex-col gap-5 create-branch-form"
             >
               <TextField
                 label="Nomi"
                 variant="outlined"
                 size="large"
-                style={{ width: "600px" }}
                 type="text"
                 required
                 value={name}
@@ -228,44 +249,74 @@ export default function Retsepts() {
                 required
                 value={description}
                 rows={4}
-                style={{ width: "600px" }}
                 type="text"
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
               />
-              <FormControl
-                style={{ width: "600px" }}
-                sx={{ m: 1, minWidth: 120 }}
-                size="small"
-              >
-                <InputLabel
-                  id="demo-select-small-label"
-                  placholder="Kategoriya"
-                >
-                  Kategoriya
-                </InputLabel>
+              <div align="left">
+                <label className="font-normal font-sans text-xl mr-auto">
+                  Kategoriyalar
+                </label>
                 <Select
-                  selected
+                  mode="select"
+                  placeholder="Kategoriya *"
+                  showSearch
+                  allowClear
                   required
-                  value={category}
-                  label="Kategoriya"
+                  defaultValue={category}
+                  style={{
+                    width: "100%",
+                    height: "47px",
+                    marginLeft: "auto",
+                  }}
                   onChange={handleChange}
-                >
-                  {data?.map((item, i) => (
-                    <MenuItem key={i} value={item.id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <label className="text-lg  max-w-prose">
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  className={`${
+                    errorCategory ? "rounded-md border border-rose-500" : ""
+                  }`}
+                  options={categoryData}
+                />
+              </div>
+
+              <Space
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                }}
+                direction="vertical"
+              >
+                <label className="font-normal font-sans text-lg mr-auto">
+                  Bog'liq kategoriyalar
+                </label>
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{
+                    width: "100%",
+                  }}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  placeholder="Bog'liq kategoriyalar"
+                  onChange={handleChangeRelatedCategory}
+                  options={categoryData}
+                  defaultValue={relatedCategory}
+                />
+              </Space>
+
+              <label className="font-normal font-sans text-lg mr-auto">
                 Galleriya uchun rasmlar
               </label>
               <div style={{ display: "flex ", gap: "10px" }}>
                 <div
                   className="flex gap-3 flex-wrap"
-                  style={{ minWidth: "560px" }}
+                  style={{ minWidth: "490px" }}
                 >
                   {imageData.map((item, i) => {
                     return (
@@ -274,17 +325,29 @@ export default function Retsepts() {
                         key={i}
                       >
                         <Button
-                          style={{ width: "170px", height: "170px" }}
                           component="label"
                           variant="outlined"
+                          style={{
+                            maxWidth: "150px",
+                            width: "150px",
+                            backgroundImage: `url(${
+                              item?.image ? item?.image : ""
+                            })`,
+                            backgroundSize: "cover",
+                            height: "120px",
+                          }}
                         >
-                          <i
-                            className="fa-regular fa-image"
-                            style={{ fontSize: "35px" }}
-                          ></i>
+                          {item?.image ? (
+                            ""
+                          ) : (
+                            <i
+                              className="fa-regular fa-image"
+                              style={{ fontSize: "35px" }}
+                            ></i>
+                          )}
                           <input
                             style={{ display: "none" }}
-                            onChange={(e) => setImageUrl(e.target.files[0])}
+                            onChange={(e) => setImageUrl(e.target.files[0], item.id, e)}
                             type="file"
                           />
                         </Button>
@@ -312,43 +375,17 @@ export default function Retsepts() {
                 </div>
               </div>
               <div>
-                <label className="font-normal font-sans text-lg">Aktiv</label>
+                <label className="font-normal font-sans text-lg mr-auto">
+                  Aktiv
+                </label>
                 <Switch
                   checked={checked}
                   onChange={handleChangeActive}
                   inputProps={{ "aria-label": "controlled" }}
                 />
               </div>
-              <div>
-                <FormControl sx={{ m: 1, width: 600 }}>
-                  <InputLabel id="demo-multiple-checkbox-label">
-                    Bog'liq kategoriyalar
-                  </InputLabel>
-                  <Select
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    multiple
-                    required
-                    value={relatedCategory}
-                    onChange={handleChangeSelect}
-                    input={<OutlinedInput label="Bog'liq kategoriyalar" />}
-                    renderValue={(selected) => selected.join(", ")}
-                    MenuProps={MenuProps}
-                  >
-                    {data?.map((name) => (
-                      <MenuItem key={name} value={name.id}>
-                        <Checkbox
-                          checked={relatedCategory.indexOf(name.id) > -1}
-                        />
-                        <ListItemText primary={name.name} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
 
               <Button
-                style={{ width: "600px" }}
                 variant="outlined"
                 size="large"
                 type="submit"
@@ -361,23 +398,31 @@ export default function Retsepts() {
         </div>
       </div>
     ) : (
-      <></>
+      <Box
+        sx={{
+          display: "flex",
+          wdith: "100%",
+          justifyContent: "center",
+          padding: "150px 0",
+        }}
+      >
+        <CircularProgress />
+      </Box>
     )
   ) : (
     <div>
-      <div>
+      <div className="text-center">
         <h1 className="text-[35px] pb-3">Retsept qo'shish</h1>
         <Toaster />
         <div className="flex gap-5">
           <form
             onSubmit={handleSubmitAddRecipe}
-            className="w-1/3 flex flex-col gap-5 create-branch-form"
+            className="w-1/2 m-auto flex flex-col gap-5 create-branch-form"
           >
             <TextField
               label="Nomi"
               variant="outlined"
               size="large"
-              style={{ width: "600px" }}
               type="text"
               required
               value={name}
@@ -392,59 +437,105 @@ export default function Retsepts() {
               required
               value={description}
               rows={4}
-              style={{ width: "600px" }}
               type="text"
               onChange={(e) => {
                 setDescription(e.target.value);
               }}
             />
-            <FormControl
-              style={{ width: "600px" }}
-              sx={{ m: 1, minWidth: 120 }}
-              size="small"
-            >
-              <InputLabel id="demo-select-small-label" placholder="Kategoriya">
-                Kategoriya *
-              </InputLabel>
+
+            <div align="left">
               <Select
+                mode="select"
+                placeholder="Kategoriya *"
+                showSearch
+                allowClear
                 required
-                value={category}
-                label="Kategoriya"
+                style={{
+                  width: "100%",
+                  height: "47px",
+                  marginLeft: "auto",
+                }}
                 onChange={handleChange}
-              >
-                {data?.map((item, i) => (
-                  <MenuItem key={i} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <label className="text-lg  max-w-prose">
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "").includes(input)
+                }
+                className={`${
+                  errorCategory ? "rounded-md border border-rose-500" : ""
+                }`}
+                options={categoryData}
+              />
+            </div>
+
+            <Space
+              style={{
+                width: "100%",
+                textAlign: "left",
+              }}
+              direction="vertical"
+            >
+              <Select
+                mode="multiple"
+                allowClear
+                style={{
+                  width: "100%",
+                }}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "").includes(input)
+                }
+                placeholder="Bog'liq kategoriyalar"
+                onChange={handleChangeRelatedCategory}
+                options={categoryData}
+              />
+            </Space>
+
+            <label className="font-normal font-sans text-lg mr-auto">
               Galleriya uchun rasmlar *
             </label>
-            <div style={{ display: "flex ", gap: "10px" }}>
+            <div style={{ display: "flex ", justifyContent: "start" }}>
               <div
                 className="flex gap-3 flex-wrap"
-                style={{ minWidth: "560px" }}
+                style={{ minWidth: "490px" }}
               >
                 {imageData.map((item, i) => {
                   return (
                     <div
-                      style={{ display: "flex", flexDirection: "column" }}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        border: `${errorImage ? "1px solid red" : ""}`,
+                        borderRadius: `${errorImage ? "7px" : ""}`,
+                      }}
                       key={i}
                     >
                       <Button
-                        style={{ width: "170px", height: "170px" }}
                         component="label"
                         variant="outlined"
+                        style={{
+                          maxWidth: "150px",
+                          width: "150px",
+                          backgroundImage: `url(${
+                            item?.image ? item?.image : ""
+                          })`,
+                          backgroundSize: "cover",
+                          height: "120px",
+                        }}
                       >
-                        <i
-                          className="fa-regular fa-image"
-                          style={{ fontSize: "35px" }}
-                        ></i>
+                        {item?.image ? (
+                          ""
+                        ) : (
+                          <i
+                            className="fa-regular fa-image"
+                            style={{ fontSize: "35px" }}
+                          ></i>
+                        )}
                         <input
                           style={{ display: "none" }}
-                          onChange={(e) => setImageUrl(e.target.files[0])}
+                          onChange={(e) =>
+                            setImageUrl(e.target.files[0], item.id, e)
+                          }
                           type="file"
                         />
                       </Button>
@@ -471,7 +562,7 @@ export default function Retsepts() {
                 </Fab>
               </div>
             </div>
-            <div>
+            <div className="mr-auto">
               <label className="font-normal font-sans text-lg">Aktiv</label>
               <Switch
                 checked={checked}
@@ -479,36 +570,7 @@ export default function Retsepts() {
                 inputProps={{ "aria-label": "controlled" }}
               />
             </div>
-            <div>
-              <FormControl sx={{ m: 1, width: 600 }}>
-                <InputLabel id="demo-multiple-checkbox-label">
-                  Bog'liq kategoriyalar
-                </InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  required
-                  value={relatedCategory}
-                  onChange={handleChangeSelect}
-                  input={<OutlinedInput label="Bog'liq kategoriyalar" />}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                >
-                  {data?.map((name) => (
-                    <MenuItem key={name} value={name.id}>
-                      <Checkbox
-                        checked={relatedCategory.indexOf(name.id) > -1}
-                      />
-                      <ListItemText primary={name.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-
             <Button
-              style={{ width: "600px" }}
               variant="outlined"
               size="large"
               type="submit"

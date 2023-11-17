@@ -14,9 +14,9 @@ export default function AddInput({
   deleteID,
   deleteIDHighlight,
   setChangeBranchCunt,
-  // change,
+  change,
 }) {
-  const [obj, setObj] = useState({ branch: 0, quantity: 0, id });
+  const [obj, setObj] = useState({ branch: 0, quantity: 1, id });
 
   function changeObj(e, key) {
     console.log("key", key, e);
@@ -38,15 +38,14 @@ export default function AddInput({
   };
 
   return selectData ? (
-    <div style={{ backgroundColor: "#ccc" }} className="flex gap-3 p-3  ">
+    <div style={{ backgroundColor: "#EEEEEE" }} className="flex gap-x-10 p-3  ">
       <div className="mx-1">
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+        <FormControl sx={{ m: 0, minWidth: 220 }} size="small">
           <InputLabel id="demo-select-small-label" placholder="Kategoriya">
             Filial
           </InputLabel>
           <Select
             label="Filial"
-            required
             onChange={(e) => changeObj(e.target.value, "branch")}
             defaultValue={dataF?.brach}
           >
@@ -59,12 +58,11 @@ export default function AddInput({
         </FormControl>
       </div>
 
-      <div className="mx-1">
+      <div>
         <TextField
           label={"Soni"}
           variant="outlined"
           size="small"
-          style={{ height: "10px", marginTop: "10px" }}
           type="number"
           defaultValue={dataF ? dataF?.quantity : obj?.quantity}
           onChange={(e) => {
@@ -85,12 +83,28 @@ export default function AddInput({
       </div>
     </div>
   ) : (
-    <div className="flex gap-5 p-3" style={{ backgroundColor: "#ccc" }}>
-      <div className="mx-1">
+    <div className="flex  p-3" style={{ backgroundColor: "#EEEEEE" }}>
+       <div className="mx-1">
         <TextField
+          label="Tartib raqam"
+          variant="outlined"
+          size="small"
+          style={{ marginTop: "10px", width:'150px' }}
+          type="number"
+          defaultValue={dataH?.order ? dataH?.order : obj?.order}
+          onChange={(e) => {
+            changeObj(+e.target.value, "order");
+          }}
+        />
+      </div>
+      <div className="mx-1 w-full">
+        <TextField
+          id="outlined-multiline-static"
           label="Asosiy element"
           variant="outlined"
-          required
+          className="w-full"
+          multiline
+           rows={4}
           size="small"
           style={{ marginTop: "10px" }}
           type="text"
@@ -98,25 +112,13 @@ export default function AddInput({
           onChange={(e) => (changeObj(e.target.value, "content"))}
         />
       </div>
-      <div className="mx-1">
-        <TextField
-          label="Tartib raqam"
-          variant="outlined"
-          size="small"
-          style={{ marginTop: "10px" }}
-          type="number"
-          defaultValue={dataH?.order ? dataH?.order : obj?.order}
-          // value={dataH?.order ? dataH?.order : obj?.order}
-          onChange={(e) => {
-            changeObj(+e.target.value, "order");
-          }}
-        />
-      </div>
+     
       <div
         style={{
           display: "flex",
           justifyItems: "end",
-          alignItems: "center",
+          alignItems: "end",
+          padding:'0 10px'
         }}
       >
         <button type="button" onClick={() => DeleteIDHighlight()}>

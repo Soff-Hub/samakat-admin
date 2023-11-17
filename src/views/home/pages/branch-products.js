@@ -9,14 +9,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
@@ -27,20 +26,14 @@ import { Select } from "antd";
 
 const headCells = [
   {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Id",
-  },
-  {
     id: "fat",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Mahsulot",
   },
   {
     id: "calories",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Filial",
   },
@@ -59,29 +52,15 @@ const headCells = [
   },
 ];
 
-function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount } = props;
-
+function EnhancedTableHead() {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
             <span className="font-bold text-[16px]"> {headCell.label}</span>
           </TableCell>
@@ -101,9 +80,6 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function EnhancedTable() {
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [type, setType] = React.useState("bistro");
   const [data, setData] = React.useState(null);
@@ -114,43 +90,11 @@ export default function EnhancedTable() {
   const [product, setProduct] = useState("");
   const [filialData, setFilialData] = useState(null);
   const [productData, setProductData] = useState(null);
+  const navigate = useNavigate();
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    console.log(event.target.checked);
-    if (event.target.checked) {
-      const newSelected = data?.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  // const handleClick = (id) => {
+  //   navigate(`/branch-products/actions/?edit?${id}`);
+  // };
 
   const handleChange = async (e) => {
     setType(e.target.value);
@@ -282,7 +226,7 @@ export default function EnhancedTable() {
         <ToggleButton className="w-full" value="bistro">
           Быстрый
         </ToggleButton>
-        <ToggleButton className="w-full" value="apteka">
+        <ToggleButton className="w-full" value="byuti">
           Apteka
         </ToggleButton>
       </ToggleButtonGroup>
@@ -330,50 +274,29 @@ export default function EnhancedTable() {
                 aria-labelledby="tableTitle"
                 size="medium"
               >
-                <EnhancedTableHead
-                  numSelected={selected.length}
-                  order={order}
-                  orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
-                  onRequestSort={handleRequestSort}
-                  rowCount={data?.length}
-                />
+                <EnhancedTableHead rowCount={data?.length} />
                 <TableBody>
                   {data?.map((row, index) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = `enhanced-table-checkbox-${index}`;
-
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.id)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
                         key={row.id}
-                        selected={isItemSelected}
-                        sx={{ cursor: "pointer" }}
                       >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
+                        <TableCell align="left">
+                          <Link to={`actions/?edit?${row.id}`} >
+                          {row.product}
+                          </Link>
                         </TableCell>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          padding="none"
-                        >
-                          {row.id}
+                        <TableCell align="left">
+                          <Link to={`actions/?edit?${row.id}`}>
+                          {row.branch}
+                          </Link>
                         </TableCell>
-                        <TableCell align="right">{row.product}</TableCell>
-                        <TableCell align="right">{row.branch}</TableCell>
-                        <TableCell align="right">{row.quantity} </TableCell>
+                        <TableCell align="right">
+                          <Link to={`actions/?edit?${row.id}`} >
+                          {row.quantity} 
+                          </Link>
+                        </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link to={`actions/?edit?${row.id}`}>
                             <IconButton color="primary">
