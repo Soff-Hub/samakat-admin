@@ -19,7 +19,6 @@ export default function AddInput({
   const [obj, setObj] = useState({ branch: 0, quantity: 1, id });
 
   function changeObj(e, key) {
-    console.log("key", key, e);
     if (key === "quantity") {
       setChangeBranchCunt(true);
     }

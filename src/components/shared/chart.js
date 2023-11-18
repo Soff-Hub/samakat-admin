@@ -9,7 +9,6 @@ export default function ChartComponent({ data }) {
   const [options, setOptions] = useState({});
   const [series, setSeries] = useState([]);
   const [year, setYear] = useState(null);
-  const [yearSelect, setYearSelect] = useState("");
 
   const getYear = async () => {
     await Client.get(API_ENDPOINTS.YEAR)
@@ -80,15 +79,12 @@ export default function ChartComponent({ data }) {
   return (
     <div className="app ">
       <Select
-        allowClear
         style={{
           width: "25%",
           paddingLeft: "10px",
           margin: "8px 0",
         }}
-        showSearch
         optionFilterProp="children"
-        filterOption={(input, option) => (option?.label ?? "").includes(input)}
         placeholder="Yillar"
         onChange={handleChangeSelect}
         options={year}

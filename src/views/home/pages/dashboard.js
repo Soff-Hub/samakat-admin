@@ -105,7 +105,6 @@ export default function Dashboard() {
       </div>
       {1 ? (
         <>
-          <div></div>
           <ChartComponent />
         </>
       ) : (

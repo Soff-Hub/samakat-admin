@@ -1,16 +1,12 @@
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { Select, Space } from "antd";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Switch from "@mui/material/Switch";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
@@ -21,17 +17,6 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddInput from "components/shared/addInput";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 700,
-    },
-  },
-};
 
 export default function Products() {
   const [submiting, setSubmiting] = useState(false);
@@ -59,8 +44,9 @@ export default function Products() {
   const [changeBranch, setChangeBranch] = useState(false);
   const [changeBranchCount, setChangeBranchCunt] = useState(false);
   const [elements, setElements] = useState("");
-  const [lifeImage, setLifeImage] = useState("");
+  const [editedCategory, setEditedCtegory] = useState("");
   const [LiveImageArr, setLiveImageArr] = useState([]);
+  const [formattedPrice, setFormattedPrice] = useState("");
   const [imageData, setImageData] = useState([
     {
       id: 1,
@@ -116,15 +102,13 @@ export default function Products() {
     findItem.order = value?.order;
     setAtributInput([...atributInput]);
   };
-
+  console.log("atribut input", atributInput);
   const addFormInput = (value, id) => {
     setFilialInput([...filialInput, { id, ...value }]);
   };
 
   const addAtributInput = async (value, id) => {
     setAtributInput([...atributInput, { id, ...value }]);
-    console.log('add', value, id);
-    
   };
 
   const ImageDelete = async (e) => {
@@ -166,14 +150,12 @@ export default function Products() {
       formData.append("product_galereya", image[i]);
     }
 
-
-
     const data = {
       name: name,
       price: price,
       description: description,
       discount: discount,
-      badge: badge?.length > 0 ? badge : "" ,
+      badge: badge?.length > 0 ? badge : "",
       on_sale: on_sale !== null ? on_sale : false,
       product_attribute: {
         carbohydrates: carbohydrates,
@@ -190,13 +172,12 @@ export default function Products() {
       type: location.search.split("?")[1],
     };
 
-    if (product_highlight?.[0]?.content !== "" ){
-      Object.assign(data, {product_highlight:  product_highlight});
+    if (product_highlight?.[0]?.content !== "") {
+      Object.assign(data, { product_highlight: product_highlight });
     }
-    if (product_branch?.[0]?.branch !== 0 ){
-      Object.assign(data, { product_count_branch: product_branch});
+    if (product_branch?.[0]?.branch !== 0) {
+      Object.assign(data, { product_count_branch: product_branch });
     }
-
 
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, data)
       .then((data) => {
@@ -216,6 +197,7 @@ export default function Products() {
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
+        setSubmiting(false);
       });
 
     setSubmiting(false);
@@ -240,67 +222,85 @@ export default function Products() {
       formData.append("product_galereya", image[i]);
     }
 
-    const EDiteddata = {};
-    if (name !== "") {
-      const addObj = { name: name };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (price !== "") {
-      const addObj = { price: price };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (description !== "") {
-      const addObj = { description: description };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (discount !== 0) {
-      const addObj = { discount: discount };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (badge.length > 0) {
-      const addObj = { badge: badge };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (on_sale !== null) {
-      const addObj = { on_sale: on_sale };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (carbohydrates !== 0) {
-      const addObj = { carbohydrates: carbohydrates };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (ingredients !== 0) {
-      const addObj = { ingredients: ingredients };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (fats !== 0) {
-      const addObj = { fats: fats };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (kilocalories !== 0) {
-      const addObj = { kilocalories: kilocalories };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (manufacturer !== "") {
-      const addObj = { manufacturer: manufacturer };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (protein !== 0) {
-      const addObj = { protein: protein };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (storageConditions !== "") {
-      const addObj = { storageConditions: storageConditions };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (specification !== "") {
-      const addObj = { specification: specification };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (shelf_life !== "") {
-      const addObj = { shelf_life: shelf_life };
-      Object.assign(EDiteddata, addObj);
-    }
+    const EDiteddata = {
+      name: name,
+      carbohydrates: carbohydrates,
+      ingredients: ingredients,
+      fats: fats,
+      kilocalories: kilocalories,
+      manufacturer: manufacturer,
+      protein: protein,
+      storageConditions: storageConditions,
+      specification: specification,
+      shelf_life: shelf_life,
+      on_sale: on_sale,
+      badge: badge,
+      discount: discount,
+      description: description,
+      price: price,
+    };
+
+    // if (price !== "") {
+    //   const addObj = { price: price };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (description !== "") {
+    //   const addObj = { description: description };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (discount !== 0) {
+    //   const addObj = { discount: discount };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (badge.length > 0) {
+    //   const addObj = { badge: badge };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (on_sale !== null) {
+    //   const addObj = { on_sale: on_sale };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // atributlar
+
+    // if (carbohydrates !== 0) {
+    //   const addObj = { carbohydrates: carbohydrates };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (ingredients !== "") {
+    //   const addObj = { ingredients: ingredients };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (fats !== 0) {
+    //   const addObj = { fats: fats };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (kilocalories !== 0) {
+    //   const addObj = { kilocalories: kilocalories };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (manufacturer !== "") {
+    //   const addObj = { manufacturer: manufacturer };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (protein !== 0) {
+    //   const addObj = { protein: protein };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (storageConditions !== "") {
+    //   const addObj = { storageConditions: storageConditions };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (specification !== "") {
+    //   const addObj = { specification: specification };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+    // if (shelf_life !== "") {
+    //   const addObj = { shelf_life: shelf_life };
+    //   Object.assign(EDiteddata, addObj);
+    // }
+
+    // atribut finish
+
     if (product_branch) {
       const addObj = { product_count_branch: product_branch };
       Object.assign(EDiteddata, addObj);
@@ -309,7 +309,12 @@ export default function Products() {
       const addObj = { product_highlight: product_highlight };
       Object.assign(EDiteddata, addObj);
     }
-    if (product_categories.length > 0) {
+    if (product_categories?.[0]?.label) {
+      const addObj = {
+        product_categories: product_categories?.map((el) => el.value),
+      };
+      Object.assign(EDiteddata, addObj);
+    } else {
       const addObj = { product_categories: product_categories };
       Object.assign(EDiteddata, addObj);
     }
@@ -327,24 +332,26 @@ export default function Products() {
               formData
             )
               .then((res) => {
-                toast.success("Retsep muvaffaqiyatli saqlandi");
+                toast.success("Mahsulot muvaffaqiyatli saqlandi");
                 navigate("/products");
                 setSubmiting(false);
               })
               .catch((err) => {
                 console.log(err);
+                setSubmiting(false);
               });
         }, 300);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
+        setSubmiting(false);
       });
 
     document.querySelector(".create-branch-form").reset();
   };
-
+  console.log("categoriya", product_categories);
   const getCategory = async (e) => {
-    await Client.get(`${API_ENDPOINTS.CATEGORIES}?type=${e}`)
+    await Client.get(`${API_ENDPOINTS.CATEGORIES_CHAILD}?type=${e}`)
       .then((resp) => {
         setCategoryList(
           resp.results?.map((el) => ({
@@ -383,18 +390,46 @@ export default function Products() {
       .then((res) => {
         console.log("ress=>", res);
         setEditData(res);
-        setImageData(res?.recipe_gallery ? res?.recipe_gallery : imageData);
+        setImageData(
+          res?.product_galereya?.map((el, i) => ({
+            image: el.image_url,
+            id: i + 1,
+          }))
+        );
         setAtributInput(
           res?.product_highlight ? res?.product_highlight : atributInput
         );
         setFilialInput(
           res?.product_count_branch ? res?.product_count_branch : filialInput
         );
+        setProduct_categories(
+          res?.product_categories?.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
+        setName(res?.name);
+        setOn_sale(res?.on_sale);
+        setBadge(res?.badge);
+        setDiscount(res?.discount);
+        setDescription(res?.description);
+        setPrice(JSON.parse(res?.price));
+        setDiscount(res?.discount);
+        setCarbohydrates(res?.product_attribute?.carbohydrates);
+        setingredients(res?.product_attribute?.ingredients);
+        setFats(res?.product_attribute?.fats);
+        setKilocalories(res?.product_attribute?.kilocalories);
+        setManufacturer(res?.product_attribute?.manufacturer);
+        setProtein(res?.product_attribute?.protein);
+        setStorageConditions(res?.product_attribute?.storageConditions);
+        setSpecification(res?.product_attribute?.specification);
+        setShelf_life(res?.product_attribute?.shelf_life);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     getBranchData();
     getBadgeData();
@@ -422,15 +457,43 @@ export default function Products() {
 
   const lifeImagee = (e) => {
     let img = window.URL.createObjectURL(e.target.files[0]);
-    setLifeImage(img);
     LiveImageArr.push(img);
   };
 
   const prosent = (e) => {
     return (price * discount) / 100;
   };
-  const prosentEdit = (e) => {
-    return (JSON.parse(editData?.price) * e) / 100;
+
+  const handleCardNumberChange = (e) => {
+    const inputValue = e.target.value.replace(/\D/g, ""); // Raqam va probilni olib tashlash
+    let formattedValue = "";
+
+    if (inputValue.length <= 16) {
+      for (let i = 0; i < inputValue.length; i++) {
+        if (i > 0 && i % 3 === 1) {
+          formattedValue += " "; // Raqamlarni probil bilan ajratish
+        }
+        formattedValue += inputValue[i];
+      }
+    }
+
+    setFormattedCardNumber(formattedValue);
+  };
+
+  const ChangePrice = (e) => {
+    const inputValue = e.target.value.replace(/\D/g, "");
+    let formattedValue = "";
+
+    if (inputValue?.length <= 16) {
+      for (let i = 0; i < inputValue.length; i++) {
+        if (i > 0 && i % 3 === 1) {
+          formattedValue += " "; // Raqamlarni probil bilan ajratish
+        }
+        formattedValue += inputValue[i];
+      }
+    }
+
+    setPrice(formattedValue);
   };
 
   return location.search.split("?")?.[2] === "edit" ? (
@@ -442,15 +505,14 @@ export default function Products() {
           <div className="flex gap-5">
             <form
               onSubmit={handleSubmitEdit}
-              className="w-1/3 flex flex-col gap-5 create-branch-form"
+              className=" flex flex-col gap-5 create-branch-form"
             >
               <TextField
                 label="Nomi"
                 variant="outlined"
                 size="large"
-                style={{ width: "600px" }}
                 type="text"
-                defaultValue={editData?.name || name}
+                defaultValue={name}
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
@@ -459,7 +521,6 @@ export default function Products() {
                 label="Narxi"
                 variant="outlined"
                 size="large"
-                style={{ width: "600px" }}
                 type="number"
                 defaultValue={JSON.parse(editData?.price) || price}
                 onChange={(e) => {
@@ -472,7 +533,6 @@ export default function Products() {
                 defaultValue={editData?.description || description}
                 multiline
                 rows={4}
-                style={{ width: "600px" }}
                 type="text"
                 onChange={(e) => {
                   setDescription(e.target.value);
@@ -482,7 +542,6 @@ export default function Products() {
                 label="Chegirmasi"
                 variant="outlined"
                 size="large"
-                style={{ width: "600px" }}
                 type="number"
                 defaultValue={editData?.discount || discount}
                 onChange={(e) => {
@@ -490,40 +549,7 @@ export default function Products() {
                 }}
               />
 
-              {/* <FormControl sx={{ m: 0, width: 600 }}>
-                <InputLabel id="demo-multiple-checkbox-label">
-                  Bog'liq kategoriyalar
-                </InputLabel>
-                <Select
-                  labelId="demo-multiple-checkbox-label"
-                  id="demo-multiple-checkbox"
-                  multiple
-                  defaultValue={product_categories}
-                  onChange={handleChangeSelect}
-                  input={<OutlinedInput label="Bog'liq kategoriyalar" />}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                >
-                  {data?.map((name) => (
-                    <MenuItem key={name} value={name.id}>
-                      <Checkbox
-                        checked={product_categories.indexOf(name.id) > -1}
-                        defaultChecked={product_categories.indexOf(name.id)}
-                      />
-                      <ListItemText primary={name.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl> */}
-
-              <FormControl
-                style={{ width: "600px" }}
-                sx={{ m: 0, minWidth: 120 }}
-                size="small"
-              >
-                <InputLabel id="demo-select-small-label" placholder="Belgi">
-                  Belgi
-                </InputLabel>
+              <FormControl sx={{ m: 0, minWidth: 220 }} size="small">
                 <Select
                   defaultValue={editData?.badge || badge}
                   label="Belgi"
@@ -537,6 +563,31 @@ export default function Products() {
                 </Select>
               </FormControl>
 
+              <Space
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                }}
+                direction="vertical"
+              >
+                <Select
+                  mode="multiple"
+                  defaultValue={product_categories}
+                  allowClear
+                  style={{
+                    width: "100%",
+                  }}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  placeholder="Bog'liq kategoriyalar"
+                  onChange={handleChangeSelect}
+                  options={categoryList}
+                />
+              </Space>
+
               <div>
                 <label className="font-normal font-sans text-lg">Sotuvda</label>
                 <Switch
@@ -547,7 +598,7 @@ export default function Products() {
                 />
               </div>
               <div>
-                <Accordion style={{ width: "600px" }}>
+                <Accordion>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -555,7 +606,7 @@ export default function Products() {
                   >
                     <Typography>
                       <label className="font-normal font-sans text-lg">
-                        Mahsulot galleriyasi :
+                        Mahsulot galleriyasi
                       </label>
                     </Typography>
                   </AccordionSummary>
@@ -587,14 +638,21 @@ export default function Products() {
                                   height: "120px",
                                 }}
                               >
+                                {item?.image ? (
+                                  ""
+                                ) : (
+                                  <i
+                                    className="fa-regular fa-image"
+                                    style={{ fontSize: "35px" }}
+                                  ></i>
+                                )}
+
                                 <input
                                   style={{ display: "none" }}
-                                  onChange={(e) =>
-                                    setImageUrl(
-                                      e.target.files[0],
-                                      lifeImagee(e)
-                                    )
-                                  }
+                                  onChange={(e) => (
+                                    setImageUrl(e.target.files[0], item.id),
+                                    lifeImagee(e)
+                                  )}
                                   type="file"
                                 />
                               </Button>
@@ -631,7 +689,7 @@ export default function Products() {
                   </AccordionDetails>
                 </Accordion>
 
-                <Accordion style={{ width: "600px" }}>
+                <Accordion>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -639,20 +697,18 @@ export default function Products() {
                   >
                     <Typography>
                       <label className="font-normal font-sans text-lg">
-                        Mahsulot atributi :
+                        Mahsulot atributi
                       </label>
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <div
-                      style={{ width: "600px", height: "400px" }}
-                      className="flex overflow-y-scroll border-5 flex-col"
-                    >
+                    <div className="flex overflow-y-scroll border-5 flex-col">
                       <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
                         <i className="fa-solid fa-flask"></i>
                         <TextField
                           label="Tarkibi"
                           variant="outlined"
+                          className="w-full"
                           multiline
                           maxRows={4}
                           defaultValue={
@@ -671,12 +727,10 @@ export default function Products() {
                           label="Uglevod"
                           variant="outlined"
                           size="small"
-                          style={{ height: "10px", marginTop: "30px" }}
+                          style={{ marginTop: "30px" }}
+                          className="w-full"
                           type="number"
-                          defaultValue={
-                            editData?.product_attribute?.carbohydrates ||
-                            carbohydrates
-                          }
+                          defaultValue={carbohydrates}
                           onChange={(e) => {
                             setCarbohydrates(e.target.value);
                           }}
@@ -688,12 +742,10 @@ export default function Products() {
                           label="Kaloriya"
                           variant="outlined"
                           size="small"
-                          style={{ height: "10px", marginTop: "30px" }}
+                          style={{ marginTop: "30px" }}
+                          className="w-full"
                           type="number"
-                          defaultValue={
-                            editData?.product_attribute?.kilocalories ||
-                            kilocalories
-                          }
+                          defaultValue={kilocalories}
                           onChange={(e) => {
                             setKilocalories(e.target.value);
                           }}
@@ -705,11 +757,10 @@ export default function Products() {
                           label="Yog' miqdori"
                           variant="outlined"
                           size="small"
-                          style={{ height: "10px", marginTop: "30px" }}
+                          style={{ marginTop: "30px" }}
+                          className="w-full"
                           type="number"
-                          defaultValue={
-                            editData?.product_attribute?.fats || fats
-                          }
+                          defaultValue={fats}
                           onChange={(e) => {
                             setFats(e.target.value);
                           }}
@@ -721,11 +772,10 @@ export default function Products() {
                           label="Protien"
                           variant="outlined"
                           size="small"
-                          style={{ height: "10px", marginTop: "30px" }}
+                          style={{ marginTop: "30px" }}
+                          className="w-full"
                           type="number"
-                          defaultValue={
-                            editData?.product_attribute?.protein || protein
-                          }
+                          defaultValue={protein}
                           onChange={(e) => {
                             setProtein(e.target.value);
                           }}
@@ -737,46 +787,26 @@ export default function Products() {
                           label="Ishlab chiqaruvchi"
                           variant="outlined"
                           size="small"
-                          style={{ height: "10px", marginTop: "30px" }}
+                          style={{ marginTop: "30px" }}
+                          className="w-full"
                           type="text"
-                          defaultValue={
-                            editData?.product_attribute?.manufacturer ||
-                            manufacturer
-                          }
+                          defaultValue={manufacturer}
                           onChange={(e) => {
                             setManufacturer(e.target.value);
                           }}
                         />
                       </div>
-                      <div className="mx-3 flex items-baseline gap-3">
-                        <i className="fa-solid fa-list-ul"></i>
-                        <TextField
-                          label="Saqlash shartlari"
-                          variant="outlined"
-                          size="small"
-                          style={{ height: "10px", marginTop: "30px" }}
-                          type="text"
-                          defaultValue={
-                            editData?.product_attribute?.storageConditions ||
-                            storageConditions
-                          }
-                          onChange={(e) => {
-                            setStorageConditions(e.target.value);
-                          }}
-                        />
-                      </div>
+
                       <div className="mx-3 flex items-baseline gap-3">
                         <i className="fa-solid fa-film"></i>
                         <TextField
                           label="Mahsulot soni yoki hajmi"
                           variant="outlined"
                           size="small"
-                          style={{ height: "10px", marginTop: "30px" }}
+                          style={{ marginTop: "30px" }}
+                          className="w-full"
                           type="text"
-                          defaultValue={
-                            editData?.product_attribute?.specification ||
-                            specification
-                          }
+                          defaultValue={specification}
                           onChange={(e) => {
                             setSpecification(e.target.value);
                           }}
@@ -788,22 +818,37 @@ export default function Products() {
                           label="Saqlash muddati"
                           variant="outlined"
                           size="small"
-                          style={{ height: "10px", marginTop: "30px" }}
+                          className="w-full"
+                          style={{ marginTop: "30px" }}
                           type="text"
-                          defaultValue={
-                            editData?.product_attribute?.shelf_life ||
-                            shelf_life
-                          }
+                          defaultValue={shelf_life}
                           onChange={(e) => {
                             setShelf_life(e.target.value);
                           }}
+                        />
+                      </div>
+                      <div className="mx-3 flex items-baseline gap-3">
+                        <i className="fa-solid fa-list-ul"></i>
+                        <TextField
+                          label="Saqlash shartlari"
+                          variant="outlined"
+                          size="small"
+                          className="w-full"
+                          style={{ marginTop: "30px" }}
+                          type="text"
+                          defaultValue={storageConditions}
+                          onChange={(e) => {
+                            setStorageConditions(e.target.value);
+                          }}
+                          multiline
+                          rows={4}
                         />
                       </div>
                     </div>
                   </AccordionDetails>
                 </Accordion>
 
-                <Accordion style={{ width: "600px" }}>
+                <Accordion>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -811,21 +856,21 @@ export default function Products() {
                   >
                     <Typography>
                       <label className="font-normal font-sans text-lg mt-5">
-                        Mahsulot asosiy elementlari :
+                        Mahsulot asosiy elementlari
                       </label>
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <div
-                      className="flex gap-x-44 p-3 mt-3"
-                      style={{ backgroundColor: "#cccccc", width: "570px" }}
+                      className="flex gap-x-12 p-3 mt-3"
+                      style={{ backgroundColor: "#EEEEEE" }}
                     >
                       <p>
-                        Asosiy element <i className="fa-regular fa-star"></i>
+                        <i className="fa-solid fa-arrow-down-9-1"></i> Tartib
+                        raqami
                       </p>
                       <p>
-                        Tartib raqami{" "}
-                        <i className="fa-solid fa-arrow-down-9-1"></i>
+                        <i className="fa-regular fa-star"></i> Asosiy element
                       </p>
                     </div>
 
@@ -861,7 +906,7 @@ export default function Products() {
                   </AccordionDetails>
                 </Accordion>
 
-                <Accordion style={{ width: "600px" }}>
+                <Accordion>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -869,20 +914,20 @@ export default function Products() {
                   >
                     <Typography>
                       <label className="font-normal font-sans text-lg mt-5">
-                        Filiallardagi mahsulot :
+                        Filiallardagi mahsulot
                       </label>
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <div
-                      className="flex gap-x-44 p-3 mt-3"
-                      style={{ backgroundColor: "#cccccc", width: "570px" }}
+                      className="flex gap-x-48 p-3 px-3 mt-3"
+                      style={{ backgroundColor: "#EEEEEE" }}
                     >
                       <p>
-                        Filiallar <i className="fa-solid fa-folder-tree"></i>{" "}
+                        <i className="fa-solid fa-folder-tree"></i> Filiallar
                       </p>
                       <p>
-                        Soni <i className="fa-solid fa-arrow-down-9-1"></i>{" "}
+                        <i className="fa-solid fa-arrow-down-9-1"></i> Soni
                       </p>
                     </div>
                     {filialInput?.map((item, i) => (
@@ -921,7 +966,6 @@ export default function Products() {
               </div>
 
               <Button
-                style={{ width: "600px" }}
                 variant="outlined"
                 size="large"
                 type="submit"
@@ -952,8 +996,8 @@ export default function Products() {
               <img
                 className="rounded border"
                 src={`${
-                  lifeImage
-                    ? lifeImage
+                  LiveImageArr?.length > 0
+                    ? LiveImageArr?.[0]
                     : editData?.product_galereya?.[0]?.image_url
                     ? editData?.product_galereya?.[0]?.image_url
                     : "https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg"
@@ -961,6 +1005,7 @@ export default function Products() {
                 alt="samokat"
               />
             </div>
+
             <h3
               style={{
                 maxWidth: "320px",
@@ -969,15 +1014,15 @@ export default function Products() {
               }}
               className="text-[18px] text-[#404040] font-serif font-bold text-slate-600"
             >
-              {name ? name : editData?.name}
+              {name ? name : editData?.name }  {" "}
               <span className=" font-bold text-slate-400">
                 {specification ? `${specification} gr` : ""}{" "}
               </span>
             </h3>
 
-            {elements ? (
+            {atributInput?.content !== "" ? (
               <ul>
-                {elements?.map((item, i) => (
+                {atributInput?.map((item, i) => (
                   <li
                     key={i + 1}
                     className="text-[13px] leading-[18px] font-medium text-slate-600  max-w-xs flex items-baseline gap-2 "
@@ -1003,20 +1048,24 @@ export default function Products() {
               </ul>
             )}
 
-            <>
-              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
-                Izoh
-              </p>
-              <p
-                style={{
-                  maxWidth: "320px",
-                  width: "100%",
-                }}
-                className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
-              >
-                {description ? description : editData?.description}
-              </p>
-            </>
+            {description || editData?.description ? (
+              <>
+                <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                  Izoh
+                </p>
+                <p
+                  style={{
+                    maxWidth: "320px",
+                    width: "320px",
+                  }}
+                  className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
+                >
+                  {description ? description : editData?.description}
+                </p>
+              </>
+            ) : (
+              ""
+            )}
 
             <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
               100 gr uchun :
@@ -1028,120 +1077,156 @@ export default function Products() {
                 width: "100%",
               }}
             >
-              <div className="w-1/4 flex flex-col justify-center">
-                <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
-                  {carbohydrates
-                    ? carbohydrates
-                    : editData?.product_attribute?.carbohydrates}
-                </span>
-                <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
-                  uglevod
-                </p>
-              </div>
-              <div className="w-1/4 flex flex-col justify-center">
-                <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
-                  {kilocalories
-                    ? kilocalories
-                    : editData?.product_attribute?.kilocalories}
-                </span>
-                <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
-                  kaloriya
-                </p>
-              </div>
-              <div className="w-1/4 flex flex-col justify-center">
-                <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
-                  {fats ? fats : editData?.product_attribute?.fats}
-                </span>
-                <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
-                  yog'
-                </p>
-              </div>
-              <div className="w-1/4 flex flex-col justify-center">
-                <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
-                  {protein ? protein : editData?.product_attribute?.protein}
-                </span>
-                <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
-                  protien
-                </p>
-              </div>
-            </div>
-
-            <>
-              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-3 max-w-xs">
-                Tarkibi :
-              </p>
-              <p
-                style={{
-                  maxWidth: "320px",
-                  width: "100%",
-                }}
-                className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
-              >
-                {ingredients
-                  ? ingredients
-                  : editData?.product_attribute?.ingredients}
-              </p>
-            </>
-            <>
-              <p className="text-[13px] mt-2  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
-                Ishlab chiqaruvchi :
-              </p>
-              <p
-                style={{
-                  maxWidth: "320px",
-                  width: "100%",
-                }}
-                className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
-              >
-                {manufacturer
-                  ? manufacturer
-                  : editData?.product_attribute?.manufacturer}
-              </p>
-            </>
-            <>
-              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
-                Saqlash shartlari :
-              </p>
-              <p
-                style={{
-                  maxWidth: "320px",
-                  width: "100%",
-                }}
-                className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
-              >
-                {storageConditions
-                  ? storageConditions
-                  : editData?.product_attribute?.storageConditions}
-              </p>
-            </>
-            <>
-              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
-                Saqlash muddati :
-              </p>
-              <p
-                style={{
-                  maxWidth: "320px",
-                  width: "100%",
-                }}
-                className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
-              >
-                {shelf_life
-                  ? shelf_life
-                  : editData?.product_attribute?.shelf_life}
-              </p>
-            </>
-            <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
-              {editData?.discount > 0 ? (
-                <p>
-                  {prosentEdit(editData?.discount)}{" "}
-                  <del>{JSON.parse(editData?.price)}</del> so'm
-                </p>
+              {carbohydrates || editData?.product_attribute?.carbohydrates ? (
+                <div className="w-1/4 flex flex-col justify-center">
+                  <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
+                    {carbohydrates
+                      ? carbohydrates
+                      : editData?.product_attribute?.carbohydrates}
+                  </span>
+                  <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
+                    uglevod
+                  </p>
+                </div>
               ) : (
-                <p>
-                  {prosent(discount)} <del>{price}</del> so'm
-                </p>
+                ""
+              )}
+              {kilocalories || editData?.product_attribute?.kilocalories ? (
+                <div className="w-1/4 flex flex-col justify-center">
+                  <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
+                    {kilocalories
+                      ? kilocalories
+                      : editData?.product_attribute?.kilocalories}
+                  </span>
+                  <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
+                    kaloriya
+                  </p>
+                </div>
+              ) : (
+                ""
+              )}
+              {fats || editData?.product_attribute?.fats ? (
+                <div className="w-1/4 flex flex-col justify-center">
+                  <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
+                    {fats ? fats : editData?.product_attribute?.fats}
+                  </span>
+                  <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
+                    yog'
+                  </p>
+                </div>
+              ) : (
+                ""
+              )}
+
+              {protein || editData?.product_attribute?.protein ? (
+                <div className="w-1/4 flex flex-col justify-center">
+                  <span className="text-[18px] leading-[22px] text-center block font-semibold text-[#595959] pt-2 max-w-xs">
+                    {protein ? protein : editData?.product_attribute?.protein}
+                  </span>
+                  <p className="text-[13px] leading-[18px] text-center font-medium text-[#ababab] max-w-xs">
+                    protien
+                  </p>
+                </div>
+              ) : (
+                ""
               )}
             </div>
+
+            {ingredients || editData?.product_attribute?.ingredients ? (
+              <>
+                <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-3 max-w-xs">
+                  Tarkibi :
+                </p>
+                <p
+                  style={{
+                    maxWidth: "320px",
+                    width: "100%",
+                  }}
+                  className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
+                >
+                  {ingredients
+                    ? ingredients
+                    : editData?.product_attribute?.ingredients}
+                </p>
+              </>
+            ) : (
+              ""
+            )}
+            {manufacturer || editData?.product_attribute?.manufacturer ? (
+              <>
+                <p className="text-[13px] mt-2  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                  Ishlab chiqaruvchi :
+                </p>
+                <p
+                  style={{
+                    maxWidth: "320px",
+                    width: "100%",
+                  }}
+                  className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
+                >
+                  {manufacturer
+                    ? manufacturer
+                    : editData?.product_attribute?.manufacturer}
+                </p>
+              </>
+            ) : (
+              ""
+            )}
+
+            {storageConditions ||
+            editData?.product_attribute?.storageConditions ? (
+              <>
+                <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                  Saqlash shartlari :
+                </p>
+                <p
+                  style={{
+                    maxWidth: "320px",
+                    width: "100%",
+                  }}
+                  className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
+                >
+                  {storageConditions
+                    ? storageConditions
+                    : editData?.product_attribute?.storageConditions}
+                </p>
+              </>
+            ) : (
+              ""
+            )}
+            {shelf_life || editData?.product_attribute?.shelf_life ? (
+              <>
+                <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                  Saqlash muddati :
+                </p>
+                <p
+                  style={{
+                    maxWidth: "320px",
+                    width: "100%",
+                  }}
+                  className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
+                >
+                  {shelf_life
+                    ? shelf_life
+                    : editData?.product_attribute?.shelf_life}
+                </p>
+              </>
+            ) : (
+              ""
+            )}
+            {discount || price ? (
+              <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
+                {discount ? (
+                  <p>
+                    {price - prosent(discount)} <del>{price}</del> so'm
+                  </p>
+                ) : (
+                  <>{price} so'm</>
+                )}
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
@@ -1169,16 +1254,31 @@ export default function Products() {
                 setName(e.target.value);
               }}
             />
+            {/* <input
+              type="tel"
+              className="form-control rounded-3 "
+              inputMode="numeric"
+              pattern="[0-9\s]{13,19}"
+              id="ccn"
+              autoComplete="cc-number"
+              maxLength="19"
+              placeholder="xxxx xxxx xxxx xxxx"
+              value={formattedCardNumber}
+              onChange={handleCardNumberChange}
+            /> */}
             <TextField
+               autoComplete="cc-number"
+              inputMode="numeric"
+              pattern="[0-9\s]{13,19}"
+              id="ccn"
               label="Narxi"
               variant="outlined"
               size="small"
               type="number"
-              value={price}
+              maxLength="19"
+              defaultValue={price}
               required
-              onChange={(e) => {
-                setPrice(e.target.value);
-              }}
+              onChange={ChangePrice}
             />
             <TextField
               label="Chegirmasi"
@@ -1321,6 +1421,7 @@ export default function Products() {
                         onClick={() => addImageInput(imageData.length + 1)}
                         color="primary"
                         aria-label="add"
+                        size="small"
                       >
                         <AddIcon />
                       </Fab>
@@ -1493,7 +1594,6 @@ export default function Products() {
                   className="flex gap-x-12 p-3 mt-3"
                   style={{ backgroundColor: "#EEEEEE" }}
                 >
-                 
                   <p>
                     <i className="fa-solid fa-arrow-down-9-1"></i> Tartib raqami
                   </p>
@@ -1682,15 +1782,16 @@ export default function Products() {
             }}
             className="text-[18px] text-[#404040] font-serif font-bold text-slate-600"
           >
-            {name ? name : "Mahsulot nomi"}{" "}
-            <span className=" font-bold text-slate-400">
+            {name ? name : "Mahsulot nomi"  + " " }{ + " "}
+           
+            <span className=" font-bold text-slate-400 ml-2">
               {specification ? `${specification} gr` : ""}{" "}
             </span>
           </h3>
 
-          {elements ? (
+          {atributInput?.content !== "" ? (
             <ul>
-              {elements?.map((item, i) => (
+              {atributInput?.map((item, i) => (
                 <li
                   key={i + 1}
                   className="text-[13px] leading-[18px] font-medium text-slate-600  max-w-xs flex items-baseline gap-2 "

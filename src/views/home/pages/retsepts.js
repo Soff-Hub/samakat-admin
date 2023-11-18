@@ -28,6 +28,7 @@ import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { CircularProgress } from "@mui/material";
+import { Select } from "antd";
 
 const headCells = [
   {
@@ -51,7 +52,6 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-
   return (
     <TableHead>
       <TableRow>
@@ -194,6 +194,19 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
+
+  const handleChangeSelect = async (e) => {
+    await Client.get(
+      `${API_ENDPOINTS.RETCIPE}?page=${page}&type=${type}&is_active=${e}`
+    )
+      .then((resp) => {
+        console.log(resp);
+        setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     getRetsipeData();
   }, []);
@@ -223,7 +236,32 @@ export default function EnhancedTable() {
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />
-
+      <div className="flex justify-end">
+        <Select
+          style={{
+            width: "25%",
+            paddingLeft: "10px",
+            margin: "8px 0",
+          }}
+          optionFilterProp="children"
+          placeholder="Filter"
+          onChange={handleChangeSelect}
+          options={[
+            {
+              label: "Hammasi",
+              value: "",
+            },
+            {
+              label: "Aktiv",
+              value: "true",
+            },
+            {
+              label: "Aktiv emas",
+              value: "false",
+            },
+          ]}
+        />
+      </div>
       {data?.length >= 0 ? (
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
@@ -233,35 +271,29 @@ export default function EnhancedTable() {
                 aria-labelledby="tableTitle"
                 size="medium"
               >
-                <EnhancedTableHead
-                  rowCount={data?.length}
-                />
+                <EnhancedTableHead rowCount={data?.length} />
                 <TableBody>
                   {data?.map((row, index) => {
                     return (
-                      <TableRow
-                        hover
-                        key={row.id}
-                      >
+                      <TableRow hover key={row.id}>
                         <TableCell align="left">
-                        <Link to={`actions/?edit?${row.slug}`}>
-                        {row.title}
+                          <Link to={`actions/?edit?${row.slug}`}>
+                            {row.title}
                           </Link>
                         </TableCell>
                         <TableCell align="left">
-                         
-                            <Link to={`actions/?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.slug}`}>
                             {row.is_active ? (
-                            <i
-                              style={{ color: "green" }}
-                              className=" fa-regular fa-circle-check"
-                            ></i>
-                          ) : (
-                            <i
-                              style={{ color: "red" }}
-                              className="fa-regular fa-circle-xmark"
-                            ></i>
-                          )}
+                              <i
+                                style={{ color: "green" }}
+                                className=" fa-regular fa-circle-check"
+                              ></i>
+                            ) : (
+                              <i
+                                style={{ color: "red" }}
+                                className="fa-regular fa-circle-xmark"
+                              ></i>
+                            )}
                           </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
