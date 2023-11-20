@@ -28,10 +28,11 @@ export default function ChartComponent({ data }) {
   const getStatistic = async () => {
     await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}`)
       .then((res) => {
+        console.log('statistic',res);
         setSeries([
           {
             name: "Daromad",
-            data: res.result.map((el) => el.monthly_amount),
+            data: res?.map((el) => el.monthly_amount),
           },
         ]);
         setOptions({
@@ -39,7 +40,7 @@ export default function ChartComponent({ data }) {
             id: "basic-bar",
           },
           xaxis: {
-            categories: res.result.map((el) => el.month),
+            categories: res?.map((el) => el.month),
           },
         });
       })
@@ -51,10 +52,11 @@ export default function ChartComponent({ data }) {
   const handleChangeSelect = async (year) => {
     await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}?year=${year}`)
     .then((res) => {
+      console.log('res', res);
       setSeries([
         {
           name: "Daromad",
-          data: res.result.map((el) => el.monthly_amount),
+          data: res?.map((el) => el.monthly_amount),
         },
       ]);
       setOptions({
@@ -62,7 +64,7 @@ export default function ChartComponent({ data }) {
           id: "basic-bar",
         },
         xaxis: {
-          categories: res.result.map((el) => el.month),
+          categories: res?.map((el) => el.month),
         },
       });
     })

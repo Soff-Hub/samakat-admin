@@ -464,21 +464,6 @@ export default function Products() {
     return (price * discount) / 100;
   };
 
-  const handleCardNumberChange = (e) => {
-    const inputValue = e.target.value.replace(/\D/g, ""); // Raqam va probilni olib tashlash
-    let formattedValue = "";
-
-    if (inputValue.length <= 16) {
-      for (let i = 0; i < inputValue.length; i++) {
-        if (i > 0 && i % 3 === 1) {
-          formattedValue += " "; // Raqamlarni probil bilan ajratish
-        }
-        formattedValue += inputValue[i];
-      }
-    }
-
-    setFormattedCardNumber(formattedValue);
-  };
 
   const ChangePrice = (e) => {
     const inputValue = e.target.value.replace(/\D/g, "");
