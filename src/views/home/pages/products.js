@@ -17,7 +17,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
@@ -123,8 +123,9 @@ export default function EnhancedTable() {
   };
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT}?search=${e}`)
+    await Client.get(`${API_ENDPOINTS.PRODUCT}?type=${type}&search=${e}`)
       .then((resp) => {
+        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -154,7 +155,6 @@ export default function EnhancedTable() {
     getProductData();
     // eslint-disable-next-line
   }, []);
-
   return (
     <>
       <div className="mb-5">
@@ -199,9 +199,7 @@ export default function EnhancedTable() {
                     return (
                       <TableRow
                         hover
-                        // onClick={() => handleClick( row.type, row.slug)}
                         key={row.id}
-                        // sx={{ cursor: "pointer" }}
                       >
                         <TableCell align="left">
                           <Link to={`actions/?${row.type}?edit?${row.slug}`} >
@@ -283,7 +281,7 @@ export default function EnhancedTable() {
               </TableBody>
             </Table>
           </TableContainer>
-          {Math.ceil(count / 30) <= 1 ? (
+          {Math.ceil(count / 30) <= 1 || (count === 0) ? (
             <></>
           ) : (
             <div className="m-3 mb-5">

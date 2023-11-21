@@ -42,6 +42,18 @@ const headCells = [
     id: "created_at",
     label: "Ro'yxatdan o'tgan sana",
   },
+  {
+    id: "code verify",
+    label: "Kodni tasdiqlandi",
+  },
+  {
+    id: "addres",
+    label: "Manzil tasdiqlandi",
+  },
+  {
+    id: "code ",
+    label: "Kod",
+  },
 ];
 
 function EnhancedTableHead() {
@@ -116,7 +128,9 @@ export default function Users() {
   };
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.USERS}?search=${e}`)
+    await Client.get(
+      `${API_ENDPOINTS.USERS}?search=${e}&role=${role}&branch=${filial}`
+    )
       .then((resp) => {
         setData(resp.results);
       })
@@ -172,7 +186,6 @@ export default function Users() {
     getUsers();
     getFilial();
   }, []);
-
   return (
     <div>
       <div className="mb-5">
@@ -291,6 +304,39 @@ export default function Users() {
                         </TableCell>
                         <TableCell align="left">
                           {row.date_joined.slice(0, 10)}
+                        </TableCell>
+                        <TableCell align="left">
+                          {row?.verify_code?.is_confirmed ? (
+                            <i
+                              style={{ color: "green" }}
+                              className=" fa-regular fa-circle-check"
+                            ></i>
+                          ) : (
+                            <i
+                              style={{ color: "red" }}
+                              className="fa-regular fa-circle-xmark"
+                            ></i>
+                          )}
+                        </TableCell>
+                        <TableCell align="left">
+                          {row?.user_addresses?.active ? (
+                            <i
+                              style={{ color: "green" }}
+                              className=" fa-regular fa-circle-check"
+                            ></i>
+                          ) : (
+                            <i
+                              style={{ color: "red" }}
+                              className="fa-regular fa-circle-xmark"
+                            ></i>
+                          )}
+                        </TableCell>
+                        <TableCell align="left">
+                          {row?.verify_code?.code ? (
+                            row?.verify_code?.code
+                          ) : (
+                            <i className="fa-solid fa-minus"></i>
+                          )}
                         </TableCell>
                       </TableRow>
                     );

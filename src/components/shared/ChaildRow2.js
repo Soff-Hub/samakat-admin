@@ -13,12 +13,12 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Row2 } from "./Row2";
 
-export function ChaildRow2({ row, Detele, getchildData }) {
+export function ChaildRow2({ row, Detele}) {
   const [data, setData] = useState([]);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [rowData, setRowData] = useState([]);
-  const [errorData, setErrorData] = useState('')
+  const [errorData, setErrorData] = useState('');
 
   const getCatgeoryChaild = async (id) => {
     await Client.get(`${API_ENDPOINTS.CATEGORIES}?parent=${id}`)
@@ -47,11 +47,13 @@ export function ChaildRow2({ row, Detele, getchildData }) {
     // eslint-disable-next-line
   }, [data]);
 
+  console.log('data', data);
+
   return (
     <>
       <Accordion>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={rowData?.child_is_available ? <ExpandMoreIcon /> : ""}
           aria-controls="panel2a-content"
           id="panel2a-header"
           onClick={() => getCatgeoryChaild(rowData.id)}

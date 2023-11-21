@@ -28,11 +28,14 @@ export default function ChartComponent({ data }) {
   const getStatistic = async () => {
     await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}`)
       .then((res) => {
-        console.log('statistic',res);
         setSeries([
           {
             name: "Daromad",
             data: res?.map((el) => el.monthly_amount),
+          },
+          {
+            name: "Sotilgan mahsulot",
+            data: res?.map((el) => el.products_count),
           },
         ]);
         setOptions({
@@ -52,11 +55,14 @@ export default function ChartComponent({ data }) {
   const handleChangeSelect = async (year) => {
     await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}?year=${year}`)
     .then((res) => {
-      console.log('res', res);
       setSeries([
         {
           name: "Daromad",
           data: res?.map((el) => el.monthly_amount),
+        },
+        {
+          name: "Sotilgan mahsulot",
+          data: res?.map((el) => el.products_count),
         },
       ]);
       setOptions({

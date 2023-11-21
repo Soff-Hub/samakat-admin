@@ -22,7 +22,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
@@ -139,6 +139,7 @@ export default function EnhancedTable() {
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [active, setActive] = useState('');
 
   const handleChange = async (e) => {
     setPage(1);
@@ -166,8 +167,9 @@ export default function EnhancedTable() {
   };
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.RETCIPE}?search=${e}`)
+    await Client.get(`${API_ENDPOINTS.RETCIPE}?search=${e}&type=${type}&is_active=${active}`)
       .then((resp) => {
+        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -196,11 +198,11 @@ export default function EnhancedTable() {
 
 
   const handleChangeSelect = async (e) => {
+    setActive(e)
     await Client.get(
       `${API_ENDPOINTS.RETCIPE}?page=${page}&type=${type}&is_active=${e}`
     )
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })

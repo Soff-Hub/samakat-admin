@@ -43,10 +43,7 @@ export default function Products() {
   const [image, setImage] = useState("");
   const [changeBranch, setChangeBranch] = useState(false);
   const [changeBranchCount, setChangeBranchCunt] = useState(false);
-  const [elements, setElements] = useState("");
-  const [editedCategory, setEditedCtegory] = useState("");
   const [LiveImageArr, setLiveImageArr] = useState([]);
-  const [formattedPrice, setFormattedPrice] = useState("");
   const [imageData, setImageData] = useState([
     {
       id: 1,
@@ -452,7 +449,6 @@ export default function Products() {
       const { content, order } = item;
       return { content, order };
     });
-    setElements(product_highlight);
   };
 
   const lifeImagee = (e) => {
@@ -1770,7 +1766,7 @@ export default function Products() {
             {name ? name : "Mahsulot nomi"  + " " }{ + " "}
            
             <span className=" font-bold text-slate-400 ml-2">
-              {specification ? `${specification} gr` : ""}{" "}
+              {specification ? `${specification} gr` : ""}
             </span>
           </h3>
 
