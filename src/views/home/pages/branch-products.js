@@ -140,7 +140,6 @@ export default function EnhancedTable() {
       `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?product__type=${type}`
     )
       .then((resp) => {
-        console.log(resp.results);
         setCount(resp.count);
         setData(resp.results);
       })
@@ -161,6 +160,7 @@ export default function EnhancedTable() {
       .catch((err) => {
         console.log(err);
       });
+   
   };
 
   const handleDelete = async () => {
@@ -181,7 +181,16 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     getFilial();
+     // eslint-disable-next-line
   }, []);
+
+  if (filialData?.length > 0) {
+    filialData.unshift({
+      label: "Hammasi",
+      value: "",
+    });
+  }
+
   return (
     <div>
       <div className="mb-5">

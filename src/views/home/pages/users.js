@@ -213,7 +213,6 @@ export default function Users() {
             onChange={handleChangeFilial}
           >
             <MenuItem value={""}>
-              {" "}
               <i className="fa-solid fa-minus"></i>{" "}
             </MenuItem>
             {filialData ? (
