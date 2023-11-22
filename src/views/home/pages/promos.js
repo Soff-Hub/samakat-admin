@@ -104,7 +104,6 @@ export default function EnhancedTable() {
   const handleClick = (event, id) => {
     console.log('ee', event, id);
     
-    setSelected();
   };
 
   const handleChangePag = async (event, value) => {
@@ -175,9 +174,6 @@ export default function EnhancedTable() {
                 size="medium"
               >
                 <EnhancedTableHead
-                  order={order}
-                  orderBy={orderBy}
-                  rowCount={data?.length}
                 />
                 <TableBody>
                   {data?.map((row, index) => {

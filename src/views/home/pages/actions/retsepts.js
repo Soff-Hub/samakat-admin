@@ -148,7 +148,7 @@ export default function Retsepts() {
   const getCategory = async (e) => {
     await Client.get(`${API_ENDPOINTS.CATEGORIES_CHAILD}?type=${e}`)
       .then((resp) => {
-        setData(resp.results);
+        // setData(resp.results);
         setCategoryData(
           resp.results?.map((el) => ({
             value: el.id,

@@ -473,8 +473,7 @@ export default function Products() {
         formattedValue += inputValue[i];
       }
     }
-
-    setPrice(formattedValue);
+    setPrice(e.target.value);
   };
 
   return location.search.split("?")?.[2] === "edit" ? (
@@ -1248,16 +1247,13 @@ export default function Products() {
               onChange={handleCardNumberChange}
             /> */}
             <TextField
-               autoComplete="cc-number"
               inputMode="numeric"
-              pattern="[0-9\s]{13,19}"
-              id="ccn"
               label="Narxi"
               variant="outlined"
               size="small"
               type="number"
-              maxLength="19"
-              defaultValue={price}
+              maxLength="16"
+              value={price}
               required
               onChange={ChangePrice}
             />
