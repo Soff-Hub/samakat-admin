@@ -22,12 +22,13 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { CircularProgress } from "@mui/material";
+import { Select } from "antd";
 
 const headCells = [
   {
@@ -51,7 +52,6 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-
   return (
     <TableHead>
       <TableRow>
@@ -139,6 +139,7 @@ export default function EnhancedTable() {
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [active, setActive] = useState('');
 
   const handleChange = async (e) => {
     setPage(1);
@@ -166,8 +167,9 @@ export default function EnhancedTable() {
   };
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.RETCIPE}?search=${e}`)
+    await Client.get(`${API_ENDPOINTS.RETCIPE}?search=${e}&type=${type}&is_active=${active}`)
       .then((resp) => {
+        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -188,6 +190,19 @@ export default function EnhancedTable() {
     await Client.get(`${API_ENDPOINTS.RETCIPE}?page=${value}&type=${type}`)
       .then((resp) => {
         console.log(resp);
+        setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
+
+  const handleChangeSelect = async (e) => {
+    setActive(e)
+    await Client.get(
+      `${API_ENDPOINTS.RETCIPE}?page=${page}&type=${type}&is_active=${e}`
+    )
+      .then((resp) => {
         setCount(resp.count);
         setData(resp.results);
       })
@@ -223,7 +238,32 @@ export default function EnhancedTable() {
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />
-
+      <div className="flex justify-end">
+        <Select
+          style={{
+            width: "25%",
+            paddingLeft: "10px",
+            margin: "8px 0",
+          }}
+          optionFilterProp="children"
+          placeholder="Filter"
+          onChange={handleChangeSelect}
+          options={[
+            {
+              label: "Hammasi",
+              value: "",
+            },
+            {
+              label: "Aktiv",
+              value: "true",
+            },
+            {
+              label: "Aktiv emas",
+              value: "false",
+            },
+          ]}
+        />
+      </div>
       {data?.length >= 0 ? (
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
@@ -233,35 +273,29 @@ export default function EnhancedTable() {
                 aria-labelledby="tableTitle"
                 size="medium"
               >
-                <EnhancedTableHead
-                  rowCount={data?.length}
-                />
+                <EnhancedTableHead rowCount={data?.length} />
                 <TableBody>
                   {data?.map((row, index) => {
                     return (
-                      <TableRow
-                        hover
-                        key={row.id}
-                      >
+                      <TableRow hover key={row.id}>
                         <TableCell align="left">
-                        <Link to={`actions/?edit?${row.slug}`}>
-                        {row.title}
+                          <Link to={`actions/?edit?${row.slug}`}>
+                            {row.title}
                           </Link>
                         </TableCell>
                         <TableCell align="left">
-                         
-                            <Link to={`actions/?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.slug}`}>
                             {row.is_active ? (
-                            <i
-                              style={{ color: "green" }}
-                              className=" fa-regular fa-circle-check"
-                            ></i>
-                          ) : (
-                            <i
-                              style={{ color: "red" }}
-                              className="fa-regular fa-circle-xmark"
-                            ></i>
-                          )}
+                              <i
+                                style={{ color: "green" }}
+                                className=" fa-regular fa-circle-check"
+                              ></i>
+                            ) : (
+                              <i
+                                style={{ color: "red" }}
+                                className="fa-regular fa-circle-xmark"
+                              ></i>
+                            )}
                           </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>

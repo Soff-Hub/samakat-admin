@@ -65,7 +65,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, numSelected } = props;
+  const { order, orderBy } = props;
 
   return (
     <TableHead>
@@ -95,9 +95,6 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function EnhancedTable() {
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState(10);
@@ -107,7 +104,6 @@ export default function EnhancedTable() {
   const handleClick = (event, id) => {
     console.log('ee', event, id);
     
-    setSelected();
   };
 
   const handleChangePag = async (event, value) => {
@@ -178,9 +174,6 @@ export default function EnhancedTable() {
                 size="medium"
               >
                 <EnhancedTableHead
-                  order={order}
-                  orderBy={orderBy}
-                  rowCount={data?.length}
                 />
                 <TableBody>
                   {data?.map((row, index) => {

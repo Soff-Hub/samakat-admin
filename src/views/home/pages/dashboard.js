@@ -4,11 +4,7 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import ChartComponent from "components/shared/chart";
 import {
   Box,
-  CircularProgress,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
+  CircularProgress
 } from "@mui/material";
 
 export default function Dashboard() {
@@ -65,7 +61,7 @@ export default function Dashboard() {
           </div>
           <p className="text-[16px]">
             <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>{" "}
-            {data?.total_amount}
+            {data?.total_amount} <span>so'm</span>
           </p>
         </div>
         <div className="md:w-1/2 w-1/4  flex flex-col xl:gap-12 justify-between  border p-4 rounded-md m-2 shadow-lg shadow-indigo-500/40">
@@ -82,7 +78,7 @@ export default function Dashboard() {
           </div>
           <p className="text-[16px]">
             <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>
-            {data?.total_for_last_month}
+            {data?.total_for_last_month} <span>so'm</span>
           </p>
         </div>
         <div className="md:w-1/2 w-1/4  flex flex-col xl:gap-12 justify-between  border p-4 rounded-md m-2 shadow-lg shadow-indigo-500/40">
@@ -105,7 +101,6 @@ export default function Dashboard() {
       </div>
       {1 ? (
         <>
-          <div></div>
           <ChartComponent />
         </>
       ) : (

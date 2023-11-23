@@ -1,32 +1,20 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Switch from "@mui/material/Switch";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Select, Space } from "antd";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-
 export default function Retsepts() {
   const [submiting, setSubmiting] = useState(false);
   const [category, setCategory] = React.useState("");
   const [image, setImage] = useState([]);
   const [checked, setChecked] = React.useState(true);
   const [relatedCategory, setRelatedCategory] = React.useState([]);
-  const [data, setData] = useState(null);
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const [description, setDescription] = useState("");
@@ -160,7 +148,7 @@ export default function Retsepts() {
   const getCategory = async (e) => {
     await Client.get(`${API_ENDPOINTS.CATEGORIES_CHAILD}?type=${e}`)
       .then((resp) => {
-        setData(resp.results);
+        // setData(resp.results);
         setCategoryData(
           resp.results?.map((el) => ({
             value: el.id,

@@ -19,10 +19,7 @@ function Row(props) {
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}  >
         <TableCell component="th" scope="row" align="left">
-          <Link to={`actions/?${row.id}`}> {row.user?.first_name ? row.user?.first_name : <i className="fa-solid fa-minus"></i>}  {row.user?.last_name} </Link>
-        </TableCell>
-        <TableCell scope="row" align="right">
-          <Link to={`actions/?${row.id}`}> {row.user?.phone}</Link>
+          <Link to={`actions/?${row.id}`}> {row.user?.first_name ? row.user?.first_name : ""} {row.user?.phone} {row.user?.last_name} </Link>
         </TableCell>
         <TableCell scope="row" align="center">
           <Link to={`actions/?${row.id}`}> {row.address}</Link>
@@ -95,7 +92,6 @@ export default function CollapsibleTable() {
             <TableHead>
               <TableRow>
                 <TableCell align="left"><span className="font-bold text-[16px]" >Foydalanuvchi</span></TableCell>
-                <TableCell align="right" ><span className="font-bold text-[16px]" >Telefon raqam</span></TableCell>
                 <TableCell align="center"><span className="font-bold text-[16px]" >Address</span></TableCell>
                 <TableCell align="right"><span className="font-bold text-[16px]" >Branch</span></TableCell>
               </TableRow>

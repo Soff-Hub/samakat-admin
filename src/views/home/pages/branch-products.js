@@ -87,12 +87,7 @@ export default function EnhancedTable() {
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [branch, setBranch] = useState("");
-  const [filialData, setFilialData] = useState([
-    {
-      label: "All",
-      value: "",
-    },
-  ]);
+  const [filialData, setFilialData] = useState([]);
 
   const handleChange = async (e) => {
     setType(e.target.value);
@@ -109,9 +104,10 @@ export default function EnhancedTable() {
 
   const Search = async (e) => {
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&search=${e}`
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&product__type=${type}&search=${e}`
     )
       .then((resp) => {
+        setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -144,25 +140,27 @@ export default function EnhancedTable() {
       `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?product__type=${type}`
     )
       .then((resp) => {
-        console.log(resp.results);
         setCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
   };
+
   const getFilial = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((res) => {
-          res.results.forEach((el) =>
-            filialData.push({
-              label: el.name,
-              value: el.id,
-            })
-          )
+        setCount(res.count);
+        setFilialData(
+          res.results.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
       })
       .catch((err) => {
         console.log(err);
       });
+   
   };
 
   const handleDelete = async () => {
@@ -183,7 +181,15 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     getFilial();
+     // eslint-disable-next-line
   }, []);
+
+  if (filialData?.length > 0) {
+    filialData.unshift({
+      label: "Hammasi",
+      value: "",
+    });
+  }
 
   return (
     <div>
@@ -276,7 +282,7 @@ export default function EnhancedTable() {
               </Table>
             </TableContainer>
 
-            {(count && Math.ceil(count / 30) <= 1) || count === 0 ? (
+            {Math.ceil(count / 30) <= 1 || count === 0 ? (
               <></>
             ) : (
               <div className="m-3 mb-5">

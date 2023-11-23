@@ -37,7 +37,7 @@ export default function Categories2() {
   }
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.CATEGORIES}?search=${e}`)
+    await Client.get(`${API_ENDPOINTS.CATEGORIES}?type=${type}&search=${e}`)
       .then((resp) => {
         console.log(resp);
         setData(resp.results);
@@ -55,7 +55,6 @@ export default function Categories2() {
     // eslint-disable-next-line
   }, [deteItem]);
 
-  console.log('category data', data);
   
 
   return (

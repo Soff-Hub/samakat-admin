@@ -1,9 +1,5 @@
 import {
-  FormControl,
-  InputLabel,
-  MenuItem,
   Pagination,
-  Select,
   Stack,
   Table,
   TableBody,
@@ -21,7 +17,6 @@ import Box from "@mui/material/Box";
 
 export default function Branches() {
   const [data, setData] = useState(null);
-  const [select, setSelect] = useState("");
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
 
@@ -34,15 +29,6 @@ export default function Branches() {
       .catch((err) => console.log(err));
   }
 
-  const handleChange = async (event) => {
-    setSelect(event.target.value);
-    await Client.get(`${API_ENDPOINTS.ORDER}?status=${event.target.value}`)
-      .then((resp) => {
-        setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
 
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.ORDER}?search=${e}`)
@@ -81,45 +67,6 @@ export default function Branches() {
               className="sm:w-full w-1/2 px-3 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
               onChange={(e) => Search(e.target.value)}
             />
-            <FormControl
-              sx={{ minWidth: 100 }}
-              size="small"
-              className="sm:w-full  w-1/2"
-            >
-              <InputLabel
-                id="demo-select-small-label"
-                placholder="Holat bo'yicha"
-              >
-                Holat bo'yicha
-              </InputLabel>
-              <Select
-                className="pt-1"
-                style={{
-                  color: `${
-                    select === "approved"
-                      ? "green"
-                      : select === "pending"
-                      ? "#F4CA16"
-                      : select === "cancelled"
-                      ? "red"
-                      : "black"
-                  }`,
-                }}
-                value={select}
-                label="Holat bo'yicha"
-                onChange={handleChange}
-              >
-                <MenuItem value={"approved"} style={{ color: "green" }}>
-                  tasdiqlangan
-                </MenuItem>
-                <MenuItem value={"pending"} style={{ color: "#F4CA16" }}>
-                  jarayonda
-                </MenuItem>
-                <MenuItem value={"cancelled"} style={{ color: "red" }}>
-                  bekor qilingan
-                </MenuItem>
-              </Select>
-            </FormControl>
           </div>
           <Table sx={{ minWidth: 300 }} aria-label="caption table">
             <TableHead>
