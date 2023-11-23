@@ -23,6 +23,7 @@ import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { CircularProgress } from "@mui/material";
+import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 
 const headCells = [
   {
@@ -30,6 +31,12 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: "Nomi",
+  },
+  {
+    id: "calories",
+    numeric: false,
+    disablePadding: false,
+    label: "Hajmi",
   },
   {
     id: "fat",
@@ -64,7 +71,6 @@ const headCells = [
 ];
 
 function EnhancedTableHead() {
-
   return (
     <TableHead>
       <TableRow>
@@ -189,78 +195,88 @@ export default function EnhancedTable() {
               aria-labelledby="tableTitle"
               size={"medium"}
             >
-              <EnhancedTableHead
-                rowCount={data?.length}
-              />
+              <EnhancedTableHead rowCount={data?.length} />
               <TableBody>
                 {data?.length >= 0 ? (
                   data?.map((row, index) => {
-
                     return (
-                      <TableRow
-                        hover
-                        key={row.id}
-                      >
+                      <TableRow hover key={row.id}>
                         <TableCell align="left">
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
-                          {row.name}
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            {row.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell align="left">
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            {row.specification}
                           </Link>
                         </TableCell>
                         <TableCell align="right">
-                          
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
-                          {JSON.parse(row.price)} so'm
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            {JSON.parse(row.price)} so'm
                           </Link>
                         </TableCell>
                         <TableCell align="right">
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
-                          {row.discount !== 0 ? <>{row.discount} <i className="fa-solid fa-percent"></i> </> : <i className="fa-solid fa-minus"></i>} 
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            {row.discount !== 0 ? (
+                              <>
+                                {row.discount}{" "}
+                                <i className="fa-solid fa-percent"></i>{" "}
+                              </>
+                            ) : (
+                              <i className="fa-solid fa-minus"></i>
+                            )}
                           </Link>
                         </TableCell>
                         <TableCell align="right">
-                           <Link to={`actions/?${row.type}?edit?${row.slug}`} >
-                           {row.on_sale ? (
-                            <i
-                              style={{ color: "green" }}
-                              className=" fa-regular fa-circle-check"
-                            ></i>
-                          ) : (
-                            <i
-                              style={{ color: "red" }}
-                              className="fa-regular fa-circle-xmark"
-                            ></i>
-                          )}
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            {row.on_sale ? (
+                              <i
+                                style={{ color: "green" }}
+                                className=" fa-regular fa-circle-check"
+                              ></i>
+                            ) : (
+                              <i
+                                style={{ color: "red" }}
+                                className="fa-regular fa-circle-xmark"
+                              ></i>
+                            )}
                           </Link>
                         </TableCell>
                         <TableCell align="right">
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`} >
-                          <span style={{ color: `${row?.badge?.textColor}` }}>
-                            {row?.badge?.text}
-                          </span>
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            <span style={{ color: `${row?.badge?.textColor}` }}>
+                              {row?.badge?.text ? row?.badge?.text :   <i className="fa-solid fa-minus"></i>}
+                            </span>
                           </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
-                            {
-                            row.is_delete ?
-                            <IconButton
-                            color="error"
-                            onClick={() => {
-                              setDeleteId(row.slug);
-                              setOpen(true);
-                            }}
-                            aria-label="delete"
+                          <Link
+                            to={`actions/?${row.type}?addVariant?${row.variant_id}`}
                           >
-                            <DeleteSharpIcon />
-                          </IconButton> :
-                          ""
-                          }
+                            <IconButton color="primary" aria-label="delete">
+                              <AddCircleOutlinedIcon />
+                            </IconButton>
+                          </Link>
+                          {row.is_delete ? (
+                            <IconButton
+                              color="error"
+                              onClick={() => {
+                                setDeleteId(row.slug);
+                                setOpen(true);
+                              }}
+                              aria-label="delete"
+                            >
+                              <DeleteSharpIcon />
+                            </IconButton>
+                          ) : (
+                            ""
+                          )}
                           <Link to={`actions/?${row.type}?edit?${row.slug}`}>
                             <IconButton color="primary">
                               <DriveFileRenameOutlineOutlinedIcon />
                             </IconButton>
                           </Link>
-                        
-                         
                         </TableCell>
                       </TableRow>
                     );
@@ -281,7 +297,7 @@ export default function EnhancedTable() {
               </TableBody>
             </Table>
           </TableContainer>
-          {Math.ceil(count / 30) <= 1 || (count === 0) ? (
+          {Math.ceil(count / 30) <= 1 || count === 0 ? (
             <></>
           ) : (
             <div className="m-3 mb-5">
