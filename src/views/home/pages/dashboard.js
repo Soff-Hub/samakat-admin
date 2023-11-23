@@ -24,6 +24,7 @@ export default function Dashboard() {
     getData();
   }, []);
 
+
   return (
     <div>
       <div className="flex justify-center">
