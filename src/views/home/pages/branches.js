@@ -17,9 +17,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import ResponsiveDialog from "components/shared/modal";
 import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
+import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 
 export default function Branches() {
   const [data, setData] = useState(null);
@@ -118,46 +117,21 @@ export default function Branches() {
                       </Link>
                     </TableCell>
                     <TableCell align="right">
+                      <Link to={"actions/" + row.uuid}>
+                        <IconButton color="primary">
+                          <DriveFileRenameOutlineOutlinedIcon />
+                        </IconButton>
+                      </Link>
                       <IconButton
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={open ? "long-menu" : undefined}
-                        aria-expanded={open ? "true" : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
+                        color="error"
+                        onClick={() => {
+                          setDeleteId(row.uuid);
+                          setOpen(true);
+                        }}
+                        aria-label="delete"
                       >
-                        <MoreVertIcon />
+                        <DeleteSharpIcon />
                       </IconButton>
-                      <Menu
-                        id="long-menu"
-                        MenuListProps={{
-                          "aria-labelledby": "long-button",
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        PaperProps={{
-                          style: {
-                            maxHeight: ITEM_HEIGHT * 4.5,
-                            width: "20ch",
-                            boxShadow:
-                              "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
-                          },
-                        }}
-                      >
-                        <Link to={"actions/" + row.uuid}>
-                          <MenuItem onClick={handleClose}>Tahrirlash</MenuItem>
-                        </Link>
-                        <MenuItem
-                          onClick={() => {
-                            setDeleteId(row.uuid);
-                            setOpen(true);
-                            handleClose();
-                          }}
-                        >
-                          O'chirish
-                        </MenuItem>
-                      </Menu>
                     </TableCell>
                   </TableRow>
                 );
