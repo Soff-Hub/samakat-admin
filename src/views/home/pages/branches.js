@@ -83,9 +83,15 @@ export default function Branches() {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell><span className="font-bold text-[16px]" >Filial Nomi</span></TableCell>
-                <TableCell align=""><span className="font-bold text-[16px]" >Aniq Manzil</span></TableCell>
-                <TableCell align="right"><span className="font-bold text-[16px]" >Amallar</span></TableCell>
+                <TableCell>
+                  <span className="font-bold text-[16px]">Filial Nomi</span>
+                </TableCell>
+                <TableCell align="">
+                  <span className="font-bold text-[16px]">Aniq Manzil</span>
+                </TableCell>
+                <TableCell align="right">
+                  <span className="font-bold text-[16px]">Amallar</span>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

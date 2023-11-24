@@ -28,7 +28,7 @@ const ChartComponent = () => {
           setSeries([
             {
               name: "Sotilgan mahsulot",
-              data: res?.map((el) => el.products_count),
+              data: res?.map((el) => JSON.parse(el.products_count)),
             },
           ]);
         }
@@ -105,7 +105,7 @@ const ChartComponent = () => {
           // },
           {
             name: "Sotilgan mahsulot",
-            data: res?.map((el) => el.products_count),
+            data: res?.map((el) => JSON.parse(el.products_count)),
           },
         ]);
 
@@ -132,7 +132,7 @@ const ChartComponent = () => {
     await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}?year=${selectedYear}`)
       .then((res) => {
         const daromadData = res?.map((el) => el.monthly_amount);
-        const mahsulotData = res?.map((el) => el.products_count);
+        const mahsulotData = res?.map((el) => JSON.parse(el.products_count));
 
         if (selectedYear && value === 'daromad') {
           setSeries([
