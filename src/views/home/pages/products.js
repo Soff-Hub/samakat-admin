@@ -252,7 +252,7 @@ export default function EnhancedTable() {
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link
-                            to={`actions/?${row.type}?addVariant?${row.variant_id}`}
+                            to={`actions/?${row.type}?addVariant?${row.slug}?${row.variant_id}`}
                           >
                             <IconButton color="primary" aria-label="delete">
                               <AddCircleOutlinedIcon />
