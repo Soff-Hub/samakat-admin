@@ -16,7 +16,7 @@ export default function AddInput({
   setChangeBranchCunt,
   change,
 }) {
-  const [obj, setObj] = useState({ branch: 0, quantity: 1, id });
+  const [obj, setObj] = useState({ branch: 0, quantity: "", id });
 
   function changeObj(e, key) {
     if (key === "quantity") {
@@ -47,6 +47,7 @@ export default function AddInput({
             label="Filial"
             onChange={(e) => changeObj(e.target.value, "branch")}
             defaultValue={dataF?.brach}
+            required
           >
             {selectData?.map((item, i) => (
               <MenuItem key={i} value={item.id}>
@@ -63,6 +64,7 @@ export default function AddInput({
           variant="outlined"
           size="small"
           type="number"
+          required
           defaultValue={dataF ? dataF?.quantity : obj?.quantity}
           onChange={(e) => {
             changeObj(+e.target.value, "quantity");

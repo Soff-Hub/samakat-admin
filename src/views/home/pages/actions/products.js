@@ -2530,10 +2530,9 @@ export default function Products() {
             className="text-[18px] text-[#404040] font-serif font-bold text-slate-600"
           >
             {name ? name : "Mahsulot nomi" + " "}
-            {+" "}
 
             <span className=" font-bold text-slate-400 ml-2">
-              {specification ? `${specification} gr` : ""}
+              {specification ? `${specification}` : ""}
             </span>
           </h3>
 
