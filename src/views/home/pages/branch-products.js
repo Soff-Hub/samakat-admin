@@ -21,9 +21,8 @@ import Stack from "@mui/material/Stack";
 import NavHeader from "components/shared/NavHeader";
 import { CircularProgress } from "@mui/material";
 import { Select } from "antd";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
+import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 
 const headCells = [
   {
@@ -89,14 +88,6 @@ export default function EnhancedTable() {
   const [deleteId, setDeleteId] = useState(null);
   const [branch, setBranch] = useState("");
   const [filialData, setFilialData] = useState([]);
-  const ITEM_HEIGHT = 48;
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
   const handleChange = async (e) => {
     setType(e.target.value);
     setPage(1);
@@ -198,9 +189,6 @@ export default function EnhancedTable() {
     });
   }
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <div>
@@ -270,48 +258,22 @@ export default function EnhancedTable() {
                           </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
+
+                          <Link to={`actions/?edit?${row.id}`}>
+                            <IconButton color="primary">
+                              <DriveFileRenameOutlineOutlinedIcon />
+                            </IconButton>
+                          </Link>
                           <IconButton
-                            aria-label="more"
-                            id="long-button"
-                            aria-controls={open ? "long-menu" : undefined}
-                            aria-expanded={open ? "true" : undefined}
-                            aria-haspopup="true"
-                            onClick={handleClick}
-                          >
-                            <MoreVertIcon />
-                          </IconButton>
-                          <Menu
-                            id="long-menu"
-                            MenuListProps={{
-                              "aria-labelledby": "long-button",
-                            }}
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            PaperProps={{
-                              style: {
-                                maxHeight: ITEM_HEIGHT * 4.5,
-                                width: "20ch",
-                                boxShadow:
-                                  "rgba(0, 0, 0, 0.1) 0px 0px 1px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
-                              },
-                            }}
-                          >
-                            <Link to={`actions/?edit?${row.id}`}>
-                              <MenuItem onClick={handleClose}>
-                                Tahrirlash
-                              </MenuItem>
-                            </Link>
-                            <MenuItem
-                              onClick={() => {
-                                setDeleteId(row.id);
+                            color="error"
+                            onClick={() => {
+                              setDeleteId(row.id);
                                 setOpen(true);
-                                handleClose();
-                              }}
-                            >
-                              O'chirish
-                            </MenuItem>
-                          </Menu>
+                            }}
+                            aria-label="delete"
+                          >
+                            <DeleteSharpIcon />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     );

@@ -16,37 +16,54 @@ export default function AddInput({
   setChangeBranchCunt,
   change,
 }) {
-  const [obj, setObj] = useState({ branch: 0, quantity: 1, id });
+  const [obj, setObj] = useState({ branch: "", quantity: "", id });
+  const [select, setSelect] = useState([])
 
   function changeObj(e, key) {
-    if (key === "quantity") {
-      setChangeBranchCunt(true);
-    }
+    // console.log('key', e, key);
+    
     let keyName = {};
     keyName[`${key}`] = e;
+    // console.log('ooooooo',keyName);
+    
     addFilialInput({ ...obj, ...keyName }, id);
+
     setObj({ ...obj, ...keyName });
   }
 
+  
+
   const DeleteFilialItem = () => {
     deleteID(id);
+    console.log('delete id => ', id);
   };
 
   const DeleteIDHighlight = () => {
     deleteIDHighlight(id);
   };
 
+  useState(() => {
+    console.log(dataF,'data');
+    setSelect(
+      selectData?.map((el) => ({
+        label:el.name,
+        value:el.id
+      }))
+    )
+  },[])
+
   return selectData ? (
     <div style={{ backgroundColor: "#EEEEEE" }} className="flex gap-x-10 p-3  ">
       <div className="mx-1">
         <FormControl sx={{ m: 0, minWidth: 220 }} size="small">
           <InputLabel id="demo-select-small-label" placholder="Kategoriya">
-            Filial
+            Filial *
           </InputLabel>
           <Select
             label="Filial"
             onChange={(e) => changeObj(e.target.value, "branch")}
             defaultValue={dataF?.brach}
+            // required
           >
             {selectData?.map((item, i) => (
               <MenuItem key={i} value={item.id}>
@@ -63,7 +80,8 @@ export default function AddInput({
           variant="outlined"
           size="small"
           type="number"
-          defaultValue={dataF ? dataF?.quantity : obj?.quantity}
+          // required
+          defaultValue={dataF?.quantity || obj?.quantity}
           onChange={(e) => {
             changeObj(+e.target.value, "quantity");
           }}
@@ -99,7 +117,7 @@ export default function AddInput({
       <div className="mx-1 w-full">
         <TextField
           id="outlined-multiline-static"
-          label="Asosiy element"
+          label="Asosiy element *"
           variant="outlined"
           className="w-full"
           multiline

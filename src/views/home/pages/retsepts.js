@@ -139,7 +139,7 @@ export default function EnhancedTable() {
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [active, setActive] = useState('');
+  const [active, setActive] = useState("");
 
   const handleChange = async (e) => {
     setPage(1);
@@ -167,7 +167,9 @@ export default function EnhancedTable() {
   };
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.RETCIPE}?search=${e}&type=${type}&is_active=${active}`)
+    await Client.get(
+      `${API_ENDPOINTS.RETCIPE}?search=${e}&type=${type}&is_active=${active}`
+    )
       .then((resp) => {
         setCount(resp.count);
         setData(resp.results);
@@ -196,9 +198,8 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-
   const handleChangeSelect = async (e) => {
-    setActive(e)
+    setActive(e);
     await Client.get(
       `${API_ENDPOINTS.RETCIPE}?page=${page}&type=${type}&is_active=${e}`
     )
