@@ -88,6 +88,7 @@ export default function Products() {
 
   const addFilialInput = (value, id) => {
     let findItem = filialInput.find((elem) => elem.id === id);
+    console.log(findItem,'sssssssssssssss',filialInput,id)
     findItem.branch = Number(value?.branch);
     findItem.quantity = value?.quantity;
     setFilialInput([...filialInput]);
@@ -114,6 +115,7 @@ export default function Products() {
   };
 
   const deleteID = (i) => {
+    console.log('delete id == ', i, filialInput);
     setFilialInput(filialInput.filter((item) => item.id !== i));
   };
   const deleteIDHighlight = (i) => {
@@ -135,8 +137,11 @@ export default function Products() {
 
     const product_branch = filialInput?.map((item) => {
       const { branch, quantity } = item;
+      // console.log('qqqqq',item);
+      
       return { branch, quantity };
     });
+
     const product_highlight = atributInput?.map((item) => {
       const { content, order } = item;
       return { content, order };
@@ -179,7 +184,6 @@ export default function Products() {
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, data)
       .then((data) => {
         toast.success("Retsep muvaffaqiyatli qo'shildi");
-        // setTimeout(() => {
         data?.slug &&
           Client.patch(`${API_ENDPOINTS.PATCH_PRODUCT}${data?.slug}/`, formData)
             .then((res) => {
@@ -190,7 +194,6 @@ export default function Products() {
               console.log(err);
             });
         navigate("/products");
-        // }, 300);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
@@ -204,10 +207,13 @@ export default function Products() {
     e.preventDefault();
     setSubmiting(true);
 
+    
     const product_branch = filialInput?.map((item) => {
+      console.log('111111111111111',item);  
       const { branch, quantity } = item;
       return { branch, quantity };
     });
+
     const product_highlight = atributInput?.map((item) => {
       const { content, order } = item;
       return { content, order };
@@ -284,6 +290,9 @@ export default function Products() {
 
     document.querySelector(".create-branch-form").reset();
   };
+
+  console.log('filial => ', filialInput);
+  
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -407,7 +416,7 @@ export default function Products() {
       API_ENDPOINTS.DETAIL_PRODUCT + location.search.split("?")[3]
     )
       .then((res) => {
-        console.log("ress=>", res);
+        // console.log("ress=>", res);
         setEditData(res);
         setImageData(
           res?.product_galereya?.map((el, i) => ({
@@ -416,17 +425,30 @@ export default function Products() {
           }))
         );
         setAtributInput(
-          res?.product_highlight ? res?.product_highlight : atributInput
+          res?.product_highlight ? res?.product_highlight?.map((el,i) => 
+          ({
+            content : el.content,
+            order: el.order,
+            id: i+1
+          })
+          ) : atributInput
         );
+        
         setFilialInput(
-          res?.product_count_branch ? res?.product_count_branch : filialInput
+          res?.product_count_branch ? res?.product_count_branch?.map((el,i) => ({
+            branch:el.branch,
+            quantity: el.quantity,
+            id : i+1
+          })) : filialInput
         );
+
         setProduct_categories(
           res?.product_categories?.map((el) => ({
             label: el.name,
             value: el.id,
           }))
         );
+
         setName(res?.name);
         setOn_sale(res?.on_sale);
         setBadge(res?.badge);
@@ -449,7 +471,6 @@ export default function Products() {
       });
   };
 
-  console.log("spe", specification);
 
   useEffect(() => {
     getBranchData();
@@ -501,7 +522,6 @@ export default function Products() {
     }
     setPrice(e.target.value);
   };
-  console.log(location.search.split("?"));
 
   return location.search.split("?")?.[2] === "edit" ? (
     // Mahsulotni tahrirlash
@@ -887,7 +907,7 @@ export default function Products() {
                         dataH={item}
                         key={i}
                         addFilialInput={addProductHighlightInput}
-                        id={i + 1}
+                        id={item.id ? item.id : addFilialInput[i-1]?.id + 1}
                         deleteIDHighlight={deleteIDHighlight}
                         change={change}
                       />
@@ -897,7 +917,7 @@ export default function Products() {
                       onClick={() =>
                         addAtributInput(
                           { content: 0, order: 0 },
-                          atributInput.length + 1
+                          filialInput?.length === 0 ? 1 : filialInput[filialInput.length - 1].id + 1 
                         )
                       }
                       className="p-3"
@@ -944,7 +964,7 @@ export default function Products() {
                         selectData={branchData}
                         key={i}
                         addFilialInput={addFilialInput}
-                        id={i + 1}
+                        id={item.id ? item.id : addFilialInput[i-1]?.id + 1}
                         deleteID={deleteID}
                         change={change}
                         setChangeBranchCunt={setChangeBranchCunt}
@@ -954,8 +974,8 @@ export default function Products() {
                     <div
                       onClick={() =>
                         addFormInput(
-                          { branch: 0, quantity: 0 },
-                          filialInput.length + 1
+                          { branch: "" , quantity: "" },
+                          filialInput?.length === 0 ? 1 : filialInput[filialInput.length - 1].id + 1 
                         )
                       }
                       className="p-3"
@@ -1024,7 +1044,7 @@ export default function Products() {
             >
               {name ? name : editData?.name}{" "}
               <span className=" font-bold text-slate-400">
-                {specification ? `${specification} gr` : ""}{" "}
+                {specification ? `${specification}` : ""}
               </span>
             </h3>
 
@@ -1147,8 +1167,7 @@ export default function Products() {
                 </p>
                 <p
                   style={{
-                    maxWidth: "320px",
-                    width: "100%",
+                    width: "320px",
                   }}
                   className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
                 >
@@ -1167,8 +1186,7 @@ export default function Products() {
                 </p>
                 <p
                   style={{
-                    maxWidth: "320px",
-                    width: "100%",
+                    width: "320px",
                   }}
                   className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
                 >
@@ -1189,8 +1207,7 @@ export default function Products() {
                 </p>
                 <p
                   style={{
-                    maxWidth: "320px",
-                    width: "100%",
+                    width: "320px",
                   }}
                   className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
                 >
@@ -1209,8 +1226,7 @@ export default function Products() {
                 </p>
                 <p
                   style={{
-                    maxWidth: "320px",
-                    width: "100%",
+                  width: "320px",
                   }}
                   className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
                 >
@@ -2004,18 +2020,6 @@ export default function Products() {
                 setName(e.target.value);
               }}
             />
-            {/* <input
-              type="tel"
-              className="form-control rounded-3 "
-              inputMode="numeric"
-              pattern="[0-9\s]{13,19}"
-              id="ccn"
-              autoComplete="cc-number"
-              maxLength="19"
-              placeholder="xxxx xxxx xxxx xxxx"
-              value={formattedCardNumber}
-              onChange={handleCardNumberChange}
-            /> */}
             <TextField
               inputMode="numeric"
               label="Narxi"
