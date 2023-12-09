@@ -8,6 +8,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { Button, Modal, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
@@ -19,6 +20,35 @@ export default function Branches() {
   const [data, setData] = useState(null);
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [status, setStatus] = useState("");
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = async (id) => {
+    const data = {
+      status: status,
+    };
+    await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
+      .then((resp) => {
+        console.log(resp);
+        getOrders();
+        message.open({
+          type: "success",
+          content: `Holat o'zgartirildi`,
+          className: "custom-class",
+          style: {
+            marginTop: "20vh",
+          },
+        });
+      })
+      .catch((err) => console.log(err));
+
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   async function getOrders() {
     await Client.get(API_ENDPOINTS.ORDER)
@@ -28,7 +58,6 @@ export default function Branches() {
       })
       .catch((err) => console.log(err));
   }
-
 
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.ORDER}?search=${e}`)
@@ -52,7 +81,7 @@ export default function Branches() {
   useEffect(() => {
     getOrders();
   }, []);
-
+  console.log("order", status);
   return (
     <div>
       <div className="mb-5">
@@ -92,8 +121,12 @@ export default function Branches() {
                   <span className="font-bold text-[16px]">Manzil</span>
                 </TableCell>
                 <TableCell>
+                  <span className="font-bold text-[16px]">To'lov usuli</span>
+                </TableCell>
+                <TableCell>
                   <span className="font-bold text-[16px]">Holat</span>
                 </TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -116,7 +149,11 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.user.first_name ? row.user.first_name :  <i className="fa-solid fa-minus"></i>}
+                        {row.user.first_name ? (
+                          row.user.first_name
+                        ) : (
+                          <i className="fa-solid fa-minus"></i>
+                        )}
                         {row.user.last_name}
                       </Link>
                     </TableCell>
@@ -137,14 +174,11 @@ export default function Branches() {
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      <Link
-                        to={"actions/?" + row.id}
-                        className="hover:underline"
-                      >
+                      <Link to={"/promos"} className="hover:underline">
                         {row.promocode === null ? (
                           <i className="fa-solid fa-minus"></i>
                         ) : (
-                          row.promocode
+                          row.promocode?.code
                         )}
                       </Link>
                     </TableCell>
@@ -157,6 +191,26 @@ export default function Branches() {
                           <i className="fa-solid fa-minus"></i>
                         ) : (
                           row.address
+                        )}
+                      </Link>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Link
+                        to={"actions/?" + row.id}
+                        className="hover:underline"
+                      >
+                        {row.payment_type === "by_card" ? (
+                          <>
+                            <i class="fa-regular fa-credit-card"></i>
+                            <br/>
+                            <span>Karta orqali</span>
+                          </>
+                        ) : (
+                          <>
+                            <i class="fa-solid fa-money-bill-1-wave"></i> 
+                            <br/>
+                            <span>Naxt pul orqali</span>
+                          </>
                         )}
                       </Link>
                     </TableCell>
@@ -181,6 +235,57 @@ export default function Branches() {
                           ? "bekor qilingan"
                           : ""}
                       </Link>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <>
+                        <Button onClick={showModal}>
+                          <i class="fa-solid fa-pen-to-square"></i>
+                        </Button>
+                        <Modal
+                          title="Holatni tahrirlash"
+                          open={isModalOpen}
+                          onOk={() => handleOk(row.id)}
+                          onCancel={handleCancel}
+                          okText="Yuborish"
+                          cancelText="Ortga"
+                          okButtonProps={{
+                            style: {
+                              backgroundColor: "#3B82F6",
+                              color: "white",
+                            },
+                          }}
+                        >
+                          <ul className="modal-ul">
+                            <li
+                              onClick={() => setStatus("approved")}
+                              style={{
+                                backgroundColor:
+                                  status === "approved" ? "#ccc" : "",
+                              }}
+                            >
+                              Tasdiqlangan
+                            </li>
+                            <li
+                              onClick={() => setStatus("pending")}
+                              style={{
+                                backgroundColor:
+                                  status === "pending" ? "#ccc" : "",
+                              }}
+                            >
+                              Jarayonda
+                            </li>
+                            <li
+                              onClick={() => setStatus("cancelled")}
+                              style={{
+                                backgroundColor:
+                                  status === "cancelled" ? "#ccc" : "",
+                              }}
+                            >
+                              Bekor qilingan
+                            </li>
+                          </ul>
+                        </Modal>
+                      </>
                     </TableCell>
                   </TableRow>
                 );

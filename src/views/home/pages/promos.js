@@ -150,7 +150,7 @@ export default function EnhancedTable() {
   useEffect(() => {
     getData();
   }, []);
-
+console.log('promo', data);
   return (
     <>
       <div className="mb-5">
@@ -189,7 +189,7 @@ export default function EnhancedTable() {
                         <TableCell align="right">{row.title}</TableCell>
                         <TableCell align="right">{row.code}</TableCell>
                         <TableCell align="right">{row.percentage} </TableCell>
-                        <TableCell align="right">{row.advertiser} </TableCell>
+                        <TableCell align="right">{row.advertiser?.first_name} </TableCell>
                         <TableCell align="right">{row.start_date} </TableCell>
                         <TableCell align="right">{row.end_date} </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>

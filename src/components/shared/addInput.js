@@ -1,4 +1,4 @@
-import {  TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,25 +17,21 @@ export default function AddInput({
   change,
 }) {
   const [obj, setObj] = useState({ branch: "", quantity: "", id });
-  const [select, setSelect] = useState([])
+  const [select, setSelect] = useState([]);
 
   function changeObj(e, key) {
-    // console.log('key', e, key);
-    
+
     let keyName = {};
     keyName[`${key}`] = e;
-    // console.log('ooooooo',keyName);
-    
+
     addFilialInput({ ...obj, ...keyName }, id);
 
     setObj({ ...obj, ...keyName });
   }
 
-  
-
   const DeleteFilialItem = () => {
     deleteID(id);
-    console.log('delete id => ', id);
+    console.log("delete id => ", id);
   };
 
   const DeleteIDHighlight = () => {
@@ -43,14 +39,14 @@ export default function AddInput({
   };
 
   useState(() => {
-    console.log(dataF,'data');
+    console.log(dataF, "data");
     setSelect(
       selectData?.map((el) => ({
-        label:el.name,
-        value:el.id
+        label: el.name,
+        value: el.id,
       }))
-    )
-  },[])
+    );
+  }, []);
 
   return selectData ? (
     <div style={{ backgroundColor: "#EEEEEE" }} className="flex gap-x-10 p-3  ">
@@ -63,7 +59,7 @@ export default function AddInput({
             label="Filial"
             onChange={(e) => changeObj(e.target.value, "branch")}
             defaultValue={dataF?.brach}
-            // required
+            required
           >
             {selectData?.map((item, i) => (
               <MenuItem key={i} value={item.id}>
@@ -73,7 +69,6 @@ export default function AddInput({
           </Select>
         </FormControl>
       </div>
-
       <div>
         <TextField
           label={"Soni"}
@@ -101,12 +96,12 @@ export default function AddInput({
     </div>
   ) : (
     <div className="flex  p-3" style={{ backgroundColor: "#EEEEEE" }}>
-       <div className="mx-1">
+      <div className="mx-1">
         <TextField
           label="Tartib raqam"
           variant="outlined"
           size="small"
-          style={{ marginTop: "10px", width:'150px' }}
+          style={{ marginTop: "10px", width: "150px" }}
           type="number"
           defaultValue={dataH?.order ? dataH?.order : obj?.order}
           onChange={(e) => {
@@ -117,25 +112,26 @@ export default function AddInput({
       <div className="mx-1 w-full">
         <TextField
           id="outlined-multiline-static"
-          label="Asosiy element *"
+          label="Asosiy element "
           variant="outlined"
           className="w-full"
+          required
           multiline
-           rows={4}
+          rows={4}
           size="small"
           style={{ marginTop: "10px" }}
           type="text"
           defaultValue={dataH?.content}
-          onChange={(e) => (changeObj(e.target.value, "content"))}
+          onChange={(e) => changeObj(e.target.value, "content")}
         />
       </div>
-     
+
       <div
         style={{
           display: "flex",
           justifyItems: "end",
           alignItems: "end",
-          padding:'0 10px'
+          padding: "0 10px",
         }}
       >
         <button type="button" onClick={() => DeleteIDHighlight()}>

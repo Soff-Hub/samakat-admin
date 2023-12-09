@@ -42,6 +42,7 @@ export const API_ENDPOINTS = {
     UPDATE_USER: 'admin/user/update/',
 
     ORDER: 'admin/order/',
+    PATCH_ORDER : 'admin/order/update/',
     DETAIL_ORDER: 'admin/order/detail/',
 
     PRODUCT_COUNT_BRANCH: 'admin/product-count-branch/',
@@ -59,5 +60,7 @@ export const API_ENDPOINTS = {
     DASHBOARD:'admin/dashboard/statistic/',
     MOTHLY_STATISTIC:'admin/monthly/statistic/',
 
-    YEAR:'admin/year/list'
+    YEAR:'admin/year/list',
+
+    SETTINGS: 'admin/settings/'
 }
