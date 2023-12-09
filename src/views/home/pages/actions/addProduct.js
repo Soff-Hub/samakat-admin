@@ -24,6 +24,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function AddProduct() {
   const navigate = useNavigate();
+  const location = useLocation()
   const [submiting, setSubmiting] = useState(false);
   const [name, setName] = React.useState("");
   const [price, setPrice] = React.useState("");
@@ -226,9 +227,9 @@ export default function AddProduct() {
   };
 
   useEffect(() => {
-    if (location.search.split("?")[1] === "bistro") {
+    if (location?.search.split("?")[1] === "bistro") {
       getCategory("bistro");
-    } else if (location.search.split("?")[1] === "byuti") {
+    } else if (location?.search.split("?")[1] === "byuti") {
       getCategory("byuti");
     }
     // eslint-disable-next-line
@@ -270,7 +271,7 @@ console.log('modd', modal2Open);
               maxLength="16"
               value={price}
               required
-              onChange={() => setPrice(e.target.value)}
+              onChange={(e) => setPrice(e.target.value)}
             />
             <TextField
               label="Chegirmasi"
@@ -707,7 +708,9 @@ console.log('modd', modal2Open);
                         padding: "0 10px",
                       }}
                     >
-                      <button type="button" onClick={() => DeleteIDHighlight()}>
+                      <button type="button"
+                      //  onClick={() => DeleteIDHighlight()}
+                       >
                         <i className="fa-solid fa-trash"></i>
                       </button>
                     </div>
