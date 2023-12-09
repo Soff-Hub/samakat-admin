@@ -9,6 +9,7 @@ import MapIcon from '@mui/icons-material/Map';
 import PercentIcon from '@mui/icons-material/Percent';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import GroupIcon from '@mui/icons-material/Group';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 export const navigationConfig = [
     {
@@ -16,11 +17,6 @@ export const navigationConfig = [
         path: '/dashboard',
         icon: <DashboardIcon />,
     },
-    // {
-    //     name: 'Buyurtmachi mahsulotlari',
-    //     path: '/customer-products',
-    //     icon: <ShoppingBagIcon />,
-    // },
     {
         name: 'Buyurtmalar',
         path: '/orders',
@@ -41,11 +37,6 @@ export const navigationConfig = [
         path: '/categories',
         icon: <FolderIcon />,
     },
-    // {
-    //     name: 'Mahsulot Wishlistlar',
-    //     path: '/wishlists',
-    //     icon: <FavoriteIcon />,
-    // },
     {
         name: 'Mahsulot Belgisi',
         path: '/product-badge',
@@ -61,21 +52,11 @@ export const navigationConfig = [
         path: '/adresses',
         icon: <MapIcon />,
     },
-    // {
-    //     name: 'Mahsulot kategoriyalari',
-    //     path: '/product-categories',
-    //     icon: <AccountTreeIcon />,
-    // },
     {
         name: 'Promo Kodlar',
         path: '/promos',
         icon: <PercentIcon />,
     },
-    // {
-    //     name: 'Retsept Wishlistlar',
-    //     path: '/retsept-wishlists',
-    //     icon: <FavoriteIcon />,
-    // },
     {
         name: 'Retseptlar',
         path: '/retsepts',
@@ -85,5 +66,10 @@ export const navigationConfig = [
         name: 'Foydalanuvchilar',
         path: '/users',
         icon: <GroupIcon />,
+    },
+    {
+        name: 'Sozlamalar',
+        path: '/settings',
+        icon: <SettingsOutlinedIcon />,
     }
 ]

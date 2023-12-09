@@ -9,7 +9,6 @@
 .login-form {
     padding-top: 180px;
 }
-
 .login-form-inner {
     background-color: #ffffff95;
     padding: 20px 40px 40px;
@@ -26,4 +25,31 @@
 
 .acc-parent{
     height: 10px;
+}
+
+
+.modal-ul{
+    margin: 0;
+    padding: 0;
+}
+
+.modal-ul li{
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.modal-ul li:hover{
+    cursor: pointer;
+}
+
+.modal-ul li:first-child{
+    color: green;
+}
+
+.modal-ul li:nth-child(2){
+    color: #F4CA16;
+}
+
+.modal-ul li:last-child{
+    color: red;
 }

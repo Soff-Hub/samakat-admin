@@ -96,6 +96,11 @@ export const adminActionRoutes = [
         path: '/users/*',
         component: React.lazy(() => import('views/home/pages/users'))
     },
+    {
+        key: 'settings',
+        path: '/settings/*',
+        component: React.lazy(() => import('views/home/pages/settings'))
+    },
 
 
 
@@ -143,6 +148,11 @@ export const adminActionRoutes = [
         key: 'products',
         path: '/products/actions/*',
         component: React.lazy(() => import('views/home/pages/actions/products'))
+    },
+    {
+        key: 'addProducts',
+        path: '/actions/*',
+        component: React.lazy(() => import('views/home/pages/actions/addProduct'))
     },
     {
         key: 'adresses',

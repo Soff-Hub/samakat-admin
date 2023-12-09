@@ -88,7 +88,7 @@ export default function Products() {
 
   const addFilialInput = (value, id) => {
     let findItem = filialInput.find((elem) => elem.id === id);
-    console.log(findItem,'sssssssssssssss',filialInput,id)
+    console.log(findItem, "sssssssssssssss", filialInput, id);
     findItem.branch = Number(value?.branch);
     findItem.quantity = value?.quantity;
     setFilialInput([...filialInput]);
@@ -115,7 +115,7 @@ export default function Products() {
   };
 
   const deleteID = (i) => {
-    console.log('delete id == ', i, filialInput);
+    console.log("delete id == ", i, filialInput);
     setFilialInput(filialInput.filter((item) => item.id !== i));
   };
   const deleteIDHighlight = (i) => {
@@ -138,7 +138,7 @@ export default function Products() {
     const product_branch = filialInput?.map((item) => {
       const { branch, quantity } = item;
       // console.log('qqqqq',item);
-      
+
       return { branch, quantity };
     });
 
@@ -203,13 +203,12 @@ export default function Products() {
     setSubmiting(false);
     document.querySelector(".create-branch-form").reset();
   };
+
   const handleSubmitAddVariant = async (e) => {
     e.preventDefault();
     setSubmiting(true);
 
-    
     const product_branch = filialInput?.map((item) => {
-      console.log('111111111111111',item);  
       const { branch, quantity } = item;
       return { branch, quantity };
     });
@@ -291,8 +290,6 @@ export default function Products() {
     document.querySelector(".create-branch-form").reset();
   };
 
-  console.log('filial => ', filialInput);
-  
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -330,7 +327,7 @@ export default function Products() {
       discount: discount,
       description: description,
       price: price,
-      product_count_branch: product_branch
+      product_count_branch: product_branch,
     };
 
     if (product_highlight.length > 0) {
@@ -425,21 +422,23 @@ export default function Products() {
           }))
         );
         setAtributInput(
-          res?.product_highlight ? res?.product_highlight?.map((el,i) => 
-          ({
-            content : el.content,
-            order: el.order,
-            id: i+1
-          })
-          ) : atributInput
+          res?.product_highlight
+            ? res?.product_highlight?.map((el, i) => ({
+                content: el.content,
+                order: el.order,
+                id: i + 1,
+              }))
+            : atributInput
         );
-        
+
         setFilialInput(
-          res?.product_count_branch ? res?.product_count_branch?.map((el,i) => ({
-            branch:el.branch,
-            quantity: el.quantity,
-            id : i+1
-          })) : filialInput
+          res?.product_count_branch
+            ? res?.product_count_branch?.map((el, i) => ({
+                branch: el.branch,
+                quantity: el.quantity,
+                id: i + 1,
+              }))
+            : filialInput
         );
 
         setProduct_categories(
@@ -470,7 +469,6 @@ export default function Products() {
         console.log(err);
       });
   };
-
 
   useEffect(() => {
     getBranchData();
@@ -907,7 +905,7 @@ export default function Products() {
                         dataH={item}
                         key={i}
                         addFilialInput={addProductHighlightInput}
-                        id={item.id ? item.id : addFilialInput[i-1]?.id + 1}
+                        id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
                         deleteIDHighlight={deleteIDHighlight}
                         change={change}
                       />
@@ -917,7 +915,9 @@ export default function Products() {
                       onClick={() =>
                         addAtributInput(
                           { content: 0, order: 0 },
-                          filialInput?.length === 0 ? 1 : filialInput[filialInput.length - 1].id + 1 
+                          filialInput?.length === 0
+                            ? 1
+                            : filialInput[filialInput.length - 1].id + 1
                         )
                       }
                       className="p-3"
@@ -964,7 +964,7 @@ export default function Products() {
                         selectData={branchData}
                         key={i}
                         addFilialInput={addFilialInput}
-                        id={item.id ? item.id : addFilialInput[i-1]?.id + 1}
+                        id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
                         deleteID={deleteID}
                         change={change}
                         setChangeBranchCunt={setChangeBranchCunt}
@@ -974,8 +974,10 @@ export default function Products() {
                     <div
                       onClick={() =>
                         addFormInput(
-                          { branch: "" , quantity: "" },
-                          filialInput?.length === 0 ? 1 : filialInput[filialInput.length - 1].id + 1 
+                          { branch: "", quantity: "" },
+                          filialInput?.length === 0
+                            ? 1
+                            : filialInput[filialInput.length - 1].id + 1
                         )
                       }
                       className="p-3"
@@ -1024,10 +1026,10 @@ export default function Products() {
               <img
                 className="rounded border"
                 src={`${
-                  LiveImageArr?.length > 0
-                    ? LiveImageArr?.[0]
-                    : editData?.product_galereya?.[0]?.image_url
+                  editData?.product_galereya?.length > 0
                     ? editData?.product_galereya?.[0]?.image_url
+                    : editData?.product_galereya?.length <= 0  && LiveImageArr?.length > 0
+                    ? LiveImageArr?.[0]
                     : "https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg"
                 }`}
                 alt="samokat"
@@ -1226,7 +1228,7 @@ export default function Products() {
                 </p>
                 <p
                   style={{
-                  width: "320px",
+                    width: "320px",
                   }}
                   className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs"
                 >
@@ -1265,7 +1267,11 @@ export default function Products() {
           <h1 className="text-[28px] pb-3">
             {" "}
             <u>
-              {editData.name + " " + (editData?.product_attribute?.specification ? editData?.product_attribute?.specification : "")}
+              {editData.name +
+                " " +
+                (editData?.product_attribute?.specification
+                  ? editData?.product_attribute?.specification
+                  : "")}
             </u>{" "}
             uchun variant yaratish
           </h1>
@@ -1760,10 +1766,10 @@ export default function Products() {
               <img
                 className="rounded border"
                 src={`${
-                  LiveImageArr?.length > 0
-                    ? LiveImageArr?.[0]
-                    : editData?.product_galereya?.[0]?.image_url
+                  editData?.product_galereya?.length > 0
                     ? editData?.product_galereya?.[0]?.image_url
+                    : editData?.product_galereya?.length <= 0 && LiveImageArr?.length > 0
+                    ? LiveImageArr?.[0]
                     : "https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg"
                 }`}
                 alt="samokat"
@@ -2045,7 +2051,6 @@ export default function Products() {
             <TextField
               id="outlined-multiline-static"
               label="Izoh"
-              required
               multiline
               value={description}
               rows={4}
@@ -2441,62 +2446,6 @@ export default function Products() {
                   inputProps={{ "aria-label": "controlled" }}
                 />
               </div>
-
-              {/* <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography>
-                    <label className="font-normal font-sans text-lg mt-5">
-                      Filiallardagi mahsulot :
-                    </label>
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <div
-                    className="flex gap-x-44 p-3 mt-3"
-                    style={{ backgroundColor: "#cccccc", width: "570px" }}
-                  >
-                    <p>
-                      Filiallar <i className="fa-solid fa-folder-tree"></i>{" "}
-                    </p>
-                    <p>
-                      Soni <i className="fa-solid fa-arrow-down-9-1"></i>{" "}
-                    </p>
-                  </div>
-                  {filialInput?.map((item, i) => (
-                    <AddInput
-                      selectData={branchData}
-                      key={i}
-                      addFilialInput={addFilialInput}
-                      id={i + 1}
-                      deleteID={deleteID}
-                      setChangeBranchCunt={setChangeBranchCunt}
-                      setChangeBranch={setChangeBranch}
-                    />
-                  ))}
-                  <div
-                    onClick={() =>
-                      addFormInput(
-                        { branch: 0, quantity: 0 },
-                        filialInput.length + 1
-                      )
-                    }
-                    className="p-3"
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <p>
-                      <i className="fa-solid fa-circle-plus"></i> qo'shish{" "}
-                    </p>
-                  </div>
-                </AccordionDetails>
-              </Accordion> */}
             </div>
 
             <Button
@@ -2726,3 +2675,5 @@ export default function Products() {
     </div>
   );
 }
+
+

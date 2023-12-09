@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -16,17 +16,21 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 export default function Orders() {
   const location = useLocation();
   const [data, setData] = useState(null);
+  const navigate = useNavigate()
 
   const getData = async (id) => {
     await Client.get(`${API_ENDPOINTS.DETAIL_ORDER}${id}/`)
       .then((res) => {
-        console.log(res);
         setData(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const handleChangeRouter = (id) => {
+    navigate(`/users/actions/?detail?${id}`)
+  }
 
   useEffect(() => {
     getData(location.search.split("?")[1]);
@@ -61,7 +65,8 @@ export default function Orders() {
                 variant="outlined"
                 size="large"
                 type="text"
-                value={data.user.name ? data.user.name : "-"}
+                value={(data.user.first_name || data.user.first_name ) ? data.user.first_name + " " + data.user?.last_name : "-"}
+                onClick={() => handleChangeRouter(data.user?.id)}
               />
               <TextField
                 label="Umumiy so'mma"
@@ -81,7 +86,7 @@ export default function Orders() {
                 label="Promo kod"
                 variant="outlined"
                 size="large"
-                value={data.promocode ? data?.promocode : "-"}
+                value={data.promocode ? data?.promocode?.code : "-"}
                 type="text"
               />
               <TextField

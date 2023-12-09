@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
 
-export default function NavHeader({ title }) {
+export default function AddNavHeaderSelect({ title }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [placement, setPlacement] = React.useState();
@@ -36,7 +36,7 @@ export default function NavHeader({ title }) {
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <Paper style={{ minWidth: "170px" }}>
-                <Link to={"actions/?bistro"}>
+                <Link to={"/actions/?bistro"}>
               <Typography
                 style={{ cursor: "pointer" }}
                 className="hover:bg-gray"
@@ -45,7 +45,7 @@ export default function NavHeader({ title }) {
                     Bistro
               </Typography>
                     </Link>
-                    <Link to={"/actions/?byuti"}>
+                    <Link to={"actions/?byuti"}>
               <Typography
                 style={{ cursor: "pointer" }}
                 className="hover:bg-gray"
