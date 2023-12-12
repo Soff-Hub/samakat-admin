@@ -154,11 +154,11 @@ export const adminActionRoutes = [
         path: '/products/actions/*',
         component: React.lazy(() => import('views/home/pages/actions/products'))
     },
-    {
-        key: 'addProducts',
-        path: '/actions/*',
-        component: React.lazy(() => import('views/home/pages/actions/addProduct'))
-    },
+    // {
+    //     key: 'addProducts',
+    //     path: '/actions/*',
+    //     component: React.lazy(() => import('views/home/pages/actions/addProduct'))
+    // },
     {
         key: 'adresses',
         path: '/adresses/actions/*',

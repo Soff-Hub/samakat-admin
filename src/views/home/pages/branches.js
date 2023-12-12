@@ -36,9 +36,6 @@ export default function Branches() {
       .catch((err) => console.log(err));
   }
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   async function handleDelete() {
     await Client.delete(`${API_ENDPOINTS.DELETE_BRANCH}${deleteId}/`)
@@ -50,13 +47,6 @@ export default function Branches() {
       .catch((err) => console.log(err));
   }
 
-  const ITEM_HEIGHT = 48;
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleChangePag = async (event, value) => {
     setPage(value);

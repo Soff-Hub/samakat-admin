@@ -218,22 +218,22 @@ export default function Branches() {
                       <Link
                         to={"actions/?" + row.id}
                         className={`hover:underline ${
-                          row.status === "approved"
+                          row.process === "approved"
                             ? " text-[green]"
-                            : row.status === "pending"
+                            : row.process === "pending"
                             ? "text-[#F4CA16]"
-                            : row.status === "cancelled"
+                            : row.process === "cancelled"
                             ? "text-[red]"
                             : "black"
                         }`}
                       >
-                        {row.status === "approved"
+                        {row.process === "approved"
                           ? "tasdiqlangan"
-                          : row.status === "pending"
+                          : row.process === "pending"
                           ? "jarayonda"
-                          : row.status === "cancelled"
+                          : row.process === "cancelled"
                           ? "bekor qilingan"
-                          : row.status === "in_courier" ?  "Yo'lda" : ""}
+                          : row.process === "newYangi" ?  "Yo'lda" : ""}
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">

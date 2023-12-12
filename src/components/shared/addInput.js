@@ -17,7 +17,7 @@ export default function AddInput({
   change,
 }) {
   const [obj, setObj] = useState({ branch: "", quantity: "", id });
-  const [select, setSelect] = useState([]);
+  // const [select, setSelect] = useState([]);
 
   function changeObj(e, key) {
 
@@ -38,15 +38,15 @@ export default function AddInput({
     deleteIDHighlight(id);
   };
 
-  useState(() => {
-    // console.log(dataF, "data");
-    setSelect(
-      selectData?.map((el) => ({
-        label: el.name,
-        value: el.id,
-      }))
-    );
-  }, []);
+  // useState(() => {
+  //   // console.log(dataF, "data");
+  //   setSelect(
+  //     selectData?.map((el) => ({
+  //       label: el.name,
+  //       value: el.id,
+  //     }))
+  //   );
+  // }, []);
 
   return selectData ? (
     <div style={{ backgroundColor: "#EEEEEE" }} className="flex gap-x-10 p-3  ">

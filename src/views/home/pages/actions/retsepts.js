@@ -18,7 +18,6 @@ export default function Retsepts() {
 
   const [submiting, setSubmiting] = useState(false);
   const [category, setCategory] = React.useState("");
-  const [image, setImage] = useState([]);
   const [checked, setChecked] = React.useState(true);
   const [relatedCategory, setRelatedCategory] = React.useState([]);
   const [name, setName] = useState("");
@@ -663,7 +662,6 @@ export default function Retsepts() {
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          border: "1px solid #ccc",
                           border: `${
                             errorImage ? "1px solid red" : "1px solid #ccc"
                           }`,

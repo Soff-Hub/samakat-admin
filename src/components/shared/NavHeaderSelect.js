@@ -51,7 +51,7 @@ export default function NavHeader({ title }) {
                 className="hover:bg-gray"
                 sx={{ p: 2 }}
               >
-                    Byute
+                    Byuti
               </Typography>
                     </Link>
             </Paper>

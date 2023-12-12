@@ -206,7 +206,7 @@ export default function EnhancedTable() {
         Bistro
         </ToggleButton>
         <ToggleButton className="w-full" value="byuti">
-        Byute
+        Byuti
         </ToggleButton>
       </ToggleButtonGroup>
 

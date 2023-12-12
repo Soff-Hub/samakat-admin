@@ -24,7 +24,6 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { CircularProgress } from "@mui/material";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import AddNavHeaderSelect from "components/shared/addNavheaderSelect";
 
 const headCells = [
   {
@@ -165,7 +164,6 @@ export default function EnhancedTable() {
   return (
     <>
       <div className="mb-5">
-        {/* <AddNavHeaderSelect title="Mahsulotlar" /> */}
         <NavHeaderSelect title="Mahsulotlar" />
       </div>
       <ToggleButtonGroup
@@ -179,7 +177,7 @@ export default function EnhancedTable() {
           Bistro
         </ToggleButton>
         <ToggleButton className="w-full" value="byuti">
-        Byute
+        Byuti
         </ToggleButton>
       </ToggleButtonGroup>
       <input

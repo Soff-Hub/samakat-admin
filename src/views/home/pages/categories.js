@@ -71,7 +71,7 @@ export default function Categories2() {
           Bistro
         </ToggleButton>
         <ToggleButton className="mt-5 flex items-center w-full" value="byuti">
-        Byute
+        Byuti
         </ToggleButton>
       </ToggleButtonGroup>
       <input
