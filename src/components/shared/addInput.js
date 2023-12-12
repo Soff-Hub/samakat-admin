@@ -31,7 +31,7 @@ export default function AddInput({
 
   const DeleteFilialItem = () => {
     deleteID(id);
-    console.log("delete id => ", id);
+    // console.log("delete id => ", id);
   };
 
   const DeleteIDHighlight = () => {
@@ -39,7 +39,7 @@ export default function AddInput({
   };
 
   useState(() => {
-    console.log(dataF, "data");
+    // console.log(dataF, "data");
     setSelect(
       selectData?.map((el) => ({
         label: el.name,
@@ -59,7 +59,7 @@ export default function AddInput({
             label="Filial"
             onChange={(e) => changeObj(e.target.value, "branch")}
             defaultValue={dataF?.brach}
-            required
+            // required
           >
             {selectData?.map((item, i) => (
               <MenuItem key={i} value={item.id}>
@@ -115,7 +115,7 @@ export default function AddInput({
           label="Asosiy element "
           variant="outlined"
           className="w-full"
-          required
+          // required
           multiline
           rows={4}
           size="small"

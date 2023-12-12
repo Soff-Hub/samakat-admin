@@ -101,6 +101,11 @@ export const adminActionRoutes = [
         path: '/settings/*',
         component: React.lazy(() => import('views/home/pages/settings'))
     },
+    {
+        key: 'delivery',
+        path: '/delivery/*',
+        component: React.lazy(() => import('views/home/pages/delivery'))
+    },
 
 
 

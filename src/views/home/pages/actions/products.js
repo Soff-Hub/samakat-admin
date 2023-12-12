@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import { Select, Space } from "antd";
+import { Modal, Select, Space } from "antd";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Switch from "@mui/material/Switch";
@@ -19,6 +19,15 @@ import AddInput from "components/shared/addInput";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function Products() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
+  const [imageLink, setImageLink] = useState({ image: "", id: "" });
+  const [addImageLink, setAddImageLink] = useState({ image: "", id: "" });
+  const [errorImage, setErrorImage] = useState(false);
+  const [selectImage, setSelectImage] = useState("");
+  const [delID, setDelId] = useState([]);
+  const [imageData, setImageData] = useState([]);
+
   const [submiting, setSubmiting] = useState(false);
   const [categoryList, setCategoryList] = useState(null);
   const [editData, setEditData] = useState(null);
@@ -28,7 +37,7 @@ export default function Products() {
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState(0);
   const [badge, setBadge] = React.useState("");
-  const [on_sale, setOn_sale] = React.useState(null);
+  const [on_sale, setOn_sale] = React.useState(false);
   const [carbohydrates, setCarbohydrates] = React.useState(0);
   const [ingredients, setingredients] = React.useState("");
   const [fats, setFats] = React.useState(0);
@@ -44,15 +53,17 @@ export default function Products() {
   const [changeBranch, setChangeBranch] = useState(false);
   const [changeBranchCount, setChangeBranchCunt] = useState(false);
   const [LiveImageArr, setLiveImageArr] = useState([]);
-  const [imageData, setImageData] = useState([
+  // const [imageData, setImageData] = useState([]);
+  const [imageData2, setImageData2] = useState([]);
+  const [addHandleImageData, setAddHandleImageData] = useState([
+    {
+      id: 0,
+    },
     {
       id: 1,
     },
     {
       id: 2,
-    },
-    {
-      id: 3,
     },
   ]);
   const [filialInput, setFilialInput] = useState([
@@ -71,6 +82,47 @@ export default function Products() {
   ]);
   const navigate = useNavigate();
   const [badgeData, setBadgeData] = useState([]);
+
+  const showModalAdd = (url, id) => {
+    setIsModalOpenAdd(true);
+    setAddImageLink({ image: url, id: id });
+  };
+  const showModal = (url, id) => {
+    setIsModalOpen(true);
+    setImageLink({ image: url, id: id });
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const setImageUrlAdd = (url, id) => {
+    setSelectImage(url);
+    setAddImageLink({ image: window.URL.createObjectURL(url), id: id });
+
+    for (let i = 0; i < addHandleImageData.length; i++) {
+      if (addHandleImageData[i].id === id) {
+        Object.assign(addHandleImageData[i], {
+          image: window.URL.createObjectURL(url),
+          imageUrl: url,
+        });
+      }
+    }
+  };
+
+  const handleDeleteImageAddApi = (id) => {
+    const data = addHandleImageData.filter((el) => el.id !== id);
+    setAddHandleImageData(data);
+    setIsModalOpenAdd(false);
+  };
+
+  const handleCancelAdd = () => {
+    setIsModalOpenAdd(false);
+  };
+
   const handleChangeSelect = (value) => {
     setProduct_categories(value);
   };
@@ -83,12 +135,15 @@ export default function Products() {
   };
 
   const addImageInput = (e) => {
-    setImageData([...imageData, { id: e }]);
+    setAddHandleImageData([...addHandleImageData, { id: e }]);
+  };
+  const addImageInputUpdate = (e) => {
+    setImageData2([...imageData2, { id: e }]);
   };
 
   const addFilialInput = (value, id) => {
     let findItem = filialInput.find((elem) => elem.id === id);
-    console.log(findItem, "sssssssssssssss", filialInput, id);
+    // console.log(findItem, "sssssssssssssss", filialInput, id);
     findItem.branch = Number(value?.branch);
     findItem.quantity = value?.quantity;
     setFilialInput([...filialInput]);
@@ -107,6 +162,27 @@ export default function Products() {
 
   const addAtributInput = async (value, id) => {
     setAtributInput([...atributInput, { id, ...value }]);
+  };
+  const handleDeleteImageApi = (id) => {
+    setIsModalOpen(false);
+    const data = imageData2.filter((el) => el.id !== id);
+    setImageData2(data);
+    if (imageData.find((el) => el.id === id)) {
+      delID.push(id);
+    }
+  };
+
+  const setImageUrlUpdate = (url, id) => {
+    // setIsModalOpen(false);
+    setImageLink({ image: window.URL.createObjectURL(url), id: id });
+    for (let i = 0; i < imageData2.length; i++) {
+      if (imageData2[i].id === id) {
+        Object.assign(imageData2[i], {
+          image: window.URL.createObjectURL(url),
+          imageUrl: url,
+        });
+      }
+    }
   };
 
   const ImageDelete = async (e) => {
@@ -137,7 +213,6 @@ export default function Products() {
 
     const product_branch = filialInput?.map((item) => {
       const { branch, quantity } = item;
-      // console.log('qqqqq',item);
 
       return { branch, quantity };
     });
@@ -152,14 +227,10 @@ export default function Products() {
       formData.append("product_galereya", image[i]);
     }
 
-    const data = {
-      name: name,
-      price: price,
-      description: description,
-      discount: discount,
-      badge: badge,
-      on_sale: on_sale !== null ? on_sale : false,
-      product_attribute: {
+    const formData1 = new FormData();
+    formData1.append(
+      "product_attribute",
+      JSON.stringify({
         carbohydrates: carbohydrates,
         ingredients: ingredients,
         fats: fats,
@@ -169,30 +240,35 @@ export default function Products() {
         storageConditions: storageConditions,
         specification: specification,
         shelf_life: shelf_life,
-      },
-      product_categories: product_categories,
-      type: location.search.split("?")[1],
-    };
-
+      })
+    );
+    formData1.append("name", name);
+    formData1.append("price", price);
+    formData1.append("description", description);
+    formData1.append("discount", discount);
+    formData1.append("on_sale", on_sale);
+    formData1.append("badge", badge);
+    formData1.append("product_categories", JSON.stringify(product_categories));
     if (product_highlight?.[0]?.content !== "") {
-      Object.assign(data, { product_highlight: product_highlight });
+      formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
-    if (product_branch?.[0]?.branch !== 0) {
-      Object.assign(data, { product_count_branch: product_branch });
+    if (
+      product_branch?.[0]?.branch !== 0 &&
+      product_branch?.[0]?.branch !== ""
+    ) {
+      formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
 
-    await Client.post(API_ENDPOINTS.CREATE_PRODUCT, data)
+    formData1.append("type", location.search.split("?")[1]);
+    for (let i = 0; i < addHandleImageData?.length; i++) {
+      if (addHandleImageData[i].imageUrl) {
+        formData1.append("product_galereya", addHandleImageData[i].imageUrl);
+      }
+    }
+
+    await Client.post(API_ENDPOINTS.CREATE_PRODUCT, formData1)
       .then((data) => {
         toast.success("Retsep muvaffaqiyatli qo'shildi");
-        data?.slug &&
-          Client.patch(`${API_ENDPOINTS.PATCH_PRODUCT}${data?.slug}/`, formData)
-            .then((res) => {
-              console.log(res);
-              navigate("/products");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
         navigate("/products");
       })
       .catch((err) => {
@@ -290,7 +366,6 @@ export default function Products() {
     document.querySelector(".create-branch-form").reset();
   };
 
-
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
     setSubmiting(true);
@@ -304,14 +379,10 @@ export default function Products() {
       return { content, order };
     });
 
-    const formData = new FormData();
-    for (let i = 0; i < image.length; i++) {
-      formData.append("product_galereya", image[i]);
-    }
-
-    const EDiteddata = {
-      name: name,
-      product_attribute: {
+    const formData1 = new FormData();
+    formData1.append(
+      "product_attribute",
+      JSON.stringify({
         carbohydrates: carbohydrates,
         ingredients: ingredients,
         fats: fats,
@@ -321,51 +392,41 @@ export default function Products() {
         storageConditions: storageConditions,
         specification: specification,
         shelf_life: shelf_life,
-      },
-      on_sale: on_sale,
-      badge: badge,
-      discount: discount,
-      description: description,
-      price: price,
-      product_count_branch: product_branch,
-    };
+      })
+    );
+    formData1.append("name", name);
+    formData1.append("price", price);
+    formData1.append("description", description);
+    formData1.append("discount", discount);
+    formData1.append("on_sale", on_sale);
+    formData1.append("badge", badge);
+    formData1.append("product_categories", JSON.stringify(product_categories));
+    if (product_highlight?.[0]?.content !== "") {
+      formData1.append("product_highlight", JSON.stringify(product_highlight));
+    }
+    if (product_branch?.[0]?.branch !== 0) {
+      formData1.append("product_count_branch", JSON.stringify(product_branch));
+    }
 
-    if (product_highlight.length > 0) {
-      const addObj = { product_highlight: product_highlight };
-      Object.assign(EDiteddata, addObj);
+    formData1.append("type", location.search.split("?")[1]);
+    for (let i = 0; i < imageData2?.length; i++) {
+      if (imageData2[i].imageUrl) {
+        formData1.append("product_galereya", imageData2[i].imageUrl);
+      }
     }
-    if (product_categories?.[0]?.label) {
-      const addObj = {
-        product_categories: product_categories?.map((el) => el.value),
-      };
-      Object.assign(EDiteddata, addObj);
-    } else {
-      const addObj = { product_categories: product_categories };
-      Object.assign(EDiteddata, addObj);
-    }
+    // for (let i = 0; i < delID?.length; i++) {
+    //   formData.append("deleted_image", delID[i]);
+    // }
 
     await Client.patch(
       `${API_ENDPOINTS.PATCH_PRODUCT}${location.search.split("?")[3]}/`,
-      EDiteddata
+      formData1
     )
       .then((data) => {
         console.log(data);
-        setTimeout(() => {
-          data &&
-            Client.patch(
-              `${API_ENDPOINTS.PATCH_PRODUCT}${location.search.split("?")[3]}/`,
-              formData
-            )
-              .then((res) => {
-                toast.success("Mahsulot muvaffaqiyatli saqlandi");
-                navigate("/products");
-                setSubmiting(false);
-              })
-              .catch((err) => {
-                console.log(err);
-                setSubmiting(false);
-              });
-        }, 300);
+        toast.success("Mahsulot muvaffaqiyatli saqlandi");
+        navigate("/products");
+        setSubmiting(false);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
@@ -416,6 +477,12 @@ export default function Products() {
         // console.log("ress=>", res);
         setEditData(res);
         setImageData(
+          res?.product_galereya?.map((el, i) => ({
+            image: el.image_url,
+            id: i + 1,
+          }))
+        );
+        setImageData2(
           res?.product_galereya?.map((el, i) => ({
             image: el.image_url,
             id: i + 1,
@@ -497,10 +564,10 @@ export default function Products() {
     });
   };
 
-  const lifeImagee = (e) => {
-    let img = window.URL.createObjectURL(e.target.files[0]);
-    LiveImageArr.push(img);
-  };
+  // const lifeImagee = (e) => {
+  //   let img = window.URL.createObjectURL(e.target.files[0]);
+  //   LiveImageArr.push(img);
+  // };
 
   const prosent = (e) => {
     return (price * discount) / 100;
@@ -642,56 +709,141 @@ export default function Products() {
                         className="flex gap-3 flex-wrap"
                         style={{ minWidth: "560px" }}
                       >
-                        {imageData?.map((item, i) => {
+                        {imageData2.map((item, i) => {
                           return (
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                              key={i}
-                            >
-                              <Button
-                                component="label"
-                                variant="outlined"
-                                style={{
-                                  maxWidth: "150px",
-                                  width: "150px",
-                                  backgroundImage: `url(${
-                                    item?.image ? item?.image : ""
-                                  })`,
-                                  backgroundSize: "cover",
-                                  height: "120px",
-                                }}
-                              >
-                                {item?.image ? (
-                                  ""
-                                ) : (
-                                  <i
-                                    className="fa-regular fa-image"
-                                    style={{ fontSize: "35px" }}
-                                  ></i>
-                                )}
-
-                                <input
-                                  style={{ display: "none" }}
-                                  onChange={(e) => (
-                                    setImageUrl(e.target.files[0], item.id),
-                                    lifeImagee(e)
+                            <>
+                              {item.image ? (
+                                <div
+                                  onClick={() =>
+                                    showModal(item?.image, item.id)
+                                  }
+                                  style={{
+                                    maxWidth: "150px",
+                                    width: "150px",
+                                    backgroundImage: `url(${
+                                      item?.image ? item?.image : ""
+                                    })`,
+                                    backgroundSize: "cover",
+                                    height: "120px",
+                                    borderRadius: "5px",
+                                  }}
+                                ></div>
+                              ) : (
+                                <div
+                                  onClick={() =>
+                                    item.image
+                                      ? showModal(item?.image, item.id)
+                                      : console.log("rasm yoq")
+                                  }
+                                  style={{
+                                    maxWidth: "150px",
+                                    width: "150px",
+                                    backgroundImage: `url(${
+                                      item?.image ? item?.image : ""
+                                    })`,
+                                    backgroundSize: "cover",
+                                    height: "120px",
+                                    borderRadius: "5px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    border: "1px solid #ccc",
+                                    position: "relative",
+                                  }}
+                                >
+                                  {item.image ? (
+                                    ""
+                                  ) : (
+                                    <i
+                                      className="fa-regular fa-image"
+                                      style={{ fontSize: "35px" }}
+                                    ></i>
                                   )}
-                                  type="file"
-                                />
-                              </Button>
-                              <Button
-                                onClick={() => ImageDelete(item.id)}
-                                component="label"
-                                color="error"
-                                variant="outlined"
-                                className="mt-3"
+                                  {item?.image ? (
+                                    " "
+                                  ) : (
+                                    <input
+                                      style={{
+                                        opacity: "0",
+                                        position: "absolute",
+                                        top: "0",
+                                        left: "0",
+                                        bottom: "0",
+                                        right: "0",
+                                      }}
+                                      onChange={(e) =>
+                                        setImageUrlUpdate(
+                                          e.target.files[0],
+                                          item.id
+                                        )
+                                      }
+                                      type="file"
+                                    />
+                                  )}
+                                </div>
+                              )}
+
+                              <Modal
+                                title="Retsept Galleriyasi"
+                                open={isModalOpen}
+                                onOk={handleOk}
+                                onCancel={handleCancel}
+                                cancelText="Yopish"
+                                okButtonProps={{ style: { display: "none" } }}
                               >
-                                Delete
-                              </Button>
-                            </div>
+                                <div
+                                  style={{
+                                    maxWidth: "800px",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      width: "100%",
+                                      backgroundImage: `url(${
+                                        imageLink?.image ? imageLink?.image : ""
+                                      })`,
+                                      backgroundSize: "cover",
+                                      minHeight: "400px",
+                                      height: "100%",
+                                      borderRadius: "5px",
+                                    }}
+                                  ></div>
+                                  <div
+                                    style={{
+                                      width: "100%",
+                                      display: "flex",
+                                      justifyContent: "end",
+                                      gap: "10px",
+                                    }}
+                                  >
+                                    <div
+                                      onClick={() =>
+                                        handleDeleteImageApi(imageLink?.id)
+                                      }
+                                      className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                    >
+                                      O'chirish
+                                    </div>
+                                    <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                      Qo'shish
+                                      <input
+                                        style={{
+                                          display: "none",
+                                        }}
+                                        onChange={(e) =>
+                                          setImageUrlUpdate(
+                                            e.target.files[0],
+                                            imageLink.id
+                                          )
+                                        }
+                                        type="file"
+                                      />
+                                    </label>
+                                  </div>
+                                </div>
+                              </Modal>
+                            </>
                           );
                         })}
                       </div>
@@ -704,7 +856,9 @@ export default function Products() {
                         }}
                       >
                         <Fab
-                          onClick={() => addImageInput(imageData.length + 1)}
+                          onClick={() =>
+                            addImageInputUpdate(imageData2.length + 1)
+                          }
                           color="primary"
                           aria-label="add"
                         >
@@ -1026,10 +1180,8 @@ export default function Products() {
               <img
                 className="rounded border"
                 src={`${
-                  editData?.product_galereya?.length > 0
-                    ? editData?.product_galereya?.[0]?.image_url
-                    : editData?.product_galereya?.length <= 0  && LiveImageArr?.length > 0
-                    ? LiveImageArr?.[0]
+                  imageData2?.[0]?.image
+                    ? imageData2?.[0]?.image
                     : "https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg"
                 }`}
                 alt="samokat"
@@ -1240,6 +1392,35 @@ export default function Products() {
             ) : (
               ""
             )}
+              {atributInput?.[0].content !== "" ||
+          atributInput?.[0].order !== "" ? (
+            <>
+              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                Mahsulot elementlari :
+              </p>
+              {atributInput?.map((el) => {
+                return (
+                  <div
+                    key={el.id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "start",
+                      alignItems: "baseline",
+                    }}
+                  >
+                    <span style={{ fontWeight: "600", paddingRight: "8px" }}>
+                      {el.order}
+                    </span>
+                    <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
+                      {el.content}
+                    </p>
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            ""
+          )}
             {discount || price ? (
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
@@ -1390,56 +1571,141 @@ export default function Products() {
                         className="flex gap-3 flex-wrap"
                         style={{ minWidth: "560px" }}
                       >
-                        {imageData?.map((item, i) => {
+                        {imageData2.map((item, i) => {
                           return (
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                              }}
-                              key={i}
-                            >
-                              <Button
-                                component="label"
-                                variant="outlined"
-                                style={{
-                                  maxWidth: "150px",
-                                  width: "150px",
-                                  backgroundImage: `url(${
-                                    item?.image ? item?.image : ""
-                                  })`,
-                                  backgroundSize: "cover",
-                                  height: "120px",
-                                }}
-                              >
-                                {item?.image ? (
-                                  ""
-                                ) : (
-                                  <i
-                                    className="fa-regular fa-image"
-                                    style={{ fontSize: "35px" }}
-                                  ></i>
-                                )}
-
-                                <input
-                                  style={{ display: "none" }}
-                                  onChange={(e) => (
-                                    setImageUrl(e.target.files[0], item.id),
-                                    lifeImagee(e)
+                            <>
+                              {item.image ? (
+                                <div
+                                  onClick={() =>
+                                    showModal(item?.image, item.id)
+                                  }
+                                  style={{
+                                    maxWidth: "150px",
+                                    width: "150px",
+                                    backgroundImage: `url(${
+                                      item?.image ? item?.image : ""
+                                    })`,
+                                    backgroundSize: "cover",
+                                    height: "120px",
+                                    borderRadius: "5px",
+                                  }}
+                                ></div>
+                              ) : (
+                                <div
+                                  onClick={() =>
+                                    item.image
+                                      ? showModal(item?.image, item.id)
+                                      : console.log("rasm yoq")
+                                  }
+                                  style={{
+                                    maxWidth: "150px",
+                                    width: "150px",
+                                    backgroundImage: `url(${
+                                      item?.image ? item?.image : ""
+                                    })`,
+                                    backgroundSize: "cover",
+                                    height: "120px",
+                                    borderRadius: "5px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    border: "1px solid #ccc",
+                                    position: "relative",
+                                  }}
+                                >
+                                  {item.image ? (
+                                    ""
+                                  ) : (
+                                    <i
+                                      className="fa-regular fa-image"
+                                      style={{ fontSize: "35px" }}
+                                    ></i>
                                   )}
-                                  type="file"
-                                />
-                              </Button>
-                              <Button
-                                onClick={() => ImageDelete(item.id)}
-                                component="label"
-                                color="error"
-                                variant="outlined"
-                                className="mt-3"
+                                  {item?.image ? (
+                                    " "
+                                  ) : (
+                                    <input
+                                      style={{
+                                        opacity: "0",
+                                        position: "absolute",
+                                        top: "0",
+                                        left: "0",
+                                        bottom: "0",
+                                        right: "0",
+                                      }}
+                                      onChange={(e) =>
+                                        setImageUrlUpdate(
+                                          e.target.files[0],
+                                          item.id
+                                        )
+                                      }
+                                      type="file"
+                                    />
+                                  )}
+                                </div>
+                              )}
+
+                              <Modal
+                                title="Retsept Galleriyasi"
+                                open={isModalOpen}
+                                onOk={handleOk}
+                                onCancel={handleCancel}
+                                cancelText="Yopish"
+                                okButtonProps={{ style: { display: "none" } }}
                               >
-                                Delete
-                              </Button>
-                            </div>
+                                <div
+                                  style={{
+                                    maxWidth: "800px",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      width: "100%",
+                                      backgroundImage: `url(${
+                                        imageLink?.image ? imageLink?.image : ""
+                                      })`,
+                                      backgroundSize: "cover",
+                                      minHeight: "400px",
+                                      height: "100%",
+                                      borderRadius: "5px",
+                                    }}
+                                  ></div>
+                                  <div
+                                    style={{
+                                      width: "100%",
+                                      display: "flex",
+                                      justifyContent: "end",
+                                      gap: "10px",
+                                    }}
+                                  >
+                                    <div
+                                      onClick={() =>
+                                        handleDeleteImageApi(imageLink?.id)
+                                      }
+                                      className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                    >
+                                      O'chirish
+                                    </div>
+                                    <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                      Qo'shish
+                                      <input
+                                        style={{
+                                          display: "none",
+                                        }}
+                                        onChange={(e) =>
+                                          setImageUrlUpdate(
+                                            e.target.files[0],
+                                            imageLink.id
+                                          )
+                                        }
+                                        type="file"
+                                      />
+                                    </label>
+                                  </div>
+                                </div>
+                              </Modal>
+                            </>
                           );
                         })}
                       </div>
@@ -1452,7 +1718,9 @@ export default function Products() {
                         }}
                       >
                         <Fab
-                          onClick={() => addImageInput(imageData.length + 1)}
+                          onClick={() =>
+                            addImageInputUpdate(imageData2.length + 1)
+                          }
                           color="primary"
                           aria-label="add"
                         >
@@ -1766,10 +2034,8 @@ export default function Products() {
               <img
                 className="rounded border"
                 src={`${
-                  editData?.product_galereya?.length > 0
-                    ? editData?.product_galereya?.[0]?.image_url
-                    : editData?.product_galereya?.length <= 0 && LiveImageArr?.length > 0
-                    ? LiveImageArr?.[0]
+                  imageData2?.[0]?.image
+                    ? imageData2?.[0]?.image
                     : "https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg"
                 }`}
                 alt="samokat"
@@ -1984,6 +2250,35 @@ export default function Products() {
             ) : (
               ""
             )}
+              {atributInput?.[0].content !== "" ||
+          atributInput?.[0].order !== "" ? (
+            <>
+              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                Mahsulot elementlari :
+              </p>
+              {atributInput?.map((el) => {
+                return (
+                  <div
+                    key={el.id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "start",
+                      alignItems: "baseline",
+                    }}
+                  >
+                    <span style={{ fontWeight: "600", paddingRight: "8px" }}>
+                      {el.order}
+                    </span>
+                    <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
+                      {el.content}
+                    </p>
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            ""
+          )}
             {discount || price ? (
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
@@ -2113,31 +2408,49 @@ export default function Products() {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <div style={{ display: "flex ", gap: "10px" }}>
+
+                  <div
+                    style={{
+                      display: "flex ",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <div
                       className="flex gap-3 flex-wrap"
-                      style={{ minWidth: "392px" }}
+                      style={{ minWidth: "490px" }}
                     >
-                      {imageData.map((item, i) => {
+                      {addHandleImageData?.map((item, i) => {
                         return (
-                          <div
-                            style={{ display: "flex", flexDirection: "column" }}
-                            key={i}
-                          >
-                            <Button
-                              component="label"
-                              variant="outlined"
+                          <>
+                            <div
+                              key={item.id}
+                              onClick={() =>
+                                item.image
+                                  ? showModalAdd(item?.image, item.id)
+                                  : console.log("rasm yoq")
+                              }
                               style={{
                                 maxWidth: "150px",
-                                width: "120px",
+                                width: "150px",
                                 backgroundImage: `url(${
                                   item?.image ? item?.image : ""
                                 })`,
                                 backgroundSize: "cover",
                                 height: "120px",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                // border: "1px solid #ccc",
+                                border: `${
+                                  errorImage
+                                    ? "1px solid red"
+                                    : "1px solid #ccc"
+                                }`,
+                                borderRadius: `${errorImage ? "7px" : "5px"}`,
+                                position: "relative",
                               }}
                             >
-                              {item?.image ? (
+                              {item.image ? (
                                 ""
                               ) : (
                                 <i
@@ -2145,39 +2458,99 @@ export default function Products() {
                                   style={{ fontSize: "35px" }}
                                 ></i>
                               )}
-                              <input
-                                type="file"
-                                style={{ display: "none" }}
-                                onChange={(e) => (
-                                  setImageUrl(e.target.files[0], item.id),
-                                  lifeImagee(e)
-                                )}
-                              />
-                            </Button>
-                            <Button
-                              onClick={() => ImageDelete(item.id)}
-                              component="label"
-                              color="error"
-                              variant="outlined"
-                              className="mt-3"
+                              {item?.image ? (
+                                " "
+                              ) : (
+                                <input
+                                  style={{
+                                    opacity: "0",
+                                    position: "absolute",
+                                    top: "0",
+                                    left: "0",
+                                    bottom: "0",
+                                    right: "0",
+                                  }}
+                                  onChange={(e) =>
+                                    setImageUrlAdd(e.target.files[0], item.id)
+                                  }
+                                  type="file"
+                                />
+                              )}
+                            </div>
+
+                            <Modal
+                              title="Mahsulot Galleriyasi"
+                              open={isModalOpenAdd}
+                              // onOk={handleOk}
+                              onCancel={handleCancelAdd}
+                              cancelText="Yopish"
+                              okButtonProps={{ style: { display: "none" } }}
                             >
-                              Delete
-                            </Button>
-                          </div>
+                              <div
+                                style={{
+                                  maxWidth: "800px",
+                                  width: "100%",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    backgroundImage: `url(${
+                                      addImageLink?.image
+                                        ? addImageLink?.image
+                                        : ""
+                                    })`,
+                                    backgroundSize: "cover",
+                                    minHeight: "400px",
+                                    height: "100%",
+                                    borderRadius: "5px",
+                                  }}
+                                ></div>
+                                <div
+                                  style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    justifyContent: "end",
+                                    gap: "10px",
+                                  }}
+                                >
+                                  <div
+                                    onClick={() =>
+                                      handleDeleteImageAddApi(addImageLink?.id)
+                                    }
+                                    className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                  >
+                                    O'chirish
+                                  </div>
+                                  <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                    Qo'shish
+                                    <input
+                                      style={{
+                                        display: "none",
+                                      }}
+                                      onChange={(e) =>
+                                        setImageUrlAdd(
+                                          e.target.files[0],
+                                          addImageLink.id
+                                        )
+                                      }
+                                      type="file"
+                                    />
+                                  </label>
+                                </div>
+                              </div>
+                            </Modal>
+                          </>
                         );
                       })}
                     </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "end",
-                      }}
-                    >
+                    <div style={{ display: "flex", alignItems: "center" }}>
                       <Fab
-                        onClick={() => addImageInput(imageData.length + 1)}
+                        onClick={() =>
+                          addImageInput(addHandleImageData.length + 1)
+                        }
                         color="primary"
                         aria-label="add"
-                        size="small"
                       >
                         <AddIcon />
                       </Fab>
@@ -2467,8 +2840,8 @@ export default function Products() {
             <img
               className="rounded border"
               src={`${
-                LiveImageArr?.length > 0
-                  ? LiveImageArr?.[0]
+                addHandleImageData?.[0]?.image
+                  ? addHandleImageData?.[0]?.image
                   : "https://t4.ftcdn.net/jpg/04/99/93/31/360_F_499933117_ZAUBfv3P1HEOsZDrnkbNCt4jc3AodArl.jpg"
               }`}
               alt="samokat"
@@ -2657,6 +3030,36 @@ export default function Products() {
             <></>
           )}
 
+          {atributInput?.[0].content !== "" ||
+          atributInput?.[0].order !== "" ? (
+            <>
+              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                Mahsulot elementlari :
+              </p>
+              {atributInput?.map((el) => {
+                return (
+                  <div
+                    key={el.id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "start",
+                      alignItems: "baseline",
+                    }}
+                  >
+                    <span style={{ fontWeight: "600", paddingRight: "8px" }}>
+                      {el.order}
+                    </span>
+                    <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
+                      {el.content}
+                    </p>
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            ""
+          )}
+
           {price ? (
             <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
               {discount ? (
@@ -2675,5 +3078,3 @@ export default function Products() {
     </div>
   );
 }
-
-

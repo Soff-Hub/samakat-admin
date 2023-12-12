@@ -114,9 +114,9 @@ export default function Branches() {
                 <TableCell>
                   <span className="font-bold text-[16px]">Umumiy so'mma</span>
                 </TableCell>
-                <TableCell>
+                {/* <TableCell>
                   <span className="font-bold text-[16px]">Promo kod</span>
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <span className="font-bold text-[16px]">Manzil</span>
                 </TableCell>
@@ -173,7 +173,7 @@ export default function Branches() {
                         {row.total_amount}
                       </Link>
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    {/* <TableCell component="th" scope="row">
                       <Link to={"/promos"} className="hover:underline">
                         {row.promocode === null ? (
                           <i className="fa-solid fa-minus"></i>
@@ -181,7 +181,7 @@ export default function Branches() {
                           row.promocode?.code
                         )}
                       </Link>
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell component="th" scope="row">
                       <Link
                         to={"actions/?" + row.id}
@@ -233,12 +233,12 @@ export default function Branches() {
                           ? "jarayonda"
                           : row.status === "cancelled"
                           ? "bekor qilingan"
-                          : ""}
+                          : row.status === "in_courier" ?  "Yo'lda" : ""}
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <>
-                        <Button onClick={showModal}>
+                        <Button onClick={row.payment_type !== "by_card" ? showModal : console.log('n')}>
                           <i class="fa-solid fa-pen-to-square"></i>
                         </Button>
                         <Modal
@@ -275,6 +275,15 @@ export default function Branches() {
                               Jarayonda
                             </li>
                             <li
+                              onClick={() => setStatus("in_courier")}
+                              style={{
+                                backgroundColor:
+                                  status === "in_courier" ? "#ccc" : "",
+                              }}
+                            >
+                              Yo'lda
+                            </li>
+                            <li
                               onClick={() => setStatus("cancelled")}
                               style={{
                                 backgroundColor:
@@ -283,6 +292,7 @@ export default function Branches() {
                             >
                               Bekor qilingan
                             </li>
+                           
                           </ul>
                         </Modal>
                       </>

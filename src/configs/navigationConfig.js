@@ -10,6 +10,7 @@ import PercentIcon from '@mui/icons-material/Percent';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import GroupIcon from '@mui/icons-material/Group';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 
 export const navigationConfig = [
     {
@@ -52,11 +53,11 @@ export const navigationConfig = [
         path: '/adresses',
         icon: <MapIcon />,
     },
-    {
-        name: 'Promo Kodlar',
-        path: '/promos',
-        icon: <PercentIcon />,
-    },
+    // {
+    //     name: 'Promo Kodlar',
+    //     path: '/promos',
+    //     icon: <PercentIcon />,
+    // },
     {
         name: 'Retseptlar',
         path: '/retsepts',
@@ -71,5 +72,10 @@ export const navigationConfig = [
         name: 'Sozlamalar',
         path: '/settings',
         icon: <SettingsOutlinedIcon />,
+    },
+    {
+        name: 'Yetkazib berish',
+        path: '/delivery',
+        icon: <AirportShuttleIcon />,
     }
 ]

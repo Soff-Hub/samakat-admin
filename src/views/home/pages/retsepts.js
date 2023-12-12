@@ -322,12 +322,10 @@ export default function EnhancedTable() {
                 </TableBody>
               </Table>
             </TableContainer>
-            {(count && Math.ceil(count / 30) <= 1) || count === 0 ? (
-              <></>
-            ) : (
-              <div className="m-3 mb-5">
+            { (
+              <div className="m-3 mb-5 pb-4 pt-4">
                 <Stack spacing={2}>
-                  <Typography> Sahifa : {page}</Typography>
+                  <Typography> Sahifa : {page} </Typography>
                   <Pagination
                     count={
                       Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)

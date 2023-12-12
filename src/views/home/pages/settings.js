@@ -91,7 +91,7 @@ export default function Settings() {
               label="Radius"
               variant="outlined"
               size="small"
-              type="number"
+              type="text"
               value={radius}
               style={{width:'100%'}}
               onChange={(e) => setRadius(e.target.value)}

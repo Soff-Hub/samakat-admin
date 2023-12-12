@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, TextField } from "@mui/material";
+import { Box, CircularProgress, TextField, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Fab from "@mui/material/Fab";
@@ -8,8 +8,14 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Select, Space } from "antd";
+import { Select, Space, Modal } from "antd";
+
 export default function Retsepts() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
+  const [imageLink, setImageLink] = useState({ image: "", id: "" });
+  const [addImageLink, setAddImageLink] = useState({ image: "", id: "" });
+
   const [submiting, setSubmiting] = useState(false);
   const [category, setCategory] = React.useState("");
   const [image, setImage] = useState([]);
@@ -21,25 +27,55 @@ export default function Retsepts() {
   const [editData, setEditData] = useState(null);
   const location = useLocation();
   const [categoryData, setCategoryData] = useState([]);
-  const [imageData, setImageData] = useState([
+  const [imageData, setImageData] = useState([]);
+  const [imageData2, setImageData2] = useState([]);
+  const [addHandleImageData, setAddHandleImageData] = useState([
+    {
+      id: 0,
+    },
     {
       id: 1,
     },
     {
       id: 2,
     },
-    {
-      id: 3,
-    },
   ]);
   const [errorCategory, setErrorCategory] = useState(false);
   const [errorImage, setErrorImage] = useState(false);
   const [selectImage, setSelectImage] = useState("");
+  const [delID, setDelId] = useState([]);
+  // const [imageApi, setImageApi] = useState(null);
+
+  const showModal = (url, id) => {
+    setIsModalOpen(true);
+    setImageLink({ image: url, id: id });
+  };
+  const showModalAdd = (url, id) => {
+    setIsModalOpenAdd(true);
+    setAddImageLink({ image: url, id: id });
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancelAdd = () => {
+    setIsModalOpenAdd(false);
+  };
+
+  const handleDeleteImageApi = (id) => {
+    setIsModalOpen(false);
+    const data = imageData2.filter((el) => el.id !== id);
+    setImageData2(data);
+    if (imageData.find((el) => el.id === id)) {
+      delID.push(id);
+    }
+  };
 
   const handleChangeRelatedCategory = (event) => {
     setRelatedCategory(event);
     console.log(event);
-    
   };
   const handleChangeActive = (event) => {
     setChecked(event.target.checked);
@@ -50,23 +86,42 @@ export default function Retsepts() {
     setErrorCategory(false);
   };
 
-  const addImageInput = async (e) => {
-    setImageData([...imageData, { id: e }]);
+  const addImageInput = (e) => {
+    setImageData2([...imageData2, { id: e }]);
   };
 
-  const ImageDelete = async (e) => {
-    setImageData(imageData.filter((item) => item.id !== e));
-    imageData.pop();
-  };
 
-  const setImageUrl = async (e, id) => {
-    setSelectImage(e);
-    setImage([...image, e]);
-    for (let i = 0; i < imageData.length; i++) {
-      if (imageData[i].id === id) {
-        Object.assign(imageData[i], { image: window.URL.createObjectURL(e) });
+  const setImageUrlUpdate = (url, id) => {
+    // setIsModalOpen(false);
+    setImageLink({ image: window.URL.createObjectURL(url), id: id });
+    for (let i = 0; i < imageData2.length; i++) {
+      if (imageData2[i].id === id) {
+        Object.assign(imageData2[i], {
+          image: window.URL.createObjectURL(url),
+          imageUrl: url,
+        });
       }
     }
+  };
+
+  const setImageUrlAdd = (url, id) => {
+    setSelectImage(url);
+    setAddImageLink({ image: window.URL.createObjectURL(url), id: id });
+
+    for (let i = 0; i < addHandleImageData.length; i++) {
+      if (addHandleImageData[i].id === id) {
+        Object.assign(addHandleImageData[i], {
+          image: window.URL.createObjectURL(url),
+          imageUrl: url,
+        });
+      }
+    }
+  };
+
+  const handleDeleteImageAddApi = (id) => {
+    const data = addHandleImageData.filter((el) => el.id !== id);
+    setAddHandleImageData(data);
+    setIsModalOpenAdd(false);
   };
 
   const handleSubmitAddRecipe = async (e) => {
@@ -85,8 +140,10 @@ export default function Retsepts() {
       if (relatedCategory) {
         formData.append("related_categories", relatedCategory);
       }
-      for (let i = 0; i < image.length; i++) {
-        formData.append("uploaded_images", image[i]);
+      for (let i = 0; i < addHandleImageData.length; i++) {
+        if (addHandleImageData[i]?.imageUrl) {
+          formData.append("uploaded_images", addHandleImageData[i].imageUrl);
+        }
       }
 
       setSubmiting(true);
@@ -124,10 +181,16 @@ export default function Retsepts() {
     if (relatedCategory?.length > 0) {
       formData.append("related_categories", relatedCategory);
     }
-    for (let i = 0; i < image?.length; i++) {
-      formData.append("uploaded_images", image[i]);
+    for (let i = 0; i < imageData2?.length; i++) {
+      if (imageData2[i]?.imageUrl) {
+        formData.append("uploaded_images", imageData2[i]?.imageUrl);
+      }
+    }
+    for (let i = 0; i < delID?.length; i++) {
+      formData.append("deleted_image", delID[i]);
     }
     setSubmiting(true);
+
     await Client.patch(
       `${API_ENDPOINTS.UPDATE_RECIPE}${location.search.split("?")[2]}/`,
       formData
@@ -176,6 +239,7 @@ export default function Retsepts() {
         setCategory(res?.category);
         setChecked(res?.is_active);
         setImageData(res?.recipe_gallery);
+        setImageData2(res?.recipe_gallery);
 
         setRelatedCategory(res?.related_categories);
       })
@@ -195,6 +259,8 @@ export default function Retsepts() {
     }
     // eslint-disable-next-line
   }, []);
+
+  console.log("handle data", addHandleImageData);
 
   return location.search.split("?")[1] === "edit" ? (
     editData ? (
@@ -306,55 +372,143 @@ export default function Retsepts() {
                   className="flex gap-3 flex-wrap"
                   style={{ minWidth: "490px" }}
                 >
-                  {imageData.map((item, i) => {
+                  {imageData2.map((item, i) => {
                     return (
-                      <div
-                        style={{ display: "flex", flexDirection: "column" }}
-                        key={i}
-                      >
-                        <Button
-                          component="label"
-                          variant="outlined"
-                          style={{
-                            maxWidth: "150px",
-                            width: "150px",
-                            backgroundImage: `url(${
-                              item?.image ? item?.image : ""
-                            })`,
-                            backgroundSize: "cover",
-                            height: "120px",
-                          }}
+                      <>
+                        {item.image ? (
+                          <div
+                            onClick={() => showModal(item?.image, item.id)}
+                            style={{
+                              maxWidth: "150px",
+                              width: "150px",
+                              backgroundImage: `url(${
+                                item?.image ? item?.image : ""
+                              })`,
+                              backgroundSize: "cover",
+                              height: "120px",
+                              borderRadius: "5px",
+                            }}
+                          ></div>
+                        ) : (
+                          <div
+                            onClick={() =>
+                              item.image
+                                ? showModal(item?.image, item.id)
+                                : console.log("rasm yoq")
+                            }
+                            style={{
+                              maxWidth: "150px",
+                              width: "150px",
+                              backgroundImage: `url(${
+                                item?.image ? item?.image : ""
+                              })`,
+                              backgroundSize: "cover",
+                              height: "120px",
+                              borderRadius: "5px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              border: "1px solid #ccc",
+                              position: "relative",
+                            }}
+                          >
+                            {item.image ? (
+                              ""
+                            ) : (
+                              <i
+                                className="fa-regular fa-image"
+                                style={{ fontSize: "35px" }}
+                              ></i>
+                            )}
+                            {item?.image ? (
+                              " "
+                            ) : (
+                              <input
+                                style={{
+                                  opacity: "0",
+                                  position: "absolute",
+                                  top: "0",
+                                  left: "0",
+                                  bottom: "0",
+                                  right: "0",
+                                }}
+                                onChange={(e) =>
+                                  setImageUrlUpdate(e.target.files[0], item.id)
+                                }
+                                type="file"
+                              />
+                            )}
+                          </div>
+                        )}
+
+                        <Modal
+                          title="Retsept Galleriyasi"
+                          open={isModalOpen}
+                          onOk={handleOk}
+                          onCancel={handleCancel}
+                          cancelText="Yopish"
+                          okButtonProps={{ style: { display: "none" } }}
                         >
-                          {item?.image ? (
-                            ""
-                          ) : (
-                            <i
-                              className="fa-regular fa-image"
-                              style={{ fontSize: "35px" }}
-                            ></i>
-                          )}
-                          <input
-                            style={{ display: "none" }}
-                            onChange={(e) => setImageUrl(e.target.files[0], item.id, e)}
-                            type="file"
-                          />
-                        </Button>
-                        <Button
-                          onClick={() => ImageDelete(item.id)}
-                          component="label"
-                          color="error"
-                          variant="outlined"
-                          className="mt-3"
-                        >
-                          Delete
-                        </Button>
-                      </div>
+                          <div
+                            style={{
+                              maxWidth: "800px",
+                              width: "100%",
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: "100%",
+                                backgroundImage: `url(${
+                                  imageLink?.image ? imageLink?.image : ""
+                                })`,
+                                backgroundSize: "cover",
+                                minHeight: "400px",
+                                height: "100%",
+                                borderRadius: "5px",
+                              }}
+                            ></div>
+                            <div
+                              style={{
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "end",
+                                gap: "10px",
+                              }}
+                            >
+                              <div
+                                onClick={() =>
+                                  handleDeleteImageApi(imageLink?.id)
+                                }
+                                className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                              >
+                                O'chirish
+                              </div>
+                              <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                Qo'shish
+                                <input
+                                  style={{
+                                    display: "none",
+                                  }}
+                                  onChange={(e) =>
+                                    setImageUrlUpdate(
+                                      e.target.files[0],
+                                      imageLink.id
+                                    )
+                                  }
+                                  type="file"
+                                />
+                              </label>
+                            </div>
+                          </div>
+                        </Modal>
+                      </>
                     );
                   })}
                 </div>
+
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Fab
-                    onClick={() => addImageInput(imageData.length + 1)}
+                    onClick={() => addImageInput(imageData2.length + 1)}
                     color="primary"
                     aria-label="add"
                   >
@@ -487,20 +641,15 @@ export default function Retsepts() {
                 className="flex gap-3 flex-wrap"
                 style={{ minWidth: "490px" }}
               >
-                {imageData.map((item, i) => {
+                {addHandleImageData.map((item, i) => {
                   return (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        border: `${errorImage ? "1px solid red" : ""}`,
-                        borderRadius: `${errorImage ? "7px" : ""}`,
-                      }}
-                      key={i}
-                    >
-                      <Button
-                        component="label"
-                        variant="outlined"
+                    <>
+                      <div
+                        onClick={() =>
+                          item.image
+                            ? showModalAdd(item?.image, item.id)
+                            : console.log("rasm yoq")
+                        }
                         style={{
                           maxWidth: "150px",
                           width: "150px",
@@ -509,9 +658,18 @@ export default function Retsepts() {
                           })`,
                           backgroundSize: "cover",
                           height: "120px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          border: "1px solid #ccc",
+                          border: `${
+                            errorImage ? "1px solid red" : "1px solid #ccc"
+                          }`,
+                          borderRadius: `${errorImage ? "7px" : "5px"}`,
+                          position:'relative'
                         }}
                       >
-                        {item?.image ? (
+                        {item.image ? (
                           ""
                         ) : (
                           <i
@@ -519,24 +677,87 @@ export default function Retsepts() {
                             style={{ fontSize: "35px" }}
                           ></i>
                         )}
-                        <input
-                          style={{ display: "none" }}
-                          onChange={(e) =>
-                            setImageUrl(e.target.files[0], item.id, e)
-                          }
-                          type="file"
-                        />
-                      </Button>
-                      <Button
-                        onClick={() => ImageDelete(item.id)}
-                        component="label"
-                        color="error"
-                        variant="outlined"
-                        className="mt-3"
+                        {item?.image ? (
+                          " "
+                        ) : (
+                          <input
+                            style={{
+                              opacity: "0",
+                              position: "absolute",
+                              top: "0",
+                              left: "0",
+                              bottom: "0",
+                              right: "0",
+                            }}
+                            onChange={(e) =>
+                              setImageUrlAdd(e.target.files[0], item.id)
+                            }
+                            type="file"
+                          />
+                        )}
+                      </div>
+
+                      <Modal
+                        title="Retsept Galleriyasi"
+                        open={isModalOpenAdd}
+                        // onOk={handleOk}
+                        onCancel={handleCancelAdd}
+                        cancelText="Yopish"
+                        okButtonProps={{ style: { display: "none" } }}
                       >
-                        Delete
-                      </Button>
-                    </div>
+                        <div
+                          style={{
+                            maxWidth: "800px",
+                            width: "100%",
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: "100%",
+                              backgroundImage: `url(${
+                                addImageLink?.image ? addImageLink?.image : ""
+                              })`,
+                              backgroundSize: "cover",
+                              minHeight: "400px",
+                              height: "100%",
+                              borderRadius: "5px",
+                            }}
+                          ></div>
+                          <div
+                            style={{
+                              width: "100%",
+                              display: "flex",
+                              justifyContent: "end",
+                              gap: "10px",
+                            }}
+                          >
+                            <div
+                              onClick={() =>
+                                handleDeleteImageAddApi(addImageLink?.id)
+                              }
+                              className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                            >
+                              O'chirish
+                            </div>
+                            <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                              Qo'shish
+                              <input
+                                style={{
+                                  display: "none",
+                                }}
+                                onChange={(e) =>
+                                  setImageUrlAdd(
+                                    e.target.files[0],
+                                    addImageLink.id
+                                  )
+                                }
+                                type="file"
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      </Modal>
+                    </>
                   );
                 })}
               </div>
