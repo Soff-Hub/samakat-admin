@@ -179,7 +179,7 @@ export default function EnhancedTable() {
           Bistro
         </ToggleButton>
         <ToggleButton className="w-full" value="byuti">
-          Apteka
+        Byute
         </ToggleButton>
       </ToggleButtonGroup>
       <input

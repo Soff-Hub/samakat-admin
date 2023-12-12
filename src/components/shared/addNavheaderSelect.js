@@ -51,7 +51,7 @@ export default function AddNavHeaderSelect({ title }) {
                 className="hover:bg-gray"
                 sx={{ p: 2 }}
               >
-                    Apteka
+                    Byute
               </Typography>
                     </Link>
             </Paper>

@@ -203,10 +203,10 @@ export default function EnhancedTable() {
         className="mt-5 flex items-center w-full"
       >
         <ToggleButton className="w-full" value="bistro">
-          Быстрый
+        Bistro
         </ToggleButton>
         <ToggleButton className="w-full" value="byuti">
-          Apteka
+        Byute
         </ToggleButton>
       </ToggleButtonGroup>
 
