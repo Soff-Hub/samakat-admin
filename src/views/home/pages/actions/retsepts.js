@@ -126,7 +126,9 @@ export default function Retsepts() {
 
   const handleSubmitAddRecipe = async (e) => {
     e.preventDefault();
-    if (category !== "" && selectImage !== "") {
+    if (category !== ""
+    //  && selectImage !== ""
+    ) {
       if (category !== "") {
         setErrorCategory(false);
       } else if (selectImage !== "") {
