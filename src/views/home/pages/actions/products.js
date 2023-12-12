@@ -23,8 +23,6 @@ export default function Products() {
   const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
   const [imageLink, setImageLink] = useState({ image: "", id: "" });
   const [addImageLink, setAddImageLink] = useState({ image: "", id: "" });
-  const [errorImage, setErrorImage] = useState(false);
-  const [selectImage, setSelectImage] = useState("");
   const [delID, setDelId] = useState([]);
   const [imageData, setImageData] = useState([]);
 
@@ -50,10 +48,6 @@ export default function Products() {
   const [branchData, setBranchsData] = React.useState(null);
   const [product_categories, setProduct_categories] = React.useState([]);
   const [image, setImage] = useState("");
-  const [changeBranch, setChangeBranch] = useState(false);
-  const [changeBranchCount, setChangeBranchCunt] = useState(false);
-  const [LiveImageArr, setLiveImageArr] = useState([]);
-  // const [imageData, setImageData] = useState([]);
   const [imageData2, setImageData2] = useState([]);
   const [addHandleImageData, setAddHandleImageData] = useState([
     {
@@ -100,7 +94,7 @@ export default function Products() {
   };
 
   const setImageUrlAdd = (url, id) => {
-    setSelectImage(url);
+    // setSelectImage(url);
     setAddImageLink({ image: window.URL.createObjectURL(url), id: id });
 
     for (let i = 0; i < addHandleImageData.length; i++) {
@@ -185,10 +179,6 @@ export default function Products() {
     }
   };
 
-  const ImageDelete = async (e) => {
-    setImageData(imageData.filter((item) => item.id !== e));
-    imageData.pop();
-  };
 
   const deleteID = (i) => {
     console.log("delete id == ", i, filialInput);
@@ -198,14 +188,7 @@ export default function Products() {
     setAtributInput(atributInput.filter((item) => item.id !== i));
   };
 
-  const setImageUrl = async (e, id) => {
-    setImage([...image, e]);
-    for (let i = 0; i < imageData.length; i++) {
-      if (imageData[i].id === id) {
-        Object.assign(imageData[i], { image: window.URL.createObjectURL(e) });
-      }
-    }
-  };
+ 
 
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
@@ -294,14 +277,36 @@ export default function Products() {
       return { content, order };
     });
 
-    const formData = new FormData();
-    for (let i = 0; i < image.length; i++) {
-      formData.append("product_galereya", image[i]);
-    }
+    // const formData = new FormData();
+    // for (let i = 0; i < image.length; i++) {
+    //   formData.append("product_galereya", image[i]);
+    // }
 
-    const EDiteddata = {
-      name: name,
-      product_attribute: {
+    // const EDiteddata = {
+    //   name: name,
+    //   product_attribute: {
+    //     carbohydrates: carbohydrates,
+    //     ingredients: ingredients,
+    //     fats: fats,
+    //     kilocalories: kilocalories,
+    //     manufacturer: manufacturer,
+    //     protein: protein,
+    //     storageConditions: storageConditions,
+    //     specification: specification,
+    //     shelf_life: shelf_life,
+    //   },
+    //   on_sale: on_sale,
+    //   badge: badge,
+    //   discount: discount,
+    //   description: description,
+    //   price: price,
+    //   variant_id: location.search.split("?")[4],
+    // };
+    
+    const formData1 = new FormData();
+    formData1.append(
+      "product_attribute",
+      JSON.stringify({
         carbohydrates: carbohydrates,
         ingredients: ingredients,
         fats: fats,
@@ -311,52 +316,49 @@ export default function Products() {
         storageConditions: storageConditions,
         specification: specification,
         shelf_life: shelf_life,
-      },
-      on_sale: on_sale,
-      badge: badge,
-      discount: discount,
-      description: description,
-      price: price,
-      variant_id: location.search.split("?")[4],
-    };
+      })
+    );
+    formData1.append("name", name);
+    formData1.append("price", price);
+    formData1.append("description", description);
+    formData1.append("discount", discount);
+    formData1.append("on_sale", on_sale);
+    formData1.append("badge", badge);
+    formData1.append("variant_id", location.search.split("?")[4]);
+    formData1.append("product_categories", JSON.stringify(product_categories));
+    if (product_highlight?.[0]?.content !== "") {
+      formData1.append("product_highlight", JSON.stringify(product_highlight));
+    }
+    if (product_branch?.[0]?.branch !== 0) {
+      formData1.append("product_count_branch", JSON.stringify(product_branch));
+    }
 
-    if (product_branch) {
-      const addObj = { product_count_branch: product_branch };
-      Object.assign(EDiteddata, addObj);
+    formData1.append("type", location.search.split("?")[1]);
+    for (let i = 0; i < imageData2?.length; i++) {
+      if (imageData2[i].imageUrl) {
+        formData1.append("product_galereya", imageData2[i].imageUrl);
+      }
     }
-    if (product_highlight.length > 0) {
-      const addObj = { product_highlight: product_highlight };
-      Object.assign(EDiteddata, addObj);
-    }
-    if (product_categories?.[0]?.label) {
-      const addObj = {
-        product_categories: product_categories?.map((el) => el.value),
-      };
-      Object.assign(EDiteddata, addObj);
-    } else {
-      const addObj = { product_categories: product_categories };
-      Object.assign(EDiteddata, addObj);
-    }
-    console.log("variant data", EDiteddata);
-    await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT}`, EDiteddata)
+
+    await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT}`, formData1)
       .then((data) => {
-        console.log(data);
-        setTimeout(() => {
-          data &&
-            Client.patch(
-              `${API_ENDPOINTS.PATCH_PRODUCT}${location.search.split("?")[3]}/`,
-              formData
-            )
-              .then((res) => {
-                toast.success("Mahsulot muvaffaqiyatli saqlandi");
+        // console.log(data);
+        // setTimeout(() => {
+        //   data &&
+        //     Client.patch(
+        //       `${API_ENDPOINTS.PATCH_PRODUCT}${location.search.split("?")[3]}/`,
+        //       formData
+        //     )
+        //       .then((res) => {
+        //         toast.success("Mahsulot muvaffaqiyatli saqlandi");
                 navigate("/products");
                 setSubmiting(false);
-              })
-              .catch((err) => {
-                console.log(err);
-                setSubmiting(false);
-              });
-        }, 300);
+        //       })
+        //       .catch((err) => {
+        //         console.log(err);
+                // setSubmiting(false);
+        //       });
+        // }, 300);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
@@ -575,7 +577,6 @@ export default function Products() {
 
   const ChangePrice = (e) => {
     const inputValue = e.target.value.replace(/\D/g, "");
-    let formattedValue = "";
 
     if (inputValue?.length <= 16) {
       for (let i = 0; i < inputValue.length; i++) {
@@ -1121,7 +1122,7 @@ export default function Products() {
                         id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
                         deleteID={deleteID}
                         change={change}
-                        setChangeBranchCunt={setChangeBranchCunt}
+                        // setChangeBranchCunt={setChangeBranchCunt}
                         // setChangeBranch={setChangeBranch}
                       />
                     ))}
@@ -1976,7 +1977,7 @@ export default function Products() {
                         id={i + 1}
                         deleteID={deleteID}
                         change={change}
-                        setChangeBranchCunt={setChangeBranchCunt}
+                        // setChangeBranchCunt={setChangeBranchCunt}
                         // setChangeBranch={setChangeBranch}
                       />
                     ))}
@@ -2442,11 +2443,11 @@ export default function Products() {
                                 alignItems: "center",
                                 // border: "1px solid #ccc",
                                 border: `${
-                                  errorImage
+                                  false
                                     ? "1px solid red"
                                     : "1px solid #ccc"
                                 }`,
-                                borderRadius: `${errorImage ? "7px" : "5px"}`,
+                                borderRadius: "5px",
                                 position: "relative",
                               }}
                             >
@@ -2737,8 +2738,8 @@ export default function Products() {
                     addFilialInput={addProductHighlightInput}
                     id={i + 1}
                     deleteIDHighlight={deleteIDHighlight}
-                    setChangeBranchCunt={setChangeBranchCunt}
-                    setChangeBranch={setChangeBranch}
+                    // setChangeBranchCunt={setChangeBranchCunt}
+                    // setChangeBranch={setChangeBranch}
                     change={change}
                   />
                 ))}
@@ -2786,8 +2787,8 @@ export default function Products() {
                     addFilialInput={addFilialInput}
                     id={i + 1}
                     deleteID={deleteID}
-                    setChangeBranchCunt={setChangeBranchCunt}
-                    setChangeBranch={setChangeBranch}
+                    // setChangeBranchCunt={setChangeBranchCunt}
+                    // setChangeBranch={setChangeBranch}
                   />
                 ))}
                 <div

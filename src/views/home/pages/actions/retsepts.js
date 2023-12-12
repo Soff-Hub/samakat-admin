@@ -663,9 +663,9 @@ export default function Retsepts() {
                           justifyContent: "center",
                           alignItems: "center",
                           border: `${
-                            errorImage ? "1px solid red" : "1px solid #ccc"
+                            false ? "1px solid red" : "1px solid #ccc"
                           }`,
-                          borderRadius: `${errorImage ? "7px" : "5px"}`,
+                          borderRadius: `${false ? "7px" : "5px"}`,
                           position:'relative'
                         }}
                       >
