@@ -401,7 +401,7 @@ export default function Products() {
     formData1.append("description", description);
     formData1.append("discount", discount);
     formData1.append("on_sale", on_sale);
-    formData1.append("badge", badge);
+    formData1.append("badge", badge ? badge : '');
     formData1.append("product_categories", JSON.stringify(product_categories));
     if (product_highlight?.[0]?.content !== "") {
       formData1.append("product_highlight", JSON.stringify(product_highlight));

@@ -1,9 +1,16 @@
 .login-page {
     height: 100vh;
     margin-top: 0;
-    background-image: url('https://vasilevo.ru/wp-content/uploads/2020/01/imported_rokka.jpg');
+    background-image: url('https://i.pinimg.com/originals/b5/e4/b2/b5e4b2c5660807a83f1926574556ea75.jpg');
+    /* background-image: url('https://vasilevo.ru/wp-content/uploads/2020/01/imported_rokka.jpg'); */
+    /* background-image: url('./assets//images/logo\ Alokand\ emblem.png'); */
     background-size: cover;
     background-position: center;
+}
+
+.login-title{
+    display: flex;  
+    gap: 5px;
 }
 
 .login-form {
@@ -147,4 +154,70 @@
 
 .css-1fo2sjy-MuiButtonBase-root-MuiFab-root {
     z-index: 1 !important;
+}
+
+.delivery-container{
+    display: flex;
+    align-items: start;
+    padding: 10px;
+    gap: 10px;
+}
+
+.delivery-item-container{
+    max-width: 300px;
+    width: 100%;
+    background-color: #3B82F6;
+    border-radius: 5px;
+    padding: 7px;
+}
+
+.delivery-item-container_header{
+    padding: 5px 10px;
+}
+
+.delivery-item-container_header h3{
+    font-size: 18px;
+    font-weight: 600;
+    font-family: cursive;
+    color: #ffffff;
+}
+
+.delivery-item-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.delivery-item-container_component{
+    background-color: #ffffff;
+    padding: 5px;
+    color: #000;
+    border-radius: 5px;
+}
+
+
+.item{
+    display: flex;
+    gap: 7px;
+    padding: 5px 3px;
+}
+
+.money-btn{
+    border: 1px solid #ccc;
+    padding: 1px 13px;
+    border-radius: 6px;
+}
+
+.true{
+    color: green;
+    border: 1px solid green;
+}
+
+.false{
+    color: red;
+    border: 1px solid red;
+}
+
+.money-btn:hover{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }

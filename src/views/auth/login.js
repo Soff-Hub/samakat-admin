@@ -6,6 +6,7 @@ import { loginSuccess } from 'store/slice';
 import { useNavigate } from 'react-router-dom';
 import Client from 'service/Client';
 import { API_ENDPOINTS } from 'service/ApiEndpoints';
+import Logo from '../../assets/images/logo Alokand.png'
 
 function Login() {
   const navigate = useNavigate()
@@ -62,7 +63,11 @@ function Login() {
       }) => (
         <div className='login-form'>
           <form onSubmit={handleSubmit} className='login-form-inner flex flex-col mx-auto xl:1/4 lg:w-1/3 sm:w-1/2 w-full px-5 gap-5'>
-            <h1 className='text-center text-[35px]'>Login</h1>
+          <div className='login-title'>
+              <img style={{width:'65%'}} src={Logo} alt="aloqand logo" />
+            <h1 className='text-center text-[35px]'>| Login</h1>
+            </div>
+           
             <TextField
               label="Telefon raqam"
               // eslint-disable-next-line

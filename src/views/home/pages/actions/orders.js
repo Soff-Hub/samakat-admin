@@ -82,13 +82,13 @@ export default function Orders() {
                 value={data.address ? data?.address : "-"}
                 type="text"
               />
-              <TextField
+              {/* <TextField
                 label="Promo kod"
                 variant="outlined"
                 size="large"
                 value={data.promocode ? data?.promocode?.code : "-"}
                 type="text"
-              />
+              /> */}
               <TextField
                 label="Holat"
                 variant="outlined"

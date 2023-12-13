@@ -30,6 +30,7 @@ import UserDropdown from "components/shared/UserDropdown";
 import { Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "store/slice";
+import Logo from '../../assets/images/logo Alokand.png'
 
 const drawerWidth = 300;
 
@@ -155,9 +156,10 @@ export default function MiniDrawer() {
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <p className="text-start w-full text-xl ps-4 font-bold">
+          {/* <p className="text-start w-full text-xl ps-4 font-bold">
             Admin Panel
-          </p>
+          </p> */}
+          <img style={{width:'80%'}} src={Logo} alt="aloqand" />
           <IconButton onClick={handleDrawerClose}>
             <MenuOpenIcon />
           </IconButton>

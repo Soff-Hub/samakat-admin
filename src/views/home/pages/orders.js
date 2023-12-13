@@ -22,14 +22,17 @@ export default function Branches() {
   const [page, setPage] = React.useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [status, setStatus] = useState("");
-  const showModal = () => {
+  const [statusId, setStatusId] = useState('')
+
+  const showModal = (id) => {
     setIsModalOpen(true);
+    setStatusId(id)
   };
-  const handleOk = async (id) => {
+  const handleOk = async () => {
     const data = {
       status: status,
     };
-    await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
+    await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${statusId}/`, data)
       .then((resp) => {
         console.log(resp);
         getOrders();
@@ -218,33 +221,35 @@ export default function Branches() {
                       <Link
                         to={"actions/?" + row.id}
                         className={`hover:underline ${
-                          row.process === "approved"
+                          row.status === "approved"
                             ? " text-[green]"
-                            : row.process === "pending"
+                            : row.status === "process"
                             ? "text-[#F4CA16]"
-                            : row.process === "cancelled"
+                            : row.status === "cancelled"
                             ? "text-[red]"
-                            : "black"
+                            :  "text-[#3B82F6]"
                         }`}
                       >
-                        {row.process === "approved"
+                        {row.status === "approved"
                           ? "tasdiqlangan"
-                          : row.process === "pending"
-                          ? "jarayonda"
-                          : row.process === "cancelled"
+                          : row.status === "pending"
+                          ? "kutilmoqda"
+                          : row.status === "cancelled"
                           ? "bekor qilingan"
-                          : row.process === "newYangi" ?  "Yo'lda" : ""}
+                          : row.status === "process" ?  "jarayonda"  : ""}
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <>
-                        <Button onClick={row.payment_type !== "by_card" ? showModal : console.log('n')}>
+                        <Button style={{
+                          cursor:`${row.payment_type === "by_card" ? "not-allowed" : "pointer"}`
+                        }} onClick={() =>  showModal(row.id) }>
                           <i class="fa-solid fa-pen-to-square"></i>
                         </Button>
                         <Modal
                           title="Holatni tahrirlash"
                           open={isModalOpen}
-                          onOk={() => handleOk(row.id)}
+                          onOk={() => handleOk()}
                           onCancel={handleCancel}
                           okText="Yuborish"
                           cancelText="Ortga"
