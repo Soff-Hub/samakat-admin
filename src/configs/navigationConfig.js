@@ -11,6 +11,7 @@ import RestaurantIcon from '@mui/icons-material/Restaurant';
 import GroupIcon from '@mui/icons-material/Group';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
+import SendAndArchiveIcon from '@mui/icons-material/SendAndArchive';
 
 export const navigationConfig = [
     {
@@ -39,7 +40,7 @@ export const navigationConfig = [
         icon: <FolderIcon />,
     },
     {
-        name: 'Mahsulot Belgisi',
+        name: 'Aksiyalar',
         path: '/product-badge',
         icon: <LoyaltyIcon />,
     },
@@ -74,8 +75,13 @@ export const navigationConfig = [
         icon: <SettingsOutlinedIcon />,
     },
     {
-        name: 'Yetkazib berish',
+        name: 'Yetkazib berish statusi',
         path: '/delivery',
         icon: <AirportShuttleIcon />,
+    },
+    {
+        name: 'Buyurtmalar arxivi',
+        path: '/arxiv-orders',
+        icon: <SendAndArchiveIcon />,
     }
 ]

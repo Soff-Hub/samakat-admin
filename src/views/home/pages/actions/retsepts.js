@@ -89,7 +89,6 @@ export default function Retsepts() {
     setImageData2([...imageData2, { id: e }]);
   };
 
-
   const setImageUrlUpdate = (url, id) => {
     // setIsModalOpen(false);
     setImageLink({ image: window.URL.createObjectURL(url), id: id });
@@ -125,8 +124,9 @@ export default function Retsepts() {
 
   const handleSubmitAddRecipe = async (e) => {
     e.preventDefault();
-    if (category !== ""
-    //  && selectImage !== ""
+    if (
+      category !== ""
+      //  && selectImage !== ""
     ) {
       if (category !== "") {
         setErrorCategory(false);
@@ -666,7 +666,7 @@ export default function Retsepts() {
                             false ? "1px solid red" : "1px solid #ccc"
                           }`,
                           borderRadius: `${false ? "7px" : "5px"}`,
-                          position:'relative'
+                          position: "relative",
                         }}
                       >
                         {item.image ? (

@@ -101,7 +101,7 @@ export default function CollapsibleTable() {
   return (
     <>
       <div className="mb-5">
-        <NavHeader title="Mahsulot belgisi" />
+        <NavHeader title="Mahsulot aksiyalari" />
       </div>
 
       <TableContainer component={Paper}>
@@ -109,10 +109,10 @@ export default function CollapsibleTable() {
           <TableHead>
             <TableRow>
               <TableCell align="left">
-                <span className="font-bold text-[16px]">Belgi matni</span>
+                <span className="font-bold text-[16px]">Nomi</span>
               </TableCell>
               <TableCell align="center">
-                <span className="font-bold text-[16px]">Belgi rangi</span>
+                <span className="font-bold text-[16px]">Rangi</span>
               </TableCell>
               <TableCell align="right">
                 <span className="font-bold text-[16px]">Amallar</span>

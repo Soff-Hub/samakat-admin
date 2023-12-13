@@ -80,7 +80,7 @@ function Categories() {
       .then((resp) => {
         setFormVal(resp);
         setItemData(resp);
-        setLifeImage(resp.image)
+        setLifeImage(resp.image);
       })
       .catch((err) => console.log(err));
   };
@@ -92,11 +92,9 @@ function Categories() {
       .then((resp) => {
         console.log("detail", resp);
         setParentName(resp);
-        
       })
       .catch((err) => console.log(err));
   };
-
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -143,8 +141,7 @@ function Categories() {
     setLifeImage(img);
   };
 
-  console.log('image', lifeImage);
-  
+  console.log("image", lifeImage);
 
   return loaction.search.split("?").length === 4 ? (
     itemData ? (
@@ -200,26 +197,26 @@ function Categories() {
                 }}
                 type="number"
               />
-             <Button
-            component="label"
-            variant="contained"
-            startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
-            style={{
-              maxWidth: "550px",
-              width: "100%",
-              backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: `${lifeImage ? "220px" : "40px"}`,
-            }}
-          >
-            {lifeImage === null ? " Rasm yuklash" : ""}
-            <input
-              style={{ display: "none" }}
-              onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
-              type="file"
-            />
-          </Button>
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
+                style={{
+                  maxWidth: "550px",
+                  width: "100%",
+                  backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  height: `${lifeImage ? "220px" : "40px"}`,
+                }}
+              >
+                {lifeImage === null ? " Rasm yuklash" : ""}
+                <input
+                  style={{ display: "none" }}
+                  onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
+                  type="file"
+                />
+              </Button>
               <Button
                 variant="outlined"
                 size="large"

@@ -53,8 +53,9 @@ export default function Categories2() {
   useEffect(() => {
     getCategories();
     // eslint-disable-next-line
-  }, [deteItem]);
+  }, [type]);
 
+  console.log('category data', data);
   
 
   return (

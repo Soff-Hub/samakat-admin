@@ -39,7 +39,17 @@ export default function Settings() {
             },
           });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err)
+          message.open({
+            type: "error",
+            content: `Dostavka radiusi o'zgartirilmadi`,
+            className: "custom-class",
+            style: {
+              marginTop: "20vh",
+            },
+          });
+        } )
     setIsModalOpen(false);
   };
   const handleCancel = () => {
@@ -52,7 +62,9 @@ export default function Settings() {
 
   return (
     <div  >
-      <h3 className="capitalize hover:uppercase font-normal" >Sozlamalar</h3>
+     <div className="mb-5">
+        <h1 className="text-2xl">Sozlamalar</h1>
+      </div>
       <div
         style={{
           display: "flex",
@@ -65,7 +77,7 @@ export default function Settings() {
       >
         <div style={{ display: "flex", gap: "40px" }}>
           <p>Dostavka radiusi</p>
-          <p>{data?.dostavka_radius}</p>
+          <p>{data?.dostavka_radius} {data?.dostavka_radius ? 'km' : ''} </p>
         </div>
         <div>
           <Button onClick={showModal}>
@@ -91,7 +103,7 @@ export default function Settings() {
               label="Radius"
               variant="outlined"
               size="small"
-              type="text"
+              type="number"
               value={radius}
               style={{width:'100%'}}
               onChange={(e) => setRadius(e.target.value)}

@@ -106,6 +106,11 @@ export const adminActionRoutes = [
         path: '/delivery/*',
         component: React.lazy(() => import('views/home/pages/delivery'))
     },
+    {
+        key: 'arxiv-orders',
+        path: '/arxiv-orders/*',
+        component: React.lazy(() => import('views/home/pages/arxiv-orders'))
+    },
 
 
 

@@ -5,21 +5,47 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Select, Space } from "antd";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 export default function Retsepts() {
   const [submiting, setSubmiting] = useState(false);
-  const [badge, setBadge] = useState("");
+  const [badge, setBadge] = useState(" ");
   const [text, setText] = useState("");
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [categoryData, setCategoryData] = useState([]);
+  const [relatedCategory, setRelatedCategory] = React.useState([]);
+  const [lifeImage, setLifeImage] = useState(null);
+  const [img, setImage] = useState(null);
+
+  const handleChangeRelatedCategory = (event) => {
+    setRelatedCategory(event);
+    console.log(event);
+  };
+  const LifeImage = (e) => {
+    let img = window.URL.createObjectURL(e.target.files[0]);
+    setLifeImage(img);
+  };
 
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
+
     const data = {
       text: text,
       textColor: badge,
     };
+
+    const formData = new FormData();
+    formData.append("text", text);
+    formData.append("textColor", badge);
+    if (relatedCategory?.length > 0) {
+      formData.append("related_categories", relatedCategory);
+    }
+    if (img) {
+      formData.append("image", img);
+    }
 
     setSubmiting(true);
     await Client.post(API_ENDPOINTS.CREATE_BADGE, data)
@@ -37,6 +63,19 @@ export default function Retsepts() {
     document.querySelector(".create-branch-form").reset();
   };
 
+  const getProducts = async (e) => {
+    await Client.get(`${API_ENDPOINTS.PRODUCT}`)
+      .then((resp) => {
+        setCategoryData(
+          resp.results?.map((el) => ({
+            value: el.id,
+            label: el.name,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
   const getBadge = async () => {
     await Client.get(
       `${API_ENDPOINTS.DETAIL_BADGE}${location.search.split("?")[2]}`
@@ -52,6 +91,7 @@ export default function Retsepts() {
   };
 
   useEffect(() => {
+    getProducts();
     if (location.search.split("?")[1] === "edit") {
       getBadge();
     }
@@ -63,7 +103,7 @@ export default function Retsepts() {
       <div>
         <div>
           <div className="flex items-center justify-between">
-            <h1 className="text-[28px] pb-3">Mahsulot belgisini tahrirlash</h1>
+            <h1 className="text-[28px] pb-3">Aksiya tahrirlash</h1>
             <Link to="/product-badge">
               <Button
                 variant="contained"
@@ -102,6 +142,52 @@ export default function Retsepts() {
                   setBadge(e.target.value);
                 }}
               />
+              
+            <Space
+              style={{
+                width: "100%",
+                textAlign: "left",
+              }}
+              direction="vertical"
+            >
+              <Select
+                mode="multiple"
+                allowClear
+                style={{
+                  width: "100%",
+                }}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "").includes(input)
+                }
+                placeholder="Mahsulotlar"
+                onChange={handleChangeRelatedCategory}
+                options={categoryData}
+              />
+            </Space>
+
+            <Button
+                component="label"
+                variant="contained"
+                startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
+                style={{
+                  maxWidth: "550px",
+                  width: "100%",
+                  backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  height: `${lifeImage ? "220px" : "40px"}`,
+                }}
+              >
+                {lifeImage === null ? " Rasm yuklash" : ""}
+                <input
+                  style={{ display: "none" }}
+                  onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
+                  type="file"
+                />
+              </Button>
+
 
               <Button
                 variant="outlined"
@@ -130,7 +216,7 @@ export default function Retsepts() {
   ) : (
     <div>
       <div className="text-center">
-        <h1 className="text-[35px] pb-3">Mahsulot belgisini qo'shish</h1>
+        <h1 className="text-[35px] pb-3">Aksiya qo'shish</h1>
         <Toaster />
         <div className="flex gap-5">
           <form
@@ -138,7 +224,7 @@ export default function Retsepts() {
             className="w-1/2 m-auto  flex flex-col gap-5 create-branch-form"
           >
             <TextField
-              label="Belgi matni"
+              label="Aksiya nomi"
               variant="outlined"
               size="large"
               type="text"
@@ -158,6 +244,51 @@ export default function Retsepts() {
                 setBadge(e.target.value);
               }}
             />
+
+            <Space
+              style={{
+                width: "100%",
+                textAlign: "left",
+              }}
+              direction="vertical"
+            >
+              <Select
+                mode="multiple"
+                allowClear
+                style={{
+                  width: "100%",
+                }}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "").includes(input)
+                }
+                placeholder="Mahsulotlar"
+                onChange={handleChangeRelatedCategory}
+                options={categoryData}
+              />
+            </Space>
+
+            <Button
+                component="label"
+                variant="contained"
+                startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
+                style={{
+                  maxWidth: "550px",
+                  width: "100%",
+                  backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  height: `${lifeImage ? "220px" : "40px"}`,
+                }}
+              >
+                {lifeImage === null ? " Rasm yuklash" : ""}
+                <input
+                  style={{ display: "none" }}
+                  onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
+                  type="file"
+                />
+              </Button>
 
             <Button
               variant="outlined"

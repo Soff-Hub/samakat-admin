@@ -34,7 +34,6 @@ export default function Products() {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState(0);
-  const [badge, setBadge] = React.useState("");
   const [on_sale, setOn_sale] = React.useState(false);
   const [carbohydrates, setCarbohydrates] = React.useState(0);
   const [ingredients, setingredients] = React.useState("");
@@ -75,7 +74,6 @@ export default function Products() {
     },
   ]);
   const navigate = useNavigate();
-  const [badgeData, setBadgeData] = useState([]);
 
   const showModalAdd = (url, id) => {
     setIsModalOpenAdd(true);
@@ -124,9 +122,7 @@ export default function Products() {
     setOn_sale(event.target.checked);
   };
 
-  const handleChange = (event) => {
-    setBadge(event);
-  };
+
 
   const addImageInput = (e) => {
     setAddHandleImageData([...addHandleImageData, { id: e }]);
@@ -230,7 +226,6 @@ export default function Products() {
     formData1.append("description", description);
     formData1.append("discount", discount);
     formData1.append("on_sale", on_sale);
-    formData1.append("badge", badge);
     formData1.append("product_categories", JSON.stringify(product_categories));
     if (product_highlight?.[0]?.content !== "") {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
@@ -277,32 +272,6 @@ export default function Products() {
       return { content, order };
     });
 
-    // const formData = new FormData();
-    // for (let i = 0; i < image.length; i++) {
-    //   formData.append("product_galereya", image[i]);
-    // }
-
-    // const EDiteddata = {
-    //   name: name,
-    //   product_attribute: {
-    //     carbohydrates: carbohydrates,
-    //     ingredients: ingredients,
-    //     fats: fats,
-    //     kilocalories: kilocalories,
-    //     manufacturer: manufacturer,
-    //     protein: protein,
-    //     storageConditions: storageConditions,
-    //     specification: specification,
-    //     shelf_life: shelf_life,
-    //   },
-    //   on_sale: on_sale,
-    //   badge: badge,
-    //   discount: discount,
-    //   description: description,
-    //   price: price,
-    //   variant_id: location.search.split("?")[4],
-    // };
-    
     const formData1 = new FormData();
     formData1.append(
       "product_attribute",
@@ -323,7 +292,6 @@ export default function Products() {
     formData1.append("description", description);
     formData1.append("discount", discount);
     formData1.append("on_sale", on_sale);
-    formData1.append("badge", badge);
     formData1.append("variant_id", location.search.split("?")[4]);
     formData1.append("product_categories", JSON.stringify(product_categories));
     if (product_highlight?.[0]?.content !== "") {
@@ -342,23 +310,8 @@ export default function Products() {
 
     await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT}`, formData1)
       .then((data) => {
-        // console.log(data);
-        // setTimeout(() => {
-        //   data &&
-        //     Client.patch(
-        //       `${API_ENDPOINTS.PATCH_PRODUCT}${location.search.split("?")[3]}/`,
-        //       formData
-        //     )
-        //       .then((res) => {
-        //         toast.success("Mahsulot muvaffaqiyatli saqlandi");
-                navigate("/products");
-                setSubmiting(false);
-        //       })
-        //       .catch((err) => {
-        //         console.log(err);
-                // setSubmiting(false);
-        //       });
-        // }, 300);
+        console.log('data', data);
+        
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
@@ -401,7 +354,6 @@ export default function Products() {
     formData1.append("description", description);
     formData1.append("discount", discount);
     formData1.append("on_sale", on_sale);
-    formData1.append("badge", badge ? badge : '');
     formData1.append("product_categories", JSON.stringify(product_categories));
     if (product_highlight?.[0]?.content !== "") {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
@@ -416,9 +368,9 @@ export default function Products() {
         formData1.append("product_galereya", imageData2[i].imageUrl);
       }
     }
-    // for (let i = 0; i < delID?.length; i++) {
-    //   formData.append("deleted_image", delID[i]);
-    // }
+    for (let i = 0; i < delID?.length; i++) {
+      formData.append("deleted_image", delID[i]);
+    }
 
     await Client.patch(
       `${API_ENDPOINTS.PATCH_PRODUCT}${location.search.split("?")[3]}/`,
@@ -451,15 +403,6 @@ export default function Products() {
       .catch((err) => console.log(err));
   };
 
-  const getBadgeData = async () => {
-    await Client.get(API_ENDPOINTS.BADGE)
-      .then((res) => {
-        setBadgeData(res.results);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   const getBranchData = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
@@ -519,7 +462,6 @@ export default function Products() {
 
         setName(res?.name);
         setOn_sale(res?.on_sale);
-        setBadge(res?.badge);
         setDiscount(res?.discount);
         setDescription(res?.description);
         setPrice(JSON.parse(res?.price));
@@ -541,7 +483,6 @@ export default function Products() {
 
   useEffect(() => {
     getBranchData();
-    getBadgeData();
   }, []);
 
   useEffect(() => {
@@ -576,16 +517,16 @@ export default function Products() {
   };
 
   const ChangePrice = (e) => {
-    const inputValue = e.target.value.replace(/\D/g, "");
+    // const inputValue = e.target.value.replace(/\D/g, "");
 
-    if (inputValue?.length <= 16) {
-      for (let i = 0; i < inputValue.length; i++) {
-        if (i > 0 && i % 3 === 1) {
-          formattedValue += " "; // Raqamlarni probil bilan ajratish
-        }
-        formattedValue += inputValue[i];
-      }
-    }
+    // if (inputValue?.length <= 16) {
+    //   for (let i = 0; i < inputValue.length; i++) {
+    //     if (i > 0 && i % 3 === 1) {
+    //       formattedValue += " "; // Raqamlarni probil bilan ajratish
+    //     }
+    //     formattedValue += inputValue[i];
+    //   }
+    // }
     setPrice(e.target.value);
   };
 
@@ -642,20 +583,6 @@ export default function Products() {
                   setDiscount(e.target.value);
                 }}
               />
-
-              <FormControl sx={{ m: 0, minWidth: 220 }} size="small">
-                <Select
-                  defaultValue={editData?.badge || badge}
-                  label="Belgi"
-                  onChange={handleChange}
-                >
-                  {badgeData?.map((item, i) => (
-                    <MenuItem key={i} value={item.id}>
-                      <p style={{ color: `${item.textColor}` }}> {item.text}</p>
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
 
               <Space
                 style={{
@@ -1504,20 +1431,6 @@ export default function Products() {
                   setDiscount(e.target.value);
                 }}
               />
-
-              <FormControl sx={{ m: 0, minWidth: 220 }} size="small">
-                <Select
-                  defaultValue={editData?.badge || badge}
-                  label="Belgi"
-                  onChange={handleChange}
-                >
-                  {badgeData?.map((item, i) => (
-                    <MenuItem key={i} value={item.id}>
-                      <p style={{ color: `${item.textColor}` }}> {item.text}</p>
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
 
               <Space
                 style={{
@@ -2379,21 +2292,6 @@ export default function Products() {
                 options={categoryList}
               />
             </Space>
-
-            <FormControl sx={{ m: 0, minWidth: 120 }} size="small">
-              <Select
-                value={badge}
-                placeholder="Belgi"
-                required
-                onChange={handleChange}
-              >
-                {badgeData?.map((item, i) => (
-                  <MenuItem key={i} value={item.id}>
-                    <p style={{ color: `${item.textColor}` }}> {item.text}</p>
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
 
             <div>
               <Accordion>
