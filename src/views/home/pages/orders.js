@@ -121,7 +121,7 @@ export default function Branches() {
                   <span className="font-bold text-[16px]">Promo kod</span>
                 </TableCell> */}
                 <TableCell>
-                  <span className="font-bold text-[16px]">Manzil</span>
+                  <span className="font-bold text-[16px]">Filial</span>
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">To'lov usuli</span>
@@ -190,10 +190,10 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.address === null ? (
+                        {row.branch === null ? (
                           <i className="fa-solid fa-minus"></i>
                         ) : (
-                          row.address
+                          row.branch
                         )}
                       </Link>
                     </TableCell>
@@ -241,11 +241,16 @@ export default function Branches() {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <>
+                      {
+                        row.payment_type === "by_card" ?
+                        "" :
                         <Button style={{
                           cursor:`${row.payment_type === "by_card" ? "not-allowed" : "pointer"}`
                         }} onClick={() =>  showModal(row.id) }>
                           <i class="fa-solid fa-pen-to-square"></i>
                         </Button>
+
+                      }
                         <Modal
                           title="Holatni tahrirlash"
                           open={isModalOpen}
