@@ -128,9 +128,8 @@ export default function Delivery() {
           },
         });
       })
-      .catch((err) =>
-      {
-        console.log(err)
+      .catch((err) => {
+        console.log(err);
         message.open({
           type: "error",
           content: `Status o'zgartirilmadi`,
@@ -139,8 +138,7 @@ export default function Delivery() {
             marginTop: "20vh",
           },
         });
-      }
-      );
+      });
 
     setIsModalOpen(false);
   };
@@ -150,7 +148,7 @@ export default function Delivery() {
   };
 
   async function getOrders() {
-    await Client.get(API_ENDPOINTS.ORDER)
+    await Client.get(API_ENDPOINTS.PROCESS)
       .then((resp) => {
         setData(resp.results);
         setCount(resp.count);
@@ -211,7 +209,7 @@ export default function Delivery() {
     // </div>
     <div>
       <div className="mb-5">
-        <h1 className="text-2xl">Yetkazib berish statusi</h1>
+        <h1 className="text-2xl">Kurer</h1>
       </div>
       {data ? (
         <div className="delivery-container">
@@ -227,15 +225,6 @@ export default function Delivery() {
                     <div>{el.branch}</div>
                   </div>
                   <div style={{ display: "flex", gap: "10px" }}>
-                    <Button onClick={() => showModal(el.id)}>
-                      <i class="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button
-                      style={{ width: "70%" }}
-                      onClick={() => showModalDetail(el.id)}
-                    >
-                      <i class="fa-solid fa-layer-group"></i>
-                    </Button>
                     {el.is_paid ? (
                       <Tooltip title="Buyurtma narxi to'langan" placement="top">
                         <button
@@ -258,6 +247,16 @@ export default function Delivery() {
                         </button>
                       </Tooltip>
                     )}
+
+                    <Button
+                      style={{ width: "70%" }}
+                      onClick={() => showModalDetail(el.id)}
+                    >
+                      <i class="fa-solid fa-layer-group"></i>
+                    </Button>
+                    <Button onClick={() => showModal(el.id)}>
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -275,15 +274,6 @@ export default function Delivery() {
                     <div>{el.branch}</div>
                   </div>
                   <div style={{ display: "flex", gap: "10px" }}>
-                    <Button onClick={() => showModal(el.id)}>
-                      <i class="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button
-                      style={{ width: "70%" }}
-                      onClick={() => showModalDetail(el.id)}
-                    >
-                      <i class="fa-solid fa-layer-group"></i>
-                    </Button>
                     {el.is_paid ? (
                       <Tooltip title="Buyurtma narxi to'langan" placement="top">
                         <button
@@ -295,7 +285,7 @@ export default function Delivery() {
                       </Tooltip>
                     ) : (
                       <Tooltip
-                        title="Buyurtma narxi to'langanmagan"
+                        title="Buyurtma narxi to'lanmagan"
                         placement="top"
                       >
                         <button
@@ -306,6 +296,15 @@ export default function Delivery() {
                         </button>
                       </Tooltip>
                     )}
+                    <Button
+                      style={{ width: "70%" }}
+                      onClick={() => showModalDetail(el.id)}
+                    >
+                      <i class="fa-solid fa-layer-group"></i>
+                    </Button>
+                    <Button onClick={() => showModal(el.id)}>
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -323,15 +322,6 @@ export default function Delivery() {
                     <div>{el.branch}</div>
                   </div>
                   <div style={{ display: "flex", gap: "10px" }}>
-                    <Button onClick={() => showModal(el.id)}>
-                      <i class="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button
-                      style={{ width: "70%" }}
-                      onClick={() => showModalDetail(el.id)}
-                    >
-                      <i class="fa-solid fa-layer-group"></i>
-                    </Button>
                     {el.is_paid ? (
                       <Tooltip title="Buyurtma narxi to'langan" placement="top">
                         <button
@@ -343,7 +333,7 @@ export default function Delivery() {
                       </Tooltip>
                     ) : (
                       <Tooltip
-                        title="Buyurtma narxi to'langanmagan"
+                        title="Buyurtma narxi to'lanmagan"
                         placement="top"
                       >
                         <button
@@ -354,6 +344,15 @@ export default function Delivery() {
                         </button>
                       </Tooltip>
                     )}
+                    <Button
+                      style={{ width: "70%" }}
+                      onClick={() => showModalDetail(el.id)}
+                    >
+                      <i class="fa-solid fa-layer-group"></i>
+                    </Button>
+                    <Button onClick={() => showModal(el.id)}>
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -377,15 +376,6 @@ export default function Delivery() {
                       gap: "10px",
                     }}
                   >
-                    <Button onClick={() => showModal(el.id)}>
-                      <i class="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button
-                      style={{ width: "70%" }}
-                      onClick={() => showModalDetail(el.id)}
-                    >
-                      <i class="fa-solid fa-layer-group"></i>
-                    </Button>
                     {el.is_paid ? (
                       <Tooltip title="Buyurtma narxi to'langan" placement="top">
                         <button
@@ -397,7 +387,7 @@ export default function Delivery() {
                       </Tooltip>
                     ) : (
                       <Tooltip
-                        title="Buyurtma narxi to'langanmagan"
+                        title="Buyurtma narxi to'lanmagan"
                         placement="top"
                       >
                         <button className="money-btn false">
@@ -405,6 +395,15 @@ export default function Delivery() {
                         </button>
                       </Tooltip>
                     )}
+                    <Button
+                      style={{ width: "70%" }}
+                      onClick={() => showModalDetail(el.id)}
+                    >
+                      <i class="fa-solid fa-layer-group"></i>
+                    </Button>
+                    <Button onClick={() => showModal(el.id)}>
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </Button>
                   </div>
                 </div>
               ))}

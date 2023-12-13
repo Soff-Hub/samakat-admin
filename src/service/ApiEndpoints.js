@@ -62,5 +62,7 @@ export const API_ENDPOINTS = {
 
     YEAR:'admin/year/list',
 
-    SETTINGS: 'admin/settings/'
+    SETTINGS: 'admin/settings/',
+
+    PROCESS:'admin/process/order/'
 }

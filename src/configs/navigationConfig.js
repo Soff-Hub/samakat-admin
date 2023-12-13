@@ -75,7 +75,7 @@ export const navigationConfig = [
         icon: <SettingsOutlinedIcon />,
     },
     {
-        name: 'Yetkazib berish statusi',
+        name: 'Kurer',
         path: '/delivery',
         icon: <AirportShuttleIcon />,
     },

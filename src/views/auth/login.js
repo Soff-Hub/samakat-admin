@@ -65,7 +65,6 @@ function Login() {
           <form onSubmit={handleSubmit} className='login-form-inner flex flex-col mx-auto xl:1/4 lg:w-1/3 sm:w-1/2 w-full px-5 gap-5'>
           <div className='login-title'>
               <img style={{width:'65%'}} src={Logo} alt="aloqand logo" />
-            <h1 className='text-center text-[35px]'>| Login</h1>
             </div>
            
             <TextField
