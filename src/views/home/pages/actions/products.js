@@ -369,7 +369,7 @@ export default function Products() {
       }
     }
     for (let i = 0; i < delID?.length; i++) {
-      formData.append("deleted_image", delID[i]);
+      formData1.append("deleted_image", delID[i]);
     }
 
     await Client.patch(
