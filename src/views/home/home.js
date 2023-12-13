@@ -30,7 +30,7 @@ import UserDropdown from "components/shared/UserDropdown";
 import { Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "store/slice";
-import Logo from '../../assets/images/logo Alokand.png'
+import Logo from '../../assets/images/logo-white.png'
 
 const drawerWidth = 300;
 

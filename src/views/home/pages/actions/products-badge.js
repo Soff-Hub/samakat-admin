@@ -19,6 +19,7 @@ export default function Retsepts() {
   const [relatedCategory, setRelatedCategory] = React.useState([]);
   const [lifeImage, setLifeImage] = useState(null);
   const [img, setImage] = useState(null);
+  const [discount ,setDiscount] = useState(0)
 
   const handleChangeRelatedCategory = (event) => {
     setRelatedCategory(event);
@@ -40,6 +41,7 @@ export default function Retsepts() {
     const formData = new FormData();
     formData.append("text", text);
     formData.append("textColor", badge);
+    formData.append("discount", discount);
     if (relatedCategory?.length > 0) {
       formData.append("related_categories", relatedCategory);
     }
@@ -172,7 +174,7 @@ export default function Retsepts() {
                 variant="contained"
                 startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
                 style={{
-                  maxWidth: "550px",
+                  // maxWidth: "550px",
                   width: "100%",
                   backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
                   backgroundSize: "cover",
@@ -289,6 +291,16 @@ export default function Retsepts() {
                   type="file"
                 />
               </Button>
+              <TextField
+                label="Chegirmasi"
+                variant="outlined"
+                size="large"
+                type="number"
+                defaultValue={discount}
+                onChange={(e) => {
+                  setDiscount(e.target.value);
+                }}
+              />
 
             <Button
               variant="outlined"

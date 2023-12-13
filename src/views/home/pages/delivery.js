@@ -247,7 +247,7 @@ export default function Delivery() {
                       </Tooltip>
                     ) : (
                       <Tooltip
-                        title="Buyurtma narxi to'langanmagan"
+                        title="Buyurtma narxi to'lanmagan"
                         placement="top"
                       >
                         <button
