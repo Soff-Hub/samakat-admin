@@ -7,9 +7,9 @@ import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Select, Space } from "antd";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
-export default function Retsepts() {
+export default function Aksiya() {
   const [submiting, setSubmiting] = useState(false);
   const [badge, setBadge] = useState(" ");
   const [text, setText] = useState("");
@@ -20,20 +20,49 @@ export default function Retsepts() {
   const [relatedCategory, setRelatedCategory] = React.useState([]);
   const [lifeImage, setLifeImage] = useState(null);
   const [img, setImage] = useState(null);
-  const [discount ,setDiscount] = useState(0)
+  const [discount, setDiscount] = useState(0);
 
   const handleChangeRelatedCategory = (event) => {
     setRelatedCategory(event);
-    console.log(event);
   };
   const LifeImage = (e) => {
     let img = window.URL.createObjectURL(e.target.files[0]);
     setLifeImage(img);
   };
 
+  const handleSubmitEdit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("text", text);
+    formData.append("textColor", badge);
+    formData.append("discount", discount);
+    if (relatedCategory?.length > 0) {
+      formData.append("related_categories", JSON.stringify(relatedCategory));
+    }
+    if (img) {
+      formData.append("image", img);
+    }
+
+    setSubmiting(true);
+    await Client.patch(API_ENDPOINTS.PATCH_BADGE + `${location.search.split("?")[2]}` , formData)
+      .then((data) => {
+        toast.success("Aksiya muvaffaqiyatli tahrirlandi");
+        setTimeout(() => {
+          navigate("/product-badge");
+        }, 300);
+      })
+      .catch((err) => {
+        toast.error("Xatolik! Qayta urinib ko'ring");
+      });
+
+    setSubmiting(false);
+    document.querySelector(".create-branch-form").reset();
+  };
+
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
-   
+
     const formData = new FormData();
     formData.append("text", text);
     formData.append("textColor", badge);
@@ -48,7 +77,7 @@ export default function Retsepts() {
     setSubmiting(true);
     await Client.post(API_ENDPOINTS.CREATE_BADGE, formData)
       .then((data) => {
-        toast.success("Retsep muvaffaqiyatli qo'shildi");
+        toast.success("Aksiya muvaffaqiyatli qo'shildi");
         setTimeout(() => {
           navigate("/product-badge");
         }, 300);
@@ -82,9 +111,9 @@ export default function Retsepts() {
         setData(res);
         setText(res.text);
         setBadge(res.textColor);
-        setDiscount()
-        setImage()
-        setLifeImage()
+        setDiscount();
+        setImage();
+        setLifeImage();
       })
       .catch((err) => {
         console.log(err);
@@ -97,7 +126,7 @@ export default function Retsepts() {
       getBadge();
     }
     // eslint-disable-next-line
-  }, []);
+  }, [])
 
   return location.search.split("?")[1] === "edit" ? (
     data ? (
@@ -119,7 +148,7 @@ export default function Retsepts() {
           <Toaster />
           <div className="flex gap-5">
             <form
-              onSubmit={handleSubmitAdd}
+              onSubmit={handleSubmitEdit}
               className="w-1/2 m-auto flex mt-4 flex-col gap-5 create-branch-form"
             >
               <TextField
@@ -143,51 +172,86 @@ export default function Retsepts() {
                   setBadge(e.target.value);
                 }}
               />
-              
-            <Space
-              style={{
-                width: "100%",
-                textAlign: "left",
-              }}
-              direction="vertical"
-            >
-              <Select
-                mode="multiple"
-                allowClear
-                style={{
-                  width: "100%",
-                }}
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label ?? "").includes(input)
-                }
-                placeholder="Mahsulotlar"
-                onChange={handleChangeRelatedCategory}
-                options={categoryData}
-              />
-            </Space>
 
-            <Button
-                component="label"
-                variant="contained"
-                startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
+              <Space
                 style={{
-                  // maxWidth: "550px",
                   width: "100%",
-                  backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  height: `${lifeImage ? "220px" : "40px"}`,
+                  textAlign: "left",
+                }}
+                direction="vertical"
+              >
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{
+                    width: "100%",
+                  }}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  placeholder="Mahsulotlar"
+                  onChange={handleChangeRelatedCategory}
+                  options={categoryData}
+                />
+              </Space>
+
+              <TextField
+              label="Chegirmasi"
+              variant="outlined"
+              size="large"
+              type="number"
+              defaultValue={discount}
+              onChange={(e) => {
+                setDiscount(e.target.value);
+              }}
+            />
+
+              <div className="image-conatiner">
+              <div
+                style={{
+                  // maxWidth: "150px",
+                  width: ` ${lifeImage ? "100%" : "150px"}`,
+                  backgroundImage: `url(${lifeImage})`,
+                  // backgroundSize: "contain",
+                  objectFit:'fill',
+                  height: `${lifeImage ? "300px" : "120px"}`,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  border: `${false ? "1px solid red" : "1px solid #ccc"}`,
+                  borderRadius: "5px",
+                  position: "relative",
+                  backgroundRepeat: "no-repeat",
+                  textAlign: "center",
                 }}
               >
-                {lifeImage === null ? " Rasm yuklash" : ""}
+                {lifeImage ? (
+                  ""
+                ) : (
+                  <i
+                    className="fa-regular fa-image"
+                    style={{ fontSize: "35px" }}
+                  ></i>
+                )}
                 <input
-                  style={{ display: "none" }}
+                  style={{
+                    opacity: "0",
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    bottom: "0",
+                    right: "0",
+                  }}
                   onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
                   type="file"
                 />
+              </div>
+              <Button onClick={() => (setLifeImage(''), setImage(''))} variant="outlined" startIcon={<DeleteIcon />}>
+                Delete
               </Button>
+            </div>
 
 
               <Button
@@ -270,41 +334,60 @@ export default function Retsepts() {
               />
             </Space>
 
-           <div>
-           <Button
-                component="label"
-                variant="contained"
-                startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
+            <TextField
+              label="Chegirmasi"
+              variant="outlined"
+              size="large"
+              type="number"
+              defaultValue={discount}
+              onChange={(e) => {
+                setDiscount(e.target.value);
+              }}
+            />
+
+            <div className="image-conatiner">
+              <div
                 style={{
-                  // width: "50%",
-                  backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  height: `${lifeImage ? "220px" : "40px"}`,
+                  // maxWidth: "150px",
+                  width: ` ${lifeImage ? "100%" : "150px"}`,
+                  backgroundImage: `url(${lifeImage})`,
+                  backgroundSize: "contain",
+                  height: `${lifeImage ? "300px" : "120px"}`,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  border: `${false ? "1px solid red" : "1px solid #ccc"}`,
+                  borderRadius: "5px",
+                  position: "relative",
+                  backgroundRepeat: "no-repeat",
+                  textAlign: "center",
                 }}
               >
-                {lifeImage === null ? " Rasm yuklash" : ""}
+                {lifeImage ? (
+                  ""
+                ) : (
+                  <i
+                    className="fa-regular fa-image"
+                    style={{ fontSize: "35px" }}
+                  ></i>
+                )}
                 <input
-                  style={{ display: "none" }}
+                  style={{
+                    opacity: "0",
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    bottom: "0",
+                    right: "0",
+                  }}
                   onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
                   type="file"
                 />
+              </div>
+              <Button onClick={() => (setLifeImage(''), setImage(''))} variant="outlined" startIcon={<DeleteIcon />}>
+                Delete
               </Button>
-              <Button style={{height:'40px', marginLeft:'10px'}} variant="outlined" startIcon={<DeleteIcon />}>
-        Delete
-      </Button>
-              
-           </div>
-              <TextField
-                label="Chegirmasi"
-                variant="outlined"
-                size="large"
-                type="number"
-                defaultValue={discount}
-                onChange={(e) => {
-                  setDiscount(e.target.value);
-                }}
-              />
+            </div>
 
             <Button
               variant="outlined"

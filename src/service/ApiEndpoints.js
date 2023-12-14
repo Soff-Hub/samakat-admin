@@ -29,6 +29,7 @@ export const API_ENDPOINTS = {
     BADGE: 'admin/badge/',
     CREATE_BADGE: 'admin/badge/create/',
     DETAIL_BADGE: 'admin/badge/detail/',
+    PATCH_BADGE:'admin/badge/update/2/',
     DELETE_BADGE: '',
 
     ADDRESS: 'admin/user-address/',
