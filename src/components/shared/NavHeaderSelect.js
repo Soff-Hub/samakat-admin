@@ -45,7 +45,7 @@ export default function NavHeader({ title }) {
                     Bistro
               </Typography>
                     </Link>
-                    <Link to={"/actions/?byuti"}>
+                    <Link to={"actions/?byuti"}>
               <Typography
                 style={{ cursor: "pointer" }}
                 className="hover:bg-gray"

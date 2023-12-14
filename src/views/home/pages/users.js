@@ -111,7 +111,8 @@ export default function Users() {
   const [filial, setFilial] = useState("");
   const [filialData, setFilialData] = useState([]);
   const navigate = useNavigate();
-  const [allUserCount, setAllUserCount] = useState('')
+  const [allUserCount, setAllUserCount] = useState()
+  const [UsersCount, setUsersCount] = useState({active: '', no_active: ''})
 
   const getUsers = async () => {
     await Client.get(API_ENDPOINTS.USERS)
@@ -119,6 +120,16 @@ export default function Users() {
         setCount(resp.count);
         setAllUserCount(resp.count);
         setData(resp.results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getUsersCount = async () => {
+    await Client.get(API_ENDPOINTS.COUNT_USER)
+      .then((resp) => {
+        setUsersCount({active: resp.active_users, no_active: resp.deactivate_users});
       })
       .catch((err) => {
         console.log(err);
@@ -187,11 +198,14 @@ export default function Users() {
   useEffect(() => {
     getUsers();
     getFilial();
+    getUsersCount()
   }, []);
   return (
     <div>
       <div className="mb-5">
-        <h1 className="text-2xl font-sans">Foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[#3B82F6]">{allUserCount}</span>  {allUserCount ? "ta  " : ''}| faollari -  <span className="slashed-zero font-semibold font-mono text-[#7FE12E]">{allUserCount}</span> ta</h1>
+        <h1 className="text-2xl font-sans">Jami foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[#3B82F6]">{allUserCount}</span>  {allUserCount ? "ta  " : ''}</h1>
+        <h1 className="text-2xl font-sans">Faol foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[green]">{UsersCount.active}</span>  {UsersCount.active ? "ta  " : ''}</h1>
+        <h1 className="text-2xl font-sans">Faol emas foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[red]">{UsersCount.no_active}</span>  {UsersCount.no_active ? "ta  " : ''}</h1>
       </div>
       <div className="flex items-center gap-1">
         <input

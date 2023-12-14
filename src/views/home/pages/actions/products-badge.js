@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Select, Space } from "antd";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Retsepts() {
   const [submiting, setSubmiting] = useState(false);
@@ -32,25 +33,20 @@ export default function Retsepts() {
 
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
-
-    const data = {
-      text: text,
-      textColor: badge,
-    };
-
+   
     const formData = new FormData();
     formData.append("text", text);
     formData.append("textColor", badge);
     formData.append("discount", discount);
     if (relatedCategory?.length > 0) {
-      formData.append("related_categories", relatedCategory);
+      formData.append("related_categories", JSON.stringify(relatedCategory));
     }
     if (img) {
       formData.append("image", img);
     }
 
     setSubmiting(true);
-    await Client.post(API_ENDPOINTS.CREATE_BADGE, data)
+    await Client.post(API_ENDPOINTS.CREATE_BADGE, formData)
       .then((data) => {
         toast.success("Retsep muvaffaqiyatli qo'shildi");
         setTimeout(() => {
@@ -86,6 +82,9 @@ export default function Retsepts() {
         setData(res);
         setText(res.text);
         setBadge(res.textColor);
+        setDiscount()
+        setImage()
+        setLifeImage()
       })
       .catch((err) => {
         console.log(err);
@@ -271,13 +270,13 @@ export default function Retsepts() {
               />
             </Space>
 
-            <Button
+           <div>
+           <Button
                 component="label"
                 variant="contained"
                 startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
                 style={{
-                  maxWidth: "550px",
-                  width: "100%",
+                  // width: "50%",
                   backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
@@ -291,6 +290,11 @@ export default function Retsepts() {
                   type="file"
                 />
               </Button>
+              <Button style={{height:'40px', marginLeft:'10px'}} variant="outlined" startIcon={<DeleteIcon />}>
+        Delete
+      </Button>
+              
+           </div>
               <TextField
                 label="Chegirmasi"
                 variant="outlined"

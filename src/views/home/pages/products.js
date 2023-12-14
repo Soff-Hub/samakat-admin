@@ -30,6 +30,12 @@ const headCells = [
     id: "calories",
     numeric: false,
     disablePadding: false,
+    label: "Id",
+  },
+  {
+    id: "calories",
+    numeric: false,
+    disablePadding: false,
     label: "Nomi",
   },
   {
@@ -60,7 +66,7 @@ const headCells = [
     id: "protein",
     numeric: true,
     disablePadding: false,
-    label: "Belgi",
+    label: "Aksiya",
   },
   {
     id: "protein",
@@ -201,6 +207,11 @@ export default function EnhancedTable() {
                   data?.map((row, index) => {
                     return (
                       <TableRow hover key={row.id}>
+                        <TableCell align="left">
+                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            {row.id}
+                          </Link>
+                        </TableCell>
                         <TableCell align="left">
                           <Link to={`actions/?${row.type}?edit?${row.slug}`}>
                             {row.name}

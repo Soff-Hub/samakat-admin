@@ -28,8 +28,16 @@ export default function Orders() {
       });
   };
 
+  const handleRouterAdress = (id) => {
+    if (id) {
+      navigate(`/adresses/actions/?${id}`)
+    }
+  }
+
   const handleChangeRouter = (id) => {
-    navigate(`/users/actions/?detail?${id}`)
+    if (id) {
+      navigate(`/users/actions/?detail?${id}`)
+    }
   }
 
   useEffect(() => {
@@ -79,8 +87,9 @@ export default function Orders() {
                 label="Manzil"
                 variant="outlined"
                 size="large"
-                value={data.address ? data?.address : "-"}
+                value={data.address?.name ? data?.address?.name : "-"}
                 type="text"
+                onClick={() => handleRouterAdress(data?.address?.id)}
               />
               {/* <TextField
                 label="Promo kod"
@@ -130,6 +139,8 @@ export default function Orders() {
                 </RadioGroup>
               </div>
             </form>
+            {
+               data?.product_count?.length > 0 ?
             <form className="w-2/3 mt-2  bg-slate-200 p-6 mt-6 ">
               <p className="font-normal font-sans text-start text-lg pb-2" >Buyurtmalar:</p>
               <ul className="border-[#AEB2B8] py-2 text-start border rounded">
@@ -142,6 +153,8 @@ export default function Orders() {
                 }
               </ul>
             </form>
+              : " "
+            }
           </div>
         ) : (
           <Box

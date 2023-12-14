@@ -40,6 +40,7 @@ export const API_ENDPOINTS = {
     DELETE_USER: 'admin/user/delete/',
     DETAIL_USER: 'admin/user/detail/',
     UPDATE_USER: 'admin/user/update/',
+    COUNT_USER: 'admin/users-count/',
 
     ORDER: 'admin/order/',
     PATCH_ORDER : 'admin/order/update/',
@@ -64,5 +65,7 @@ export const API_ENDPOINTS = {
 
     SETTINGS: 'admin/settings/',
 
-    PROCESS:'admin/process/order/'
+    PROCESS:'admin/process/order/',
+
+    ARCHIVE: 'admin/archive/order/',
 }

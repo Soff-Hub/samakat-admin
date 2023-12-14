@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 
@@ -18,6 +18,7 @@ export default function Users() {
   const location = useLocation();
   const [expanded, setExpanded] = React.useState(false);
   const [data, setData] = React.useState(null);
+  const navigate = useNavigate()
 
   const handleChangeAcc = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -32,6 +33,10 @@ export default function Users() {
         console.log(err);
       });
   };
+
+  const handleChangeRouter = (id) => {
+    navigate(`/adresses/actions/?${id}`)
+  }
 
   React.useEffect(() => {
     getItem(location.search.split("?")[2]);
@@ -98,7 +103,14 @@ export default function Users() {
                   variant="outlined"
                   size="small"
                   name="first_name"
-                  value={data ? data?.verify_code : ""}
+                  value={data ? data?.is_active === true ? "Faol" : "Faol emas" : ""}
+                />
+                <TextField
+                  label="Kodi"
+                  variant="outlined"
+                  size="small"
+                  name="first_name"
+                  value={data ? data?.verify_code?.code : ""}
                 />
               </div>
             </AccordionDetails>
@@ -120,7 +132,7 @@ export default function Users() {
               {data?.user_addresses ? (
                 data?.user_addresses?.map((item, i) => {
                   return (
-                    <div key={i}>
+                    <div style={{cursor:'pointer'}} onClick={() => handleChangeRouter(item.id)} key={i}>
                       <hr className="py-2" />
                       <h3>
                         <span className="font-medium"> Location</span> :{" "}
@@ -148,7 +160,7 @@ export default function Users() {
               id="panel3bh-header"
             >
               <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                Mahsulot savati
+               Sotuv tarixi
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
@@ -166,7 +178,7 @@ export default function Users() {
               )}
             </AccordionDetails>
           </Accordion>
-          <Accordion
+          {/* <Accordion
             expanded={expanded === "panel4"}
             onChange={handleChangeAcc("panel4")}
           >
@@ -195,7 +207,7 @@ export default function Users() {
                 <></>
               )}
             </AccordionDetails>
-          </Accordion>
+          </Accordion> */}
         </div>
       </form>
     </div>
