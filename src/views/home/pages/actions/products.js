@@ -172,11 +172,11 @@ export default function Products() {
   };
 
   const deleteID = (i) => {
-    console.log("delete id == ", i, filialInput);
     setFilialInput(filialInput.filter((item) => item.id !== i));
   };
   const deleteIDHighlight = (i) => {
-    setAtributInput(atributInput.filter((item) => item.id !== i));
+    setAtributInput(atributInput.filter((item) => item?.id !== i));
+    console.log("delete id == ", i, atributInput);
   };
 
   const handleSubmitAdd = async (e) => {
@@ -427,8 +427,8 @@ export default function Products() {
         setAtributInput(
           res?.product_highlight
             ? res?.product_highlight?.map((el, i) => ({
-                content: el.content,
-                order: el.order,
+                content: el?.content,
+                order: el?.order,
                 id: i + 1,
               }))
             : atributInput
@@ -437,8 +437,8 @@ export default function Products() {
         setFilialInput(
           res?.product_count_branch
             ? res?.product_count_branch?.map((el, i) => ({
-                branch: el.branch,
-                quantity: el.quantity,
+                branch: el?.branch,
+                quantity: el?.quantity,
                 id: i + 1,
               }))
             : filialInput
@@ -1314,7 +1314,7 @@ export default function Products() {
             ) : (
               ""
             )}
-            {atributInput?.[0].content !== "" ||
+            {/* {atributInput?.[0].content !== "" ||
             atributInput?.[0].order !== "" ? (
               <>
                 <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
@@ -1342,7 +1342,7 @@ export default function Products() {
               </>
             ) : (
               ""
-            )}
+            )} */}
             {discount || price ? (
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (

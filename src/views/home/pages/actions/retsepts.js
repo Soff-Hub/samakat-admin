@@ -88,6 +88,11 @@ export default function Retsepts() {
   const addImageInput = (e) => {
     setImageData2([...imageData2, { id: e }]);
   };
+  const addImageInputPost = (e) => {
+    console.log('e',e);
+    
+    setAddHandleImageData([...addHandleImageData, { id: e }]);
+  };
 
   const setImageUrlUpdate = (url, id) => {
     // setIsModalOpen(false);
@@ -763,7 +768,7 @@ export default function Retsepts() {
               </div>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Fab
-                  onClick={() => addImageInput(imageData.length + 1)}
+                  onClick={() => addImageInputPost(addHandleImageData.length + 1)}
                   color="primary"
                   aria-label="add"
                 >
