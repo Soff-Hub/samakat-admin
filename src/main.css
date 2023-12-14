@@ -231,6 +231,8 @@
     border-radius: 5px;
     padding: 10px ;
     outline: .5px solid #ccc;
+    width: 100% !important;
+    margin-top: 8px;
 }
 
 #priceInput:focus{

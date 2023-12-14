@@ -455,7 +455,7 @@ export default function Products() {
         setOn_sale(res?.on_sale);
         setDiscount(res?.discount);
         setDescription(res?.description);
-        setPrice(JSON.parse(res?.price));
+        formatPrice(JSON.parse(res?.price));
         setDiscount(res?.discount);
         setCarbohydrates(res?.product_attribute?.carbohydrates);
         setingredients(res?.product_attribute?.ingredients);
@@ -506,7 +506,6 @@ export default function Products() {
   const prosent = (e) => {
     return (price * discount) / 100;
   };
-  
 
   const formatPrice = (inputValue) => {
     inputValue = inputValue.replace(/\s/g, "");
@@ -536,7 +535,7 @@ export default function Products() {
                   setName(e.target.value);
                 }}
               />
-              <TextField
+              {/* <TextField
                 label="Narxi"
                 variant="outlined"
                 size="large"
@@ -545,7 +544,18 @@ export default function Products() {
                 onChange={(e) => {
                   setPrice(e.target.value);
                 }}
+              /> */}
+              <label>
+                Narx
+               <input
+                type="text"
+                id="priceInput"
+                placeholder="Narxi *"
+                required
+                defaultValue={JSON.parse(editData?.price) || price}
+                onChange={(e) => formatPrice(e.target.value)}
               />
+              </label>
               <TextField
                 id="outlined-multiline-static"
                 label="Izoh"
@@ -1384,7 +1394,7 @@ export default function Products() {
                   setName(e.target.value);
                 }}
               />
-              <TextField
+              {/* <TextField
                 label="Narxi"
                 variant="outlined"
                 size="large"
@@ -1393,7 +1403,18 @@ export default function Products() {
                 onChange={(e) => {
                   setPrice(e.target.value);
                 }}
+              /> */}
+              <label>
+              Narx
+              <input
+                type="text"
+                id="priceInput"
+                placeholder="Narxi *"
+                required
+                defaultValue={JSON.parse(editData.price) || price}
+                onChange={(e) => formatPrice(e.target.value)}
               />
+              </label>
               <TextField
                 id="outlined-multiline-static"
                 label="Izoh"
@@ -2246,8 +2267,9 @@ export default function Products() {
               type="text"
               id="priceInput"
               placeholder="Narxi *"
+              required
               value={price}
-              onChange={(e) => formatPrice(e.target.value)}
+              onChange={(e) => setPrice(e.target.value)}
             />
 
             <TextField
