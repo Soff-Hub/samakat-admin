@@ -212,18 +212,18 @@ export default function Aksiya() {
               <div
                 style={{
                   // maxWidth: "150px",
-                  width: ` ${lifeImage ? "100%" : "150px"}`,
+                  width: ` ${lifeImage ? "140px" : "140px"}`,
                   backgroundImage: `url(${lifeImage})`,
-                  // backgroundSize: "contain",
-                  objectFit:'fill',
-                  height: `${lifeImage ? "300px" : "120px"}`,
+                  objectFit:'cover',
+                  height: `${lifeImage ? "180px" : "120px"}`,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  border: `${false ? "1px solid red" : "1px solid #ccc"}`,
+                  border:  "1px solid #ccc",
                   borderRadius: "5px",
                   position: "relative",
                   backgroundRepeat: "no-repeat",
+                  backgroundPosition:'center',
                   textAlign: "center",
                 }}
               >
