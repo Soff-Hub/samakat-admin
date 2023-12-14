@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function Categories() {
   const [submiting, setSubmiting] = useState(false);
@@ -197,26 +198,56 @@ function Categories() {
                 }}
                 type="number"
               />
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
-                style={{
-                  maxWidth: "550px",
-                  width: "100%",
-                  backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  height: `${lifeImage ? "220px" : "40px"}`,
-                }}
-              >
-                {lifeImage === null ? " Rasm yuklash" : ""}
-                <input
-                  style={{ display: "none" }}
-                  onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
-                  type="file"
-                />
-              </Button>
+
+              <div className="image-conatiner">
+                <div
+                  style={{
+                    width: ` ${lifeImage ? "140px" : "140px"}`,
+                    backgroundImage: `url(${lifeImage})`,
+                    objectFit: "cover",
+                    height: `${lifeImage ? "180px" : "120px"}`,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                    position: "relative",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    textAlign: "center",
+                  }}
+                >
+                  {lifeImage ? (
+                    ""
+                  ) : (
+                    <i
+                      className="fa-regular fa-image"
+                      style={{ fontSize: "35px" }}
+                    ></i>
+                  )}
+                  <input
+                    style={{
+                      opacity: "0",
+                      position: "absolute",
+                      top: "0",
+                      left: "0",
+                      bottom: "0",
+                      right: "0",
+                    }}
+                    onChange={(e) => (
+                      setImage(e.target.files[0]), LifeImage(e)
+                    )}
+                    type="file"
+                  />
+                </div>
+                <Button
+                  onClick={() => (setLifeImage(""), setImage(""))}
+                  variant="outlined"
+                  startIcon={<DeleteIcon />}
+                >
+                  Delete
+                </Button>
+              </div>
               <Button
                 variant="outlined"
                 size="large"
@@ -282,26 +313,53 @@ function Categories() {
             }}
             type="number"
           />
-          <Button
-            component="label"
-            variant="contained"
-            startIcon={lifeImage === null ? <CloudUploadIcon /> : ""}
-            style={{
-              maxWidth: "550px",
-              width: "100%",
-              backgroundImage: `url(${lifeImage ? lifeImage : ""})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: `${lifeImage ? "220px" : "40px"}`,
-            }}
-          >
-            {lifeImage === null ? " Rasm yuklash" : ""}
-            <input
-              style={{ display: "none" }}
-              onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
-              type="file"
-            />
-          </Button>
+          <div className="image-conatiner">
+            <div
+              style={{
+                width: ` ${lifeImage ? "140px" : "140px"}`,
+                backgroundImage: `url(${lifeImage})`,
+                objectFit: "cover",
+                height: `${lifeImage ? "180px" : "120px"}`,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                position: "relative",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                textAlign: "center",
+              }}
+            >
+              {lifeImage ? (
+                ""
+              ) : (
+                <i
+                  className="fa-regular fa-image"
+                  style={{ fontSize: "35px" }}
+                ></i>
+              )}
+              <input
+                style={{
+                  opacity: "0",
+                  position: "absolute",
+                  top: "0",
+                  left: "0",
+                  bottom: "0",
+                  right: "0",
+                }}
+                onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
+                type="file"
+              />
+            </div>
+            <Button
+              onClick={() => (setLifeImage(""), setImage(""))}
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+            >
+              Delete
+            </Button>
+          </div>
 
           <Button
             variant="outlined"

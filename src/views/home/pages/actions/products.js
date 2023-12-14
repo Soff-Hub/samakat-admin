@@ -1,8 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import { Modal, Select, Space } from "antd";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -122,8 +120,6 @@ export default function Products() {
     setOn_sale(event.target.checked);
   };
 
-
-
   const addImageInput = (e) => {
     setAddHandleImageData([...addHandleImageData, { id: e }]);
   };
@@ -175,7 +171,6 @@ export default function Products() {
     }
   };
 
-
   const deleteID = (i) => {
     console.log("delete id == ", i, filialInput);
     setFilialInput(filialInput.filter((item) => item.id !== i));
@@ -183,8 +178,6 @@ export default function Products() {
   const deleteIDHighlight = (i) => {
     setAtributInput(atributInput.filter((item) => item.id !== i));
   };
-
- 
 
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
@@ -310,8 +303,7 @@ export default function Products() {
 
     await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT}`, formData1)
       .then((data) => {
-        console.log('data', data);
-        
+        console.log("data", data);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
@@ -402,7 +394,6 @@ export default function Products() {
       })
       .catch((err) => console.log(err));
   };
-
 
   const getBranchData = async () => {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
@@ -515,19 +506,12 @@ export default function Products() {
   const prosent = (e) => {
     return (price * discount) / 100;
   };
+  
 
-  const ChangePrice = (e) => {
-    // const inputValue = e.target.value.replace(/\D/g, "");
-
-    // if (inputValue?.length <= 16) {
-    //   for (let i = 0; i < inputValue.length; i++) {
-    //     if (i > 0 && i % 3 === 1) {
-    //       formattedValue += " "; // Raqamlarni probil bilan ajratish
-    //     }
-    //     formattedValue += inputValue[i];
-    //   }
-    // }
-    setPrice(e.target.value);
+  const formatPrice = (inputValue) => {
+    inputValue = inputValue.replace(/\s/g, "");
+    inputValue = inputValue.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    setPrice(inputValue);
   };
 
   return location.search.split("?")?.[2] === "edit" ? (
@@ -1320,35 +1304,35 @@ export default function Products() {
             ) : (
               ""
             )}
-              {atributInput?.[0].content !== "" ||
-          atributInput?.[0].order !== "" ? (
-            <>
-              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
-                Mahsulot elementlari :
-              </p>
-              {atributInput?.map((el) => {
-                return (
-                  <div
-                    key={el.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: "start",
-                      alignItems: "baseline",
-                    }}
-                  >
-                    <span style={{ fontWeight: "600", paddingRight: "8px" }}>
-                      {el.order}
-                    </span>
-                    <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
-                      {el.content}
-                    </p>
-                  </div>
-                );
-              })}
-            </>
-          ) : (
-            ""
-          )}
+            {atributInput?.[0].content !== "" ||
+            atributInput?.[0].order !== "" ? (
+              <>
+                <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                  Mahsulot elementlari :
+                </p>
+                {atributInput?.map((el) => {
+                  return (
+                    <div
+                      key={el.id}
+                      style={{
+                        display: "flex",
+                        justifyContent: "start",
+                        alignItems: "baseline",
+                      }}
+                    >
+                      <span style={{ fontWeight: "600", paddingRight: "8px" }}>
+                        {el.order}
+                      </span>
+                      <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
+                        {el.content}
+                      </p>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              ""
+            )}
             {discount || price ? (
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
@@ -2164,35 +2148,35 @@ export default function Products() {
             ) : (
               ""
             )}
-              {atributInput?.[0].content !== "" ||
-          atributInput?.[0].order !== "" ? (
-            <>
-              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
-                Mahsulot elementlari :
-              </p>
-              {atributInput?.map((el) => {
-                return (
-                  <div
-                    key={el.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: "start",
-                      alignItems: "baseline",
-                    }}
-                  >
-                    <span style={{ fontWeight: "600", paddingRight: "8px" }}>
-                      {el.order}
-                    </span>
-                    <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
-                      {el.content}
-                    </p>
-                  </div>
-                );
-              })}
-            </>
-          ) : (
-            ""
-          )}
+            {atributInput?.[0].content !== "" ||
+            atributInput?.[0].order !== "" ? (
+              <>
+                <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
+                  Mahsulot elementlari :
+                </p>
+                {atributInput?.map((el) => {
+                  return (
+                    <div
+                      key={el.id}
+                      style={{
+                        display: "flex",
+                        justifyContent: "start",
+                        alignItems: "baseline",
+                      }}
+                    >
+                      <span style={{ fontWeight: "600", paddingRight: "8px" }}>
+                        {el.order}
+                      </span>
+                      <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
+                        {el.content}
+                      </p>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              ""
+            )}
             {discount || price ? (
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
@@ -2235,7 +2219,7 @@ export default function Products() {
                 setName(e.target.value);
               }}
             />
-            <TextField
+            {/* <TextField
               inputMode="numeric"
               label="Narxi"
               variant="outlined"
@@ -2245,7 +2229,8 @@ export default function Products() {
               value={price}
               required
               onChange={ChangePrice}
-            />
+            /> */}
+
             <TextField
               label="Chegirmasi"
               variant="outlined"
@@ -2255,6 +2240,14 @@ export default function Products() {
               onChange={(e) => {
                 setDiscount(e.target.value);
               }}
+            />
+
+            <input
+              type="text"
+              id="priceInput"
+              placeholder="Narxi *"
+              value={price}
+              onChange={(e) => formatPrice(e.target.value)}
             />
 
             <TextField
@@ -2307,7 +2300,6 @@ export default function Products() {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-
                   <div
                     style={{
                       display: "flex ",
@@ -2341,9 +2333,7 @@ export default function Products() {
                                 alignItems: "center",
                                 // border: "1px solid #ccc",
                                 border: `${
-                                  false
-                                    ? "1px solid red"
-                                    : "1px solid #ccc"
+                                  false ? "1px solid red" : "1px solid #ccc"
                                 }`,
                                 borderRadius: "5px",
                                 position: "relative",

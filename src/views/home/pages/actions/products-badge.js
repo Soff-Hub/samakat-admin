@@ -6,7 +6,6 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Select, Space } from "antd";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Aksiya() {
@@ -45,7 +44,10 @@ export default function Aksiya() {
     }
 
     setSubmiting(true);
-    await Client.patch(API_ENDPOINTS.PATCH_BADGE + `${location.search.split("?")[2]}` , formData)
+    await Client.patch(
+      API_ENDPOINTS.PATCH_BADGE + `${location.search.split("?")[2]}`,
+      formData
+    )
       .then((data) => {
         toast.success("Aksiya muvaffaqiyatli tahrirlandi");
         setTimeout(() => {
@@ -126,7 +128,7 @@ export default function Aksiya() {
       getBadge();
     }
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   return location.search.split("?")[1] === "edit" ? (
     data ? (
@@ -198,61 +200,66 @@ export default function Aksiya() {
               </Space>
 
               <TextField
-              label="Chegirmasi"
-              variant="outlined"
-              size="large"
-              type="number"
-              defaultValue={discount}
-              onChange={(e) => {
-                setDiscount(e.target.value);
-              }}
-            />
+                label="Chegirmasi"
+                variant="outlined"
+                size="large"
+                type="number"
+                defaultValue={discount}
+                onChange={(e) => {
+                  setDiscount(e.target.value);
+                }}
+              />
 
               <div className="image-conatiner">
-              <div
-                style={{
-                  // maxWidth: "150px",
-                  width: ` ${lifeImage ? "140px" : "140px"}`,
-                  backgroundImage: `url(${lifeImage})`,
-                  objectFit:'cover',
-                  height: `${lifeImage ? "180px" : "120px"}`,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  border:  "1px solid #ccc",
-                  borderRadius: "5px",
-                  position: "relative",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition:'center',
-                  textAlign: "center",
-                }}
-              >
-                {lifeImage ? (
-                  ""
-                ) : (
-                  <i
-                    className="fa-regular fa-image"
-                    style={{ fontSize: "35px" }}
-                  ></i>
-                )}
-                <input
+                <div
                   style={{
-                    opacity: "0",
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                    bottom: "0",
-                    right: "0",
+                    // maxWidth: "150px",
+                    width: ` ${lifeImage ? "140px" : "140px"}`,
+                    backgroundImage: `url(${lifeImage})`,
+                    objectFit: "cover",
+                    height: `${lifeImage ? "180px" : "120px"}`,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                    position: "relative",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    textAlign: "center",
                   }}
-                  onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
-                  type="file"
-                />
+                >
+                  {lifeImage ? (
+                    ""
+                  ) : (
+                    <i
+                      className="fa-regular fa-image"
+                      style={{ fontSize: "35px" }}
+                    ></i>
+                  )}
+                  <input
+                    style={{
+                      opacity: "0",
+                      position: "absolute",
+                      top: "0",
+                      left: "0",
+                      bottom: "0",
+                      right: "0",
+                    }}
+                    onChange={(e) => (
+                      setImage(e.target.files[0]), LifeImage(e)
+                    )}
+                    type="file"
+                  />
+                </div>
+                <Button
+                  onClick={() => (setLifeImage(""), setImage(""))}
+                  variant="outlined"
+                  startIcon={<DeleteIcon />}
+                >
+                  Delete
+                </Button>
               </div>
-              <Button onClick={() => (setLifeImage(''), setImage(''))} variant="outlined" startIcon={<DeleteIcon />}>
-                Delete
-              </Button>
-            </div>
-
 
               <Button
                 variant="outlined"
@@ -384,7 +391,11 @@ export default function Aksiya() {
                   type="file"
                 />
               </div>
-              <Button onClick={() => (setLifeImage(''), setImage(''))} variant="outlined" startIcon={<DeleteIcon />}>
+              <Button
+                onClick={() => (setLifeImage(""), setImage(""))}
+                variant="outlined"
+                startIcon={<DeleteIcon />}
+              >
                 Delete
               </Button>
             </div>
