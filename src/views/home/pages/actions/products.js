@@ -123,6 +123,7 @@ export default function Products() {
   const addImageInput = (e) => {
     setAddHandleImageData([...addHandleImageData, { id: e }]);
   };
+
   const addImageInputUpdate = (e) => {
     setImageData2([...imageData2, { id: e }]);
   };
@@ -141,6 +142,7 @@ export default function Products() {
     findItem.order = value?.order;
     setAtributInput([...atributInput]);
   };
+
   // console.log("atribut input", atributInput);
   const addFormInput = (value, id) => {
     setFilialInput([...filialInput, { id, ...value }]);
@@ -153,7 +155,7 @@ export default function Products() {
     setIsModalOpen(false);
     const data = imageData2.filter((el) => el.id !== id);
     setImageData2(data);
-    if (imageData.find((el) => el.id === id)) {
+    if (imageData.find((el) => el.id !== id)) {
       delID.push(id);
     }
   };
@@ -280,6 +282,13 @@ export default function Products() {
         shelf_life: shelf_life,
       })
     );
+    if (!product_categories?.[0]?.label) {
+      formData1.append("product_categories", JSON.stringify(product_categories));
+    }else{
+      const arr = product_categories?.map((el) => el.value)
+      console.log('arr', arr);
+      formData1.append("product_categories", JSON.stringify(arr));
+    }
     formData1.append("name", name);
     formData1.append("price", price);
     formData1.append("description", description);
@@ -287,7 +296,7 @@ export default function Products() {
     formData1.append("on_sale", on_sale);
     formData1.append("variant_id", location.search.split("?")[4]);
     if (delID?.length > 0) {
-      formData1.append("deleted_image", JSON.stringify(delID));
+      formData1.append("variant_images", JSON.stringify(delID));
     }
 
     if (product_highlight?.[0]?.content !== "") {
@@ -318,7 +327,6 @@ export default function Products() {
 
     document.querySelector(".create-branch-form").reset();
   };
-console.log('iddd', delID);
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -840,7 +848,7 @@ console.log('iddd', delID);
                           size="small"
                           style={{ marginTop: "30px" }}
                           className="w-full"
-                          type="number"
+                          type="text"
                           defaultValue={carbohydrates}
                           onChange={(e) => {
                             setCarbohydrates(e.target.value);
@@ -855,7 +863,7 @@ console.log('iddd', delID);
                           size="small"
                           style={{ marginTop: "30px" }}
                           className="w-full"
-                          type="number"
+                          type="text"
                           defaultValue={kilocalories}
                           onChange={(e) => {
                             setKilocalories(e.target.value);
@@ -870,7 +878,7 @@ console.log('iddd', delID);
                           size="small"
                           style={{ marginTop: "30px" }}
                           className="w-full"
-                          type="number"
+                          type="text"
                           defaultValue={fats}
                           onChange={(e) => {
                             setFats(e.target.value);
@@ -885,7 +893,7 @@ console.log('iddd', delID);
                           size="small"
                           style={{ marginTop: "30px" }}
                           className="w-full"
-                          type="number"
+                          type="text"
                           defaultValue={protein}
                           onChange={(e) => {
                             setProtein(e.target.value);
@@ -1403,7 +1411,7 @@ console.log('iddd', delID);
                   setName(e.target.value);
                 }}
               />
-              {/* <TextField
+              <TextField
                 label="Narxi"
                 variant="outlined"
                 size="large"
@@ -1412,8 +1420,8 @@ console.log('iddd', delID);
                 onChange={(e) => {
                   setPrice(e.target.value);
                 }}
-              /> */}
-              <label>
+              />
+              {/* <label>
               Narx
               <input
                 type="text"
@@ -1423,7 +1431,7 @@ console.log('iddd', delID);
                 defaultValue={JSON.parse(editData.price) || price}
                 onChange={(e) => formatPrice(e.target.value)}
               />
-              </label>
+              </label> */}
               <TextField
                 id="outlined-multiline-static"
                 label="Izoh"
@@ -1692,7 +1700,7 @@ console.log('iddd', delID);
                       size="small"
                       style={{ marginTop: "30px" }}
                       className="w-full"
-                      type="number"
+                      type="text"
                       defaultValue={carbohydrates}
                       onChange={(e) => {
                         setCarbohydrates(e.target.value);
@@ -1707,7 +1715,7 @@ console.log('iddd', delID);
                       size="small"
                       style={{ marginTop: "30px" }}
                       className="w-full"
-                      type="number"
+                      type="text"
                       defaultValue={kilocalories}
                       onChange={(e) => {
                         setKilocalories(e.target.value);
@@ -1722,7 +1730,7 @@ console.log('iddd', delID);
                       size="small"
                       style={{ marginTop: "30px" }}
                       className="w-full"
-                      type="number"
+                      type="text"
                       defaultValue={fats}
                       onChange={(e) => {
                         setFats(e.target.value);
@@ -1737,7 +1745,7 @@ console.log('iddd', delID);
                       size="small"
                       style={{ marginTop: "30px" }}
                       className="w-full"
-                      type="number"
+                      type="text"
                       defaultValue={protein}
                       onChange={(e) => {
                         setProtein(e.target.value);
@@ -2249,7 +2257,7 @@ console.log('iddd', delID);
                 setName(e.target.value);
               }}
             />
-            {/* <TextField
+            <TextField
               inputMode="numeric"
               label="Narxi"
               variant="outlined"
@@ -2258,8 +2266,8 @@ console.log('iddd', delID);
               maxLength="16"
               value={price}
               required
-              onChange={ChangePrice}
-            /> */}
+              onChange={(e) => setPrice(e.target.value)}
+            />
 
             <TextField
               label="Chegirmasi"
@@ -2271,7 +2279,7 @@ console.log('iddd', delID);
                 setDiscount(e.target.value);
               }}
             />
-
+{/* 
             <input
               type="text"
               id="priceInput"
@@ -2279,7 +2287,7 @@ console.log('iddd', delID);
               required
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-            />
+            /> */}
 
             <TextField
               id="outlined-multiline-static"
@@ -2511,7 +2519,7 @@ console.log('iddd', delID);
                       size="small"
                       className="w-full"
                       style={{ height: "10px", marginTop: "30px" }}
-                      type="number"
+                      type="text"
                       value={carbohydrates}
                       onChange={(e) => {
                         setCarbohydrates(e.target.value);
@@ -2526,7 +2534,7 @@ console.log('iddd', delID);
                       size="small"
                       className="w-full"
                       style={{ height: "10px", marginTop: "30px" }}
-                      type="number"
+                      type="text"
                       value={kilocalories}
                       onChange={(e) => {
                         setKilocalories(e.target.value);
@@ -2541,7 +2549,7 @@ console.log('iddd', delID);
                       className="w-full"
                       size="small"
                       style={{ height: "10px", marginTop: "30px" }}
-                      type="number"
+                      type="text"
                       value={fats}
                       onChange={(e) => {
                         setFats(e.target.value);
@@ -2556,7 +2564,7 @@ console.log('iddd', delID);
                       variant="outlined"
                       size="small"
                       style={{ height: "10px", marginTop: "30px" }}
-                      type="number"
+                      type="text"
                       value={protein}
                       onChange={(e) => {
                         setProtein(e.target.value);

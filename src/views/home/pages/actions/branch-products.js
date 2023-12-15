@@ -124,7 +124,7 @@ export default function Retsepts() {
     await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST)
       .then((res) => {
         setProductOption(
-          res.results.map((el) => ({
+          res?.map((el) => ({
             label: el.name,
             value: el.id,
           }))

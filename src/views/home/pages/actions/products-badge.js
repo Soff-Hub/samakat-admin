@@ -36,8 +36,8 @@ export default function Aksiya() {
     formData.append("text", text);
     formData.append("textColor", badge);
     formData.append("discount", discount);
-    if (relatedCategory?.length > 0) {
-      formData.append("related_categories", JSON.stringify(relatedCategory));
+    if (!relatedCategory?.[0]?.label) {
+      formData.append("products", JSON.stringify(relatedCategory));
     }
     if (img) {
       formData.append("image", img);
@@ -45,7 +45,7 @@ export default function Aksiya() {
 
     setSubmiting(true);
     await Client.patch(
-      API_ENDPOINTS.PATCH_BADGE + `${location.search.split("?")[2]}`,
+      API_ENDPOINTS.PATCH_BADGE + `${location.search.split("?")[2]}/`,
       formData
     )
       .then((data) => {
@@ -94,10 +94,10 @@ export default function Aksiya() {
   };
 
   const getProducts = async (e) => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT}`)
+    await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}`)
       .then((resp) => {
         setCategoryData(
-          resp.results?.map((el) => ({
+          resp?.map((el) => ({
             value: el.id,
             label: el.name,
           }))
@@ -114,9 +114,15 @@ export default function Aksiya() {
         setData(res);
         setText(res.text);
         setBadge(res.textColor);
-        setDiscount();
-        setImage();
-        setLifeImage();
+        setDiscount(res.discount);
+        // setImage(res.image);
+        setLifeImage(res.image);
+        setRelatedCategory(
+          res.products?.map((el) => ({
+            value: el.id,
+            label: el.name,
+          }))
+        )
       })
       .catch((err) => {
         console.log(err);
@@ -197,6 +203,7 @@ export default function Aksiya() {
                   placeholder="Mahsulotlar"
                   onChange={handleChangeRelatedCategory}
                   options={categoryData}
+                  defaultValue={relatedCategory}
                 />
               </Space>
 

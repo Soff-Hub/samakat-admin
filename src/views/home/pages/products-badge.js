@@ -20,15 +20,25 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
+import ResponsiveDialog from "components/shared/modal";
 
 function Row(props) {
   const { row } = props;
+  const {setOpen} = props
+  const {setDeleteId} = props
+
 
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell align="left">
           <Link to={`actions/?edit?${row.id}`}>{row.text}</Link>{" "}
+        </TableCell>
+        <TableCell align="left">
+          <Link to={`actions/?edit?${row.id}`}>
+            {row.discount !== 0 ? row.discount + "%" : ""}
+          </Link>{" "}
         </TableCell>
         <TableCell align="center">
           <Link to={`actions/?edit?${row.id}`}>
@@ -43,6 +53,16 @@ function Row(props) {
               <DriveFileRenameOutlineOutlinedIcon />
             </IconButton>
           </Link>
+          <IconButton
+            color="error"
+            onClick={() => {
+              setDeleteId(row.id);
+              setOpen(true);
+            }}
+            aria-label="delete"
+          >
+            <DeleteSharpIcon />
+          </IconButton>
         </TableCell>
       </TableRow>
     </React.Fragment>
@@ -71,6 +91,8 @@ export default function CollapsibleTable() {
   const [bagdeData, setBadgeData] = React.useState(null);
   const [count, setCount] = React.useState("");
   const [page, setPage] = React.useState(1);
+  const [openDelete, setOpen] = React.useState(false);
+  const [deleteId, setDeleteId] = React.useState(null);
 
   const getBadge = async () => {
     await Client.get(API_ENDPOINTS.BADGE)
@@ -81,6 +103,16 @@ export default function CollapsibleTable() {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleDelete = async () => {
+    await Client.delete(`${API_ENDPOINTS.DELETE_BADGE}${deleteId}/`)
+      .then((resp) => {
+        console.log(resp);
+        setOpen(false);
+        getBadge();
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleChangePag = async (event, value) => {
@@ -111,6 +143,9 @@ export default function CollapsibleTable() {
               <TableCell align="left">
                 <span className="font-bold text-[16px]">Nomi</span>
               </TableCell>
+              <TableCell align="left">
+                <span className="font-bold text-[16px]">Chegirmasi</span>
+              </TableCell>
               <TableCell align="center">
                 <span className="font-bold text-[16px]">Rangi</span>
               </TableCell>
@@ -122,7 +157,7 @@ export default function CollapsibleTable() {
           {bagdeData?.length >= 0 ? (
             <TableBody>
               {bagdeData?.map((row) => (
-                <Row key={row.name} row={row} />
+                <Row key={row.name} row={row} setOpen={setOpen} setDeleteId={setDeleteId} />
               ))}
               {count && Math.ceil(count / 30) <= 1 ? (
                 <></>
@@ -156,6 +191,11 @@ export default function CollapsibleTable() {
           )}
         </Table>
       </TableContainer>
+      <ResponsiveDialog
+        open={openDelete}
+        setOpen={setOpen}
+        handleDelete={handleDelete}
+      />
     </>
   );
 }
