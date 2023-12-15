@@ -8,7 +8,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import NavHeader from "components/shared/NavHeader";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Link } from "react-router-dom";
@@ -22,6 +21,7 @@ import {
 } from "@mui/material";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import ResponsiveDialog from "components/shared/modal";
+import NavHeaderSelect from "components/shared/NavHeaderSelect";
 
 function Row(props) {
   const { row } = props;
@@ -37,7 +37,7 @@ function Row(props) {
         </TableCell>
         <TableCell align="left">
           <Link to={`actions/?edit?${row.id}`}>
-            {row.discount !== 0 ? row.discount + "%" : ""}
+            {row.discount !== 0 ? row.discount + "%" : <i style={{color:'red'}} class="fa-solid fa-xmark"></i>}
           </Link>{" "}
         </TableCell>
         <TableCell align="center">
@@ -94,6 +94,7 @@ export default function CollapsibleTable() {
   const [openDelete, setOpen] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState(null);
 
+
   const getBadge = async () => {
     await Client.get(API_ENDPOINTS.BADGE)
       .then((res) => {
@@ -133,7 +134,7 @@ export default function CollapsibleTable() {
   return (
     <>
       <div className="mb-5">
-        <NavHeader title="Mahsulot aksiyalari" />
+        <NavHeaderSelect title="Mahsulot aksiyalari" />
       </div>
 
       <TableContainer component={Paper}>

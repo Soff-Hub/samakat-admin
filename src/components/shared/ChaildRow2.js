@@ -13,7 +13,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Row2 } from "./Row2";
 
-export function ChaildRow2({ row, Detele }) {
+export function ChaildRow2({ row, Detele, type }) {
   const [data, setData] = useState([]);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -45,9 +45,8 @@ export function ChaildRow2({ row, Detele }) {
   useEffect(() => {
     setRowData(row);
     // eslint-disable-next-line
-  }, [data]);
+  }, [data, type]);
 
-  console.log("data", data);
 
   return (
     <>
@@ -63,28 +62,34 @@ export function ChaildRow2({ row, Detele }) {
           <div className="flex justify-between w-full">
             <div>{rowData.name}</div>
             <div>
-              <Link
-                to={`actions/?${rowData.type}?${rowData.id}?chaild?${rowData.slug}`}
-              >
-                <IconButton color="primary" aria-label="delete">
-                  <AddCircleOutlinedIcon />
-                </IconButton>
-              </Link>
-              <Link to={`actions/?edit?${rowData.type}?${rowData.slug}`}>
-                <IconButton color="primary">
-                  <DriveFileRenameOutlineOutlinedIcon />
-                </IconButton>
-              </Link>
-              <IconButton
-                color="error"
-                onClick={() => {
-                  setDeleteId(rowData.slug);
-                  setOpen(true);
-                }}
-                aria-label="delete"
-              >
-                <DeleteSharpIcon />
-              </IconButton>
+              {row.slug === "express" ? (
+                ""
+              ) : (
+                <>
+                  <Link
+                    to={`actions/?${rowData.type}?${rowData.id}?chaild?${rowData.slug}`}
+                  >
+                    <IconButton color="primary" aria-label="delete">
+                      <AddCircleOutlinedIcon />
+                    </IconButton>
+                  </Link>
+                  <Link to={`actions/?edit?${rowData.type}?${rowData.slug}`}>
+                    <IconButton color="primary">
+                      <DriveFileRenameOutlineOutlinedIcon />
+                    </IconButton>
+                  </Link>
+                  <IconButton
+                    color="error"
+                    onClick={() => {
+                      setDeleteId(rowData.slug);
+                      setOpen(true);
+                    }}
+                    aria-label="delete"
+                  >
+                    <DeleteSharpIcon />
+                  </IconButton>
+                </>
+              )}
             </div>
           </div>
         </AccordionSummary>

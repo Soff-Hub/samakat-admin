@@ -239,3 +239,6 @@
     outline: 1px solid #3B82F6;
     border: 1px solid #3B82F6;
 }
+.MuiInputBase-root{
+    background-color: #fff !important;
+}

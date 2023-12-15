@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ChaildRow2 } from "./ChaildRow2";
 import { Box, CircularProgress } from "@mui/material";
 
-export function Row2({ row, Detele, getCatgeoryChaild }) {
+export function Row2({ row, Detele, getCatgeoryChaild, type }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export function Row2({ row, Detele, getCatgeoryChaild }) {
       <React.Fragment>
         {data ? (
           data?.map((item, i) => {
-            return <ChaildRow2 getchildData={getCatgeoryChaild} row={item} key={i} Detele={Detele} />;
+            return <ChaildRow2 type={type} getchildData={getCatgeoryChaild} row={item} key={i} Detele={Detele} />;
           })
         ) : (
           <Box

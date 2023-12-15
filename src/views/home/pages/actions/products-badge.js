@@ -94,7 +94,7 @@ export default function Aksiya() {
   };
 
   const getProducts = async (e) => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}`)
+    await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}?type=${location.search.split("?")[1] !== "edit" ? location.search.split("?")[1] : ''}`)
       .then((resp) => {
         setCategoryData(
           resp?.map((el) => ({
@@ -136,6 +136,8 @@ export default function Aksiya() {
     }
     // eslint-disable-next-line
   }, []);
+
+  console.log('aksiya page rout', location.search.split("?")[1]);
 
   return location.search.split("?")[1] === "edit" ? (
     data ? (
@@ -223,9 +225,9 @@ export default function Aksiya() {
                   style={{
                     // maxWidth: "150px",
                     width: ` ${lifeImage ? "140px" : "140px"}`,
+                    height: `${lifeImage ? "180px" : "120px"}`,
                     backgroundImage: `url(${lifeImage})`,
                     objectFit: "cover",
-                    height: `${lifeImage ? "180px" : "120px"}`,
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -235,6 +237,7 @@ export default function Aksiya() {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     textAlign: "center",
+                    backgroundPosition:'center'
                   }}
                 >
                   {lifeImage ? (
@@ -364,7 +367,8 @@ export default function Aksiya() {
               <div
                 style={{
                   // maxWidth: "150px",
-                  width: ` ${lifeImage ? "100%" : "150px"}`,
+                  width: ` ${lifeImage ? "140px" : "140px"}`,
+                  height: `${lifeImage ? "180px" : "120px"}`,
                   backgroundImage: `url(${lifeImage})`,
                   backgroundSize: "contain",
                   height: `${lifeImage ? "300px" : "120px"}`,
@@ -376,6 +380,7 @@ export default function Aksiya() {
                   position: "relative",
                   backgroundRepeat: "no-repeat",
                   textAlign: "center",
+                  backgroundPosition:'center'
                 }}
               >
                 {lifeImage ? (
