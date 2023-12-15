@@ -65,12 +65,13 @@ export default function Aksiya() {
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
 
+
     const formData = new FormData();
     formData.append("text", text);
     formData.append("textColor", badge);
     formData.append("discount", discount);
-    if (relatedCategory?.length > 0) {
-      formData.append("related_categories", JSON.stringify(relatedCategory));
+    if (!relatedCategory?.[0]?.name > 0) {
+      formData.append("products", JSON.stringify(relatedCategory));
     }
     if (img) {
       formData.append("image", img);

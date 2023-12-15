@@ -286,7 +286,10 @@ export default function Products() {
     formData1.append("discount", discount);
     formData1.append("on_sale", on_sale);
     formData1.append("variant_id", location.search.split("?")[4]);
-    formData1.append("product_categories", JSON.stringify(product_categories));
+    if (delID?.length > 0) {
+      formData1.append("deleted_image", JSON.stringify(delID));
+    }
+
     if (product_highlight?.[0]?.content !== "") {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
@@ -304,6 +307,9 @@ export default function Products() {
     await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT}`, formData1)
       .then((data) => {
         console.log("data", data);
+        toast.success("Mahsulotdan muvaffaqiyatli variant yaratildi");
+        navigate("/products");
+        setSubmiting(false);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
@@ -312,6 +318,7 @@ export default function Products() {
 
     document.querySelector(".create-branch-form").reset();
   };
+console.log('iddd', delID);
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -346,7 +353,9 @@ export default function Products() {
     formData1.append("description", description);
     formData1.append("discount", discount);
     formData1.append("on_sale", on_sale);
-    formData1.append("product_categories", JSON.stringify(product_categories));
+    if (!product_categories?.[0]?.label) {
+      formData1.append("product_categories", JSON.stringify(product_categories));
+    }
     if (product_highlight?.[0]?.content !== "") {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
@@ -360,8 +369,8 @@ export default function Products() {
         formData1.append("product_galereya", imageData2[i].imageUrl);
       }
     }
-    for (let i = 0; i < delID?.length; i++) {
-      formData1.append("deleted_image", delID[i]);
+    if (delID?.length > 0) {
+      formData1.append("deleted_image", JSON.stringify(delID));
     }
 
     await Client.patch(
@@ -415,13 +424,13 @@ export default function Products() {
         setImageData(
           res?.product_galereya?.map((el, i) => ({
             image: el.image_url,
-            id: i + 1,
+            id: el.id,
           }))
         );
         setImageData2(
           res?.product_galereya?.map((el, i) => ({
             image: el.image_url,
-            id: i + 1,
+            id: el.id,
           }))
         );
         setAtributInput(
@@ -455,7 +464,7 @@ export default function Products() {
         setOn_sale(res?.on_sale);
         setDiscount(res?.discount);
         setDescription(res?.description);
-        formatPrice(JSON.parse(res?.price));
+        setPrice(JSON.parse(res?.price));
         setDiscount(res?.discount);
         setCarbohydrates(res?.product_attribute?.carbohydrates);
         setingredients(res?.product_attribute?.ingredients);
@@ -535,7 +544,7 @@ export default function Products() {
                   setName(e.target.value);
                 }}
               />
-              {/* <TextField
+              <TextField
                 label="Narxi"
                 variant="outlined"
                 size="large"
@@ -544,8 +553,8 @@ export default function Products() {
                 onChange={(e) => {
                   setPrice(e.target.value);
                 }}
-              /> */}
-              <label>
+              />
+              {/* <label>
                 Narx
                <input
                 type="text"
@@ -555,7 +564,7 @@ export default function Products() {
                 defaultValue={JSON.parse(editData?.price) || price}
                 onChange={(e) => formatPrice(e.target.value)}
               />
-              </label>
+              </label> */}
               <TextField
                 id="outlined-multiline-static"
                 label="Izoh"
@@ -2169,7 +2178,7 @@ export default function Products() {
             ) : (
               ""
             )}
-            {atributInput?.[0].content !== "" ||
+            {/* {atributInput?.[0].content !== "" ||
             atributInput?.[0].order !== "" ? (
               <>
                 <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
@@ -2197,7 +2206,7 @@ export default function Products() {
               </>
             ) : (
               ""
-            )}
+            )} */}
             {discount || price ? (
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
@@ -2487,7 +2496,6 @@ export default function Products() {
                       variant="outlined"
                       multiline
                       maxRows={4}
-                      required
                       value={ingredients}
                       style={{ marginTop: "30px" }}
                       onChange={(e) => {
@@ -2597,7 +2605,6 @@ export default function Products() {
                       size="small"
                       style={{ height: "10px", marginTop: "30px" }}
                       type="text"
-                      required
                       value={shelf_life}
                       onChange={(e) => {
                         setShelf_life(e.target.value);
