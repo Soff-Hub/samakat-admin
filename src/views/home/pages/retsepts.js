@@ -322,7 +322,11 @@ export default function EnhancedTable() {
                 </TableBody>
               </Table>
             </TableContainer>
-            { (
+            {
+              Math.ceil(count / 30) <= 1 || count === 0 ?
+              <></>
+              :
+            (
               <div className="m-3 mb-5 pb-4 pt-4">
                 <Stack spacing={2}>
                   <Typography> Sahifa : {page} </Typography>

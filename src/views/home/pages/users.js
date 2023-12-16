@@ -261,7 +261,7 @@ export default function Users() {
               <i className="fa-solid fa-minus"></i>{" "}
             </MenuItem>
             <MenuItem value={"customer"}>Foydalanuvchi</MenuItem>
-            <MenuItem value={"admin"}>Admin</MenuItem>
+            <MenuItem value={"superadmin"}>Admin</MenuItem>
            
           </Select>
         </FormControl>
@@ -358,7 +358,7 @@ export default function Users() {
                 </TableBody>
               </Table>
             </TableContainer>
-            {Math.ceil(count / 30) <= 1 ? (
+            {Math.ceil(count / 30) <= 1 && count === 0 ? (
               <></>
             ) : (
               <div className="m-3 mb-5">

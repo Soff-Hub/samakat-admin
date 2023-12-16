@@ -183,7 +183,7 @@ export default function EnhancedTable() {
   }, []);
 
   if (filialData?.length > 0) {
-    filialData.unshift({
+    filialData.push({
       label: "Hammasi",
       value: "",
     });

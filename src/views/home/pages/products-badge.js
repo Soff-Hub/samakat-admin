@@ -160,7 +160,7 @@ export default function CollapsibleTable() {
               {bagdeData?.map((row) => (
                 <Row key={row.name} row={row} setOpen={setOpen} setDeleteId={setDeleteId} />
               ))}
-              {count && Math.ceil(count / 30) <= 1 ? (
+              {count === 0 && Math.ceil(count / 30) <= 1 ? (
                 <></>
               ) : (
                 <div className="m-3 mb-5">
