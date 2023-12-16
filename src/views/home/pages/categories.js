@@ -14,8 +14,7 @@ export default function Categories2() {
 
   const handleChange = async (e) => {
     setType(e.target.value);
-    console.log('value =>', e.target.value);
-    
+    console.log('value', e.target.value);
     setPage(1);
     await Client.get(
       `${API_ENDPOINTS.CATEGORIES}?page=${page}&type=${e.target.value}&parent_is_null=true`
@@ -53,9 +52,9 @@ export default function Categories2() {
   useEffect(() => {
     getCategories();
     // eslint-disable-next-line
-  }, [type]);
+  }, []);
 
-  console.log('category data', data);
+  // console.log('category data', data);
   
 
   return (

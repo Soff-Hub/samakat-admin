@@ -358,7 +358,7 @@ export default function Users() {
                 </TableBody>
               </Table>
             </TableContainer>
-            {Math.ceil(count / 30) <= 1 && count === 0 ? (
+            {Math.ceil(count / 30) <= 1 && count ||  count === 0 ? (
               <></>
             ) : (
               <div className="m-3 mb-5">
