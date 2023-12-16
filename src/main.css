@@ -242,3 +242,10 @@
 .MuiInputBase-root{
     background-color: #fff !important;
 }
+
+.add-inputs{
+    display: inline-block;
+    text-align: end;
+    max-width: 120px;
+    width: 100%;
+}

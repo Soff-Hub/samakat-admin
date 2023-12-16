@@ -143,7 +143,17 @@ export default function Products() {
     setAtributInput([...atributInput]);
   };
 
-  // console.log("atribut input", atributInput);
+  const deleteIDHighlight = (i) => {
+    setAtributInput(atributInput.filter((item) => item?.id !== i));
+  };
+  
+  const deleteID = (i) => {
+    setFilialInput(filialInput.filter((item) => item.id !== i));
+    console.log(" productga kelgan delete id == ", image);
+  };
+
+
+  console.log("filial input", filialInput);
   const addFormInput = (value, id) => {
     setFilialInput([...filialInput, { id, ...value }]);
   };
@@ -151,6 +161,11 @@ export default function Products() {
   const addAtributInput = async (value, id) => {
     setAtributInput([...atributInput, { id, ...value }]);
   };
+
+
+
+
+
   const handleDeleteImageApi = (id) => {
     setIsModalOpen(false);
     const data = imageData2.filter((el) => el.id !== id);
@@ -173,13 +188,7 @@ export default function Products() {
     }
   };
 
-  const deleteID = (i) => {
-    setFilialInput(filialInput.filter((item) => item.id !== i));
-  };
-  const deleteIDHighlight = (i) => {
-    setAtributInput(atributInput.filter((item) => item?.id !== i));
-    console.log("delete id == ", i, atributInput);
-  };
+
 
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
@@ -421,6 +430,7 @@ export default function Products() {
         console.log(err);
       });
   };
+
 
   const getItem = async () => {
     await Client.get(
@@ -998,7 +1008,7 @@ export default function Products() {
                         dataH={item}
                         key={i}
                         addFilialInput={addProductHighlightInput}
-                        id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
+                        id={item.id ? item.id : atributInput[i - 1]?.id + 1}
                         deleteIDHighlight={deleteIDHighlight}
                         change={change}
                       />
@@ -1007,10 +1017,10 @@ export default function Products() {
                     <div
                       onClick={() =>
                         addAtributInput(
-                          { content: 0, order: 0 },
-                          filialInput?.length === 0
+                          { content: '', order: '' },
+                          atributInput?.length === 0
                             ? 1
-                            : filialInput[filialInput.length - 1].id + 1
+                            : atributInput[atributInput.length - 1].id + 1
                         )
                       }
                       className="p-3"
@@ -1852,7 +1862,7 @@ export default function Products() {
                         dataH={item}
                         key={i}
                         addFilialInput={addProductHighlightInput}
-                        id={i + 1}
+                        id={item.id ? item.id : atributInput[i - 1]?.id + 1}
                         deleteIDHighlight={deleteIDHighlight}
                         change={change}
                       />
@@ -1861,8 +1871,10 @@ export default function Products() {
                     <div
                       onClick={() =>
                         addAtributInput(
-                          { content: 0, order: 0 },
-                          atributInput.length + 1
+                          { content: '', order: '' },
+                          atributInput?.length === 0
+                            ? 1
+                            : atributInput[atributInput.length - 1].id + 1
                         )
                       }
                       className="p-3"
@@ -1878,6 +1890,7 @@ export default function Products() {
                     </div>
                   </AccordionDetails>
                 </Accordion>
+
 
                 <Accordion>
                   <AccordionSummary
@@ -1909,7 +1922,7 @@ export default function Products() {
                         selectData={branchData}
                         key={i}
                         addFilialInput={addFilialInput}
-                        id={i + 1}
+                        id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
                         deleteID={deleteID}
                         change={change}
                         // setChangeBranchCunt={setChangeBranchCunt}
@@ -1919,8 +1932,10 @@ export default function Products() {
                     <div
                       onClick={() =>
                         addFormInput(
-                          { branch: 0, quantity: 0 },
-                          filialInput.length + 1
+                          { branch: "", quantity: "" },
+                          filialInput?.length === 0
+                            ? 1
+                            : filialInput[filialInput.length - 1].id + 1
                         )
                       }
                       className="p-3"
@@ -2279,7 +2294,7 @@ export default function Products() {
                 setDiscount(e.target.value);
               }}
             />
-{/* 
+            {/* 
             <input
               type="text"
               id="priceInput"
@@ -2656,23 +2671,33 @@ export default function Products() {
                     <i className="fa-regular fa-star"></i> Asosiy element
                   </p>
                 </div>
-
+{/* qoshish */}
                 {atributInput?.map((item, i) => (
                   <AddInput
-                    key={i}
-                    addFilialInput={addProductHighlightInput}
-                    id={i + 1}
-                    deleteIDHighlight={deleteIDHighlight}
-                    // setChangeBranchCunt={setChangeBranchCunt}
-                    // setChangeBranch={setChangeBranch}
-                    change={change}
+                    // key={i}
+                    // addFilialInput={addProductHighlightInput}
+                    // id={i + 1}
+                    // deleteIDHighlight={deleteIDHighlight}
+                    // // setChangeBranchCunt={setChangeBranchCunt}
+                    // // setChangeBranch={setChangeBranch}
+                    // dataH={item}
+                    // change={change}
+
+
+
+                        dataH={item}
+                        key={i}
+                        addFilialInput={addProductHighlightInput}
+                        id={item.id ? item.id : atributInput[i - 1]?.id + 1}
+                        deleteIDHighlight={deleteIDHighlight}
+                        change={change}
                   />
                 ))}
 
                 <div
                   onClick={() =>
                     addAtributInput(
-                      { content: 0, order: 0 },
+                      { content: '', order: '' },
                       atributInput.length + 1
                     )
                   }
@@ -2709,8 +2734,9 @@ export default function Products() {
                   <AddInput
                     selectData={branchData}
                     key={i}
+                    dataF={item}
                     addFilialInput={addFilialInput}
-                    id={i + 1}
+                    id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
                     deleteID={deleteID}
                     // setChangeBranchCunt={setChangeBranchCunt}
                     // setChangeBranch={setChangeBranch}
@@ -2719,9 +2745,11 @@ export default function Products() {
                 <div
                   onClick={() =>
                     addFormInput(
-                      { branch: 0, quantity: 0 },
-                      filialInput.length + 1
-                    )
+                          { branch: "", quantity: "" },
+                          filialInput?.length === 0
+                            ? 1
+                            : filialInput[filialInput.length - 1].id + 1
+                        )
                   }
                   className="p-3"
                   style={{
@@ -2956,7 +2984,7 @@ export default function Products() {
             <></>
           )}
 
-          {atributInput?.[0].content !== "" ||
+          {/* {atributInput?.[0].content !== "" ||
           atributInput?.[0].order !== "" ? (
             <>
               <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
@@ -2984,7 +3012,7 @@ export default function Products() {
             </>
           ) : (
             ""
-          )}
+          )} */}
 
           {price ? (
             <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">

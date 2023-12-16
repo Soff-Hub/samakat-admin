@@ -1,8 +1,8 @@
 import { TextField } from "@mui/material";
-import React, { useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+import React, { useEffect, useState } from "react";
+// import InputLabel from "@mui/material/InputLabel";
+// import MenuItem from "@mui/material/MenuItem";
+// import FormControl from "@mui/material/FormControl";
 import { Select } from "antd";
 // import Select from "@mui/material/Select";
 
@@ -17,37 +17,36 @@ export default function AddInput({
   setChangeBranchCunt,
   change,
 }) {
+  console.log('dataF', dataF);
   const [obj, setObj] = useState({ branch: "", quantity: "", id });
   const [select, setSelect] = useState([]);
 
   function changeObj(e, key) {
     let keyName = {};
     keyName[`${key}`] = e;
-
     addFilialInput({ ...obj, ...keyName }, id);
-
     setObj({ ...obj, ...keyName });
   }
 
   const DeleteFilialItem = () => {
     deleteID(id);
-    // console.log("delete id => ", id);
+    console.log("addInputdan ketayotgan  delete id => ", id);
   };
-
+  
   const DeleteIDHighlight = () => {
     deleteIDHighlight(id);
   };
 
-  useState(() => {
-    // console.log(dataF, "data");
+  
+  useEffect(()=> {
     setSelect(
       selectData?.map((el) => ({
-        label: el.name,
-        value: el.id,
+        label: el?.name,
+        value: el?.id,
       }))
     );
-  }, []);
-  console.log("dataf", dataF);
+  }, [selectData])
+
 
   return selectData ? (
     <div style={{ backgroundColor: "#EEEEEE" }} className="flex gap-x-10 p-3  ">
@@ -71,8 +70,9 @@ export default function AddInput({
           </Select>
         </FormControl> */}
         <Select
+        placeholder="Filial"
         sx={{ m: 0, minWidth: 220 }} size="small"
-          defaultValue={dataF.branch}
+          value={dataF?.branch}
           style={{
             width: 170,
             height: 40,
@@ -90,9 +90,9 @@ export default function AddInput({
           size="small"
           type="number"
           // required
-          defaultValue={dataF?.quantity || obj?.quantity}
+          value={dataF?.quantity}
           onChange={(e) => {
-            changeObj(+e.target.value, "quantity");
+            changeObj(e.target.value, "quantity");
           }}
         />
       </div>
@@ -117,9 +117,10 @@ export default function AddInput({
           size="small"
           style={{ marginTop: "10px", width: "150px" }}
           type="number"
-          defaultValue={dataH?.order ? dataH?.order : obj?.order}
+          // defaultValue={dataH?.order}
+          value={dataH?.order}
           onChange={(e) => {
-            changeObj(+e.target.value, "order");
+            changeObj(e.target.value, "order");
           }}
         />
       </div>
@@ -135,7 +136,7 @@ export default function AddInput({
           size="small"
           style={{ marginTop: "10px" }}
           type="text"
-          defaultValue={dataH?.content}
+          value={dataH?.content}
           onChange={(e) => changeObj(e.target.value, "content")}
         />
       </div>
