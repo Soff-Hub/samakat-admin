@@ -96,6 +96,7 @@ export default function Retsepts() {
 
   const setImageUrlUpdate = (url, id) => {
     // setIsModalOpen(false);
+   if (url) {
     setImageLink({ image: window.URL.createObjectURL(url), id: id });
     for (let i = 0; i < imageData2.length; i++) {
       if (imageData2[i].id === id) {
@@ -105,10 +106,12 @@ export default function Retsepts() {
         });
       }
     }
+   }
   };
 
   const setImageUrlAdd = (url, id) => {
-    setSelectImage(url);
+    if (url) {
+      setSelectImage(url);
     setAddImageLink({ image: window.URL.createObjectURL(url), id: id });
 
     for (let i = 0; i < addHandleImageData.length; i++) {
@@ -118,6 +121,7 @@ export default function Retsepts() {
           imageUrl: url,
         });
       }
+    }
     }
   };
 
@@ -385,13 +389,12 @@ export default function Retsepts() {
                           <div
                             onClick={() => showModal(item?.image, item.id)}
                             style={{
-                              maxWidth: "150px",
-                              width: "150px",
+                              width: ` ${ item?.image ? "250px" : '150px'}`,
                               backgroundImage: `url(${
                                 item?.image ? item?.image : ""
                               })`,
                               backgroundSize: "cover",
-                              height: "120px",
+                              height: ` ${item?.image ? "250px" : '120px'}`,
                               borderRadius: "5px",
                             }}
                           ></div>
@@ -439,7 +442,7 @@ export default function Retsepts() {
                                   right: "0",
                                 }}
                                 onChange={(e) =>
-                                  setImageUrlUpdate(e.target.files[0], item.id)
+                                  setImageUrlUpdate(e?.target?.files[0], item.id)
                                 }
                                 type="file"
                               />
@@ -468,7 +471,7 @@ export default function Retsepts() {
                                   imageLink?.image ? imageLink?.image : ""
                                 })`,
                                 backgroundSize: "cover",
-                                minHeight: "400px",
+                                minHeight: "500px",
                                 height: "100%",
                                 borderRadius: "5px",
                               }}
@@ -497,7 +500,7 @@ export default function Retsepts() {
                                   }}
                                   onChange={(e) =>
                                     setImageUrlUpdate(
-                                      e.target.files[0],
+                                      e?.target?.files[0],
                                       imageLink.id
                                     )
                                   }
@@ -657,19 +660,16 @@ export default function Retsepts() {
                             : console.log("rasm yoq")
                         }
                         style={{
-                          maxWidth: "150px",
-                          width: "150px",
+                          width: ` ${ item?.image ? "250px" : '150px'}`,
                           backgroundImage: `url(${
                             item?.image ? item?.image : ""
                           })`,
                           backgroundSize: "cover",
-                          height: "120px",
+                          height: `${item?.image ? '250px' : '120px'}`,
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          border: `${
-                            false ? "1px solid red" : "1px solid #ccc"
-                          }`,
+                          border: "1px solid #ccc",
                           borderRadius: `${false ? "7px" : "5px"}`,
                           position: "relative",
                         }}
@@ -695,7 +695,7 @@ export default function Retsepts() {
                               right: "0",
                             }}
                             onChange={(e) =>
-                              setImageUrlAdd(e.target.files[0], item.id)
+                              setImageUrlAdd(e?.target?.files[0], item.id)
                             }
                             type="file"
                           />
@@ -723,7 +723,7 @@ export default function Retsepts() {
                                 addImageLink?.image ? addImageLink?.image : ""
                               })`,
                               backgroundSize: "cover",
-                              minHeight: "400px",
+                              minHeight: "500px",
                               height: "100%",
                               borderRadius: "5px",
                             }}
@@ -752,7 +752,7 @@ export default function Retsepts() {
                                 }}
                                 onChange={(e) =>
                                   setImageUrlAdd(
-                                    e.target.files[0],
+                                    e?.target?.files[0],
                                     addImageLink.id
                                   )
                                 }

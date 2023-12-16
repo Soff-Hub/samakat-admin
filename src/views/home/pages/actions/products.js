@@ -91,16 +91,18 @@ export default function Products() {
 
   const setImageUrlAdd = (url, id) => {
     // setSelectImage(url);
-    setAddImageLink({ image: window.URL.createObjectURL(url), id: id });
-
-    for (let i = 0; i < addHandleImageData.length; i++) {
-      if (addHandleImageData[i].id === id) {
-        Object.assign(addHandleImageData[i], {
-          image: window.URL.createObjectURL(url),
-          imageUrl: url,
-        });
+    if (url) {
+      setAddImageLink({ image: window.URL.createObjectURL(url), id: id });
+      for (let i = 0; i < addHandleImageData.length; i++) {
+        if (addHandleImageData[i].id === id) {
+          Object.assign(addHandleImageData[i], {
+            image: window.URL.createObjectURL(url),
+            imageUrl: url,
+          });
+        }
       }
     }
+
   };
 
   const handleDeleteImageAddApi = (id) => {
@@ -167,6 +169,16 @@ export default function Products() {
 
 
   const handleDeleteImageApi = (id) => {
+    setIsModalOpen(false);
+    const data = imageData2.filter((el) => el.id !== id);
+    setImageData2(data);
+    if (imageData.find((el) => el.id === id)) {
+      delID.push(id);
+    }
+  };
+
+
+  const handleDeleteImageApiVariant = (id) => {
     setIsModalOpen(false);
     const data = imageData2.filter((el) => el.id !== id);
     setImageData2(data);
@@ -314,6 +326,7 @@ export default function Products() {
     if (product_branch?.[0]?.branch !== 0) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
+
 
     formData1.append("type", location.search.split("?")[1]);
     for (let i = 0; i < imageData2?.length; i++) {
@@ -502,7 +515,7 @@ export default function Products() {
   useEffect(() => {
     getBranchData();
   }, []);
-
+console.log('del', delID);
   useEffect(() => {
     if (
       location.search.split("?")?.[2] === "edit" ||
@@ -673,7 +686,7 @@ export default function Products() {
                                       item?.image ? item?.image : ""
                                     })`,
                                     backgroundSize: "cover",
-                                    height: "120px",
+                                    height: "155px",
                                     borderRadius: "5px",
                                   }}
                                 ></div>
@@ -1532,7 +1545,7 @@ export default function Products() {
                                       item?.image ? item?.image : ""
                                     })`,
                                     backgroundSize: "cover",
-                                    height: "120px",
+                                    height: "155px",
                                     borderRadius: "5px",
                                   }}
                                 ></div>
@@ -1627,7 +1640,7 @@ export default function Products() {
                                   >
                                     <div
                                       onClick={() =>
-                                        handleDeleteImageApi(imageLink?.id)
+                                        handleDeleteImageApiVariant(imageLink?.id)
                                       }
                                       className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
                                     >
@@ -2381,14 +2394,11 @@ export default function Products() {
                                   item?.image ? item?.image : ""
                                 })`,
                                 backgroundSize: "cover",
-                                height: "120px",
+                                height: "155px",
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                // border: "1px solid #ccc",
-                                border: `${
-                                  false ? "1px solid red" : "1px solid #ccc"
-                                }`,
+                                border:  "1px solid #ccc",
                                 borderRadius: "5px",
                                 position: "relative",
                               }}
@@ -2414,7 +2424,7 @@ export default function Products() {
                                     right: "0",
                                   }}
                                   onChange={(e) =>
-                                    setImageUrlAdd(e.target.files[0], item.id)
+                                    setImageUrlAdd(e?.target?.files[0], item?.id)
                                   }
                                   type="file"
                                 />
@@ -2473,8 +2483,8 @@ export default function Products() {
                                       }}
                                       onChange={(e) =>
                                         setImageUrlAdd(
-                                          e.target.files[0],
-                                          addImageLink.id
+                                          e?.target?.files[0],
+                                          addImageLink?.id
                                         )
                                       }
                                       type="file"

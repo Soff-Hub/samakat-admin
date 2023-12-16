@@ -138,11 +138,12 @@ function Categories() {
   }, []);
 
   const LifeImage = (e) => {
-    let img = window.URL.createObjectURL(e.target.files[0]);
-    setLifeImage(img);
+    if (e?.target?.files[0]) {
+      let img = window.URL.createObjectURL(e?.target?.files[0]);
+      setLifeImage(img);
+    }
   };
 
-  console.log("image", lifeImage);
 
   return loaction.search.split("?").length === 4 ? (
     itemData ? (
@@ -202,10 +203,9 @@ function Categories() {
               <div className="image-conatiner">
                 <div
                   style={{
-                    width: ` ${lifeImage ? "140px" : "140px"}`,
+                    width: ` ${lifeImage ? "250px" : "140px"}`,
                     backgroundImage: `url(${lifeImage})`,
-                    objectFit: "cover",
-                    height: `${lifeImage ? "180px" : "120px"}`,
+                    height: `${lifeImage ? "250px" : "120px"}`,
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -214,7 +214,7 @@ function Categories() {
                     position: "relative",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
-                    textAlign: "center",
+                    backgroundSize:'contain',
                   }}
                 >
                   {lifeImage ? (
@@ -235,7 +235,7 @@ function Categories() {
                       right: "0",
                     }}
                     onChange={(e) => (
-                      setImage(e.target.files[0]), LifeImage(e)
+                      setImage(e?.target?.files[0]), LifeImage(e)
                     )}
                     type="file"
                   />
@@ -316,10 +316,9 @@ function Categories() {
           <div className="image-conatiner">
             <div
               style={{
-                width: ` ${lifeImage ? "140px" : "140px"}`,
+                width: ` ${lifeImage ? "250px" : "140px"}`,
                 backgroundImage: `url(${lifeImage})`,
-                objectFit: "cover",
-                height: `${lifeImage ? "180px" : "120px"}`,
+                height: `${lifeImage ? "250px" : "120px"}`,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -329,6 +328,7 @@ function Categories() {
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 textAlign: "center",
+                backgroundSize:'contain'
               }}
             >
               {lifeImage ? (
@@ -348,7 +348,7 @@ function Categories() {
                   bottom: "0",
                   right: "0",
                 }}
-                onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
+                onChange={(e) => (setImage(e?.target?.files[0]), LifeImage(e))}
                 type="file"
               />
             </div>

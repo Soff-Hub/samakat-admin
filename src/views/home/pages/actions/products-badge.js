@@ -25,8 +25,10 @@ export default function Aksiya() {
     setRelatedCategory(event);
   };
   const LifeImage = (e) => {
-    let img = window.URL.createObjectURL(e.target.files[0]);
-    setLifeImage(img);
+    if (e?.target?.files[0]) {
+      let img = window.URL.createObjectURL(e.target.files[0]);
+      setLifeImage(img);
+    }
   };
 
   const handleSubmitEdit = async (e) => {
@@ -224,10 +226,10 @@ export default function Aksiya() {
                 <div
                   style={{
                     // maxWidth: "150px",
-                    width: ` ${lifeImage ? "140px" : "140px"}`,
-                    height: `${lifeImage ? "180px" : "120px"}`,
+                    width: ` ${lifeImage ? "250px" : "140px"}`,
+                    height: `${lifeImage ? "250px" : "120px"}`,
+                    backgroundSize: "contain",
                     backgroundImage: `url(${lifeImage})`,
-                    objectFit: "cover",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -237,7 +239,6 @@ export default function Aksiya() {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     textAlign: "center",
-                    backgroundPosition:'center'
                   }}
                 >
                   {lifeImage ? (
@@ -367,11 +368,10 @@ export default function Aksiya() {
               <div
                 style={{
                   // maxWidth: "150px",
-                  width: ` ${lifeImage ? "140px" : "140px"}`,
-                  height: `${lifeImage ? "180px" : "120px"}`,
-                  backgroundImage: `url(${lifeImage})`,
+                  width: ` ${lifeImage ? "250px" : "140px"}`,
+                  height: `${lifeImage ? '250px' : "120px"}`,
                   backgroundSize: "contain",
-                  height: `${lifeImage ? "300px" : "120px"}`,
+                  backgroundImage: `url(${lifeImage})`,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
