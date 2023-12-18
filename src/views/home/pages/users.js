@@ -205,7 +205,7 @@ export default function Users() {
       <div className="mb-5">
         <h1 className="text-2xl font-sans">Jami foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[#3B82F6]">{allUserCount}</span>  {allUserCount ? "ta  " : ''}</h1>
         <h1 className="text-2xl font-sans">Faol foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[green]">{UsersCount.active}</span>  {UsersCount.active ? "ta  " : ''}</h1>
-        <h1 className="text-2xl font-sans">Faol emas foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[red]">{UsersCount.no_active}</span>  {UsersCount.no_active ? "ta  " : ''}</h1>
+        {/* <h1 className="text-2xl font-sans">Faol emas foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[red]">{UsersCount.no_active}</span>  {UsersCount.no_active ? "ta  " : ''}</h1> */}
       </div>
       <div className="flex items-center gap-1">
         <input

@@ -380,7 +380,7 @@ export default function Retsepts() {
               <div style={{ display: "flex ", gap: "10px" }}>
                 <div
                   className="flex gap-3 flex-wrap"
-                  style={{ minWidth: "490px" }}
+                  style={{ minWidth: "520px" }}
                 >
                   {imageData2.map((item, i) => {
                     return (
@@ -648,7 +648,7 @@ export default function Retsepts() {
             <div style={{ display: "flex ", justifyContent: "start" }}>
               <div
                 className="flex gap-3 flex-wrap"
-                style={{ minWidth: "490px" }}
+                style={{ minWidth: "520px" }}
               >
                 {addHandleImageData.map((item, i) => {
                   return (

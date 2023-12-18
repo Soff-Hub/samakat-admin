@@ -318,6 +318,8 @@ export default function Products() {
     formData1.append("variant_id", location.search.split("?")[4]);
     if (delID?.length > 0) {
       formData1.append("variant_images", JSON.stringify(delID));
+    }else{
+      formData1.append("variant_images", JSON.stringify(imageData?.map((el) => el.id)));
     }
 
     if (product_highlight?.[0]?.content !== "") {
@@ -515,7 +517,6 @@ export default function Products() {
   useEffect(() => {
     getBranchData();
   }, []);
-console.log('del', delID);
   useEffect(() => {
     if (
       location.search.split("?")?.[2] === "edit" ||

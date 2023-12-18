@@ -44,7 +44,6 @@ export default function Aksiya() {
     if (img) {
       formData.append("image", img);
     }
-
     setSubmiting(true);
     await Client.patch(
       API_ENDPOINTS.PATCH_BADGE + `${location.search.split("?")[2]}/`,
@@ -72,6 +71,7 @@ export default function Aksiya() {
     formData.append("text", text);
     formData.append("textColor", badge);
     formData.append("discount", discount);
+    formData.append("type", location.search.split("?")[1]);
     if (!relatedCategory?.[0]?.name > 0) {
       formData.append("products", JSON.stringify(relatedCategory));
     }
