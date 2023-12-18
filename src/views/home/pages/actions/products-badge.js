@@ -10,7 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Aksiya() {
   const [submiting, setSubmiting] = useState(false);
-  const [badge, setBadge] = useState(" ");
+  const [badge, setBadge] = useState("#000");
   const [text, setText] = useState("");
   const [data, setData] = useState(null);
   const navigate = useNavigate();

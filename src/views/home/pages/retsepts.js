@@ -229,7 +229,7 @@ export default function EnhancedTable() {
           Bistro
         </ToggleButton>
         <ToggleButton className="w-full" value="byuti">
-          Aptika
+          Byuti
         </ToggleButton>
       </ToggleButtonGroup>
       <input

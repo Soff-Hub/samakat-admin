@@ -73,7 +73,7 @@ export default function Orders() {
                 variant="outlined"
                 size="large"
                 type="text"
-                value={(data.user.first_name || data.user.first_name ) ? data.user.first_name + " " + data.user?.last_name : "-"}
+                value={(data.user.first_name || data.user.first_name || data.user.phone ) ? data.user.first_name + " " + data.user?.last_name + data.user?.phone : "-"}
                 onClick={() => handleChangeRouter(data.user?.id)}
               />
               <TextField

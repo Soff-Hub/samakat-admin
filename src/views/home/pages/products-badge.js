@@ -17,6 +17,8 @@ import {
   CircularProgress,
   Pagination,
   Stack,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
@@ -25,9 +27,8 @@ import NavHeaderSelect from "components/shared/NavHeaderSelect";
 
 function Row(props) {
   const { row } = props;
-  const {setOpen} = props
-  const {setDeleteId} = props
-
+  const { setOpen } = props;
+  const { setDeleteId } = props;
 
   return (
     <React.Fragment>
@@ -37,7 +38,11 @@ function Row(props) {
         </TableCell>
         <TableCell align="left">
           <Link to={`actions/?edit?${row.id}`}>
-            {row.discount !== 0 ? row.discount + "%" : <i style={{color:'red'}} class="fa-solid fa-xmark"></i>}
+            {row.discount !== 0 ? (
+              row.discount + "%"
+            ) : (
+              <i style={{ color: "red" }} class="fa-solid fa-xmark"></i>
+            )}
           </Link>{" "}
         </TableCell>
         <TableCell align="center">
@@ -93,9 +98,10 @@ export default function CollapsibleTable() {
   const [page, setPage] = React.useState(1);
   const [openDelete, setOpen] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState(null);
-
+  const [type, setType] = React.useState("bistro");
 
   const getBadge = async () => {
+
     await Client.get(API_ENDPOINTS.BADGE)
       .then((res) => {
         setBadgeData(res.results);
@@ -127,6 +133,20 @@ export default function CollapsibleTable() {
       .catch((err) => console.log(err));
   };
 
+  const handleChange = async (e) => {
+    setPage(1);
+    setType(e.target.value);
+    await Client.get(
+      `${API_ENDPOINTS.BADGE}?page=${page}&type=${e.target.value}`
+    )
+      .then((resp) => {
+        console.log(resp);
+        setCount(resp.count);
+        setBadgeData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
   React.useEffect(() => {
     getBadge();
   }, []);
@@ -136,7 +156,20 @@ export default function CollapsibleTable() {
       <div className="mb-5">
         <NavHeaderSelect title="Mahsulot aksiyalari" />
       </div>
-
+      <ToggleButtonGroup
+        color="primary"
+        value={type}
+        exclusive
+        onChange={handleChange}
+        className="mt-5 flex items-center w-full"
+      >
+        <ToggleButton className="w-full" value="bistro">
+          Bistro
+        </ToggleButton>
+        <ToggleButton className="w-full" value="byuti">
+          Byuti
+        </ToggleButton>
+      </ToggleButtonGroup>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
@@ -158,9 +191,14 @@ export default function CollapsibleTable() {
           {bagdeData?.length >= 0 ? (
             <TableBody>
               {bagdeData?.map((row) => (
-                <Row key={row.name} row={row} setOpen={setOpen} setDeleteId={setDeleteId} />
+                <Row
+                  key={row.name}
+                  row={row}
+                  setOpen={setOpen}
+                  setDeleteId={setDeleteId}
+                />
               ))}
-              {count && Math.ceil(count / 30) <= 1 || count === 0  ? (
+              {(count && Math.ceil(count / 30) <= 1) || count === 0 ? (
                 <></>
               ) : (
                 <div className="m-3 mb-5">
