@@ -147,6 +147,7 @@ export default function Retsepts() {
       formData.append("description", description);
       formData.append("category", category);
       formData.append("is_active", checked);
+      formData.append("type", location.search.split("?")[1]);
       if (relatedCategory) {
         formData.append("related_categories", relatedCategory);
       }
