@@ -22,7 +22,7 @@ import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRen
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 
 const headCells = [
@@ -109,6 +109,8 @@ export default function EnhancedTable() {
   const [count, setCount] = useState("");
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [category, setCategory] = useState(null);
+  const [categoryValue, setCategoryValue] = useState(null);
 
   const handleChange = async (e) => {
     setType(e.target.value);
@@ -130,6 +132,13 @@ export default function EnhancedTable() {
       .then((resp) => {
         setCount(resp.count);
         setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+  const getCategory = async () => {
+    await Client.get(`${API_ENDPOINTS.CATEGORIES_CHAILD}`)
+      .then((resp) => {
+        setCategory(resp.results);
       })
       .catch((err) => console.log(err));
   };
@@ -163,8 +172,21 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
+  const handleChangeCategory = async (event) => {
+    setCategoryValue(event.target.value);
+    await Client.get(
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&product_categories__category_id=${event.target.value}`
+    )
+      .then((resp) => {
+        setCount(resp.results)
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     getProductData();
+    getCategory()
     // eslint-disable-next-line
   }, []);
   return (
@@ -189,10 +211,37 @@ export default function EnhancedTable() {
       <input
         type="text"
         placeholder="Izlash"
-        className=" px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
-        style={{ width: "100%" }}
+        className=" lg:w-1/2 md:w-1/2 sm:w-full   px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
         onChange={(e) => Search(e.target.value)}
       />
+       <FormControl
+          size="small"
+          className="sm:w-full  lg:w-1/2  md:w-1/2"
+          style={{marginTop:'12px'}}
+        >
+          <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
+           Kategoriya
+          </InputLabel>
+          <Select
+            className="py-0.5"
+            value={categoryValue}
+            label="Holat bo'yicha"
+            onChange={handleChangeCategory}
+          >
+            <MenuItem value={""}>
+              <i className="fa-solid fa-minus"></i>{" "}
+            </MenuItem>
+            {category ? (
+              category?.map((item, i) => (
+                <MenuItem key={i} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))
+            ) : (
+              <></>
+            )}
+          </Select>
+        </FormControl>
       <Box sx={{ width: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <TableContainer>
@@ -308,14 +357,14 @@ export default function EnhancedTable() {
               </TableBody>
             </Table>
           </TableContainer>
-          {Math.ceil(count / 30) <= 1 || count === 0 ? (
+          {!(count >= 30) ? (
             <></>
           ) : (
             <div className="m-3 mb-5">
               <Stack spacing={2}>
                 <Typography> Sahifa : {page}</Typography>
                 <Pagination
-                  count={Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)}
+                  count={Math.ceil(count / 30) <= 1 ? 1 : Math.ceil(count / 30)}
                   page={page}
                   onChange={handleChangePag}
                 />

@@ -47,7 +47,8 @@ export function ChaildRow2({ row, Detele, type }) {
     // eslint-disable-next-line
   }, [data, type]);
 
-  console.log(rowData);
+
+  
   return (
     <>
       <Accordion>

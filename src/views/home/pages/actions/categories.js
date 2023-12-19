@@ -7,6 +7,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Select, Space } from "antd";
+
 
 function Categories() {
   const [submiting, setSubmiting] = useState(false);
@@ -22,6 +24,14 @@ function Categories() {
   const [lifeImage, setLifeImage] = useState(null);
   const navigate = useNavigate();
   const loaction = useLocation();
+  const [product, setProduct] = useState([])
+  const [productApi, setProductApi] = useState(null)
+  const [defaultData, setDefaultData] = useState([])
+
+  const handleChangeRelatedCategory = (event) => {
+    setProduct(event);
+    console.log(event);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,6 +68,7 @@ function Categories() {
       formData.append("image", img);
     }
     formData.append("type", loaction.search.split("?")[1]);
+    formData.append("products", JSON.stringify(product));
 
     setSubmiting(true);
     await Client.post(API_ENDPOINTS.CREATE_CATEGORY, formData)
@@ -82,6 +93,10 @@ function Categories() {
         setFormVal(resp);
         setItemData(resp);
         setLifeImage(resp.image);
+        setDefaultData(resp.products?.map((el) => ({
+          value : el.id,
+          label:el.name
+        })))
       })
       .catch((err) => console.log(err));
   };
@@ -104,6 +119,7 @@ function Categories() {
     formData.append("name", formVal.name);
     formData.append("order", formVal.order);
     formData.append("type", formVal.type);
+    formData.append("products", JSON.stringify(product));
     if (img) {
       formData.append("image", img);
     }
@@ -124,6 +140,20 @@ function Categories() {
     setSubmiting(false);
   };
 
+  const getProduct = async () => {
+    await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}`)
+    .then((res) => {
+      console.log(res);
+      setProductApi(res?.map((el) => ({
+        value : el.id,
+        label:el.name
+      })))
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   useEffect(() => {
     if (loaction.search.split("?").length === 4) {
       getItem();
@@ -143,6 +173,10 @@ function Categories() {
       setLifeImage(img);
     }
   };
+
+  useEffect(() => {
+    getProduct()
+  }, [])
 
 
   return loaction.search.split("?").length === 4 ? (
@@ -199,6 +233,33 @@ function Categories() {
                 }}
                 type="number"
               />
+              {
+                !itemData.is_add_childe ? 
+                <Space
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                }}
+                direction="vertical"
+              >
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{
+                    width: "100%",
+                  }}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  placeholder="Mahsulotlar"
+                  onChange={handleChangeRelatedCategory}
+                  defaultValue={defaultData}
+                  options={productApi}
+                />
+              </Space> : ''
+              }
 
               <div className="image-conatiner">
                 <div
@@ -313,6 +374,37 @@ function Categories() {
             }}
             type="number"
           />
+
+            
+          {
+             loaction.search.split("?").length === 5
+             ? 
+             <Space
+             style={{
+               width: "100%",
+               textAlign: "left",
+             }}
+             direction="vertical"
+           >
+             <Select
+               mode="multiple"
+               allowClear
+               style={{
+                 width: "100%",
+               }}
+               showSearch
+               optionFilterProp="children"
+               filterOption={(input, option) =>
+                 (option?.label ?? "").includes(input)
+               }
+               placeholder="Mahsulotlar"
+               onChange={handleChangeRelatedCategory}
+               options={productApi}
+             />
+           </Space>
+             : ""
+          }
+
           <div className="image-conatiner">
             <div
               style={{
@@ -360,6 +452,7 @@ function Categories() {
               Delete
             </Button>
           </div>
+
 
           <Button
             variant="outlined"
