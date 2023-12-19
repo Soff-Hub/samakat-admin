@@ -47,7 +47,7 @@ export function ChaildRow2({ row, Detele, type }) {
     // eslint-disable-next-line
   }, [data, type]);
 
-
+  console.log(rowData);
   return (
     <>
       <Accordion>
@@ -66,13 +66,17 @@ export function ChaildRow2({ row, Detele, type }) {
                 ""
               ) : (
                 <>
-                  <Link
-                    to={`actions/?${rowData.type}?${rowData.id}?chaild?${rowData.slug}`}
-                  >
-                    <IconButton color="primary" aria-label="delete">
-                      <AddCircleOutlinedIcon />
-                    </IconButton>
-                  </Link>
+                  {rowData.is_add_childe ? (
+                    <Link
+                      to={`actions/?${rowData.type}?${rowData.id}?chaild?${rowData.slug}`}
+                    >
+                      <IconButton color="primary" aria-label="delete">
+                        <AddCircleOutlinedIcon />
+                      </IconButton>
+                    </Link>
+                  ) : (
+                    ""
+                  )}
                   <Link to={`actions/?edit?${rowData.type}?${rowData.slug}`}>
                     <IconButton color="primary">
                       <DriveFileRenameOutlineOutlinedIcon />

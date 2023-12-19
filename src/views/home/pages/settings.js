@@ -76,8 +76,8 @@ export default function Settings() {
         }}
       >
         <div style={{ display: "flex", gap: "40px" }}>
-          <p>Dostavka radiusi</p>
-          <p>{data?.dostavka_radius} {data?.dostavka_radius ? 'km' : ''} </p>
+          <p>Yetkazib berish vaqti</p>
+          <p>{data?.delivery_time} {data?.delivery_time ? 'min' : ''} </p>
         </div>
         <div>
           <Button onClick={showModal}>
@@ -85,7 +85,7 @@ export default function Settings() {
           </Button>
         </div>
         <Modal
-          title="Dostavka radiusini tahrirlash"
+          title="Yetkazib berish vaqtini tahrirlash"
           open={isModalOpen}
           onOk={() => handleOk(data?.id)}
           onCancel={handleCancel}
@@ -100,7 +100,7 @@ export default function Settings() {
         >
          <TextField
               inputMode="numeric"
-              label="Radius"
+              label="Vaqt"
               variant="outlined"
               size="small"
               type="number"
