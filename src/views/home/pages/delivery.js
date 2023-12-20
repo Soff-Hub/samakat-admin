@@ -5,18 +5,10 @@ import KanbanListItemContainer from "components/kanban/kanban-list-item_containe
 import React from "react";
 import {
   FormControlLabel,
-  Pagination,
   Radio,
   RadioGroup,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   TextField,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import { Button, Modal, message } from "antd";
 import { useEffect, useState } from "react";

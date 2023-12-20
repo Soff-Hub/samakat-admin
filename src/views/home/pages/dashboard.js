@@ -26,21 +26,21 @@ export default function Dashboard() {
 
 
   return (
-    <div>
-      <div className="flex justify-center">
-        <div className="md:w-1/2 w-1/4  flex flex-col xl:gap-12 justify-between  border p-4 rounded-md m-2 shadow-lg shadow-indigo-500/40">
+    <div className="dashboard-container" >
+      <div className="dashboard">
+       <div className="dashboart-cart-group-two" >
+       <div className="dashboard-item-cart     flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
           <div className="flex justify-between">
             <p>
-              <span className="lg:text-[18px] ms:text-[16px] sm:text-[14px] block font-semibold text-slate-900">
+              <span className="lg:text-[18px] md:text-[16px]  sm:text-[14px] text-[13px] lg:leading-5 leading-4  block font-semibold text-slate-900">
                 Bugungi daromad
               </span>
             </p>
             <i
-              style={{ color: "#FFC107  ", fontSize: "28px" }}
-              className="fa-solid fa-money-check-dollar"
+              className="fa-solid fa-money-check-dollar dashboard-icon"
             ></i>
           </div>
-          <p className="text-[16px]">
+          <p className="lg:text-[15px] md:text-[14px] sm:text-[12px] text-[12px] leading-3">
             <i
               style={{ color: "#FFC107" }}
               className="fa-solid fa-coins mr-1"
@@ -48,57 +48,59 @@ export default function Dashboard() {
             {data?.todays_amount}
           </p>
         </div>
-        <div className="md:w-1/2 w-1/4  flex flex-col xl:gap-12 justify-between  border p-4 rounded-md m-2 shadow-lg shadow-indigo-500/40">
+        <div className="dashboard-item-cart   flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
           <div className="flex justify-between">
             <p>
-              <span className="lg:text-[18px] ms:text-[16px] sm:text-[14px] block font-semibold text-slate-900">
+              <span className="lg:text-[18px] md:text-[16px] sm:text-[14px] text-[13px] lg:leading-5 leading-4  block font-semibold text-slate-900">
                 Jami daromad
               </span>
             </p>
             <i
-              style={{ color: "#FFC107  ", fontSize: "28px" }}
-              class="fa-solid fa-sack-dollar"
+              class="fa-solid fa-sack-dollar dashboard-icon"
             ></i>
           </div>
-          <p className="text-[16px]">
-            <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>{" "}
+          <p className="lg:text-[15px] md:text-[14px] sm:text-[12px] text-[12px] leading-3">
+            <i style={{ color: "#FFC107" }} className="fa-solid fa-coins "></i>{" "}
             {data?.total_amount} <span>so'm</span>
           </p>
         </div>
-        <div className="md:w-1/2 w-1/4  flex flex-col xl:gap-12 justify-between  border p-4 rounded-md m-2 shadow-lg shadow-indigo-500/40">
+       </div>
+
+       <div className="dashboart-cart-group-two">
+       <div className="dashboard-item-cart   flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
           <div className="flex justify-between">
             <p>
-              <span className="lg:text-[18px] ms:text-[16px] sm:text-[14px] block font-semibold text-slate-900">
+              <span className="lg:text-[18px] md:text-[16px] sm:text-[14px] text-[13px] lg:leading-5 leading-4 block font-semibold text-slate-900">
                 Oxirgi 30 kunlik
               </span>
             </p>
             <i
-              style={{ color: "#FFC107  ", fontSize: "28px" }}
-              className="fa-solid fa-money-bill-trend-up"
+              className="fa-solid fa-money-bill-trend-up dashboard-icon"
             ></i>
           </div>
-          <p className="text-[16px]">
+          <p className="lg:text-[15px] md:text-[14px] sm:text-[12px] text-[12px] leading-3 ">
             <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>
             {data?.total_for_last_month} <span>so'm</span>
           </p>
         </div>
-        <div className="md:w-1/2 w-1/4  flex flex-col xl:gap-12 justify-between  border p-4 rounded-md m-2 shadow-lg shadow-indigo-500/40">
+        <div className="dashboard-item-cart   flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
           <div className="flex justify-between">
             <p>
-              <span className="lg:text-[18px] ms:text-[16px] sm:text-[14px] block font-semibold text-slate-900">
+              <span className="lg:text-[18px] md:text-[16px] sm:text-[14px] text-[13px] lg:leading-5 leading-4  block font-semibold text-slate-900">
                 Sotilgan mahsulotning soni
               </span>
             </p>
             <i
-              style={{ color: "#FFC107  ", fontSize: "28px" }}
-              className="fa-solid fa-list-ol"
+              className="fa-solid fa-list-ol dashboard-icon"
             ></i>
           </div>
-          <p className="text-[16px]">
+          <p className="lg:text-[15px] md:text-[14px] sm:text-[12px] text-[12px] leading-3">
             <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>{" "}
             {data?.total_sold_products}
           </p>
         </div>
+       </div>
+       
       </div>
       {1 ? (
         <>
