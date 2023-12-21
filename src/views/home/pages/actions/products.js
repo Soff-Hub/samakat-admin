@@ -548,11 +548,11 @@ export default function Products() {
     return (price * discount) / 100;
   };
 
-  const formatPrice = (inputValue) => {
-    inputValue = inputValue.replace(/\s/g, "");
-    inputValue = inputValue.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    setPrice(inputValue);
-  };
+  // const formatPrice = (inputValue) => {
+  //   inputValue = inputValue.replace(/\s/g, "");
+  //   inputValue = inputValue.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  //   setPrice(inputValue);
+  // };
 
   return location.search.split("?")?.[2] === "edit" ? (
     // Mahsulotni tahrirlash
@@ -1388,7 +1388,7 @@ export default function Products() {
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
                   <p>
-                    {price - prosent(discount)} <del>{price}</del> so'm
+                    {Math.round(price - prosent(discount))} <del>{price}</del> so'm
                   </p>
                 ) : (
                   <>{price} so'm</>
@@ -2248,7 +2248,7 @@ export default function Products() {
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
                   <p>
-                    {parseInt(price - prosent(discount))}{" "}
+                    {Math.round(price - prosent(discount))}{" "}
                     <del>{parseInt(price)}</del> so'm
                   </p>
                 ) : (
@@ -3029,7 +3029,7 @@ export default function Products() {
             <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
               {discount ? (
                 <p>
-                  {price - prosent(discount)} <del>{price}</del> so'm{" "}
+                  {Math.round(price - prosent(discount))} <del>{price}</del> so'm{" "}
                 </p>
               ) : (
                 `${price} so'm`
