@@ -152,6 +152,20 @@ export default function Delivery() {
       .catch((err) => console.log(err));
   }
 
+  const handle_is_Paid = async (id) => {
+    const data = {
+      is_paid : true
+    }
+    await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
+    .then((res) => {
+      console.log(res);
+      getOrders()
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   // const Search = async (e) => {
   //   await Client.get(`${API_ENDPOINTS.ORDER}?search=${e}`)
   //     .then((resp) => {
@@ -382,7 +396,7 @@ export default function Delivery() {
                         title="Buyurtma narxi to'lanmagan"
                         placement="top"
                       >
-                        <button className="money-btn false">
+                        <button onClick={() => handle_is_Paid(el.id)} className="money-btn false">
                           <i class="fa-solid fa-money-bill-1-wave"></i>
                         </button>
                       </Tooltip>
@@ -402,7 +416,7 @@ export default function Delivery() {
             </div>
           </div>
           <Modal
-            title="Holatni tahrirlash"
+            title="Buyurtma "
             open={isModalOpenDetail}
             onOk={handleOkDetail}
             okText="Ortga"
