@@ -94,6 +94,21 @@
     color: green;
 }
 
+.modal-ul-delivry li:nth-child(5){
+    color: red;
+}
+
+.modal-ul-delivry li:nth-child(5) textarea{
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 8px;
+}
+
+.modal-ul-delivry li:nth-child(5) textarea:focus{
+    outline: none;
+    border: 1px solid gray;
+}
 
 
 /* Kanban style start */

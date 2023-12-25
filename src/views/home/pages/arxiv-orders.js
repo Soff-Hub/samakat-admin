@@ -6,6 +6,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import { Button, Modal, message } from "antd";
@@ -15,11 +16,14 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import ToggleButton from "@mui/material/ToggleButton";
+
 
 export default function ArxivOrders() {
   const [data, setData] = useState(null);
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
+  const [status, setStatus] = React.useState("approved");
 
   async function getOrders() {
     await Client.get(API_ENDPOINTS.ARCHIVE)
@@ -49,6 +53,27 @@ export default function ArxivOrders() {
       .catch((err) => console.log(err));
   };
 
+  const getDate = (date) => {
+    const Date = date.slice(0,10)
+    const time = date.slice(11,18)
+    return time + '\n' + Date
+  }
+
+  const handleChange = async (e) => {
+    setPage(1);
+    setStatus(e.target.value);
+    await Client.get(
+      `${API_ENDPOINTS.ARCHIVE}?status=${e.target.value}`
+    )
+      .then((resp) => {
+        console.log(resp);
+        setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
+
   useEffect(() => {
     getOrders();
   }, []);
@@ -58,6 +83,20 @@ export default function ArxivOrders() {
       <div className="mb-5">
         <h1 className="text-2xl">Buyurtmalar arxivi</h1>
       </div>
+      <ToggleButtonGroup
+        color="primary"
+        value={status}
+        exclusive
+        onChange={handleChange}
+        className="mt-5 flex items-center w-full"
+      >
+        <ToggleButton className="w-full" value="approved">
+          Tasdiqlanganlar
+        </ToggleButton>
+        <ToggleButton className="w-full" value="cancelled">
+          Bekor qilinganlar
+        </ToggleButton>
+      </ToggleButtonGroup>
       {data ? (
         <div className="block w-full border shadow-lg p-2 mt-5">
           <div className="flex items-center gap-1">
@@ -76,15 +115,16 @@ export default function ArxivOrders() {
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">
-                    Foydalanuvchi nomi
+                    Foydalanuvchi 
                   </span>
                 </TableCell>
                 <TableCell>
-                  <span className="font-bold text-[16px]">Telefon raqam</span>
+                  <span className="font-bold text-[16px]">Soni</span>
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">Umumiy so'mma</span>
                 </TableCell>
+                
                 {/* <TableCell>
                     <span className="font-bold text-[16px]">Promo kod</span>
                   </TableCell> */}
@@ -93,6 +133,9 @@ export default function ArxivOrders() {
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">To'lov usuli</span>
+                </TableCell>
+                <TableCell>
+                  <span className="font-bold text-[16px]">Vaqti</span>
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">Holat</span>
@@ -120,12 +163,23 @@ export default function ArxivOrders() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.user.first_name ? (
-                          row.user.first_name
+                        {row.user_about ? (
+                          row.user_about?.user
                         ) : (
                           <i className="fa-solid fa-minus"></i>
                         )}
-                        {row.user.last_name}
+                      </Link>
+                    </TableCell>
+                   
+                    <TableCell component="th" scope="row">
+                      <Link
+                        to={"actions/?" + row.id}
+                        className="hover:underline"
+                      >
+                        <span className="font-semibold">
+                          {row?.count_products} {" "}
+                        </span>{" "}
+                        { row?.count_products ? "ta" : ""}
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -133,15 +187,11 @@ export default function ArxivOrders() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.user.phone}
-                      </Link>
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      <Link
-                        to={"actions/?" + row.id}
-                        className="hover:underline"
-                      >
-                        {row.total_amount}
+                        <span className="font-semibold">
+                          {" "}
+                          {row?.total_amount}
+                        </span>{" "}
+                        {row?.total_amount ? "so'm" : ""}
                       </Link>
                     </TableCell>
                     {/* <TableCell component="th" scope="row">
@@ -182,6 +232,18 @@ export default function ArxivOrders() {
                             <br />
                             <span>Naxt pul orqali</span>
                           </>
+                        )}
+                      </Link>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Link
+                        to={"actions/?" + row.id}
+                        className="hover:underline"
+                      >
+                        {row.created_at === null ? (
+                          <i className="fa-solid fa-minus"></i>
+                        ) : (
+                         getDate( row.created_at)
                         )}
                       </Link>
                     </TableCell>

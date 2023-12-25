@@ -5,8 +5,7 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Select, Space } from "antd";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Form, Select, Space } from "antd";
 
 export default function Aksiya() {
   const [submiting, setSubmiting] = useState(false);
@@ -66,7 +65,6 @@ export default function Aksiya() {
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
 
-
     const formData = new FormData();
     formData.append("text", text);
     formData.append("textColor", badge);
@@ -96,7 +94,13 @@ export default function Aksiya() {
   };
 
   const getProducts = async (e) => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}?type=${location.search.split("?")[1] !== "edit" ? location.search.split("?")[1] : ''}`)
+    await Client.get(
+      `${API_ENDPOINTS.PRODUCT_MIN_LIST_BADGE}?type=${
+        location.search.split("?")[1] !== "edit"
+          ? location.search.split("?")[1]
+          : ""
+      }`
+    )
       .then((resp) => {
         setCategoryData(
           resp?.map((el) => ({
@@ -124,7 +128,7 @@ export default function Aksiya() {
             value: el.id,
             label: el.name,
           }))
-        )
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -139,7 +143,7 @@ export default function Aksiya() {
     // eslint-disable-next-line
   }, []);
 
-  console.log('aksiya page rout', location.search.split("?")[1]);
+  console.log("aksiya page rout", location.search.split("?")[1]);
 
   return location.search.split("?")[1] === "edit" ? (
     data ? (
@@ -212,7 +216,7 @@ export default function Aksiya() {
               </Space>
 
               <TextField
-                label="Chegirmasi"
+                label="Chegirmasi (%)"
                 variant="outlined"
                 size="large"
                 type="number"
@@ -222,7 +226,7 @@ export default function Aksiya() {
                 }}
               />
 
-              <div className="image-conatiner">
+              {/* <div className="image-conatiner">
                 <div
                   style={{
                     // maxWidth: "150px",
@@ -271,7 +275,7 @@ export default function Aksiya() {
                 >
                   Delete
                 </Button>
-              </div>
+              </div> */}
 
               <Button
                 variant="outlined"
@@ -303,8 +307,8 @@ export default function Aksiya() {
         <h1 className="text-[35px] pb-3">Aksiya qo'shish</h1>
         <Toaster />
         <div className="flex gap-5">
-          <form
-            onSubmit={handleSubmitAdd}
+          <Form
+            onFinish={handleSubmitAdd}
             className="w-1/2 m-auto  flex flex-col gap-5 create-branch-form"
           >
             <TextField
@@ -328,43 +332,67 @@ export default function Aksiya() {
                 setBadge(e.target.value);
               }}
             />
-
-            <Space
-              style={{
-                width: "100%",
-                textAlign: "left",
-              }}
-              direction="vertical"
+            <Form.Item
+              name="mahsulotlar"
+              rules={[
+                {
+                  required: true,
+                  message: "Mahsulotlarni tanlang!",
+                  type:'array'
+                },
+              ]}
             >
-              <Select
-                mode="multiple"
-                allowClear
+              <Space
                 style={{
                   width: "100%",
+                  textAlign: "left",
                 }}
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label ?? "").includes(input)
-                }
-                placeholder="Mahsulotlar"
-                onChange={handleChangeRelatedCategory}
-                options={categoryData}
-              />
-            </Space>
+                direction="vertical"
+              >
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{
+                    width: "100%",
+                  }}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  placeholder="Mahsulotlar"
+                  onChange={handleChangeRelatedCategory}
+                  options={categoryData}
+                />
+              </Space>
+            </Form.Item>
 
-            <TextField
-              label="Chegirmasi"
-              variant="outlined"
-              size="large"
-              type="number"
-              defaultValue={discount}
-              onChange={(e) => {
-                setDiscount(e.target.value);
+            <Form.Item
+              name="chegirma"
+              rules={[
+                {
+                  required: true,
+                  message: "Chegirma tanlang!",
+                },
+              ]}
+              style={{
+                width:'100%'
               }}
-            />
+>
+              <TextField
+                label="Chegirmasi (%)"
+                variant="outlined"
+                size="large"
+                style={{width:'100%'}}
+                type="number"
+                defaultValue={discount}
+                onChange={(e) => {
+                  setDiscount(e.target.value);
+                }}
+              />
+            </Form.Item>
 
-            <div className="image-conatiner">
+            {/* <div className="image-conatiner">
               <div
                 style={{
                   // maxWidth: "150px",
@@ -411,7 +439,7 @@ export default function Aksiya() {
               >
                 Delete
               </Button>
-            </div>
+            </div> */}
 
             <Button
               variant="outlined"
@@ -421,7 +449,7 @@ export default function Aksiya() {
             >
               {submiting ? "Qo'shilmoqda" : "Qo'shish"}
             </Button>
-          </form>
+          </Form>
         </div>
       </div>
     </div>

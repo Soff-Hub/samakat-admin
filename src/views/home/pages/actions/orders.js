@@ -14,7 +14,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function Orders() {
-  const location = useLocation();
+  const locationn = useLocation();
   const [data, setData] = useState(null);
   const navigate = useNavigate()
 
@@ -30,7 +30,8 @@ export default function Orders() {
 
   const handleRouterAdress = (id) => {
     if (id) {
-      navigate(`/adresses/actions/?${id}`)
+      // navigate(`/adresses/actions/?${id}`)
+      // window.location('https://www.google.com/maps/@41.2878305,69.225309,17z/data=!4m6!3m5!1s0x38ae8b1b401f3417:0x254766607b2d7edf!8m2!3d41.2878029!4d69.2274182!16s%2Fg%2F11vlvp24dm?entry=ttu')
     }
   }
 
@@ -41,9 +42,10 @@ export default function Orders() {
   }
 
   useEffect(() => {
-    getData(location.search.split("?")[1]);
+    getData(locationn.search.split("?")[1]);
     // eslint-disable-next-line
   }, []);
+
 
 
   return (
@@ -73,21 +75,35 @@ export default function Orders() {
                 variant="outlined"
                 size="large"
                 type="text"
-                value={(data.user.first_name || data.user.first_name || data.user.phone ) ? data.user.first_name + " " + data.user?.last_name + data.user?.phone : "-"}
-                onClick={() => handleChangeRouter(data.user?.id)}
+                value={data?.user_about ? data?.user_about?.user : "-"}
+                onClick={() => handleChangeRouter(data.user_about?.id)}
               />
               <TextField
                 label="Umumiy so'mma"
                 variant="outlined"
                 size="large"
-                value={data.total_amount ? data?.total_amount : "-"}
+                value={data.total_amount ? data?.total_amount  : "-"} 
                 type="text"
               />
               <TextField
+                label="Soni"
+                variant="outlined"
+                size="large"
+                value={data.count_products ? data?.count_products + " ta" : "-"}
+                type="text"
+              />
+              <TextField
+                label="Vaqti"
+                variant="outlined"
+                size="large"
+                value={data?.created_at ?  data?.created_at?.slice(0,10) + " | " +  data?.created_at?.slice(11,18) : "-"}
+                type="text"
+              />
+            <TextField
                 label="Manzil"
                 variant="outlined"
                 size="large"
-                value={data.address?.name ? data?.address?.name : "-"}
+                value={data.address?.location ? data?.address?.location : "-"}
                 type="text"
                 onClick={() => handleRouterAdress(data?.address?.id)}
               />
@@ -105,7 +121,7 @@ export default function Orders() {
                 value={
                   data && data?.status === "approved"
                     ? "tasdiqlangan"
-                    : data && data?.status === "pending"
+                    : data && data?.status === "process"
                     ? "jarayonda"
                     : data && data?.status === "cancelled"
                     ? "bekor qilingan"
@@ -123,7 +139,7 @@ export default function Orders() {
                 multiline
                 rows={4}
               />
-              <div className="text-left flex align-center">
+              {/* <div className="text-left flex align-center">
                 <label className="font-normal font-sans text-base pt-2 pr-2">
                   Eshik oldida qoldirish
                 </label>
@@ -137,7 +153,7 @@ export default function Orders() {
                     control={<Radio />}
                   />
                 </RadioGroup>
-              </div>
+              </div> */}
             </form>
             {
                data?.product_count?.length > 0 ?

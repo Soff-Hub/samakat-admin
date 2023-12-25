@@ -583,7 +583,10 @@ export default function Products() {
                 type="number"
                 defaultValue={JSON.parse(editData?.price) || price}
                 onChange={(e) => {
-                  setPrice(e.target.value);
+                  const inputValue = e.target.value;
+                  if (inputValue === '' || (parseInt(inputValue) <= 50000000 && parseInt(inputValue) > 0)) {
+                    setPrice(inputValue);
+                  }
                 }}
               />
               {/* <label>
@@ -609,13 +612,16 @@ export default function Products() {
                 }}
               />
               <TextField
-                label="Chegirmasi"
+                label="Chegirmasi ( % )"
                 variant="outlined"
                 size="large"
                 type="number"
                 defaultValue={editData?.discount || discount}
                 onChange={(e) => {
-                  setDiscount(e.target.value);
+                  const inputValue = e.target.value;
+                  if (inputValue === '' || (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)) {
+                    setDiscount(inputValue);
+                  }
                 }}
               />
 
@@ -1442,7 +1448,10 @@ export default function Products() {
                 type="number"
                 defaultValue={JSON.parse(editData?.price) || price}
                 onChange={(e) => {
-                  setPrice(e.target.value);
+                  const inputValue = e.target.value;
+                  if (inputValue === '' || (parseInt(inputValue) <= 50000000 && parseInt(inputValue) > 0)) {
+                    setPrice(inputValue);
+                  }
                 }}
               />
               {/* <label>
@@ -1468,13 +1477,16 @@ export default function Products() {
                 }}
               />
               <TextField
-                label="Chegirmasi"
+                label="Chegirmasi ( % )"
                 variant="outlined"
                 size="large"
                 type="number"
                 defaultValue={editData?.discount || discount}
                 onChange={(e) => {
-                  setDiscount(e.target.value);
+                  const inputValue = e.target.value;
+                  if (inputValue === '' || (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)) {
+                    setDiscount(inputValue);
+                  }
                 }}
               />
 
@@ -2295,17 +2307,25 @@ export default function Products() {
               maxLength="16"
               value={price}
               required
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                if (inputValue === '' || (parseInt(inputValue) <= 50000000 && parseInt(inputValue) > 0)) {
+                  setPrice(inputValue);
+                }
+              }}
             />
 
             <TextField
-              label="Chegirmasi"
+              label="Chegirmasi ( % )"
               variant="outlined"
               size="small"
               type="number"
               value={discount}
               onChange={(e) => {
-                setDiscount(e.target.value);
+                const inputValue = e.target.value;
+                if (inputValue === '' || (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)) {
+                  setDiscount(inputValue);
+                }
               }}
             />
             {/* 

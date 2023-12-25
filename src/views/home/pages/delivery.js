@@ -76,6 +76,7 @@ export default function Delivery() {
   const [status, setStatus] = useState("");
   const [statusId, setStatusId] = useState("");
   const [detail, setDetail] = useState(null);
+  const [commit, setCommit] = useState('');
   const navigate = useNavigate();
 
   const showModal = (id) => {
@@ -105,7 +106,8 @@ export default function Delivery() {
 
   const handleOk = async (id) => {
     const data = {
-      process: status,
+      status: status,
+      commentary : commit
     };
     await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
       .then((resp) => {
@@ -119,6 +121,7 @@ export default function Delivery() {
             marginTop: "20vh",
           },
         });
+        setStatus('')
       })
       .catch((err) => {
         console.log(err);
@@ -154,17 +157,17 @@ export default function Delivery() {
 
   const handle_is_Paid = async (id) => {
     const data = {
-      is_paid : true
-    }
+      is_paid: true,
+    };
     await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
-    .then((res) => {
-      console.log(res);
-      getOrders()
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  }
+      .then((res) => {
+        console.log(res);
+        getOrders();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // const Search = async (e) => {
   //   await Client.get(`${API_ENDPOINTS.ORDER}?search=${e}`)
@@ -188,6 +191,12 @@ export default function Delivery() {
   useEffect(() => {
     getOrders();
   }, []);
+
+  const getDate = (date) => {
+    const Date = date.slice(0, 10);
+    const time = date.slice(11, 18);
+    return Date + "\n" + time;
+  };
 
   return (
     // <div>
@@ -223,12 +232,16 @@ export default function Delivery() {
             <div className="delivery-item-container_header">
               <h3>Yangi</h3>
             </div>
+
             <div className="delivery-item-container">
               {newS?.map((el) => (
                 <div className="delivery-item-container_component">
                   <div className="item">
                     <div className=" font-medium text-[#757575]">N{el.id}</div>
                     <div>{el.branch}</div>
+                  </div>
+                  <div classNacme=" font-medium text-[#757575] mb-1">
+                    {getDate(el?.created_at)}
                   </div>
                   <div style={{ display: "flex", gap: "10px" }}>
                     {el.is_paid ? (
@@ -270,7 +283,7 @@ export default function Delivery() {
           </div>
           <div className="delivery-item-container">
             <div className="delivery-item-container_header">
-              <h3>Yig'ilyapti</h3>
+              <h3>Yig'ilmoqda</h3>
             </div>
             <div className="delivery-item-container">
               {collection?.map((el) => (
@@ -279,6 +292,10 @@ export default function Delivery() {
                     <div className=" font-medium text-[#757575]">N{el.id}</div>
                     <div>{el.branch}</div>
                   </div>
+                  <div classNacme=" font-medium text-[#757575] mb-1">
+                    {getDate(el?.created_at)}
+                  </div>
+
                   <div style={{ display: "flex", gap: "10px" }}>
                     {el.is_paid ? (
                       <Tooltip title="Buyurtma narxi to'langan" placement="top">
@@ -327,6 +344,10 @@ export default function Delivery() {
                     <div className=" font-medium text-[#757575]">N{el.id}</div>
                     <div>{el.branch}</div>
                   </div>
+                  <div classNacme=" font-medium text-[#757575] mb-1">
+                    {getDate(el?.created_at)}
+                  </div>
+
                   <div style={{ display: "flex", gap: "10px" }}>
                     {el.is_paid ? (
                       <Tooltip title="Buyurtma narxi to'langan" placement="top">
@@ -375,6 +396,9 @@ export default function Delivery() {
                     <div className=" font-medium text-[#757575]">N{el.id}</div>
                     <div>{el.branch}</div>
                   </div>
+                  <div classNacme=" font-medium text-[#757575] mb-1">
+                    {getDate(el?.created_at)}
+                  </div>
                   <div
                     style={{
                       display: "flex",
@@ -396,7 +420,10 @@ export default function Delivery() {
                         title="Buyurtma narxi to'lanmagan"
                         placement="top"
                       >
-                        <button onClick={() => handle_is_Paid(el.id)} className="money-btn false">
+                        <button
+                          onClick={() => handle_is_Paid(el.id)}
+                          className="money-btn false"
+                        >
                           <i class="fa-solid fa-money-bill-1-wave"></i>
                         </button>
                       </Tooltip>
@@ -416,7 +443,7 @@ export default function Delivery() {
             </div>
           </div>
           <Modal
-            title="Buyurtma "
+            title="Buyurtma ma'lumotlari "
             open={isModalOpenDetail}
             onOk={handleOkDetail}
             okText="Ortga"
@@ -448,11 +475,7 @@ export default function Delivery() {
                     variant="outlined"
                     size="large"
                     type="text"
-                    value={
-                      detail.user.first_name || detail.user.first_name
-                        ? detail.user.first_name + " " + detail.user?.last_name
-                        : "-"
-                    }
+                    value={detail.user_about ? detail?.user_about?.user : "-"}
                     onClick={() => handleChangeRouter(detail.user?.id)}
                   />
                   <TextField
@@ -463,10 +486,34 @@ export default function Delivery() {
                     type="text"
                   />
                   <TextField
+                    label="Soni"
+                    variant="outlined"
+                    size="large"
+                    value={
+                      detail.count_products
+                        ? detail?.count_products + " ta"
+                        : "-"
+                    }
+                    type="text"
+                  />
+                  <TextField
+                    label="Vaqti"
+                    variant="outlined"
+                    size="large"
+                    value={
+                      detail?.created_at
+                        ? detail?.created_at?.slice(0, 10) +
+                          " | " +
+                          detail?.created_at?.slice(11, 18)
+                        : "-"
+                    }
+                    type="text"
+                  />
+                  <TextField
                     label="Manzil"
                     variant="outlined"
                     size="large"
-                    value={detail.address ? detail?.address : "-"}
+                    value={detail?.address ? detail?.address?.location : "-"}
                     type="text"
                   />
                   {/* <TextField
@@ -483,7 +530,7 @@ export default function Delivery() {
                     value={
                       detail && detail?.status === "approved"
                         ? "tasdiqlangan"
-                        : detail && detail?.status === "pending"
+                        : detail && detail?.status === "process"
                         ? "jarayonda"
                         : detail && detail?.status === "cancelled"
                         ? "bekor qilingan"
@@ -501,7 +548,7 @@ export default function Delivery() {
                     multiline
                     rows={4}
                   />
-                  <div className="text-left flex align-center">
+                  {/* <div className="text-left flex align-center">
                     <label className="font-normal font-sans text-base pt-2 pr-2">
                       Eshik oldida qoldirish
                     </label>
@@ -515,7 +562,7 @@ export default function Delivery() {
                         control={<Radio />}
                       />
                     </RadioGroup>
-                  </div>
+                  </div> */}
                 </form>
                 <form className="w-full mt-2  bg-slate-200 p-2 mt-6 ">
                   <p className="font-normal font-sans text-start text-lg pb-2">
@@ -583,6 +630,18 @@ export default function Delivery() {
                 }}
               >
                 Yetkazildi
+              </li>
+              <li
+                onClick={() => setStatus("cancelled")}
+                style={{
+                  backgroundColor: status === "cancelled" ? "#ccc" : "",
+                }}
+              >
+               <p> Bekor qilindi</p>
+             {              
+              status === "cancelled" ?
+              <textarea onChange={(e) => setCommit(e.target.value)} style={{width:'100%'}} cols="30" rows="5"></textarea> : ''
+             }
               </li>
             </ul>
           </Modal>

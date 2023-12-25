@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import NavHeader from "components/shared/NavHeader";
+import NavHeaderSelect from "components/shared/NavHeaderSelect";
 import { CircularProgress } from "@mui/material";
 import { Select } from "antd";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
@@ -193,7 +193,7 @@ export default function EnhancedTable() {
   return (
     <div>
       <div className="mb-5">
-        <NavHeader title="Filiallardagi mahsulotlar" />
+        <NavHeaderSelect title="Filiallardagi mahsulotlar" />
       </div>
       <ToggleButtonGroup
         color="primary"

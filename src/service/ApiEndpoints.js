@@ -25,12 +25,13 @@ export const API_ENDPOINTS = {
     PATCH_PRODUCT : 'admin/product/update/',
     DETAIL_PRODUCT: 'admin/product/detail/',
     PRODUCT_MIN_LIST:'admin/product/list/filter',
-
+    
     BADGE: 'admin/badge/',
     CREATE_BADGE: 'admin/badge/create/',
     DETAIL_BADGE: 'admin/badge/detail/',
     PATCH_BADGE:'admin/badge/update/',
     DELETE_BADGE: 'admin/badge/delete/',
+    PRODUCT_MIN_LIST_BADGE:'admin/product/list/badge',
 
     ADDRESS: 'admin/user-address/',
     ADDRESS_DETAIL: 'admin/user-address/detail/',

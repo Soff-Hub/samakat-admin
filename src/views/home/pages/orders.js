@@ -22,11 +22,11 @@ export default function Branches() {
   const [page, setPage] = React.useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [status, setStatus] = useState("");
-  const [statusId, setStatusId] = useState('')
+  const [statusId, setStatusId] = useState("");
 
   const showModal = (id) => {
     setIsModalOpen(true);
-    setStatusId(id)
+    setStatusId(id);
   };
   const handleOk = async () => {
     const data = {
@@ -80,11 +80,15 @@ export default function Branches() {
       })
       .catch((err) => console.log(err));
   };
+  const getDate = (date) => {
+    const Date = date.slice(0,10)
+    const time = date.slice(11,18)
+    return time + '\n' + Date
+  }
 
   useEffect(() => {
     getOrders();
   }, []);
-  console.log("order", status);
   return (
     <div>
       <div className="mb-5">
@@ -108,11 +112,11 @@ export default function Branches() {
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">
-                    Foydalanuvchi nomi
+                    Foydalanuvchi
                   </span>
                 </TableCell>
                 <TableCell>
-                  <span className="font-bold text-[16px]">Telefon raqam</span>
+                  <span className="font-bold text-[16px]">Soni</span>
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">Umumiy so'mma</span>
@@ -127,9 +131,11 @@ export default function Branches() {
                   <span className="font-bold text-[16px]">To'lov usuli</span>
                 </TableCell>
                 <TableCell>
+                <span className="font-bold text-[16px]">Vaqti</span>
+                </TableCell>
+                <TableCell>
                   <span className="font-bold text-[16px]">Holat</span>
                 </TableCell>
-                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -152,12 +158,11 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.user.first_name ? (
-                          row.user.first_name
+                        {row?.user_about?.user ? (
+                          row?.user_about?.user
                         ) : (
                           <i className="fa-solid fa-minus"></i>
                         )}
-                        {row.user.last_name}
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -165,15 +170,10 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.user.phone}
-                      </Link>
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      <Link
-                        to={"actions/?" + row.id}
-                        className="hover:underline"
-                      >
-                        {row.total_amount}
+                        <span className="font-semibold">
+                          {row?.count_products} {" "}
+                        </span>{" "}
+                        { row?.count_products ? "ta" : ""}
                       </Link>
                     </TableCell>
                     {/* <TableCell component="th" scope="row">
@@ -185,6 +185,19 @@ export default function Branches() {
                         )}
                       </Link>
                     </TableCell> */}
+                    <TableCell component="th" scope="row">
+                      <Link
+                        to={"actions/?" + row.id}
+                        className="hover:underline"
+                      >
+                        <span className="font-semibold">
+                          {" "}
+                          {row?.total_amount}
+                        </span>{" "}
+                        {row?.total_amount ? "so'm" : ""}
+                      </Link>
+                    </TableCell>
+
                     <TableCell component="th" scope="row">
                       <Link
                         to={"actions/?" + row.id}
@@ -205,16 +218,26 @@ export default function Branches() {
                         {row.payment_type === "by_card" ? (
                           <>
                             <i class="fa-regular fa-credit-card"></i>
-                            <br/>
+                            <br />
                             <span>Karta orqali</span>
                           </>
                         ) : (
                           <>
-                            <i class="fa-solid fa-money-bill-1-wave"></i> 
-                            <br/>
+                            <i class="fa-solid fa-money-bill-1-wave"></i>
+                            <br />
                             <span>Naxt pul orqali</span>
                           </>
                         )}
+                      </Link>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Link
+                        to={"actions/?" + row.id}
+                        className="hover:underline"
+                      >
+                        {
+                          getDate(row?.created_at)
+                        }
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -227,7 +250,7 @@ export default function Branches() {
                             ? "text-[#F4CA16]"
                             : row.status === "cancelled"
                             ? "text-[red]"
-                            :  "text-[#3B82F6]"
+                            : "text-[#3B82F6]"
                         }`}
                       >
                         {row.status === "approved"
@@ -236,10 +259,12 @@ export default function Branches() {
                           ? "kutilmoqda"
                           : row.status === "cancelled"
                           ? "bekor qilingan"
-                          : row.status === "process" ?  "jarayonda"  : ""}
+                          : row.status === "process"
+                          ? "jarayonda"
+                          : ""}
                       </Link>
                     </TableCell>
-                    <TableCell component="th" scope="row">
+                    {/* <TableCell component="th" scope="row">
                       <>
                       {
                         row.payment_type === "by_card" ?
@@ -306,7 +331,8 @@ export default function Branches() {
                           </ul>
                         </Modal>
                       </>
-                    </TableCell>
+                    </TableCell> */}
+                    
                   </TableRow>
                 );
               })}

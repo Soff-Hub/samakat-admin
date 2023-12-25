@@ -44,12 +44,9 @@ const headCells = [
   },
   {
     id: "code verify",
-    label: "Kodni tasdiqlandi",
+    label: "Holati",
   },
-  {
-    id: "addres",
-    label: "Manzil tasdiqlandi",
-  },
+ 
   {
     id: "code ",
     label: "Kod",
@@ -320,20 +317,7 @@ export default function Users() {
                           {row.date_joined.slice(0, 10)}
                         </TableCell>
                         <TableCell align="left">
-                          {row?.verify_code?.is_confirmed ? (
-                            <i
-                              style={{ color: "green" }}
-                              className=" fa-regular fa-circle-check"
-                            ></i>
-                          ) : (
-                            <i
-                              style={{ color: "red" }}
-                              className="fa-regular fa-circle-xmark"
-                            ></i>
-                          )}
-                        </TableCell>
-                        <TableCell align="left">
-                          {row?.user_addresses?.active ? (
+                          {row?.is_active ? (
                             <i
                               style={{ color: "green" }}
                               className=" fa-regular fa-circle-check"

@@ -34,6 +34,7 @@ export default function Retsepts() {
         branch: branch,
         product: product,
         quantity: +quantity,
+        type: location.search.split("?")[1]
       };
       setSubmiting(true);
       await Client.post(API_ENDPOINTS.CREATE_PRODUCT_COUNT_BRANCH, data)
@@ -120,8 +121,10 @@ export default function Retsepts() {
         console.log(err);
       });
   };
+
+
   const getProduct = async () => {
-    await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST)
+    await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST+`/?type=${location.search.split("?")[1]}`)
       .then((res) => {
         setProductOption(
           res?.map((el) => ({
@@ -155,7 +158,7 @@ export default function Retsepts() {
     setError(false);
   };
 
-  console.log("product", productData);
+  console.log("product", location.search.split("?")[1]);
 
   return location.search.split("?")[1] === "edit" ? (
     editData ? (
