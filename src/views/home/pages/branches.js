@@ -66,7 +66,7 @@ export default function Branches() {
 
   return (
     <div>
-      <NavHeaderz title="Filiallar" />
+      <NavHeader title="Filiallar" />
       {data ? (
         <div className="block w-full border shadow-lg p-2 mt-5">
           <Table aria-label="simple table">

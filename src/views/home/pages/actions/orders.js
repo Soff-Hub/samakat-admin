@@ -28,10 +28,9 @@ export default function Orders() {
       });
   };
 
-  const handleRouterAdress = (id) => {
-    if (id) {
-      // navigate(`/adresses/actions/?${id}`)
-      // window.location('https://www.google.com/maps/@41.2878305,69.225309,17z/data=!4m6!3m5!1s0x38ae8b1b401f3417:0x254766607b2d7edf!8m2!3d41.2878029!4d69.2274182!16s%2Fg%2F11vlvp24dm?entry=ttu')
+  const handleRouterAdress = (location, latitute, longitute) => {
+    if (location) {
+      window.open(`https://www.google.com/maps/place/${location}/?q=${latitute},${longitute}`, '_blank')
     }
   }
 
@@ -105,7 +104,7 @@ export default function Orders() {
                 size="large"
                 value={data.address?.location ? data?.address?.location : "-"}
                 type="text"
-                onClick={() => handleRouterAdress(data?.address?.id)}
+                onClick={() => handleRouterAdress(data?.address?.location ,data?.address?.latitude, data?.address?.longitude )}
               />
               {/* <TextField
                 label="Promo kod"
