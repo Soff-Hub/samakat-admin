@@ -111,6 +111,7 @@ export default function EnhancedTable() {
   const [deleteId, setDeleteId] = useState(null);
   const [category, setCategory] = useState(null);
   const [categoryValue, setCategoryValue] = useState(null);
+  const [errorData, setErrorData] = useState('')
 
   const handleChange = async (e) => {
     setType(e.target.value);
@@ -159,7 +160,10 @@ export default function EnhancedTable() {
         setOpen(false);
         getProductData();
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>{
+        console.log(err.response.data.msg);
+        setErrorData(err.response.data.msg)
+      });
   };
 
   const handleChangePag = async (event, value) => {
@@ -377,6 +381,7 @@ export default function EnhancedTable() {
         open={openDelete}
         setOpen={setOpen}
         handleDelete={handleDelete}
+        errorData={errorData}
       />
     </>
   );

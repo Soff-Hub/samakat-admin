@@ -102,7 +102,6 @@ export default function Products() {
         }
       }
     }
-
   };
 
   const handleDeleteImageAddApi = (id) => {
@@ -148,12 +147,11 @@ export default function Products() {
   const deleteIDHighlight = (i) => {
     setAtributInput(atributInput.filter((item) => item?.id !== i));
   };
-  
+
   const deleteID = (i) => {
     setFilialInput(filialInput.filter((item) => item.id !== i));
     console.log(" productga kelgan delete id == ", image);
   };
-
 
   console.log("filial input", filialInput);
   const addFormInput = (value, id) => {
@@ -164,10 +162,6 @@ export default function Products() {
     setAtributInput([...atributInput, { id, ...value }]);
   };
 
-
-
-
-
   const handleDeleteImageApi = (id) => {
     setIsModalOpen(false);
     const data = imageData2.filter((el) => el.id !== id);
@@ -176,7 +170,6 @@ export default function Products() {
       delID.push(id);
     }
   };
-
 
   const handleDeleteImageApiVariant = (id) => {
     setIsModalOpen(false);
@@ -199,8 +192,6 @@ export default function Products() {
       }
     }
   };
-
-
 
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
@@ -243,12 +234,17 @@ export default function Products() {
     formData1.append("discount", discount);
     formData1.append("on_sale", on_sale);
     formData1.append("product_categories", JSON.stringify(product_categories));
-    if (product_highlight?.[0]?.content !== "") {
+
+    if (
+      product_highlight?.every((el) => el.content !== "") &&
+      product_highlight?.every((el) => el.order !== "")
+    ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
     if (
-      product_branch?.[0]?.branch !== 0 &&
-      product_branch?.[0]?.branch !== ""
+      product_branch?.every((el) => el.branch !== "") &&
+      product_branch?.every((el) => el.branch !== 0) &&
+      product_branch?.every((el) => el.quantity !== "")
     ) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
@@ -304,10 +300,12 @@ export default function Products() {
       })
     );
     if (!product_categories?.[0]?.label) {
-      formData1.append("product_categories", JSON.stringify(product_categories));
-    }else{
-      const arr = product_categories?.map((el) => el.value)
-      console.log('arr', arr);
+      formData1.append(
+        "product_categories",
+        JSON.stringify(product_categories)
+      );
+    } else {
+      const arr = product_categories?.map((el) => el.value);
       formData1.append("product_categories", JSON.stringify(arr));
     }
     formData1.append("name", name);
@@ -318,17 +316,26 @@ export default function Products() {
     formData1.append("variant_id", location.search.split("?")[4]);
     if (delID?.length > 0) {
       formData1.append("variant_images", JSON.stringify(delID));
-    }else{
-      formData1.append("variant_images", JSON.stringify(imageData?.map((el) => el.id)));
+    } else {
+      formData1.append(
+        "variant_images",
+        JSON.stringify(imageData?.map((el) => el.id))
+      );
     }
 
-    if (product_highlight?.[0]?.content !== "") {
+    if (
+      product_highlight?.every((el) => el.content !== "") &&
+      product_highlight?.every((el) => el.order !== "")
+    ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
-    if (product_branch?.[0]?.branch !== 0) {
+    if (
+      product_branch?.every((el) => el.branch !== "") &&
+      product_branch?.every((el) => el.branch !== 0) &&
+      product_branch?.every((el) => el.quantity !== "")
+    ) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
-
 
     formData1.append("type", location.search.split("?")[1]);
     for (let i = 0; i < imageData2?.length; i++) {
@@ -386,12 +393,23 @@ export default function Products() {
     formData1.append("discount", discount);
     formData1.append("on_sale", on_sale);
     if (!product_categories?.[0]?.label) {
-      formData1.append("product_categories", JSON.stringify(product_categories));
+      formData1.append(
+        "product_categories",
+        JSON.stringify(product_categories)
+      );
     }
-    if (product_highlight?.[0]?.content !== "") {
+
+    if (
+      product_highlight?.every((el) => el.content !== "") &&
+      product_highlight?.every((el) => el.order !== "")
+    ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
-    if (product_branch?.[0]?.branch !== 0) {
+    if (
+      product_branch?.every((el) => el.branch !== "") &&
+      product_branch?.every((el) => el.branch !== 0) &&
+      product_branch?.every((el) => el.quantity !== "")
+    ) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
 
@@ -445,7 +463,6 @@ export default function Products() {
         console.log(err);
       });
   };
-
 
   const getItem = async () => {
     await Client.get(
@@ -539,20 +556,9 @@ export default function Products() {
     });
   };
 
-  // const lifeImagee = (e) => {
-  //   let img = window.URL.createObjectURL(e.target.files[0]);
-  //   LiveImageArr.push(img);
-  // };
-
   const prosent = (e) => {
     return (price * discount) / 100;
   };
-
-  // const formatPrice = (inputValue) => {
-  //   inputValue = inputValue.replace(/\s/g, "");
-  //   inputValue = inputValue.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  //   setPrice(inputValue);
-  // };
 
   return location.search.split("?")?.[2] === "edit" ? (
     // Mahsulotni tahrirlash
@@ -584,7 +590,11 @@ export default function Products() {
                 defaultValue={JSON.parse(editData?.price) || price}
                 onChange={(e) => {
                   const inputValue = e.target.value;
-                  if (inputValue === '' || (parseInt(inputValue) <= 50000000 && parseInt(inputValue) > 0)) {
+                  if (
+                    inputValue === "" ||
+                    (parseInt(inputValue) <= 50000000 &&
+                      parseInt(inputValue) > 0)
+                  ) {
                     setPrice(inputValue);
                   }
                 }}
@@ -619,7 +629,10 @@ export default function Products() {
                 defaultValue={editData?.discount || discount}
                 onChange={(e) => {
                   const inputValue = e.target.value;
-                  if (inputValue === '' || (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)) {
+                  if (
+                    inputValue === "" ||
+                    (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)
+                  ) {
                     setDiscount(inputValue);
                   }
                 }}
@@ -1037,7 +1050,7 @@ export default function Products() {
                     <div
                       onClick={() =>
                         addAtributInput(
-                          { content: '', order: '' },
+                          { content: "", order: "" },
                           atributInput?.length === 0
                             ? 1
                             : atributInput[atributInput.length - 1].id + 1
@@ -1394,7 +1407,8 @@ export default function Products() {
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
                   <p>
-                    {Math.round(price - prosent(discount))} <del>{price}</del> so'm
+                    {Math.round(price - prosent(discount))} <del>{price}</del>{" "}
+                    so'm
                   </p>
                 ) : (
                   <>{price} so'm</>
@@ -1449,7 +1463,11 @@ export default function Products() {
                 defaultValue={JSON.parse(editData?.price) || price}
                 onChange={(e) => {
                   const inputValue = e.target.value;
-                  if (inputValue === '' || (parseInt(inputValue) <= 50000000 && parseInt(inputValue) > 0)) {
+                  if (
+                    inputValue === "" ||
+                    (parseInt(inputValue) <= 50000000 &&
+                      parseInt(inputValue) > 0)
+                  ) {
                     setPrice(inputValue);
                   }
                 }}
@@ -1484,7 +1502,10 @@ export default function Products() {
                 defaultValue={editData?.discount || discount}
                 onChange={(e) => {
                   const inputValue = e.target.value;
-                  if (inputValue === '' || (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)) {
+                  if (
+                    inputValue === "" ||
+                    (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)
+                  ) {
                     setDiscount(inputValue);
                   }
                 }}
@@ -1653,7 +1674,9 @@ export default function Products() {
                                   >
                                     <div
                                       onClick={() =>
-                                        handleDeleteImageApiVariant(imageLink?.id)
+                                        handleDeleteImageApiVariant(
+                                          imageLink?.id
+                                        )
                                       }
                                       className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
                                     >
@@ -1897,7 +1920,7 @@ export default function Products() {
                     <div
                       onClick={() =>
                         addAtributInput(
-                          { content: '', order: '' },
+                          { content: "", order: "" },
                           atributInput?.length === 0
                             ? 1
                             : atributInput[atributInput.length - 1].id + 1
@@ -1916,7 +1939,6 @@ export default function Products() {
                     </div>
                   </AccordionDetails>
                 </Accordion>
-
 
                 <Accordion>
                   <AccordionSummary
@@ -2309,7 +2331,10 @@ export default function Products() {
               required
               onChange={(e) => {
                 const inputValue = e.target.value;
-                if (inputValue === '' || (parseInt(inputValue) <= 50000000 && parseInt(inputValue) > 0)) {
+                if (
+                  inputValue === "" ||
+                  (parseInt(inputValue) <= 50000000 && parseInt(inputValue) > 0)
+                ) {
                   setPrice(inputValue);
                 }
               }}
@@ -2323,7 +2348,10 @@ export default function Products() {
               value={discount}
               onChange={(e) => {
                 const inputValue = e.target.value;
-                if (inputValue === '' || (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)) {
+                if (
+                  inputValue === "" ||
+                  (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)
+                ) {
                   setDiscount(inputValue);
                 }
               }}
@@ -2419,7 +2447,7 @@ export default function Products() {
                                 display: "flex",
                                 justifyContent: "center",
                                 alignItems: "center",
-                                border:  "1px solid #ccc",
+                                border: "1px solid #ccc",
                                 borderRadius: "5px",
                                 position: "relative",
                               }}
@@ -2445,7 +2473,10 @@ export default function Products() {
                                     right: "0",
                                   }}
                                   onChange={(e) =>
-                                    setImageUrlAdd(e?.target?.files[0], item?.id)
+                                    setImageUrlAdd(
+                                      e?.target?.files[0],
+                                      item?.id
+                                    )
                                   }
                                   type="file"
                                 />
@@ -2702,7 +2733,7 @@ export default function Products() {
                     <i className="fa-regular fa-star"></i> Asosiy element
                   </p>
                 </div>
-{/* qoshish */}
+                {/* qoshish */}
                 {atributInput?.map((item, i) => (
                   <AddInput
                     // key={i}
@@ -2714,21 +2745,19 @@ export default function Products() {
                     // dataH={item}
                     // change={change}
 
-
-
-                        dataH={item}
-                        key={i}
-                        addFilialInput={addProductHighlightInput}
-                        id={item.id ? item.id : atributInput[i - 1]?.id + 1}
-                        deleteIDHighlight={deleteIDHighlight}
-                        change={change}
+                    dataH={item}
+                    key={i}
+                    addFilialInput={addProductHighlightInput}
+                    id={item.id ? item.id : atributInput[i - 1]?.id + 1}
+                    deleteIDHighlight={deleteIDHighlight}
+                    change={change}
                   />
                 ))}
 
                 <div
                   onClick={() =>
                     addAtributInput(
-                      { content: '', order: '' },
+                      { content: "", order: "" },
                       atributInput.length + 1
                     )
                   }
@@ -2776,11 +2805,11 @@ export default function Products() {
                 <div
                   onClick={() =>
                     addFormInput(
-                          { branch: "", quantity: "" },
-                          filialInput?.length === 0
-                            ? 1
-                            : filialInput[filialInput.length - 1].id + 1
-                        )
+                      { branch: "", quantity: "" },
+                      filialInput?.length === 0
+                        ? 1
+                        : filialInput[filialInput.length - 1].id + 1
+                    )
                   }
                   className="p-3"
                   style={{
@@ -3049,7 +3078,8 @@ export default function Products() {
             <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
               {discount ? (
                 <p>
-                  {Math.round(price - prosent(discount))} <del>{price}</del> so'm{" "}
+                  {Math.round(price - prosent(discount))} <del>{price}</del>{" "}
+                  so'm{" "}
                 </p>
               ) : (
                 `${price} so'm`
