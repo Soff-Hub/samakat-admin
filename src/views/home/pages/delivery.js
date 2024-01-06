@@ -1,15 +1,5 @@
-import KanbanColumnContainer from "components/kanban/kanban-column-container";
-import KanbanColumnHeaderContainer from "components/kanban/kanban-column-header_container";
-import KanbanColumnListContainer from "components/kanban/kanban-column-list_container";
-import KanbanListItemContainer from "components/kanban/kanban-list-item_container";
 import React from "react";
-import {
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-  Tooltip,
-} from "@mui/material";
+import { TextField, Tooltip } from "@mui/material";
 import { Button, Modal, message } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,55 +8,11 @@ import Client from "service/Client";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
-const repeat = (column = 4, row = 1) => {
-  const result = [];
-  for (let i = 0; i < column; i++) {
-    result.push({
-      id: i,
-      title: `column-${i + 1}`,
-      tasks: [],
-    });
-    for (let j = 0; j < row; j++) {
-      result[i].tasks.push({
-        id: `${i} - ${j}`,
-        title: `Nami ${i} - ${j}`,
-      });
-    }
-  }
-  return result;
-};
-
 export default function Delivery() {
   const [newS, setNewS] = useState([]);
   const [collection, setCollection] = useState([]);
   const [way, setWay] = useState([]);
   const [delivery, setDelivery] = useState([]);
-
-  // const [columns, setColumns] = useState(repeat());
-
-  // const handleDrop = (columnId, rowData) => {
-  //   const { rowId, oldColumnId } = rowData;
-
-  //   const oldColumn = columns.find((column) => oldColumnId === column.id);
-  //   console.log(oldColumn, `${oldColumn.id} - column, item berayotgan`);
-
-  //   //olinayotgan itemni topish
-  //   const rowCurrent = oldColumn.tasks.find((taskID) => taskID.id === rowId);
-  //   console.log(rowCurrent);
-
-  //   //iltemni olinayotgan qatoridan o'chirish
-  //   oldColumn.tasks = oldColumn.tasks.filter((item) => item.id !== rowId);
-
-  //   //itemni qabul qilayotgan qatorga qoshish
-  //   const currentColumn = columns.find((column) => column.id === columnId);
-  //   currentColumn.tasks.unshift(rowCurrent);
-
-  //   setColumns([...columns]);
-  //   // console.log(columns, "olinayotgan item");
-  //   console.log(`columnId: ${columnId}, rowId: ${JSON.stringify(rowData)}`);
-  // };
-
-  // console.log("arr2", repeat());
 
   const [data, setData] = useState(null);
   const [count, setCount] = useState("");
@@ -76,7 +22,7 @@ export default function Delivery() {
   const [status, setStatus] = useState("");
   const [statusId, setStatusId] = useState("");
   const [detail, setDetail] = useState(null);
-  const [commit, setCommit] = useState('');
+  const [commit, setCommit] = useState("");
   const navigate = useNavigate();
 
   const showModal = (id) => {
@@ -105,35 +51,66 @@ export default function Delivery() {
   };
 
   const handleOk = async (id) => {
-    const data = {
-      status: status,
-      commentary : commit
-    };
-    await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
-      .then((resp) => {
-        console.log(resp);
-        getOrders();
-        message.open({
-          type: "success",
-          content: `Status o'zgartirildi`,
-          className: "custom-class",
-          style: {
-            marginTop: "20vh",
-          },
+    if (status === "cancelled") {
+      const data = {
+        status: status,
+        commentary: commit,
+      };
+      await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
+        .then((resp) => {
+          console.log(resp);
+          getOrders();
+          message.open({
+            type: "success",
+            content: `Status o'zgartirildi`,
+            className: "custom-class",
+            style: {
+              marginTop: "20vh",
+            },
+          });
+          setStatus("");
+        })
+        .catch((err) => {
+          console.log(err);
+          message.open({
+            type: "error",
+            content: `Status o'zgartirilmadi`,
+            className: "custom-class",
+            style: {
+              marginTop: "20vh",
+            },
+          });
         });
-        setStatus('')
-      })
-      .catch((err) => {
-        console.log(err);
-        message.open({
-          type: "error",
-          content: `Status o'zgartirilmadi`,
-          className: "custom-class",
-          style: {
-            marginTop: "20vh",
-          },
+    } else {
+      const data = {
+        process: status,
+      };
+      await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
+        .then((resp) => {
+          console.log(resp);
+          getOrders();
+          message.open({
+            type: "success",
+            content: `Status o'zgartirildi`,
+            className: "custom-class",
+            style: {
+              marginTop: "20vh",
+            },
+          });
+          setStatus("");
+        })
+        .catch((err) => {
+          console.log(err);
+          message.open({
+            type: "error",
+            content: `Status o'zgartirilmadi`,
+            className: "custom-class",
+            style: {
+              marginTop: "20vh",
+            },
+          });
         });
-      });
+    }
 
     setIsModalOpen(false);
   };
@@ -169,25 +146,6 @@ export default function Delivery() {
       });
   };
 
-  // const Search = async (e) => {
-  //   await Client.get(`${API_ENDPOINTS.ORDER}?search=${e}`)
-  //     .then((resp) => {
-  //       setData(resp.results);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-
-  // const handleChangePag = async (event, value) => {
-  //   setPage(value);
-  //   await Client.get(`${API_ENDPOINTS.ORDER}?page=${value}`)
-  //     .then((resp) => {
-  //       console.log(resp);
-  //       setCount(resp.count);
-  //       setData(resp.results);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-
   useEffect(() => {
     getOrders();
   }, []);
@@ -199,29 +157,6 @@ export default function Delivery() {
   };
 
   return (
-    // <div>
-    //   <h3 className="text-lg font-medium pb-4">Yetkazib berish statusi</h3>
-    //   <div className="kanban-container">
-    //     {columns?.map((el) => (
-    //       <KanbanColumnContainer
-    //         key={el.id}
-    //         columnId={el.id}
-    //         onDrop={handleDrop}
-    //       >
-    //         <KanbanColumnHeaderContainer title="Status" />
-    //         <KanbanColumnListContainer>
-    //           {el.tasks.map((task, index) => (
-    //             <KanbanListItemContainer
-    //               key={el.id}
-    //               rowId={task.id}
-    //               oldColumnId={el.id}
-    //             />
-    //           ))}
-    //         </KanbanColumnListContainer>
-    //       </KanbanColumnContainer>
-    //     ))}
-    //   </div>
-    // </div>
     <div>
       <div className="mb-5">
         <h1 className="text-2xl">Kurer</h1>
@@ -637,11 +572,17 @@ export default function Delivery() {
                   backgroundColor: status === "cancelled" ? "#ccc" : "",
                 }}
               >
-               <p> Bekor qilindi</p>
-             {              
-              status === "cancelled" ?
-              <textarea onChange={(e) => setCommit(e.target.value)} style={{width:'100%'}} cols="30" rows="5"></textarea> : ''
-             }
+                <p> Bekor qilindi</p>
+                {status === "cancelled" ? (
+                  <textarea
+                    onChange={(e) => setCommit(e.target.value)}
+                    style={{ width: "100%" }}
+                    cols="30"
+                    rows="5"
+                  ></textarea>
+                ) : (
+                  ""
+                )}
               </li>
             </ul>
           </Modal>

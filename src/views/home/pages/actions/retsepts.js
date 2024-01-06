@@ -40,7 +40,6 @@ export default function Retsepts() {
     },
   ]);
   const [errorCategory, setErrorCategory] = useState(false);
-  const [errorImage, setErrorImage] = useState(false);
   const [selectImage, setSelectImage] = useState("");
   const [delID, setDelId] = useState([]);
   // const [imageApi, setImageApi] = useState(null);
@@ -140,7 +139,6 @@ export default function Retsepts() {
       if (category !== "") {
         setErrorCategory(false);
       } else if (selectImage !== "") {
-        setErrorImage(false);
       }
       const formData = new FormData();
       formData.append("title", name);
@@ -176,7 +174,6 @@ export default function Retsepts() {
         setErrorCategory(true);
       }
       if (selectImage !== "") {
-        setErrorImage(true);
       }
     }
   };

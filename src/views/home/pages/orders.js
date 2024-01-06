@@ -8,7 +8,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { Button, Modal, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
@@ -20,38 +19,6 @@ export default function Branches() {
   const [data, setData] = useState(null);
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [status, setStatus] = useState("");
-  const [statusId, setStatusId] = useState("");
-
-  const showModal = (id) => {
-    setIsModalOpen(true);
-    setStatusId(id);
-  };
-  const handleOk = async () => {
-    const data = {
-      status: status,
-    };
-    await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${statusId}/`, data)
-      .then((resp) => {
-        console.log(resp);
-        getOrders();
-        message.open({
-          type: "success",
-          content: `Holat o'zgartirildi`,
-          className: "custom-class",
-          style: {
-            marginTop: "20vh",
-          },
-        });
-      })
-      .catch((err) => console.log(err));
-
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   async function getOrders() {
     await Client.get(API_ENDPOINTS.ORDER)
@@ -81,10 +48,10 @@ export default function Branches() {
       .catch((err) => console.log(err));
   };
   const getDate = (date) => {
-    const Date = date.slice(0,10)
-    const time = date.slice(11,18)
-    return time + '\n' + Date
-  }
+    const Date = date.slice(0, 10);
+    const time = date.slice(11, 18);
+    return time + "\n" + Date;
+  };
 
   useEffect(() => {
     getOrders();
@@ -111,9 +78,7 @@ export default function Branches() {
                   <span className="font-bold text-[16px]">Id</span>
                 </TableCell>
                 <TableCell>
-                  <span className="font-bold text-[16px]">
-                    Foydalanuvchi
-                  </span>
+                  <span className="font-bold text-[16px]">Foydalanuvchi</span>
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">Soni</span>
@@ -131,7 +96,7 @@ export default function Branches() {
                   <span className="font-bold text-[16px]">To'lov usuli</span>
                 </TableCell>
                 <TableCell>
-                <span className="font-bold text-[16px]">Vaqti</span>
+                  <span className="font-bold text-[16px]">Vaqti</span>
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">Holat</span>
@@ -171,9 +136,9 @@ export default function Branches() {
                         className="hover:underline"
                       >
                         <span className="font-semibold">
-                          {row?.count_products} {" "}
+                          {row?.count_products}{" "}
                         </span>{" "}
-                        { row?.count_products ? "ta" : ""}
+                        {row?.count_products ? "ta" : ""}
                       </Link>
                     </TableCell>
                     {/* <TableCell component="th" scope="row">
@@ -235,9 +200,7 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {
-                          getDate(row?.created_at)
-                        }
+                        {getDate(row?.created_at)}
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -332,7 +295,6 @@ export default function Branches() {
                         </Modal>
                       </>
                     </TableCell> */}
-                    
                   </TableRow>
                 );
               })}

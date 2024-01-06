@@ -10,16 +10,16 @@ export default function Categories2() {
   const [data, setData] = useState(null);
   const [page, setPage] = React.useState(1);
   const [type, setType] = useState("bistro");
-  const [deteItem, setDeleteItem] = useState("");
 
   const handleChange = async (e) => {
     setType(e.target.value);
-    console.log('value', e.target.value);
     setPage(1);
     await Client.get(
       `${API_ENDPOINTS.CATEGORIES}?page=${page}&type=${e.target.value}&parent_is_null=true`
     )
       .then((resp) => {
+        console.log('first data => ', resp.results);
+        
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -38,24 +38,16 @@ export default function Categories2() {
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.CATEGORIES}?type=${type}&search=${e}`)
       .then((resp) => {
-        console.log(resp);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
   };
 
-  const Detele = (value) => {
-    console.log("delete", value);
-    setDeleteItem(value);
-  };
-
+ 
   useEffect(() => {
     getCategories();
     // eslint-disable-next-line
   }, []);
-
-  // console.log('category data', data);
-  
 
   return (
     <div>
@@ -71,7 +63,7 @@ export default function Categories2() {
           Bistro
         </ToggleButton>
         <ToggleButton className="mt-5 flex items-center w-full" value="byuti">
-        Byuti
+          Byuti
         </ToggleButton>
       </ToggleButtonGroup>
       <input
@@ -87,7 +79,7 @@ export default function Categories2() {
       </div>
       <hr />
       <div>
-        <Row2 row={data} Detele={Detele} />
+        <Row2 row={data} />
       </div>
     </div>
   );

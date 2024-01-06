@@ -100,6 +100,8 @@ export default function Retsepts() {
       API_ENDPOINTS.DETAIL_PRODUCT_COUNT_BRANCH + location.search.split("?")[2]
     )
       .then((res) => {
+        console.log('res', res);
+        
         setEditData(res);
       })
       .catch((err) => {
@@ -124,7 +126,7 @@ export default function Retsepts() {
 
 
   const getProduct = async () => {
-    await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST+`/?type=${location.search.split("?")[1]}`)
+    await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST+`/?type=${location.search.split("?")[1] !== 'edit' ? location.search.split("?")[1] : ''}`)
       .then((res) => {
         setProductOption(
           res?.map((el) => ({

@@ -45,7 +45,7 @@ export function ChaildRow2({ row, Detele, type }) {
   useEffect(() => {
     setRowData(row);
     // eslint-disable-next-line
-  }, [data, type]);
+  }, [ type, row]);
 
 
   
@@ -56,14 +56,14 @@ export function ChaildRow2({ row, Detele, type }) {
           expandIcon={rowData?.child_is_available ? <ExpandMoreIcon /> : ""}
           aria-controls="panel2a-content"
           id="panel2a-header"
-          onClick={() => getCatgeoryChaild(rowData.id)}
+          onClick={() => (rowData?.is_add_childe ? getCatgeoryChaild(rowData.id) : '')}
           className="acc-parent"
           style={{ backgroundColor: "#EDF4FB", boxShadow: "none" }}
         >
           <div className="flex justify-between w-full">
             <div>{rowData.name}</div>
             <div>
-              {row.slug === "express" ? (
+              {row?.slug === "express" ? (
                 ""
               ) : (
                 <>

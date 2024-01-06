@@ -93,7 +93,7 @@ export default function CollapsibleTable() {
               <TableRow>
                 <TableCell align="left"><span className="font-bold text-[16px]" >Foydalanuvchi</span></TableCell>
                 <TableCell align="center"><span className="font-bold text-[16px]" >Address</span></TableCell>
-                <TableCell align="right"><span className="font-bold text-[16px]" >Branch</span></TableCell>
+                <TableCell align="right"><span className="font-bold text-[16px]" >Filial</span></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

@@ -102,7 +102,7 @@ function Login() {
               type='password'
             />
             <Button variant="outlined" size='large' type='submit' disabled={submiting}>{
-              submiting ? 'Submitting...' : 'Submit'
+              submiting ? 'Kutilmoqda...' : 'Kirish'
             }</Button>
           </form>
 

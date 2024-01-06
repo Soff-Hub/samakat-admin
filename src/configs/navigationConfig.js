@@ -50,7 +50,7 @@ export const navigationConfig = [
         icon: <CategoryIcon />,
     },
     {
-        name: 'Mazillar',
+        name: 'Manzillar',
         path: '/adresses',
         icon: <MapIcon />,
     },
