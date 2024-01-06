@@ -54,7 +54,7 @@ export default function UserDropdown() {
                 onClose={handleClose}
                 TransitionComponent={Fade}
             >
-                <MenuItem className='w-36' onClick={logout}>Logout</MenuItem>
+                <MenuItem className='w-36' onClick={logout}>Chiqish</MenuItem>
             </Menu>
         </div>
     );
