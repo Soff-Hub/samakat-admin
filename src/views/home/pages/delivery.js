@@ -2,7 +2,7 @@ import React from "react";
 import { TextField, Tooltip } from "@mui/material";
 import { Button, Modal, message } from "antd";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -16,8 +16,8 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-     height: "500px",
-                  overflowY: "scroll",
+    height: "500px",
+    overflowY: "scroll",
   },
 };
 export default function Delivery() {
@@ -28,9 +28,7 @@ export default function Delivery() {
 
   const [data, setData] = useState(null);
   const [count, setCount] = useState("");
-  const [page, setPage] = React.useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpenDetail, setIsModalOpenDetail] = useState(false);
   const [status, setStatus] = useState("");
   const [statusId, setStatusId] = useState("");
   const [detail, setDetail] = useState(null);
@@ -413,96 +411,96 @@ export default function Delivery() {
                 <i class="fa-solid fa-xmark fa-lg"></i>
               </button>
             </div>
-           <div>
-           {detail ? (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  width:'400px',
-                }}
-                className="text-center w-full flex flex-col	"
-              >
-                <form className="w-full p-2 bg-slate-200  flex flex-col justify-start gap-5 mt-6  create-branch-form">
-                  <TextField
-                    label="Foydalanuvchi"
-                    variant="outlined"
-                    size="large"
-                    type="text"
-                    value={detail.user_about ? detail?.user_about?.user : "-"}
-                    onClick={() => handleChangeRouter(detail.user?.id)}
-                  />
-                  <TextField
-                    label="Umumiy so'mma"
-                    variant="outlined"
-                    size="large"
-                    value={detail.total_amount ? detail?.total_amount : "-"}
-                    type="text"
-                  />
-                  <TextField
-                    label="Soni"
-                    variant="outlined"
-                    size="large"
-                    value={
-                      detail.count_products
-                        ? detail?.count_products + " ta"
-                        : "-"
-                    }
-                    type="text"
-                  />
-                  <TextField
-                    label="Vaqti"
-                    variant="outlined"
-                    size="large"
-                    value={
-                      detail?.created_at
-                        ? detail?.created_at?.slice(0, 10) +
-                          " | " +
-                          detail?.created_at?.slice(11, 18)
-                        : "-"
-                    }
-                    type="text"
-                  />
-                  <TextField
-                    label="Manzil"
-                    variant="outlined"
-                    size="large"
-                    value={detail?.address ? detail?.address?.location : "-"}
-                    type="text"
-                  />
-                  {/* <TextField
+            <div>
+              {detail ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    width: "400px",
+                  }}
+                  className="text-center w-full flex flex-col	"
+                >
+                  <form className="w-full p-2 bg-slate-200  flex flex-col justify-start gap-5 mt-6  create-branch-form">
+                    <TextField
+                      label="Foydalanuvchi"
+                      variant="outlined"
+                      size="large"
+                      type="text"
+                      value={detail.user_about ? detail?.user_about?.user : "-"}
+                      onClick={() => handleChangeRouter(detail.user_about?.id)}
+                    />
+                    <TextField
+                      label="Umumiy so'mma"
+                      variant="outlined"
+                      size="large"
+                      value={detail.total_amount ? detail?.total_amount : "-"}
+                      type="text"
+                    />
+                    <TextField
+                      label="Soni"
+                      variant="outlined"
+                      size="large"
+                      value={
+                        detail.count_products
+                          ? detail?.count_products + " ta"
+                          : "-"
+                      }
+                      type="text"
+                    />
+                    <TextField
+                      label="Vaqti"
+                      variant="outlined"
+                      size="large"
+                      value={
+                        detail?.created_at
+                          ? detail?.created_at?.slice(0, 10) +
+                            " | " +
+                            detail?.created_at?.slice(11, 18)
+                          : "-"
+                      }
+                      type="text"
+                    />
+                    <TextField
+                      label="Manzil"
+                      variant="outlined"
+                      size="large"
+                      value={detail?.address ? detail?.address?.location : "-"}
+                      type="text"
+                    />
+                    {/* <TextField
                   label="Promo kod"
                   variant="outlined"
                   size="large"
                   value={detail.promocode ? detail?.promocode?.code : "-"}
                   type="text"
                 /> */}
-                  <TextField
-                    label="Holat"
-                    variant="outlined"
-                    size="large"
-                    value={
-                      detail && detail?.status === "approved"
-                        ? "tasdiqlangan"
-                        : detail && detail?.status === "process"
-                        ? "jarayonda"
-                        : detail && detail?.status === "cancelled"
-                        ? "bekor qilingan"
-                        : ""
-                    }
-                    type="text"
-                  />
-                  <TextField
-                    label="Izoh"
-                    variant="outlined"
-                    size="large"
-                    value={detail.commentary ? detail?.commentary : "-"}
-                    type="text"
-                    multiline
-                    rows={4}
-                  />
-                  {/* <div className="text-left flex align-center">
+                    <TextField
+                      label="Holat"
+                      variant="outlined"
+                      size="large"
+                      value={
+                        detail && detail?.status === "approved"
+                          ? "tasdiqlangan"
+                          : detail && detail?.status === "process"
+                          ? "jarayonda"
+                          : detail && detail?.status === "cancelled"
+                          ? "bekor qilingan"
+                          : ""
+                      }
+                      type="text"
+                    />
+                    <TextField
+                      label="Izoh"
+                      variant="outlined"
+                      size="large"
+                      value={detail.commentary ? detail?.commentary : "-"}
+                      type="text"
+                      multiline
+                      rows={4}
+                    />
+                    {/* <div className="text-left flex align-center">
                       <label className="font-normal font-sans text-base pt-2 pr-2">
                         Eshik oldida qoldirish
                       </label>
@@ -517,25 +515,25 @@ export default function Delivery() {
                         />
                       </RadioGroup>
                     </div> */}
-                </form>
-                <form className="w-full mt-2  bg-slate-200 p-2 mt-6 ">
-                  <p className="font-normal font-sans text-start text-lg pb-2">
-                    Buyurtmalar:
-                  </p>
-                  <ul className="border-[#AEB2B8] py-2 text-start border rounded">
-                    {detail?.product_count?.map((el, i) => (
-                      <li className="font-normal font-sans text-base pl-2">
-                        {i + 1}. {el.product}{" "}
-                        {el.amount !== null ? ` - ${el.amount}` : ""}
-                      </li>
-                    ))}
-                  </ul>
-                </form>
-              </div>
-            ) : (
-              ""
-            )}
-           </div>
+                  </form>
+                  <form className="w-full mt-2  bg-slate-200 p-2 mt-6 ">
+                    <p className="font-normal font-sans text-start text-lg pb-2">
+                      Buyurtmalar:
+                    </p>
+                    <ul className="border-[#AEB2B8] py-2 text-start border rounded">
+                      {detail?.product_count?.map((el, i) => (
+                        <li className="font-normal font-sans text-base pl-2">
+                          {i + 1}. {el.product}{" "}
+                          {el.amount !== null ? ` - ${el.amount}` : ""}
+                        </li>
+                      ))}
+                    </ul>
+                  </form>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </ReactModal>
           <Modal
             title="Holatni tahrirlash"
