@@ -169,7 +169,7 @@ export default function Aksiya() {
               className="w-1/2 m-auto flex mt-4 flex-col gap-5 create-branch-form"
             >
               <TextField
-                label="Belgi matni"
+                label="Aksiya matni"
                 variant="outlined"
                 size="large"
                 type="text"
@@ -180,7 +180,7 @@ export default function Aksiya() {
                 }}
               />
               <TextField
-                label="Belgi rangi"
+                label="Aksiya rangi"
                 variant="outlined"
                 size="large"
                 type="color"
@@ -323,7 +323,7 @@ export default function Aksiya() {
               }}
             />
             <TextField
-              label="Belgi rangi"
+              label="Aksiya rangi"
               variant="outlined"
               size="large"
               type="color"

@@ -16,6 +16,7 @@ import Client from "service/Client";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
+import { Tooltip } from "antd";
 
 
 export default function ArxivOrders() {
@@ -25,7 +26,7 @@ export default function ArxivOrders() {
   const [status, setStatus] = React.useState("approved");
 
   async function getOrders() {
-    await Client.get(API_ENDPOINTS.ARCHIVE)
+    await Client.get(`${API_ENDPOINTS.ARCHIVE}?status=approved`)
       .then((resp) => {
         setData(resp.results);
         setCount(resp.count);
@@ -259,12 +260,18 @@ export default function ArxivOrders() {
                             : "text-[#3B82F6]"
                         }`}
                       >
+                        
                         {row.status === "approved"
                           ? "tasdiqlangan"
                           : row.status === "pending"
                           ? "kutilmoqda"
                           : row.status === "cancelled"
-                          ? "bekor qilingan"
+                          ?
+                          <Tooltip
+                           title={`${row.commentary ? row.commentary : 'izohsiz'}`} placement="top">
+                            bekor qilingan
+                          </Tooltip>
+                          
                           : row.status === "process"
                           ? "jarayonda"
                           : ""}
