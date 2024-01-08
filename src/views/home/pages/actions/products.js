@@ -893,7 +893,7 @@ export default function Products() {
                           size="small"
                           style={{ marginTop: "30px" }}
                           className="w-full"
-                          type="text"
+                          type="number"
                           defaultValue={carbohydrates}
                           onChange={(e) => {
                             setCarbohydrates(e.target.value);
@@ -908,7 +908,7 @@ export default function Products() {
                           size="small"
                           style={{ marginTop: "30px" }}
                           className="w-full"
-                          type="text"
+                          type="number"
                           defaultValue={kilocalories}
                           onChange={(e) => {
                             setKilocalories(e.target.value);
@@ -923,7 +923,7 @@ export default function Products() {
                           size="small"
                           style={{ marginTop: "30px" }}
                           className="w-full"
-                          type="text"
+                          type="number"
                           defaultValue={fats}
                           onChange={(e) => {
                             setFats(e.target.value);
@@ -938,7 +938,7 @@ export default function Products() {
                           size="small"
                           style={{ marginTop: "30px" }}
                           className="w-full"
-                          type="text"
+                          type="number"
                           defaultValue={protein}
                           onChange={(e) => {
                             setProtein(e.target.value);
@@ -1761,7 +1761,7 @@ export default function Products() {
                       size="small"
                       style={{ marginTop: "30px" }}
                       className="w-full"
-                      type="text"
+                      type="number"
                       defaultValue={carbohydrates}
                       onChange={(e) => {
                         setCarbohydrates(e.target.value);
@@ -1776,7 +1776,7 @@ export default function Products() {
                       size="small"
                       style={{ marginTop: "30px" }}
                       className="w-full"
-                      type="text"
+                      type="number"
                       defaultValue={kilocalories}
                       onChange={(e) => {
                         setKilocalories(e.target.value);
@@ -1791,7 +1791,7 @@ export default function Products() {
                       size="small"
                       style={{ marginTop: "30px" }}
                       className="w-full"
-                      type="text"
+                      type="number"
                       defaultValue={fats}
                       onChange={(e) => {
                         setFats(e.target.value);
@@ -1806,7 +1806,7 @@ export default function Products() {
                       size="small"
                       style={{ marginTop: "30px" }}
                       className="w-full"
-                      type="text"
+                      type="number"
                       defaultValue={protein}
                       onChange={(e) => {
                         setProtein(e.target.value);
@@ -2598,7 +2598,7 @@ export default function Products() {
                       size="small"
                       className="w-full"
                       style={{ height: "10px", marginTop: "30px" }}
-                      type="text"
+                      type="number"
                       value={carbohydrates}
                       onChange={(e) => {
                         setCarbohydrates(e.target.value);
@@ -2613,7 +2613,7 @@ export default function Products() {
                       size="small"
                       className="w-full"
                       style={{ height: "10px", marginTop: "30px" }}
-                      type="text"
+                      type="number"
                       value={kilocalories}
                       onChange={(e) => {
                         setKilocalories(e.target.value);
@@ -2628,7 +2628,7 @@ export default function Products() {
                       className="w-full"
                       size="small"
                       style={{ height: "10px", marginTop: "30px" }}
-                      type="text"
+                      type="number"
                       value={fats}
                       onChange={(e) => {
                         setFats(e.target.value);
@@ -2643,7 +2643,7 @@ export default function Products() {
                       variant="outlined"
                       size="small"
                       style={{ height: "10px", marginTop: "30px" }}
-                      type="text"
+                      type="number"
                       value={protein}
                       onChange={(e) => {
                         setProtein(e.target.value);
