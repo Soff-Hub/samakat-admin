@@ -236,15 +236,15 @@ export default function Products() {
     formData1.append("product_categories", JSON.stringify(product_categories));
 
     if (
-      product_highlight?.every((el) => el.content !== "") &&
-      product_highlight?.every((el) => el.order !== "")
+      product_highlight?.every((el) => el.content !== "" && el.content && el.order ) &&
+      product_highlight?.every((el) => el.order !== "" && el.content && el.order)
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
     if (
-      product_branch?.every((el) => el.branch !== "") &&
-      product_branch?.every((el) => el.branch !== 0) &&
-      product_branch?.every((el) => el.quantity !== "")
+      product_branch?.every((el) => el.branch !== "" && el.branch && el.quantity ) &&
+      product_branch?.every((el) => el.branch !== 0 && el.branch && el.quantity) &&
+      product_branch?.every((el) => el.quantity !== "" && el.branch && el.quantity)
     ) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
@@ -324,15 +324,15 @@ export default function Products() {
     }
 
     if (
-      product_highlight?.every((el) => el.content !== "") &&
-      product_highlight?.every((el) => el.order !== "")
+      product_highlight?.every((el) => el.content !== "" && el.content && el.order ) &&
+      product_highlight?.every((el) => el.order !== "" && el.content && el.order)
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
     if (
-      product_branch?.every((el) => el.branch !== "") &&
-      product_branch?.every((el) => el.branch !== 0) &&
-      product_branch?.every((el) => el.quantity !== "")
+      product_branch?.every((el) => el.branch !== "" && el.branch && el.quantity ) &&
+      product_branch?.every((el) => el.branch !== 0 && el.branch && el.quantity) &&
+      product_branch?.every((el) => el.quantity !== "" && el.branch && el.quantity)
     ) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
@@ -400,15 +400,15 @@ export default function Products() {
     }
 
     if (
-      product_highlight?.every((el) => el.content !== "") &&
-      product_highlight?.every((el) => el.order !== "")
+      product_highlight?.every((el) => el.content !== "" && el.content && el.order ) &&
+      product_highlight?.every((el) => el.order !== "" && el.content && el.order)
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
     if (
-      product_branch?.every((el) => el.branch !== "") &&
-      product_branch?.every((el) => el.branch !== 0) &&
-      product_branch?.every((el) => el.quantity !== "")
+      product_branch?.every((el) => el.branch !== "" && el.branch && el.quantity ) &&
+      product_branch?.every((el) => el.branch !== 0 && el.branch && el.quantity) &&
+      product_branch?.every((el) => el.quantity !== "" && el.branch && el.quantity)
     ) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
@@ -534,6 +534,8 @@ export default function Products() {
   useEffect(() => {
     getBranchData();
   }, []);
+
+
   useEffect(() => {
     if (
       location.search.split("?")?.[2] === "edit" ||

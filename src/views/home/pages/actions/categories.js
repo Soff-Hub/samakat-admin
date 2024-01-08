@@ -233,7 +233,7 @@ function Categories() {
                 type="number"
               />
               {
-                !itemData.is_add_childe ? 
+                !itemData.child_is_available ? 
                 <Space
                 style={{
                   width: "100%",
