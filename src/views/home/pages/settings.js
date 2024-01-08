@@ -24,7 +24,7 @@ export default function Settings() {
   };
   const handleOk = async (id) => {
     const data = {
-        dostavka_radius: radius,
+      delivery_time: radius,
       };
       await Client.patch(API_ENDPOINTS.SETTINGS , data)
         .then((resp) => {
@@ -32,7 +32,7 @@ export default function Settings() {
           getData();
           message.open({
             type: "success",
-            content: `Dostavka radiusi o'zgartirildi`,
+            content: `Yetkazib berish vaqti o'zgartirildi`,
             className: "custom-class",
             style: {
               marginTop: "20vh",
