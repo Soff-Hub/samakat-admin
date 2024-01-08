@@ -43,7 +43,7 @@ export default function Settings() {
           console.log(err)
           message.open({
             type: "error",
-            content: `Dostavka radiusi o'zgartirilmadi`,
+            content: `Yetkazib berish vaqti o'zgartirilmadi`,
             className: "custom-class",
             style: {
               marginTop: "20vh",
