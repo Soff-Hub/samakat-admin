@@ -29,8 +29,10 @@ export default function Delivery() {
   const [data, setData] = useState(null);
   const [count, setCount] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalPriceOpen, setIsModalPriceOpen] = useState(false);
   const [status, setStatus] = useState("");
   const [statusId, setStatusId] = useState("");
+  const [priceId, setPriceId] = useState("");
   const [detail, setDetail] = useState(null);
   const [commit, setCommit] = useState("");
   const navigate = useNavigate();
@@ -108,9 +110,30 @@ export default function Delivery() {
 
     setIsModalOpen(false);
   };
+  const handlePriceOk = async (id) => {
+    const data = {
+      is_paid: true,
+    };
+    await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
+      .then((res) => {
+        setIsModalPriceOpen(false)
+        getOrders();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const handle_is_Paid = async (id) => {
+    setPriceId(id)
+    setIsModalPriceOpen(true)
+  };
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+  const handlePriceCancel = () => {
+    setIsModalPriceOpen(false);
   };
 
   async function getOrders() {
@@ -126,19 +149,7 @@ export default function Delivery() {
       .catch((err) => console.log(err));
   }
 
-  const handle_is_Paid = async (id) => {
-    const data = {
-      is_paid: true,
-    };
-    await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
-      .then((res) => {
-        console.log(res);
-        getOrders();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
 
   useEffect(() => {
     getOrders();
@@ -601,6 +612,22 @@ export default function Delivery() {
                 )}
               </li>
             </ul>
+          </Modal>
+          <Modal
+            title="Pulini o'zgartirish uchun ogohlantirish"
+            open={isModalPriceOpen}
+            onOk={() => handlePriceOk(priceId)}
+            onCancel={handlePriceCancel}
+            okText="Xa"
+            cancelText="Ortga"
+            okButtonProps={{
+              style: {
+                backgroundColor: "#3B82F6",
+                color: "white",
+              },
+            }}
+          >
+          <h2>Puli to'langanligiga ishonchingiz komilmi?</h2>
           </Modal>
         </div>
       ) : (
