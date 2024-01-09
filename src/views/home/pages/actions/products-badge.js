@@ -101,6 +101,11 @@ export default function Aksiya() {
     }
   };
 
+  const DiscountPrice = (e) => {
+    setDiscount(e.target.value)
+   setProductSelect(true)
+  }
+
   const getProducts = async (e) => {
     await Client.get(
       `${API_ENDPOINTS.PRODUCT_MIN_LIST_BADGE}?type=${
@@ -231,7 +236,7 @@ export default function Aksiya() {
                 style={{ width: "100%" }}
                 defaultValue={discount}
                 onChange={(e) => {
-                 ( setDiscount(e.target.value), setProductSelect(true))
+                 (DiscountPrice(e))
                 }}
               />
               </div>
@@ -325,7 +330,7 @@ export default function Aksiya() {
                 type="number"
                 defaultValue={discount}
                 onChange={(e) => {
-                  setDiscount(e.target.value), setProductSelect(true);
+                  (DiscountPrice(e));
                 }}
               />
             </div>
