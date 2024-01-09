@@ -19,11 +19,11 @@ export default function Aksiya() {
   const [lifeImage, setLifeImage] = useState(null);
   const [img, setImage] = useState(null);
   const [discount, setDiscount] = useState(1);
-  const [productSelect, setProductSelect] = useState(false);
+  const [productSelect, setProductSelect] = useState(true);
 
   const handleChangeRelatedCategory = (event) => {
     setRelatedCategory(event);
-    setProductSelect(true)
+    setProductSelect(true);
   };
   const LifeImage = (e) => {
     if (e?.target?.files[0]) {
@@ -34,8 +34,8 @@ export default function Aksiya() {
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
+    if (discount >= 1) {
+      const formData = new FormData();
     formData.append("text", text);
     formData.append("textColor", badge);
     formData.append("discount", discount);
@@ -61,38 +61,44 @@ export default function Aksiya() {
       });
 
     setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
+    document.querySelector(".create-branch-form").reset()
+    } else {
+      setProductSelect(false);
+    }
+    
   };
 
-  const handleSubmitAdd = async (e) => {
-    // e.preventDefault();
+  const handleSubmitAdd = async () => {
+    if (discount >= 1) {
+      const formData = new FormData();
+      formData.append("text", text);
+      formData.append("textColor", badge);
+      formData.append("discount", discount);
+      formData.append("type", location.search.split("?")[1]);
+      if (!relatedCategory?.[0]?.name > 0) {
+        formData.append("products", JSON.stringify(relatedCategory));
+      }
+      if (img) {
+        formData.append("image", img);
+      }
 
-    const formData = new FormData();
-    formData.append("text", text);
-    formData.append("textColor", badge);
-    formData.append("discount", discount);
-    formData.append("type", location.search.split("?")[1]);
-    if (!relatedCategory?.[0]?.name > 0) {
-      formData.append("products", JSON.stringify(relatedCategory));
+      setSubmiting(true);
+      await Client.post(API_ENDPOINTS.CREATE_BADGE, formData)
+        .then((data) => {
+          toast.success("Aksiya muvaffaqiyatli qo'shildi");
+          setTimeout(() => {
+            navigate("/product-badge");
+          }, 300);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.map((el, i) => i + 1 + "." + el.msg));
+        });
+
+      setSubmiting(false);
+      document.querySelector(".create-branch-form").reset();
+    } else {
+      setProductSelect(false);
     }
-    if (img) {
-      formData.append("image", img);
-    }
-
-    setSubmiting(true);
-    await Client.post(API_ENDPOINTS.CREATE_BADGE, formData)
-      .then((data) => {
-        toast.success("Aksiya muvaffaqiyatli qo'shildi");
-        setTimeout(() => {
-          navigate("/product-badge");
-        }, 300);
-      })
-      .catch((err) => {
-        toast.error(err.response.data.map((el, i) => i+1 + '.' +  el.msg ));
-      });
-
-    setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
   };
 
   const getProducts = async (e) => {
@@ -144,10 +150,6 @@ export default function Aksiya() {
     }
     // eslint-disable-next-line
   }, []);
-
-  if (relatedCategory.length < 0) {
-    setProductSelect(false)
-  }
 
   return location.search.split("?")[1] === "edit" ? (
     data ? (
@@ -219,67 +221,21 @@ export default function Aksiya() {
                 />
               </Space>
 
+              <div className={!productSelect ? "error-product" : ""}>
+
               <TextField
                 label="Chegirmasi (%)"
                 variant="outlined"
                 size="large"
                 type="number"
+                style={{ width: "100%" }}
                 defaultValue={discount}
                 onChange={(e) => {
-                  setDiscount(e.target.value);
+                 ( setDiscount(e.target.value), setProductSelect(true))
                 }}
               />
+              </div>
 
-              {/* <div className="image-conatiner">
-                <div
-                  style={{
-                    // maxWidth: "150px",
-                    width: ` ${lifeImage ? "250px" : "140px"}`,
-                    height: `${lifeImage ? "250px" : "120px"}`,
-                    backgroundSize: "contain",
-                    backgroundImage: `url(${lifeImage})`,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                    position: "relative",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    textAlign: "center",
-                  }}
-                >
-                  {lifeImage ? (
-                    ""
-                  ) : (
-                    <i
-                      className="fa-regular fa-image"
-                      style={{ fontSize: "35px" }}
-                    ></i>
-                  )}
-                  <input
-                    style={{
-                      opacity: "0",
-                      position: "absolute",
-                      top: "0",
-                      left: "0",
-                      bottom: "0",
-                      right: "0",
-                    }}
-                    onChange={(e) => (
-                      setImage(e.target.files[0]), LifeImage(e)
-                    )}
-                    type="file"
-                  />
-                </div>
-                <Button
-                  onClick={() => (setLifeImage(""), setImage(""))}
-                  variant="outlined"
-                  startIcon={<DeleteIcon />}
-                >
-                  Delete
-                </Button>
-              </div> */}
 
               <Button
                 variant="outlined"
@@ -312,7 +268,7 @@ export default function Aksiya() {
         <Toaster />
         <div className="flex gap-5">
           <Form
-            onFinish={(e) => (productSelect ? handleSubmitAdd(e) : "")}
+            onFinish={(e) => handleSubmitAdd(e)}
             className="w-1/2 m-auto  flex flex-col gap-5 create-branch-form"
           >
             <TextField
@@ -336,44 +292,31 @@ export default function Aksiya() {
                 setBadge(e.target.value);
               }}
             />
-         
-              <Space
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                }}
-                direction="vertical"
-              >
-                <Select
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: "100%",
-                  }}
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  placeholder="Mahsulotlar"
-                  onChange={handleChangeRelatedCategory}
-                  options={categoryData}
-                />
-              </Space>
 
-            {/* <Form.Item
-              name="chegirma"
-              rules={[
-                {
-                  required: true,
-                  message: "Chegirma tanlang!",
-                },
-              ]}
+            <Space
               style={{
                 width: "100%",
+                textAlign: "left",
               }}
-            > */}
-               <div className={!productSelect ? "error-product" : ""}>
+              direction="vertical"
+            >
+              <Select
+                mode="multiple"
+                allowClear
+                style={{
+                  width: "100%",
+                }}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "").includes(input)
+                }
+                placeholder="Mahsulotlar"
+                onChange={handleChangeRelatedCategory}
+                options={categoryData}
+              />
+            </Space>
+            <div className={!productSelect ? "error-product" : ""}>
               <TextField
                 label="Chegirmasi (%)"
                 variant="outlined"
@@ -382,60 +325,10 @@ export default function Aksiya() {
                 type="number"
                 defaultValue={discount}
                 onChange={(e) => {
-                  setDiscount(e.target.value);
+                  setDiscount(e.target.value), setProductSelect(true);
                 }}
               />
-               </div>
-            {/* </Form.Item> */}
-
-            {/* <div className="image-conatiner">
-              <div
-                style={{
-                  // maxWidth: "150px",
-                  width: ` ${lifeImage ? "250px" : "140px"}`,
-                  height: `${lifeImage ? '250px' : "120px"}`,
-                  backgroundSize: "contain",
-                  backgroundImage: `url(${lifeImage})`,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  border: `${false ? "1px solid red" : "1px solid #ccc"}`,
-                  borderRadius: "5px",
-                  position: "relative",
-                  backgroundRepeat: "no-repeat",
-                  textAlign: "center",
-                  backgroundPosition:'center'
-                }}
-              >
-                {lifeImage ? (
-                  ""
-                ) : (
-                  <i
-                    className="fa-regular fa-image"
-                    style={{ fontSize: "35px" }}
-                  ></i>
-                )}
-                <input
-                  style={{
-                    opacity: "0",
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                    bottom: "0",
-                    right: "0",
-                  }}
-                  onChange={(e) => (setImage(e.target.files[0]), LifeImage(e))}
-                  type="file"
-                />
-              </div>
-              <Button
-                onClick={() => (setLifeImage(""), setImage(""))}
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-              >
-                Delete
-              </Button>
-            </div> */}
+            </div>
 
             <Button
               variant="outlined"

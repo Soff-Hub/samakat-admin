@@ -29,12 +29,12 @@ export function ChaildRow2({ row, Detele, type }) {
   };
 
   async function handleDelete() {
+    
     await Client.delete(`${API_ENDPOINTS.DELETE_CATEGORY}${deleteId}/`)
       .then((resp) => {
+        window.location.reload();
         setOpen(false);
         Detele(deleteId);
-        window.location.reload();
-        console.log(resp);
       })
       .catch((err) => {
         console.log(err);
