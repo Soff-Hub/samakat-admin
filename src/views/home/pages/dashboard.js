@@ -28,7 +28,7 @@ export default function Dashboard() {
   return (
     <div className="dashboard-container" >
       <div className="dashboard">
-       <div className="dashboart-cart-group-two" >
+       {/* <div className="dashboart-cart-group-two" > */}
        <div className="dashboard-item-cart     flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
           <div className="flex justify-between">
             <p>
@@ -64,9 +64,9 @@ export default function Dashboard() {
             {data?.total_amount} <span>so'm</span>
           </p>
         </div>
-       </div>
+       {/* </div> */}
 
-       <div className="dashboart-cart-group-two">
+       {/* <div className="dashboart-cart-group-two"> */}
        <div className="dashboard-item-cart   flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
           <div className="flex justify-between">
             <p>
@@ -99,7 +99,7 @@ export default function Dashboard() {
             {data?.total_sold_products}
           </p>
         </div>
-       </div>
+       {/* </div> */}
        
       </div>
       {1 ? (
