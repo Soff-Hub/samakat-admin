@@ -22,7 +22,13 @@ import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRen
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 
 const headCells = [
@@ -112,19 +118,19 @@ export default function EnhancedTable() {
   const [category, setCategory] = useState(null);
   const [categoryValue, setCategoryValue] = useState(null);
   const [SaleValue, setSaleValue] = useState(null);
-  const [errorData, setErrorData] = useState('')
+  const [errorData, setErrorData] = useState("");
   const [sale_product, setSale_product] = useState([
     {
-      id:1,
-      name: 'Sotuvda',
-      value : 'true'
+      id: 1,
+      name: "Sotuvda",
+      value: "true",
     },
     {
-      id:2,
-      name: 'Sotuvda emas',
-      value : 'false'
-    }
-  ])
+      id: 2,
+      name: "Sotuvda emas",
+      value: "false",
+    },
+  ]);
 
   const handleChange = async (e) => {
     setType(e.target.value);
@@ -173,9 +179,9 @@ export default function EnhancedTable() {
         setOpen(false);
         getProductData();
       })
-      .catch((err) =>{
+      .catch((err) => {
         console.log(err.response.data.msg);
-        setErrorData(err.response.data.msg)
+        setErrorData(err.response.data.msg);
       });
   };
 
@@ -195,7 +201,7 @@ export default function EnhancedTable() {
       `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&product_categories__category_id=${event.target.value}`
     )
       .then((resp) => {
-        setCount(resp.results)
+        setCount(resp.results);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -206,7 +212,7 @@ export default function EnhancedTable() {
       `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&on_sale=${event.target.value}`
     )
       .then((resp) => {
-        setCount(resp.results)
+        setCount(resp.results);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -214,7 +220,7 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     getProductData();
-    getCategory()
+    getCategory();
     // eslint-disable-next-line
   }, []);
   return (
@@ -233,7 +239,7 @@ export default function EnhancedTable() {
           Bistro
         </ToggleButton>
         <ToggleButton className="w-full" value="byuti">
-        Byuti
+          Byuti
         </ToggleButton>
       </ToggleButtonGroup>
       <input
@@ -242,57 +248,59 @@ export default function EnhancedTable() {
         className=" lg:w-1/3 md:w-1/3 sm:w-full   px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
         onChange={(e) => Search(e.target.value)}
       />
-       <FormControl
-          size="small"
-          className="sm:w-full  lg:w-1/3  md:w-1/3"
-          style={{marginTop:'12px'}}
+      <FormControl
+        size="small"
+        className="sm:w-full  lg:w-1/3  md:w-1/3"
+        style={{ marginTop: "12px" }}
+      >
+        <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
+          Kategoriya
+        </InputLabel>
+        <Select
+          className="py-0.5"
+          value={categoryValue}
+          label="Holat bo'yicha"
+          onChange={handleChangeCategory}
         >
-          <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
-           Kategoriya
-          </InputLabel>
-          <Select
-            className="py-0.5"
-            value={categoryValue}
-            label="Holat bo'yicha"
-            onChange={handleChangeCategory}
-          >
-            <MenuItem value={""}>
-              <i className="fa-solid fa-minus"></i>{" "}
-            </MenuItem>
-            {category ? (
-              category?.map((item, i) => (
-                <MenuItem key={i} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
-            ) : (
-              <></>
-            )}
-          </Select>
-        </FormControl>
-       <FormControl
-          size="small"
-          className="sm:w-full  lg:w-1/3  md:w-1/3"
-          style={{marginTop:'12px'}}
+          <MenuItem value={""}>
+            <i className="fa-solid fa-minus"></i>{" "}
+          </MenuItem>
+          {category ? (
+            category?.map((item, i) => (
+              <MenuItem key={i} value={item.id}>
+                {item.name}
+              </MenuItem>
+            ))
+          ) : (
+            <></>
+          )}
+        </Select>
+      </FormControl>
+      <FormControl
+        size="small"
+        className="sm:w-full  lg:w-1/3  md:w-1/3"
+        style={{ marginTop: "12px" }}
+      >
+        <InputLabel id="demo-select-small-label" placholder="Sotuv bo'yicha">
+          Sotuv bo'yicha
+        </InputLabel>
+        <Select
+          className="py-0.5"
+          value={SaleValue}
+          label="Sotuv bo'yicha"
+          onChange={handleChangeSale}
         >
-          <InputLabel id="demo-select-small-label" placholder="Sotuv bo'yicha">
-           Sotuv bo'yicha
-          </InputLabel>
-          <Select
-            className="py-0.5"
-            value={SaleValue}
-            label="Sotuv bo'yicha"
-            onChange={handleChangeSale}
-          >
-            {sale_product &&
-              sale_product?.map((item, i) => (
-                <MenuItem key={i} value={item.value}>
-                  {item.name}
-                </MenuItem>
-              ))
-           }
-          </Select>
-        </FormControl>
+          <MenuItem value={""}>
+            <i className="fa-solid fa-minus"></i>{" "}
+          </MenuItem>
+          {sale_product &&
+            sale_product?.map((item, i) => (
+              <MenuItem key={i} value={item.value}>
+                {item.name}
+              </MenuItem>
+            ))}
+        </Select>
+      </FormControl>
       <Box sx={{ width: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <TableContainer>
@@ -357,7 +365,11 @@ export default function EnhancedTable() {
                         <TableCell align="right">
                           <Link to={`actions/?${row.type}?edit?${row.slug}`}>
                             <span style={{ color: `${row?.badge?.textColor}` }}>
-                              {row?.badge?.text ? row?.badge?.text :   <i className="fa-solid fa-minus"></i>}
+                              {row?.badge?.text ? (
+                                row?.badge?.text
+                              ) : (
+                                <i className="fa-solid fa-minus"></i>
+                              )}
                             </span>
                           </Link>
                         </TableCell>
