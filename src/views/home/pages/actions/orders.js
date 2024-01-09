@@ -162,7 +162,7 @@ export default function Orders() {
               {
                   data?.product_count?.map((el,i) => (
                     <li className="font-normal font-sans text-base pl-2" >
-                     {i+1}. {el.product} {el.amount !== null ? ` - ${ el.amount}` : ''}
+                     {i+1}. {el.product}
                     </li>
                   ))
                 }

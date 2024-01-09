@@ -295,6 +295,11 @@
     justify-content: space-between;
 }
 
+.error-product{
+    border-bottom: 1px solid red;
+    border-radius: 5px;
+}
+
 
 @media screen and (max-width:1400px) {
     .dashboard-item-cart{

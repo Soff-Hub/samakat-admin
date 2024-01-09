@@ -118,6 +118,7 @@ function Categories() {
     formData.append("name", formVal.name);
     formData.append("order", formVal.order);
     formData.append("type", formVal.type);
+    
     formData.append("products", JSON.stringify(product));
     if (img) {
       formData.append("image", img);

@@ -18,10 +18,12 @@ export default function Aksiya() {
   const [relatedCategory, setRelatedCategory] = React.useState([]);
   const [lifeImage, setLifeImage] = useState(null);
   const [img, setImage] = useState(null);
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState(1);
+  const [productSelect, setProductSelect] = useState(false);
 
   const handleChangeRelatedCategory = (event) => {
     setRelatedCategory(event);
+    setProductSelect(true)
   };
   const LifeImage = (e) => {
     if (e?.target?.files[0]) {
@@ -63,7 +65,7 @@ export default function Aksiya() {
   };
 
   const handleSubmitAdd = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     const formData = new FormData();
     formData.append("text", text);
@@ -86,7 +88,7 @@ export default function Aksiya() {
         }, 300);
       })
       .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
+        toast.error(err.response.data.map((el, i) => i+1 + '.' +  el.msg ));
       });
 
     setSubmiting(false);
@@ -143,7 +145,9 @@ export default function Aksiya() {
     // eslint-disable-next-line
   }, []);
 
-  console.log("aksiya page rout", location.search.split("?")[1]);
+  if (relatedCategory.length < 0) {
+    setProductSelect(false)
+  }
 
   return location.search.split("?")[1] === "edit" ? (
     data ? (
@@ -308,7 +312,7 @@ export default function Aksiya() {
         <Toaster />
         <div className="flex gap-5">
           <Form
-            onFinish={handleSubmitAdd}
+            onFinish={(e) => (productSelect ? handleSubmitAdd(e) : "")}
             className="w-1/2 m-auto  flex flex-col gap-5 create-branch-form"
           >
             <TextField
@@ -332,16 +336,7 @@ export default function Aksiya() {
                 setBadge(e.target.value);
               }}
             />
-            <Form.Item
-              name="mahsulotlar"
-              rules={[
-                {
-                  required: true,
-                  message: "Mahsulotlarni tanlang!",
-                  type:'array'
-                },
-              ]}
-            >
+         
               <Space
                 style={{
                   width: "100%",
@@ -365,9 +360,8 @@ export default function Aksiya() {
                   options={categoryData}
                 />
               </Space>
-            </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               name="chegirma"
               rules={[
                 {
@@ -376,21 +370,23 @@ export default function Aksiya() {
                 },
               ]}
               style={{
-                width:'100%'
+                width: "100%",
               }}
->
+            > */}
+               <div className={!productSelect ? "error-product" : ""}>
               <TextField
                 label="Chegirmasi (%)"
                 variant="outlined"
                 size="large"
-                style={{width:'100%'}}
+                style={{ width: "100%" }}
                 type="number"
                 defaultValue={discount}
                 onChange={(e) => {
                   setDiscount(e.target.value);
                 }}
               />
-            </Form.Item>
+               </div>
+            {/* </Form.Item> */}
 
             {/* <div className="image-conatiner">
               <div

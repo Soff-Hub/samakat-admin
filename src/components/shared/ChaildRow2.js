@@ -83,7 +83,9 @@ export function ChaildRow2({ row, Detele, type }) {
                       <DriveFileRenameOutlineOutlinedIcon />
                     </IconButton>
                   </Link>
-                  <IconButton
+                 {
+                  rowData.is_delete ? (
+                    <IconButton
                     color="error"
                     onClick={() => {
                       setDeleteId(rowData.slug);
@@ -93,6 +95,8 @@ export function ChaildRow2({ row, Detele, type }) {
                   >
                     <DeleteSharpIcon />
                   </IconButton>
+                  ) : ''
+                 }
                 </>
               )}
             </div>
