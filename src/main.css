@@ -300,6 +300,14 @@
     border-radius: 5px;
 }
 
+@media screen and (max-width:1500px) {
+    .dashboard-item-cart{
+        max-width: 200px ;
+        width: 100%;
+    }
+
+}
+
 
 @media screen and (max-width:1400px) {
     .dashboard-item-cart{
