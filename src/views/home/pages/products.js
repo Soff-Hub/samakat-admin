@@ -250,7 +250,7 @@ export default function EnhancedTable() {
       />
       <FormControl
         size="small"
-        className="sm:w-full  lg:w-1/3  md:w-1/3"
+        className=" w-1/3  "
         style={{ marginTop: "12px" }}
       >
         <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
@@ -278,7 +278,7 @@ export default function EnhancedTable() {
       </FormControl>
       <FormControl
         size="small"
-        className="sm:w-full  lg:w-1/3  md:w-1/3"
+        className="w-1/3 "
         style={{ marginTop: "12px" }}
       >
         <InputLabel id="demo-select-small-label" placholder="Sotuv bo'yicha">

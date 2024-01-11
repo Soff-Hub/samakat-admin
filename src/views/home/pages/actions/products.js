@@ -668,8 +668,8 @@ export default function Products() {
               <div>
                 <label className="font-normal font-sans text-lg">Sotuvda</label>
                 <Switch
-                  checked={editData?.on_sale || on_sale}
-                  defaultChecked={true}
+                  // checked={editData?.on_sale || on_sale}
+                  defaultChecked={editData?.on_sale || on_sale}
                   onChange={handleChangeActiveShop}
                   inputProps={{ "aria-label": "controlled" }}
                 />
@@ -1541,8 +1541,8 @@ export default function Products() {
               <div>
                 <label className="font-normal font-sans text-lg">Sotuvda</label>
                 <Switch
-                  checked={editData?.on_sale || on_sale}
-                  defaultChecked={true}
+                  // checked={editData?.on_sale || on_sale}
+                  defaultChecked={editData?.on_sale || on_sale}
                   onChange={handleChangeActiveShop}
                   inputProps={{ "aria-label": "controlled" }}
                 />
