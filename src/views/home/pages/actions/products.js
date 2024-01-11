@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Modal, Select, Space } from "antd";
+import { Flex, Input, Modal, Select, Space } from "antd";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Switch from "@mui/material/Switch";
@@ -15,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddInput from "components/shared/addInput";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import TextArea from "antd/es/input/TextArea";
 
 export default function Products() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +32,7 @@ export default function Products() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
-  const [discount, setDiscount] = useState(0);
+  const [discount, setDiscount] = useState("");
   const [on_sale, setOn_sale] = React.useState(false);
   const [carbohydrates, setCarbohydrates] = React.useState(0);
   const [ingredients, setingredients] = React.useState("");
@@ -231,20 +232,34 @@ export default function Products() {
     formData1.append("name", name);
     formData1.append("price", price);
     formData1.append("description", description);
-    formData1.append("discount", discount);
+    if (discount === "") {
+      formData1.append("discount", 0);
+    } else {
+      formData1.append("discount", discount);
+    }
     formData1.append("on_sale", on_sale);
     formData1.append("product_categories", JSON.stringify(product_categories));
 
     if (
-      product_highlight?.every((el) => el.content !== "" && el.content && el.order ) &&
-      product_highlight?.every((el) => el.order !== "" && el.content && el.order)
+      product_highlight?.every(
+        (el) => el.content !== "" && el.content && el.order
+      ) &&
+      product_highlight?.every(
+        (el) => el.order !== "" && el.content && el.order
+      )
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
     if (
-      product_branch?.every((el) => el.branch !== "" && el.branch && el.quantity ) &&
-      product_branch?.every((el) => el.branch !== 0 && el.branch && el.quantity) &&
-      product_branch?.every((el) => el.quantity !== "" && el.branch && el.quantity)
+      product_branch?.every(
+        (el) => el.branch !== "" && el.branch && el.quantity
+      ) &&
+      product_branch?.every(
+        (el) => el.branch !== 0 && el.branch && el.quantity
+      ) &&
+      product_branch?.every(
+        (el) => el.quantity !== "" && el.branch && el.quantity
+      )
     ) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
@@ -311,7 +326,11 @@ export default function Products() {
     formData1.append("name", name);
     formData1.append("price", price);
     formData1.append("description", description);
-    formData1.append("discount", discount);
+    if (discount === "") {
+      formData1.append("discount", 0);
+    } else {
+      formData1.append("discount", discount);
+    }
     formData1.append("on_sale", on_sale);
     formData1.append("variant_id", location.search.split("?")[4]);
     if (delID?.length > 0) {
@@ -324,15 +343,25 @@ export default function Products() {
     }
 
     if (
-      product_highlight?.every((el) => el.content !== "" && el.content && el.order ) &&
-      product_highlight?.every((el) => el.order !== "" && el.content && el.order)
+      product_highlight?.every(
+        (el) => el.content !== "" && el.content && el.order
+      ) &&
+      product_highlight?.every(
+        (el) => el.order !== "" && el.content && el.order
+      )
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
     if (
-      product_branch?.every((el) => el.branch !== "" && el.branch && el.quantity ) &&
-      product_branch?.every((el) => el.branch !== 0 && el.branch && el.quantity) &&
-      product_branch?.every((el) => el.quantity !== "" && el.branch && el.quantity)
+      product_branch?.every(
+        (el) => el.branch !== "" && el.branch && el.quantity
+      ) &&
+      product_branch?.every(
+        (el) => el.branch !== 0 && el.branch && el.quantity
+      ) &&
+      product_branch?.every(
+        (el) => el.quantity !== "" && el.branch && el.quantity
+      )
     ) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
@@ -390,7 +419,11 @@ export default function Products() {
     formData1.append("name", name);
     formData1.append("price", price);
     formData1.append("description", description);
-    formData1.append("discount", discount);
+    if (discount === "") {
+      formData1.append("discount", 0);
+    } else {
+      formData1.append("discount", discount);
+    }
     formData1.append("on_sale", on_sale);
     if (!product_categories?.[0]?.label) {
       formData1.append(
@@ -400,15 +433,25 @@ export default function Products() {
     }
 
     if (
-      product_highlight?.every((el) => el.content !== "" && el.content && el.order ) &&
-      product_highlight?.every((el) => el.order !== "" && el.content && el.order)
+      product_highlight?.every(
+        (el) => el.content !== "" && el.content && el.order
+      ) &&
+      product_highlight?.every(
+        (el) => el.order !== "" && el.content && el.order
+      )
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
     }
     if (
-      product_branch?.every((el) => el.branch !== "" && el.branch && el.quantity ) &&
-      product_branch?.every((el) => el.branch !== 0 && el.branch && el.quantity) &&
-      product_branch?.every((el) => el.quantity !== "" && el.branch && el.quantity)
+      product_branch?.every(
+        (el) => el.branch !== "" && el.branch && el.quantity
+      ) &&
+      product_branch?.every(
+        (el) => el.branch !== 0 && el.branch && el.quantity
+      ) &&
+      product_branch?.every(
+        (el) => el.quantity !== "" && el.branch && el.quantity
+      )
     ) {
       formData1.append("product_count_branch", JSON.stringify(product_branch));
     }
@@ -535,7 +578,6 @@ export default function Products() {
     getBranchData();
   }, []);
 
-
   useEffect(() => {
     if (
       location.search.split("?")?.[2] === "edit" ||
@@ -574,20 +616,16 @@ export default function Products() {
               onSubmit={handleSubmitEdit}
               className=" flex flex-col gap-5 create-branch-form"
             >
-              <TextField
-                label="Nomi"
-                variant="outlined"
-                size="large"
+              <Input
+                placeholder="Nomi *"
                 type="text"
                 defaultValue={name}
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
               />
-              <TextField
-                label="Narxi"
-                variant="outlined"
-                size="large"
+              <Input
+                placeholder="Narxi"
                 type="number"
                 defaultValue={JSON.parse(editData?.price) || price}
                 onChange={(e) => {
@@ -597,36 +635,20 @@ export default function Products() {
                     (parseInt(inputValue) <= 50000000 &&
                       parseInt(inputValue) > 0)
                   ) {
-                    setPrice(inputValue);
+                    if (inputValue.includes(",") || inputValue.includes(".")) {
+                      const sanitizedValue = e.target.value.replace(
+                        /[,\.]/g,
+                        ""
+                      );
+                      setPrice(sanitizedValue);
+                    } else {
+                      setPrice(inputValue);
+                    }
                   }
                 }}
               />
-              {/* <label>
-                Narx
-               <input
-                type="text"
-                id="priceInput"
-                placeholder="Narxi *"
-                required
-                defaultValue={JSON.parse(editData?.price) || price}
-                onChange={(e) => formatPrice(e.target.value)}
-              />
-              </label> */}
-              <TextField
-                id="outlined-multiline-static"
-                label="Izoh"
-                defaultValue={editData?.description || description}
-                multiline
-                rows={4}
-                type="text"
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-              />
-              <TextField
-                label="Chegirmasi ( % )"
-                variant="outlined"
-                size="large"
+              <Input
+                placeholder="Chegirmasi ( % )"
                 type="number"
                 defaultValue={editData?.discount || discount}
                 onChange={(e) => {
@@ -639,6 +661,22 @@ export default function Products() {
                   }
                 }}
               />
+
+              <Flex vertical gap={32}>
+                <TextArea
+                  showCount
+                  maxLength={100}
+                  placeholder="Izoh"
+                  style={{
+                    height: 120,
+                    resize: "none",
+                  }}
+                  defaultValue={editData?.description || description}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                  }}
+                />
+              </Flex>
 
               <Space
                 style={{
@@ -1447,20 +1485,16 @@ export default function Products() {
               onSubmit={handleSubmitAddVariant}
               className=" flex flex-col gap-5 create-branch-form"
             >
-              <TextField
-                label="Nomi"
-                variant="outlined"
-                size="large"
+              <Input
+                placeholder="Nomi *"
                 type="text"
                 defaultValue={name}
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
               />
-              <TextField
-                label="Narxi"
-                variant="outlined"
-                size="large"
+              <Input
+                placeholder="Narxi"
                 type="number"
                 defaultValue={JSON.parse(editData?.price) || price}
                 onChange={(e) => {
@@ -1470,36 +1504,20 @@ export default function Products() {
                     (parseInt(inputValue) <= 50000000 &&
                       parseInt(inputValue) > 0)
                   ) {
-                    setPrice(inputValue);
+                    if (inputValue.includes(",") || inputValue.includes(".")) {
+                      const sanitizedValue = e.target.value.replace(
+                        /[,\.]/g,
+                        ""
+                      );
+                      setPrice(sanitizedValue);
+                    } else {
+                      setPrice(inputValue);
+                    }
                   }
                 }}
               />
-              {/* <label>
-              Narx
-              <input
-                type="text"
-                id="priceInput"
-                placeholder="Narxi *"
-                required
-                defaultValue={JSON.parse(editData.price) || price}
-                onChange={(e) => formatPrice(e.target.value)}
-              />
-              </label> */}
-              <TextField
-                id="outlined-multiline-static"
-                label="Izoh"
-                defaultValue={editData?.description || description}
-                multiline
-                rows={4}
-                type="text"
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-              />
-              <TextField
-                label="Chegirmasi ( % )"
-                variant="outlined"
-                size="large"
+              <Input
+                placeholder="Chegirmasi ( % )"
                 type="number"
                 defaultValue={editData?.discount || discount}
                 onChange={(e) => {
@@ -1512,6 +1530,22 @@ export default function Products() {
                   }
                 }}
               />
+
+              <Flex vertical gap={32}>
+                <TextArea
+                  showCount
+                  maxLength={100}
+                  placeholder="Izoh"
+                  style={{
+                    height: 120,
+                    resize: "none",
+                  }}
+                  defaultValue={editData?.description || description}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                  }}
+                />
+              </Flex>
 
               <Space
                 style={{
@@ -1742,7 +1776,6 @@ export default function Products() {
                       variant="outlined"
                       className="w-full"
                       multiline
-                      required
                       maxRows={4}
                       defaultValue={
                         editData?.product_attribute?.ingredients || ingredients
@@ -2311,10 +2344,8 @@ export default function Products() {
             onSubmit={handleSubmitAdd}
             className="w-full flex flex-col gap-5 create-branch-form"
           >
-            <TextField
-              label="Nomi"
-              variant="outlined"
-              size="small"
+            <Input
+              placeholder="Nomi *"
               type="text"
               value={name}
               required
@@ -2322,30 +2353,31 @@ export default function Products() {
                 setName(e.target.value);
               }}
             />
-            <TextField
-              inputMode="numeric"
-              label="Narxi"
-              variant="outlined"
-              size="small"
+            <Input
+              placeholder="Narxi *"
               type="number"
               maxLength="16"
               value={price}
               required
               onChange={(e) => {
                 const inputValue = e.target.value;
+                console.log("value => ", inputValue);
                 if (
                   inputValue === "" ||
                   (parseInt(inputValue) <= 50000000 && parseInt(inputValue) > 0)
                 ) {
-                  setPrice(inputValue);
+                  if (inputValue.includes(",") || inputValue.includes(".")) {
+                    const sanitizedValue = e.target.value.replace(/[,\.]/g, "");
+                    setPrice(sanitizedValue);
+                  } else {
+                    setPrice(inputValue);
+                  }
                 }
               }}
             />
 
-            <TextField
-              label="Chegirmasi ( % )"
-              variant="outlined"
-              size="small"
+            <Input
+              placeholder="Chegirmasi ( % )"
               type="number"
               value={discount}
               onChange={(e) => {
@@ -2358,27 +2390,22 @@ export default function Products() {
                 }
               }}
             />
-            {/* 
-            <input
-              type="text"
-              id="priceInput"
-              placeholder="Narxi *"
-              required
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            /> */}
 
-            <TextField
-              id="outlined-multiline-static"
-              label="Izoh"
-              multiline
-              value={description}
-              rows={4}
-              type="text"
-              onChange={(e) => {
-                setDescription(e.target.value);
-              }}
-            />
+            <Flex vertical gap={32}>
+              <TextArea
+                showCount
+                maxLength={100}
+                placeholder="Izoh"
+                style={{
+                  height: 120,
+                  resize: "none",
+                }}
+                value={description}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                }}
+              />
+            </Flex>
 
             <Space
               style={{

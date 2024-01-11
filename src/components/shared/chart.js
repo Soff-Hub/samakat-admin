@@ -205,11 +205,8 @@ const ChartComponent = () => {
               options={options}
               series={series}
               type="bar"
-              className="w-full"
-              style={{
-                with: "100%",
-                height: "auto",
-              }}
+              className="w-full chart-height-control"
+             
             />
           ) : (
             <>load</>

@@ -380,3 +380,7 @@
 
     
 }
+
+.chart-height-control{
+    height: 100px !important;
+}
