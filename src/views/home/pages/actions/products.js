@@ -30,9 +30,9 @@ export default function Products() {
   const [editData, setEditData] = useState(null);
   const location = useLocation();
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(null);
   const [description, setDescription] = useState("");
-  const [discount, setDiscount] = useState("");
+  const [discount, setDiscount] = useState(null);
   const [on_sale, setOn_sale] = React.useState(false);
   const [carbohydrates, setCarbohydrates] = React.useState(0);
   const [ingredients, setingredients] = React.useState("");
@@ -627,13 +627,13 @@ export default function Products() {
               <Input
                 placeholder="Narxi"
                 type="number"
-                defaultValue={JSON.parse(editData?.price) || price}
+                // defaultValue={JSON.parse(editData?.price) || price}
+                value={ price }
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   if (
                     inputValue === "" ||
-                    (parseInt(inputValue) <= 50000000 &&
-                      parseInt(inputValue) > 0)
+                    (+inputValue <= 50000000 && +inputValue > 0)
                   ) {
                     if (inputValue.includes(",") || inputValue.includes(".")) {
                       const sanitizedValue = e.target.value.replace(
@@ -642,6 +642,7 @@ export default function Products() {
                       );
                       setPrice(sanitizedValue);
                     } else {
+                      console.log("ishladi", inputValue);
                       setPrice(inputValue);
                     }
                   }
@@ -650,14 +651,22 @@ export default function Products() {
               <Input
                 placeholder="Chegirmasi ( % )"
                 type="number"
-                defaultValue={editData?.discount || discount}
+                value={discount }
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   if (
                     inputValue === "" ||
-                    (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)
+                    (+inputValue <= 100 && +inputValue >= 0)
                   ) {
-                    setDiscount(inputValue);
+                    if (inputValue.includes(",") || inputValue.includes(".")) {
+                      const sanitizedValue = e.target.value.replace(
+                        /[,\.]/g,
+                        ""
+                      );
+                      setDiscount(sanitizedValue);
+                    } else {
+                      setDiscount(inputValue);
+                    }
                   }
                 }}
               />
@@ -1496,13 +1505,13 @@ export default function Products() {
               <Input
                 placeholder="Narxi"
                 type="number"
-                defaultValue={JSON.parse(editData?.price) || price}
+                value={price}
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   if (
                     inputValue === "" ||
-                    (parseInt(inputValue) <= 50000000 &&
-                      parseInt(inputValue) > 0)
+                    (+(inputValue) <= 50000000 &&
+                      +(inputValue) > 0)
                   ) {
                     if (inputValue.includes(",") || inputValue.includes(".")) {
                       const sanitizedValue = e.target.value.replace(
@@ -1519,14 +1528,22 @@ export default function Products() {
               <Input
                 placeholder="Chegirmasi ( % )"
                 type="number"
-                defaultValue={editData?.discount || discount}
+                value={discount}
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   if (
                     inputValue === "" ||
-                    (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)
+                    (+(inputValue) <= 100 && +(inputValue) >= 0)
                   ) {
-                    setDiscount(inputValue);
+                    if (inputValue.includes(",") || inputValue.includes(".")) {
+                      const sanitizedValue = e.target.value.replace(
+                        /[,\.]/g,
+                        ""
+                      );
+                      setDiscount(sanitizedValue);
+                    } else {
+                      setDiscount(inputValue);
+                    }
                   }
                 }}
               />
@@ -2386,7 +2403,12 @@ export default function Products() {
                   inputValue === "" ||
                   (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)
                 ) {
-                  setDiscount(inputValue);
+                  if (inputValue.includes(",") || inputValue.includes(".")) {
+                    const sanitizedValue = e.target.value.replace(/[,\.]/g, "");
+                    setDiscount(sanitizedValue);
+                  } else {
+                    setDiscount(inputValue);
+                  }
                 }
               }}
             />

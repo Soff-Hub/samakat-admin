@@ -113,6 +113,7 @@ export default function EnhancedTable() {
   const [type, setType] = React.useState("bistro");
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState("");
+  const [constCount, setConstCount] = useState("");
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [category, setCategory] = useState(null);
@@ -141,6 +142,7 @@ export default function EnhancedTable() {
       .then((resp) => {
         setCount(resp.count);
         setData(resp.results);
+        setConstCount(resp.count)
       })
       .catch((err) => console.log(err));
   };
@@ -151,6 +153,7 @@ export default function EnhancedTable() {
     await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}&type=bistro`)
       .then((resp) => {
         setCount(resp.count);
+        setConstCount(resp.count)
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -225,8 +228,11 @@ export default function EnhancedTable() {
   }, []);
   return (
     <>
-      <div className="mb-5">
+      <div className="">
         <NavHeaderSelect title="Mahsulotlar" />
+      </div>
+      <div className="mb-5">
+        <h1 className="text-2xl font-sans">Jami mahsulotlar <span className="slashed-zero font-semibold font-mono text-[#3B82F6]">{constCount}</span>  {constCount ? "ta  " : ''}</h1>
       </div>
       <ToggleButtonGroup
         color="primary"
