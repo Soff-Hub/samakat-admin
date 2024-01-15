@@ -29,9 +29,10 @@ function Categories() {
 
   const handleChangeRelatedCategory = (event) => {
     setProduct(event);
-    console.log(event);
+    console.log("=>",event);
   };
 
+  console.log("=> 0",product);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -92,6 +93,7 @@ function Categories() {
         setFormVal(resp);
         setItemData(resp);
         setLifeImage(resp.image);
+        setProduct(resp.products?.map((el) => el.id))
         setDefaultData(resp.products?.map((el) => ({
           value : el.id,
           label:el.name
@@ -143,7 +145,6 @@ function Categories() {
   const getProduct = async () => {
     await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}`)
     .then((res) => {
-      console.log(res);
       setProductApi(res?.map((el) => ({
         value : el.id,
         label:el.name
