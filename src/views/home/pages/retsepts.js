@@ -214,7 +214,7 @@ export default function EnhancedTable() {
     getRetsipeData();
   }, []);
   return (
-    <div className="p-2">
+    <div className="px-2 py-3 bg--color">
       <div className="mb-5">
         <NavHeaderSelect title="Retseptlar" />
       </div>

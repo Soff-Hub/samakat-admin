@@ -34,7 +34,7 @@ export default function Retsepts() {
         branch: branch,
         product: product,
         quantity: +quantity,
-        type: location.search.split("?")[1]
+        type: location.search.split("?")[1],
       };
       setSubmiting(true);
       await Client.post(API_ENDPOINTS.CREATE_PRODUCT_COUNT_BRANCH, data)
@@ -65,13 +65,13 @@ export default function Retsepts() {
     const data = {};
 
     if (branch !== "") {
-      Object.assign(data,{branch: branch})
+      Object.assign(data, { branch: branch });
     }
     if (product !== "") {
-      Object.assign(data,{product: product})
+      Object.assign(data, { product: product });
     }
     if (quantity !== "") {
-      Object.assign(data,{quantity: +quantity})
+      Object.assign(data, { quantity: +quantity });
     }
 
     setSubmiting(true);
@@ -79,7 +79,7 @@ export default function Retsepts() {
       `${API_ENDPOINTS.UPDATE_PRODUCT_COUNT_BRANCH}${
         location.search.split("?")[2]
       }/`,
-      data 
+      data
     )
       .then((data) => {
         toast.success("Filiallardagi mahsulot muvaffaqiyatli tahrirlandi");
@@ -100,8 +100,8 @@ export default function Retsepts() {
       API_ENDPOINTS.DETAIL_PRODUCT_COUNT_BRANCH + location.search.split("?")[2]
     )
       .then((res) => {
-        console.log('res', res);
-        
+        console.log("res", res);
+
         setEditData(res);
       })
       .catch((err) => {
@@ -124,9 +124,15 @@ export default function Retsepts() {
       });
   };
 
-
   const getProduct = async () => {
-    await Client.get(API_ENDPOINTS.PRODUCT_MIN_LIST+`/?type=${location.search.split("?")[1] !== 'edit' ? location.search.split("?")[1] : ''}`)
+    await Client.get(
+      API_ENDPOINTS.PRODUCT_MIN_LIST +
+        `/?type=${
+          location.search.split("?")[1] !== "edit"
+            ? location.search.split("?")[1]
+            : ""
+        }`
+    )
       .then((res) => {
         setProductOption(
           res?.map((el) => ({
@@ -164,7 +170,7 @@ export default function Retsepts() {
 
   return location.search.split("?")[1] === "edit" ? (
     editData ? (
-      <div>
+      <div className="p-3" >
         <div className="flex items-center justify-between">
           <h1 className="text-[28px] pb-3">
             Filiallardagi mahsulotlarni tahrirlash
@@ -186,7 +192,7 @@ export default function Retsepts() {
             <div className="flex gap-5">
               <form
                 onSubmit={handleSubmitEdit}
-                className="w-full flex flex-col gap-5 create-branch-form"
+                className="w-full flex flex-col gap-4 colorr p-2 create-branch-form"
               >
                 <div>
                   <label className="text-slate-400">Filial :</label>
@@ -279,12 +285,12 @@ export default function Retsepts() {
       }}
     >
       <div>
-        <h1 className="text-[35px] pb-3">Filiallardagi mahsulotlar</h1>
+        <h1 className="text-[35px] py-3">Filiallardagi mahsulotlar</h1>
         <Toaster />
         <div className="flex gap-5">
           <form
             onSubmit={handleSubmitAdd}
-            className="w-full flex flex-col gap-5 create-branch-form"
+            className="w-full flex flex-col gap-4 create-branch-form colorr p-2"
           >
             <Select
               mode="select"

@@ -75,8 +75,8 @@ export default function ArxivOrders() {
   }, []);
 
   return (
-    <div className="p-2">
-      <div className="mb-5">
+    <div className="px-2 py-3 bg--color">
+      <div className="mb-3">
         <h1 className="text-2xl">Buyurtmalar arxivi</h1>
       </div>
 

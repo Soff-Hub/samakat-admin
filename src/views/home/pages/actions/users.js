@@ -5,10 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import {
-  Button,
-  TextField,
-} from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Client from "service/Client";
@@ -18,12 +15,12 @@ export default function Users() {
   const location = useLocation();
   const [expanded, setExpanded] = React.useState(false);
   const [data, setData] = React.useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChangeAcc = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  
+
   const getItem = async (id) => {
     await Client.get(`${API_ENDPOINTS.DETAIL_USER}${id}`)
       .then((res) => {
@@ -35,8 +32,8 @@ export default function Users() {
   };
 
   const handleChangeRouter = (id) => {
-    navigate(`/adresses/actions/?${id}`)
-  }
+    navigate(`/adresses/actions/?${id}`);
+  };
 
   React.useEffect(() => {
     getItem(location.search.split("?")[2]);
@@ -44,20 +41,20 @@ export default function Users() {
   }, [location.search.split("?")[2]]);
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-            <h1 className="text-[28px] pb-3">Foydalanuvchi</h1>
-            <Link to="/users">
-              <Button
-                variant="contained"
-                color="info"
-                size="large"
-                startIcon={<ArrowBackIcon />}
-              >
-                Orqaga
-              </Button>
-            </Link>
-          </div>
+    <div className="bg--color px-2 py-3 ">
+      <div className="flex items-center mb-5 justify-between">
+        <h1 className="text-[28px] ">Foydalanuvchi</h1>
+        <Link to="/users">
+          <Button
+            variant="contained"
+            color="info"
+            size="large"
+            startIcon={<ArrowBackIcon />}
+          >
+            Orqaga
+          </Button>
+        </Link>
+      </div>
 
       <form className="flex gap-[40px]">
         <div className="w-full">
@@ -103,7 +100,13 @@ export default function Users() {
                   variant="outlined"
                   size="small"
                   name="first_name"
-                  value={data ? data?.is_active === true ? "Faol" : "Faol emas" : ""}
+                  value={
+                    data
+                      ? data?.is_active === true
+                        ? "Faol"
+                        : "Faol emas"
+                      : ""
+                  }
                 />
                 <TextField
                   label="Kodi"
@@ -132,7 +135,11 @@ export default function Users() {
               {data?.user_addresses ? (
                 data?.user_addresses?.map((item, i) => {
                   return (
-                    <div style={{cursor:'pointer'}} onClick={() => handleChangeRouter(item.id)} key={i}>
+                    <div
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleChangeRouter(item.id)}
+                      key={i}
+                    >
                       <hr className="py-2" />
                       <h3>
                         <span className="font-medium"> Location</span> :{" "}
@@ -160,7 +167,7 @@ export default function Users() {
               id="panel3bh-header"
             >
               <Typography sx={{ width: "33%", flexShrink: 0 }}>
-               Sotuv tarixi
+                Sotuv tarixi
               </Typography>
             </AccordionSummary>
             <AccordionDetails>

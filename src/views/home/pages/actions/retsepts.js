@@ -272,7 +272,7 @@ export default function Retsepts() {
 
   return location.search.split("?")[1] === "edit" ? (
     editData ? (
-      <div>
+      <div className="bg--color px-2 py-3">
         <div>
           <div className="flex items-center justify-between">
             <h1 className="text-[28px] pb-3">Retsiptni tahrirlash</h1>
@@ -291,7 +291,7 @@ export default function Retsepts() {
           <div>
             <form
               onSubmit={handleEditItemRecipe}
-              className="w-1/2 m-auto flex flex-col gap-5 create-branch-form"
+              className="w-1/2 m-auto flex flex-col gap-4 colorr p-2 create-branch-form"
             >
               <TextField
                 label="Nomi"
@@ -387,12 +387,12 @@ export default function Retsepts() {
                           <div
                             onClick={() => showModal(item?.image, item.id)}
                             style={{
-                              width: ` ${ item?.image ? "250px" : '150px'}`,
+                              width: ` ${ item?.image ? "243px" : '150px'}`,
                               backgroundImage: `url(${
                                 item?.image ? item?.image : ""
                               })`,
                               backgroundSize: "cover",
-                              height: ` ${item?.image ? "250px" : '120px'}`,
+                              height: ` ${item?.image ? "243px" : '120px'}`,
                               borderRadius: "5px",
                             }}
                           ></div>
@@ -559,14 +559,14 @@ export default function Retsepts() {
       </Box>
     )
   ) : (
-    <div>
+    <div className="bg--color px-2 py-3" >
       <div className="text-center">
         <h1 className="text-[35px] pb-3">Retsept qo'shish</h1>
         <Toaster />
         <div className="flex gap-5">
           <form
             onSubmit={handleSubmitAddRecipe}
-            className="w-1/2 m-auto flex flex-col gap-5 create-branch-form"
+            className="w-1/2 m-auto flex flex-col gap-4 colorr p-2 create-branch-form"
           >
             <TextField
               label="Nomi"

@@ -436,6 +436,10 @@
     background-color: #fff !important;
 }
 
+.bg--color{
+    background-color: #EFF2F8;
+}
+
 .App .MuiBox-root {
     height: 100vh !important;
 }

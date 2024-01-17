@@ -191,8 +191,8 @@ export default function EnhancedTable() {
 
 
   return (
-    <div className="p-2">
-      <div className="mb-5">
+    <div className="px-2 py-3 bg--color">
+      <div>
         <NavHeaderSelect title="Filiallardagi mahsulotlar" />
       </div>
       <ToggleButtonGroup
@@ -218,7 +218,7 @@ export default function EnhancedTable() {
                 <input
                   type="text"
                   placeholder="Izlash"
-                  className="sm:w-full  w-1/3 px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+                  className="sm:w-full  w-1/3 px-3 ps-3 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
                   onChange={(e) => Search(e.target.value)}
                 />
                 <Select

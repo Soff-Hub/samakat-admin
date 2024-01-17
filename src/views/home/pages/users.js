@@ -201,7 +201,7 @@ export default function Users() {
     getUsersCount();
   }, []);
   return (
-    <div className="p-2">
+    <div className="px-2 py-3 bg--color">
       <div className="mb-5">
         <h1 className="text-2xl font-sans">
           Jami foydalanuvchilar{" "}

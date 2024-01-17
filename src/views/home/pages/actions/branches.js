@@ -168,7 +168,7 @@ function Login() {
   }, [formVal.latitude, formVal.longitude]);
 
   return query["*"] !== "" ? (
-    <div>
+    <div className="bg--color py-3 px-2">
       <div className="flex items-center justify-between">
         <h1 className="text-[35px] pb-3">Filial tahrirlash</h1>
         <Link to="/branches">
@@ -214,7 +214,7 @@ function Login() {
           </div>
           <form
             onSubmit={handleSubmitEdit}
-            className="w-1/3 flex flex-col gap-5 create-branch-form"
+            className="w-1/3 flex flex-col gap-5 create-branch-form colorr p-2 "
           >
             <TextField
               label="Filial nomi"
@@ -303,7 +303,7 @@ function Login() {
       )}
     </div>
   ) : (
-    <div>
+    <div className="py-3 px-2"  >
       <h1 className="text-[35px] pb-3">Filial qo'shish</h1>
       <Toaster />
       <div className="flex gap-5">
@@ -336,7 +336,7 @@ function Login() {
         </div>
         <form
           onSubmit={handleSubmit}
-          className="w-1/3 flex flex-col gap-5 create-branch-form"
+          className="w-1/3 flex flex-col gap-5 create-branch-form colorr p-2"
         >
           <TextField
             label="Filial nomi"

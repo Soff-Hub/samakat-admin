@@ -65,7 +65,7 @@ export default function Branches() {
   console.log("count", count);
 
   return (
-    <div className="p-2">
+    <div className="px-2 py-3">
       <NavHeader title="Filiallar" />
       {data ? (
         <div className="block w-full border shadow-lg p-2 mt-5 colorr">

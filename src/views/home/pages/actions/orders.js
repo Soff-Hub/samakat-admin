@@ -48,7 +48,7 @@ export default function Orders() {
 
 
   return (
-    <div>
+    <div className="px-2 py-3">
       <div className="flex items-center justify-between">
         <h1 className="text-[28px] pb-3">Buyurtma</h1>
         <Link to="/orders">

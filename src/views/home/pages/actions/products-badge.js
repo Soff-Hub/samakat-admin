@@ -158,7 +158,7 @@ export default function Aksiya() {
 
   return location.search.split("?")[1] === "edit" ? (
     data ? (
-      <div>
+      <div className="px-2 py-3">
         <div>
           <div className="flex items-center justify-between">
             <h1 className="text-[28px] pb-3">Aksiya tahrirlash</h1>
@@ -177,7 +177,7 @@ export default function Aksiya() {
           <div className="flex gap-5">
             <form
               onSubmit={handleSubmitEdit}
-              className="w-1/2 m-auto flex mt-4 flex-col gap-5 create-branch-form"
+              className="w-1/2 m-auto flex mt-4 flex-col gap-4 colorr p-2 create-branch-form"
             >
               <TextField
                 label="Aksiya matni"
@@ -267,14 +267,14 @@ export default function Aksiya() {
       </Box>
     )
   ) : (
-    <div>
+    <div className="px-2 py-3" >
       <div className="text-center">
         <h1 className="text-[35px] pb-3">Aksiya qo'shish</h1>
         <Toaster />
         <div className="flex gap-5">
           <Form
             onFinish={(e) => handleSubmitAdd(e)}
-            className="w-1/2 m-auto  flex flex-col gap-5 create-branch-form"
+            className="w-1/2 m-auto  flex flex-col gap-4 colorr p-2 create-branch-form"
           >
             <TextField
               label="Aksiya nomi"

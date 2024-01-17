@@ -103,7 +103,7 @@ export default function Adresses() {
   const submit = () => {};
 
   return data ? (
-    <div>
+    <div className="px-2 py-3 bg--color">
       <div className="flex items-center justify-between">
         <h1 className="text-[28px] pb-3">Manzil</h1>
         <Link to="/adresses">
@@ -145,7 +145,7 @@ export default function Adresses() {
         </div>
         <form
           onSubmit={submit}
-          className="w-1/2 flex flex-col gap-5 mt-6 ml-4 create-branch-form"
+          className="w-1/2 flex flex-col gap-4 colorr p-2 mt-6 ml-4 create-branch-form"
         >
           <TextField
             label="Filial nomi"
@@ -156,7 +156,6 @@ export default function Adresses() {
           />
 
           <h3>Manzil ma'lumotlari:</h3>
-          {/* <label>Yaratilgan sana</label> */}
           <div className="flex gap-10">
             <TextField
               label="Latitude"

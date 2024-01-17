@@ -142,7 +142,7 @@ export default function EnhancedTable() {
       .then((resp) => {
         setCount(resp.count);
         setData(resp.results);
-        setConstCount(resp.count)
+        setConstCount(resp.count);
       })
       .catch((err) => console.log(err));
   };
@@ -153,7 +153,7 @@ export default function EnhancedTable() {
     await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}&type=bistro`)
       .then((resp) => {
         setCount(resp.count);
-        setConstCount(resp.count)
+        setConstCount(resp.count);
         setData(resp.results);
       })
       .catch((err) => console.log(err));
@@ -227,89 +227,94 @@ export default function EnhancedTable() {
     // eslint-disable-next-line
   }, []);
   return (
-    <div className="p-2">
-      <div className="">
+    <div className="px-2 py-3">
+      <div>
         <NavHeaderSelect title="Mahsulotlar" />
       </div>
       <div className="mb-5">
-        <h1 className="text-2xl font-sans">Jami mahsulotlar <span className="slashed-zero font-semibold font-mono text-[#3B82F6]">{constCount}</span>  {constCount ? "ta  " : ''}</h1>
+        <h1 className="text-2xl font-sans">
+          Jami mahsulotlar{" "}
+          <span className="slashed-zero font-semibold font-mono text-[#3B82F6]">
+            {constCount}
+          </span>{" "}
+          {constCount ? "ta  " : ""}
+        </h1>
       </div>
-     
 
-      <Box sx={{ width: "100%" }} className="colorr p-2 pt-3" >
-      <ToggleButtonGroup
-        color="primary"
-        value={type}
-        exclusive
-        onChange={handleChange}
-        className=" flex items-center w-full"
-      >
-        <ToggleButton className="w-full" value="bistro">
-          Bistro
-        </ToggleButton>
-        <ToggleButton className="w-full" value="byuti">
-          Byuti
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <input
-        type="text"
-        placeholder="Izlash"
-        className=" lg:w-1/3 md:w-1/3 sm:w-full   px-3 ps-2 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
-        onChange={(e) => Search(e.target.value)}
-      />
-      <FormControl
-        size="small"
-        className=" w-1/3  "
-        style={{ marginTop: "12px" }}
-      >
-        <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
-          Kategoriya
-        </InputLabel>
-        <Select
-          className="py-0.5"
-          value={categoryValue}
-          label="Holat bo'yicha"
-          onChange={handleChangeCategory}
+      <Box sx={{ width: "100%" }} className="colorr p-2 pt-3">
+        <ToggleButtonGroup
+          color="primary"
+          value={type}
+          exclusive
+          onChange={handleChange}
+          className=" flex items-center w-full"
         >
-          <MenuItem value={""}>
-            <i className="fa-solid fa-minus"></i>{" "}
-          </MenuItem>
-          {category ? (
-            category?.map((item, i) => (
-              <MenuItem key={i} value={item.id}>
-                {item.name}
-              </MenuItem>
-            ))
-          ) : (
-            <></>
-          )}
-        </Select>
-      </FormControl>
-      <FormControl
-        size="small"
-        className="w-1/3 "
-        style={{ marginTop: "12px" }}
-      >
-        <InputLabel id="demo-select-small-label" placholder="Sotuv bo'yicha">
-          Sotuv bo'yicha
-        </InputLabel>
-        <Select
-          className="py-0.5"
-          value={SaleValue}
-          label="Sotuv bo'yicha"
-          onChange={handleChangeSale}
+          <ToggleButton className="w-full" value="bistro">
+            Bistro
+          </ToggleButton>
+          <ToggleButton className="w-full" value="byuti">
+            Byuti
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <input
+          type="text"
+          placeholder="Izlash"
+          className=" lg:w-1/3 md:w-1/3 sm:w-full   px-3 ps-2 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+          onChange={(e) => Search(e.target.value)}
+        />
+        <FormControl
+          size="small"
+          className=" w-1/3  "
+          style={{ marginTop: "12px" }}
         >
-          <MenuItem value={""}>
-            <i className="fa-solid fa-minus"></i>{" "}
-          </MenuItem>
-          {sale_product &&
-            sale_product?.map((item, i) => (
-              <MenuItem key={i} value={item.value}>
-                {item.name}
-              </MenuItem>
-            ))}
-        </Select>
-      </FormControl>
+          <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
+            Kategoriya
+          </InputLabel>
+          <Select
+            className="py-0.5"
+            value={categoryValue}
+            label="Holat bo'yicha"
+            onChange={handleChangeCategory}
+          >
+            <MenuItem value={""}>
+              <i className="fa-solid fa-minus"></i>{" "}
+            </MenuItem>
+            {category ? (
+              category?.map((item, i) => (
+                <MenuItem key={i} value={item.id}>
+                  {item.name}
+                </MenuItem>
+              ))
+            ) : (
+              <></>
+            )}
+          </Select>
+        </FormControl>
+        <FormControl
+          size="small"
+          className="w-1/3 "
+          style={{ marginTop: "12px" }}
+        >
+          <InputLabel id="demo-select-small-label" placholder="Sotuv bo'yicha">
+            Sotuv bo'yicha
+          </InputLabel>
+          <Select
+            className="py-0.5"
+            value={SaleValue}
+            label="Sotuv bo'yicha"
+            onChange={handleChangeSale}
+          >
+            <MenuItem value={""}>
+              <i className="fa-solid fa-minus"></i>{" "}
+            </MenuItem>
+            {sale_product &&
+              sale_product?.map((item, i) => (
+                <MenuItem key={i} value={item.value}>
+                  {item.name}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <TableContainer>
             <Table

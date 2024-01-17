@@ -82,8 +82,8 @@ export default function CollapsibleTable() {
     getData();
   }, []);
   return (
-    <div className="p-2">
-      <div className="mb-5">
+    <div className="px-2 py-3">
+      <div className="mb-3">
         <h1 className="text-2xl">Manzillar</h1>
       </div>
       {data?.length > 0 ? (

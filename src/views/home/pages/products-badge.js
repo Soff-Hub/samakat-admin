@@ -152,8 +152,8 @@ export default function CollapsibleTable() {
   }, []);
 
   return (
-    <div className="p-2">
-      <div className="mb-5">
+    <div className="px-2 py-3">
+      <div>
         <NavHeaderSelect title="Mahsulot aksiyalari" />
       </div>
       <ToggleButtonGroup

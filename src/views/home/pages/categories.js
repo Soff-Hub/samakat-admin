@@ -50,7 +50,7 @@ export default function Categories2() {
   }, []);
 
   return (
-    <div className="p-2 ">
+    <div className="px-2 py-3">
       <NavHeaderSelect title="Kategoriyalar" />
       <div className="colorr my-2 px-2">
       <ToggleButtonGroup
@@ -70,7 +70,7 @@ export default function Categories2() {
       <input
         type="text"
         placeholder="Izlash"
-        className=" px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+        className=" px-3 ps-4 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />
