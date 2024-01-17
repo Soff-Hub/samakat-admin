@@ -628,7 +628,7 @@ export default function Products() {
                 placeholder="Narxi"
                 type="number"
                 // defaultValue={JSON.parse(editData?.price) || price}
-                value={ price }
+                value={price}
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   if (
@@ -651,7 +651,7 @@ export default function Products() {
               <Input
                 placeholder="Chegirmasi ( % )"
                 type="number"
-                value={discount }
+                value={discount}
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   if (
@@ -1510,8 +1510,7 @@ export default function Products() {
                   const inputValue = e.target.value;
                   if (
                     inputValue === "" ||
-                    (+(inputValue) <= 50000000 &&
-                      +(inputValue) > 0)
+                    (+inputValue <= 50000000 && +inputValue > 0)
                   ) {
                     if (inputValue.includes(",") || inputValue.includes(".")) {
                       const sanitizedValue = e.target.value.replace(
@@ -1533,7 +1532,7 @@ export default function Products() {
                   const inputValue = e.target.value;
                   if (
                     inputValue === "" ||
-                    (+(inputValue) <= 100 && +(inputValue) >= 0)
+                    (+inputValue <= 100 && +inputValue >= 0)
                   ) {
                     if (inputValue.includes(",") || inputValue.includes(".")) {
                       const sanitizedValue = e.target.value.replace(
@@ -2352,279 +2351,315 @@ export default function Products() {
     )
   ) : (
     // Mahsulot qoshish
-    <div className="flex gap-5">
+    <div className="flex gap-2 bg--color px-2 py-3">
       <div className="w-2/3">
         <h1 className="text-[35px] pb-3">Mahsulot qo'shish</h1>
         <Toaster />
         <div className="w-full">
           <form
             onSubmit={handleSubmitAdd}
-            className="w-full flex flex-col gap-5 create-branch-form"
+            className="w-full flex flex-col gap-3  create-branch-form border-3"
           >
-            <Input
-              placeholder="Nomi *"
-              type="text"
-              value={name}
-              required
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-            />
-            <Input
-              placeholder="Narxi *"
-              type="number"
-              maxLength="16"
-              value={price}
-              required
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                console.log("value => ", inputValue);
-                if (
-                  inputValue === "" ||
-                  (parseInt(inputValue) <= 50000000 && parseInt(inputValue) > 0)
-                ) {
-                  if (inputValue.includes(",") || inputValue.includes(".")) {
-                    const sanitizedValue = e.target.value.replace(/[,\.]/g, "");
-                    setPrice(sanitizedValue);
-                  } else {
-                    setPrice(inputValue);
-                  }
-                }
-              }}
-            />
+            <div className="colorr p-4">
+              <div className="row">
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <span className="label--name font-bold">Nomi</span>
+                  <Input
+                    placeholder="Nomi *"
+                    type="text"
+                    value={name}
+                    required
+                    className="py-2"
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <span className="label--name font-bold">
+                    Bog'liq kategoriyalar
+                  </span>
+                  <Space
+                    className=""
+                    style={{
+                      width: "100%",
+                      textAlign: "left",
+                    }}
+                    direction="vertical"
+                  >
+                    <Select
+                      mode="multiple"
+                      allowClear
+                      style={{
+                        width: "100%",
+                        height: "40px",
+                      }}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        (option?.label ?? "").includes(input)
+                      }
+                      placeholder="Bog'liq kategoriyalar"
+                      onChange={handleChangeSelect}
+                      options={categoryList}
+                    />
+                  </Space>
+                </div>
+              </div>
+              <div className="row py-3">
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <span className="label--name font-bold">Narxi *</span>
+                  <Input
+                    placeholder="Narxi *"
+                    type="number"
+                    maxLength="16"
+                    value={price}
+                    className="py-2"
+                    required
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      console.log("value => ", inputValue);
+                      if (
+                        inputValue === "" ||
+                        (parseInt(inputValue) <= 50000000 &&
+                          parseInt(inputValue) > 0)
+                      ) {
+                        if (
+                          inputValue.includes(",") ||
+                          inputValue.includes(".")
+                        ) {
+                          const sanitizedValue = e.target.value.replace(
+                            /[,\.]/g,
+                            ""
+                          );
+                          setPrice(sanitizedValue);
+                        } else {
+                          setPrice(inputValue);
+                        }
+                      }
+                    }}
+                  />
+                </div>
 
-            <Input
-              placeholder="Chegirmasi ( % )"
-              type="number"
-              value={discount}
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                if (
-                  inputValue === "" ||
-                  (parseInt(inputValue) <= 100 && parseInt(inputValue) >= 0)
-                ) {
-                  if (inputValue.includes(",") || inputValue.includes(".")) {
-                    const sanitizedValue = e.target.value.replace(/[,\.]/g, "");
-                    setDiscount(sanitizedValue);
-                  } else {
-                    setDiscount(inputValue);
-                  }
-                }
-              }}
-            />
-
-            <Flex vertical gap={32}>
-              <TextArea
-                showCount
-                maxLength={100}
-                placeholder="Izoh"
-                style={{
-                  height: 120,
-                  resize: "none",
-                }}
-                value={description}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-              />
-            </Flex>
-
-            <Space
-              style={{
-                width: "100%",
-                textAlign: "left",
-              }}
-              direction="vertical"
-            >
-              <Select
-                mode="multiple"
-                allowClear
-                style={{
-                  width: "100%",
-                }}
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label ?? "").includes(input)
-                }
-                placeholder="Bog'liq kategoriyalar"
-                onChange={handleChangeSelect}
-                options={categoryList}
-              />
-            </Space>
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <span className="label--name font-bold">Chegirma ( % )</span>
+                  <Input
+                    placeholder="Chegirmasi ( % )"
+                    type="number"
+                    className="py-2"
+                    value={discount}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (
+                        inputValue === "" ||
+                        (parseInt(inputValue) <= 100 &&
+                          parseInt(inputValue) >= 0)
+                      ) {
+                        if (
+                          inputValue.includes(",") ||
+                          inputValue.includes(".")
+                        ) {
+                          const sanitizedValue = e.target.value.replace(
+                            /[,\.]/g,
+                            ""
+                          );
+                          setDiscount(sanitizedValue);
+                        } else {
+                          setDiscount(inputValue);
+                        }
+                      }
+                    }}
+                  />
+                </div>
+                <div className="col-12 pt-2">
+                  <span className="label--name font-bold" >Izoh</span>
+                  <Flex vertical gap={32}>
+                    <TextArea
+                      showCount
+                      maxLength={100}
+                      placeholder="Izoh"
+                      style={{
+                        height: 80,
+                        resize: "none",
+                      }}
+                      value={description}
+                      onChange={(e) => {
+                        setDescription(e.target.value);
+                      }}
+                    />
+                  </Flex>
+                </div>
+              </div>
+            </div>
 
             <div>
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
+              <div
+                style={{ border: "1px solid #EEEEEE" }}
+                className="p-2 colorr"
+              >
+                <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                  {" "}
+                  Mahsulot galleriyasi
+                </h2>
+                <hr />
+                <div
+                  style={{
+                    display: "flex ",
+                    justifyContent: "space-between",
+                    padding: "15px 5px",
+                  }}
                 >
-                  <Typography>
-                    <label className="font-normal font-sans text-lg">
-                      Mahsulot galleriyasi :
-                    </label>
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails>
                   <div
-                    style={{
-                      display: "flex ",
-                      justifyContent: "space-between",
-                    }}
+                    className="flex gap-3 flex-wrap"
+                    style={{ minWidth: "490px" }}
                   >
-                    <div
-                      className="flex gap-3 flex-wrap"
-                      style={{ minWidth: "490px" }}
-                    >
-                      {addHandleImageData?.map((item, i) => {
-                        return (
-                          <>
-                            <div
-                              key={item.id}
-                              onClick={() =>
-                                item.image
-                                  ? showModalAdd(item?.image, item.id)
-                                  : console.log("rasm yoq")
-                              }
-                              style={{
-                                maxWidth: "150px",
-                                width: "150px",
-                                backgroundImage: `url(${
-                                  item?.image ? item?.image : ""
-                                })`,
-                                backgroundSize: "cover",
-                                height: "155px",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                border: "1px solid #ccc",
-                                borderRadius: "5px",
-                                position: "relative",
-                              }}
-                            >
-                              {item.image ? (
-                                ""
-                              ) : (
-                                <i
-                                  className="fa-regular fa-image"
-                                  style={{ fontSize: "35px" }}
-                                ></i>
-                              )}
-                              {item?.image ? (
-                                " "
-                              ) : (
-                                <input
-                                  style={{
-                                    opacity: "0",
-                                    position: "absolute",
-                                    top: "0",
-                                    left: "0",
-                                    bottom: "0",
-                                    right: "0",
-                                  }}
-                                  onChange={(e) =>
-                                    setImageUrlAdd(
-                                      e?.target?.files[0],
-                                      item?.id
-                                    )
-                                  }
-                                  type="file"
-                                />
-                              )}
-                            </div>
+                    {addHandleImageData?.map((item, i) => {
+                      return (
+                        <>
+                          <div
+                            key={item.id}
+                            onClick={() =>
+                              item.image
+                                ? showModalAdd(item?.image, item.id)
+                                : console.log("rasm yoq")
+                            }
+                            style={{
+                              maxWidth: "150px",
+                              width: "150px",
+                              backgroundImage: `url(${
+                                item?.image ? item?.image : ""
+                              })`,
+                              backgroundSize: "cover",
+                              height: "155px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              border: "1px solid #ccc",
+                              borderRadius: "5px",
+                              position: "relative",
+                            }}
+                          >
+                            {item.image ? (
+                              ""
+                            ) : (
+                              <i
+                                className="fa-regular fa-image"
+                                style={{ fontSize: "35px" }}
+                              ></i>
+                            )}
+                            {item?.image ? (
+                              " "
+                            ) : (
+                              <input
+                                style={{
+                                  opacity: "0",
+                                  position: "absolute",
+                                  top: "0",
+                                  left: "0",
+                                  bottom: "0",
+                                  right: "0",
+                                }}
+                                onChange={(e) =>
+                                  setImageUrlAdd(e?.target?.files[0], item?.id)
+                                }
+                                type="file"
+                              />
+                            )}
+                          </div>
 
-                            <Modal
-                              title="Mahsulot Galleriyasi"
-                              open={isModalOpenAdd}
-                              // onOk={handleOk}
-                              onCancel={handleCancelAdd}
-                              cancelText="Yopish"
-                              okButtonProps={{ style: { display: "none" } }}
+                          <Modal
+                            title="Mahsulot Galleriyasi"
+                            open={isModalOpenAdd}
+                            // onOk={handleOk}
+                            onCancel={handleCancelAdd}
+                            cancelText="Yopish"
+                            okButtonProps={{ style: { display: "none" } }}
+                          >
+                            <div
+                              style={{
+                                maxWidth: "800px",
+                                width: "100%",
+                              }}
                             >
                               <div
                                 style={{
-                                  maxWidth: "800px",
                                   width: "100%",
+                                  backgroundImage: `url(${
+                                    addImageLink?.image
+                                      ? addImageLink?.image
+                                      : ""
+                                  })`,
+                                  backgroundSize: "cover",
+                                  minHeight: "400px",
+                                  height: "100%",
+                                  borderRadius: "5px",
+                                }}
+                              ></div>
+                              <div
+                                style={{
+                                  width: "100%",
+                                  display: "flex",
+                                  justifyContent: "end",
+                                  gap: "10px",
                                 }}
                               >
                                 <div
-                                  style={{
-                                    width: "100%",
-                                    backgroundImage: `url(${
-                                      addImageLink?.image
-                                        ? addImageLink?.image
-                                        : ""
-                                    })`,
-                                    backgroundSize: "cover",
-                                    minHeight: "400px",
-                                    height: "100%",
-                                    borderRadius: "5px",
-                                  }}
-                                ></div>
-                                <div
-                                  style={{
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent: "end",
-                                    gap: "10px",
-                                  }}
+                                  onClick={() =>
+                                    handleDeleteImageAddApi(addImageLink?.id)
+                                  }
+                                  className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
                                 >
-                                  <div
-                                    onClick={() =>
-                                      handleDeleteImageAddApi(addImageLink?.id)
-                                    }
-                                    className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
-                                  >
-                                    O'chirish
-                                  </div>
-                                  <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
-                                    Qo'shish
-                                    <input
-                                      style={{
-                                        display: "none",
-                                      }}
-                                      onChange={(e) =>
-                                        setImageUrlAdd(
-                                          e?.target?.files[0],
-                                          addImageLink?.id
-                                        )
-                                      }
-                                      type="file"
-                                    />
-                                  </label>
+                                  O'chirish
                                 </div>
+                                <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                  Qo'shish
+                                  <input
+                                    style={{
+                                      display: "none",
+                                    }}
+                                    onChange={(e) =>
+                                      setImageUrlAdd(
+                                        e?.target?.files[0],
+                                        addImageLink?.id
+                                      )
+                                    }
+                                    type="file"
+                                  />
+                                </label>
                               </div>
-                            </Modal>
-                          </>
-                        );
-                      })}
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Fab
-                        onClick={() =>
-                          addImageInput(addHandleImageData.length + 1)
-                        }
-                        color="primary"
-                        aria-label="add"
-                      >
-                        <AddIcon />
-                      </Fab>
-                    </div>
+                            </div>
+                          </Modal>
+                        </>
+                      );
+                    })}
                   </div>
-                </AccordionDetails>
-              </Accordion>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Fab
+                      onClick={() =>
+                        addImageInput(addHandleImageData.length + 1)
+                      }
+                      color="primary"
+                      aria-label="add"
+                    >
+                      <AddIcon />
+                    </Fab>
+                  </div>
+                </div>
+              </div>
 
-              <div style={{ border: "1px solid #EEEEEE" }} className="p-2 my-6">
-                <h2 className="text-[18px] pl-3.5 font-normal">
-                  Mahsulot atributi :{" "}
+              <div
+                style={{ border: "1px solid #EEEEEE" }}
+                className="p-2 my-6 colorr"
+              >
+                <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                  Mahsulot atributi{" "}
                 </h2>
                 <hr />
                 <div
                   style={{ height: "400px" }}
                   className="flex overflow-y-scroll border-5 flex-col"
                 >
-                  <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
+                  <div className=" mx-3 mb-1 flex items-baseline gap-3">
                     <i className="fa-solid fa-flask"></i>
                     <TextField
                       label="Tarkibi"
@@ -2768,9 +2803,12 @@ export default function Products() {
                 </div>
               </div>
 
-              <div style={{ border: "1px solid #EEEEEE" }} className="p-2 my-4">
-                <h2 className="text-[18px] pl-3.5 font-normal">
-                  Mahsulot asosiy elementlari :
+              <div
+                style={{ border: "1px solid #EEEEEE" }}
+                className="p-2 my-4 colorr"
+              >
+                <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                  Mahsulot asosiy elementlari
                 </h2>
                 <hr />
                 <div
@@ -2825,9 +2863,12 @@ export default function Products() {
                 </div>
               </div>
 
-              <div style={{ border: "1px solid #EEEEEE" }} className="p-2 my-4">
-                <h2 className="text-[18px] pl-3.5 font-normal">
-                  Filiallardagi mahsulot :{" "}
+              <div
+                style={{ border: "1px solid #EEEEEE" }}
+                className="p-2 my-4 colorr"
+              >
+                <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                  Filiallardagi mahsulot{" "}
                 </h2>
                 <hr />
                 <div
@@ -2875,7 +2916,7 @@ export default function Products() {
                 </div>
               </div>
               <div>
-                <label className="font-normal font-sans text-lg pl-1.5">
+                <label className="font-bold font-sans text-lg pl-1.5">
                   Sotuvda
                 </label>
                 <Switch
@@ -2899,8 +2940,8 @@ export default function Products() {
       </div>
 
       <div className="w-1/3 font-sans">
-        <h1 className="text-[22px] pb-5">Mahsulotning saytda ko'rinishi</h1>
-        <div className="border rounded p-2.5">
+        {/* <h1 className="text-[22px] pb-4">Mahsulotning saytda ko'rinishi</h1> */}
+        <div className="border rounded p-2 mt-5 colorr">
           <div className="text-center w-full flex justify-center">
             <img
               className="rounded border"

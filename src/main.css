@@ -440,6 +440,12 @@
     background-color: #EFF2F8;
 }
 
+.label--name{
+    margin-bottom:  0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500,
+}
+
 .App .MuiBox-root {
     height: 100vh !important;
 }

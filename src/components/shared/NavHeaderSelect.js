@@ -32,7 +32,7 @@ export default function NavHeader({ title }) {
           Qo'shish
         </Button>
       </div>
-      <Popper open={open} anchorEl={anchorEl} placement={placement} transition className="mt-5">
+      <Popper open={open} anchorEl={anchorEl} placement={placement} transition className="mt-2">
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <Paper style={{ minWidth: "170px" }}>
