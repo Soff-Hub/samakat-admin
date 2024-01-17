@@ -152,7 +152,7 @@ export default function CollapsibleTable() {
   }, []);
 
   return (
-    <>
+    <div className="p-2">
       <div className="mb-5">
         <NavHeaderSelect title="Mahsulot aksiyalari" />
       </div>
@@ -235,6 +235,6 @@ export default function CollapsibleTable() {
         setOpen={setOpen}
         handleDelete={handleDelete}
       />
-    </>
+    </div>
   );
 }

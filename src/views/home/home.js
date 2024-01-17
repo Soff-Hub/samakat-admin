@@ -156,9 +156,6 @@ export default function MiniDrawer() {
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          {/* <p className="text-start w-full text-xl ps-4 font-bold">
-            Admin Panel
-          </p> */}
           <img style={{width:'80%'}} src={Logo} alt="aloqand" />
           <IconButton onClick={handleDrawerClose}>
             <MenuOpenIcon />
@@ -204,7 +201,7 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 2, p: 0 }} style={{backgroundColor:'#F2F5FB', height:'100%'}} >
         <DrawerHeader />
         <div>
           <Suspense>

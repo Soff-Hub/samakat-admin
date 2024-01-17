@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import ChartComponent from "components/shared/chart";
-import {
-  Box,
-  CircularProgress
-} from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
+import DashboardRight from "components/shared/dashboard-right";
+import DashboardProdctTable from "components/shared/dashboard-prodct-table";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
@@ -24,87 +23,104 @@ export default function Dashboard() {
     getData();
   }, []);
 
-
   return (
-    <div className="dashboard-container" >
-      <div className="dashboard">
-       {/* <div className="dashboart-cart-group-two" > */}
-       <div className="dashboard-item-cart     flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
-          <div className="flex justify-between">
-            <p>
-              <span className="lg:text-[18px] md:text-[16px]  sm:text-[14px] text-[13px] lg:leading-5 leading-4  block font-semibold text-slate-900">
-                Bugungi daromad
-              </span>
-            </p>
-            <i
-              className="fa-solid fa-money-check-dollar dashboard-icon"
-            ></i>
-          </div>
-          <p className="lg:text-[15px] md:text-[14px] sm:text-[12px] text-[12px] leading-3">
-            <i
-              style={{ color: "#FFC107" }}
-              className="fa-solid fa-coins mr-1"
-            ></i>
-            {data?.todays_amount}
-          </p>
-        </div>
-        <div className="dashboard-item-cart   flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
-          <div className="flex justify-between">
-            <p>
-              <span className="lg:text-[18px] md:text-[16px] sm:text-[14px] text-[13px] lg:leading-5 leading-4  block font-semibold text-slate-900">
-                Jami daromad
-              </span>
-            </p>
-            <i
-              class="fa-solid fa-sack-dollar dashboard-icon"
-            ></i>
-          </div>
-          <p className="lg:text-[15px] md:text-[14px] sm:text-[12px] text-[12px] leading-3">
-            <i style={{ color: "#FFC107" }} className="fa-solid fa-coins "></i>{" "}
-            {data?.total_amount} <span>so'm</span>
-          </p>
-        </div>
-       {/* </div> */}
+    <div className="dashboard-container dashboard pt-4" style={{
+      backgroundColor:'#F1F4FA'
+    }}>
+      <div className="row px-3">
+        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+          <div class="card info-card sales-card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Daromad <span>| Bugun</span>
+              </h5>
 
-       {/* <div className="dashboart-cart-group-two"> */}
-       <div className="dashboard-item-cart   flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
-          <div className="flex justify-between">
-            <p>
-              <span className="lg:text-[18px] md:text-[16px] sm:text-[14px] text-[13px] lg:leading-5 leading-4 block font-semibold text-slate-900">
-                Oxirgi 30 kunlik
-              </span>
-            </p>
-            <i
-              className="fa-solid fa-money-bill-trend-up dashboard-icon"
-            ></i>
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-cart"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{data?.todays_amount}</h6>
+                  <span class="text-success small pt-1 fw-bold">12%</span>{" "}
+                  <span class="text-muted small pt-2 ps-1">increase</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="lg:text-[15px] md:text-[14px] sm:text-[12px] text-[12px] leading-3 ">
-            <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>
-            {data?.total_for_last_month} <span>so'm</span>
-          </p>
         </div>
-        <div className="dashboard-item-cart   flex flex-col xl:gap-12 justify-between  border lg:p-4 md:p-2 p-2 rounded-md m-2 shadow-lg shadow-indigo-500/40">
-          <div className="flex justify-between">
-            <p>
-              <span className="lg:text-[18px] md:text-[16px] sm:text-[14px] text-[13px] lg:leading-5 leading-4  block font-semibold text-slate-900">
-                Sotilgan mahsulotning soni
-              </span>
-            </p>
-            <i
-              className="fa-solid fa-list-ol dashboard-icon"
-            ></i>
+
+        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+          <div class="card info-card revenue-card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Daromad <span>| Jami</span>
+              </h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{data?.total_amount}</h6>
+                  <span class="text-success small pt-1 fw-bold">8%</span>{" "}
+                  <span class="text-muted small pt-2 ps-1">increase</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="lg:text-[15px] md:text-[14px] sm:text-[12px] text-[12px] leading-3">
-            <i style={{ color: "#FFC107" }} className="fa-solid fa-coins"></i>{" "}
-            {data?.total_sold_products}
-          </p>
         </div>
-       {/* </div> */}
-       
+
+        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+          <div class="card info-card customers-card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Daromad <span>| Oxirgi 30 kunlik</span>
+              </h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-cash-coin"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{data?.total_for_last_month}</h6>
+                  <span class="text-danger small pt-1 fw-bold">12%</span>{" "}
+                  <span class="text-muted small pt-2 ps-1">decrease</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+          <div class="card info-card customers-card2">
+            <div class="card-body">
+              <h5 class="card-title">
+                Soni <span>| Jami mahsulotlar</span>
+              </h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-bar-chart-fill"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>{data?.total_sold_products}</h6>
+                  <span class="text-danger small pt-1 fw-bold">12%</span>{" "}
+                  <span class="text-muted small pt-2 ps-1">decrease</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
+
       {1 ? (
         <>
+        <div className="dashboard-main">
           <ChartComponent />
+          <DashboardRight />
+        </div>
+        <DashboardProdctTable/>
         </>
       ) : (
         <Box

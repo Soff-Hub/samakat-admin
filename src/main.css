@@ -6,20 +6,21 @@
     background-position: center;
 }
 
-.login-title{
-    display: flex;  
+.login-title {
+    display: flex;
     gap: 5px;
 }
 
 .login-form {
     padding-top: 180px;
 }
+
 .login-form-inner {
     background-color: #ffffff95;
     padding: 20px 40px 40px;
 }
 
-.child-margin{
+.child-margin {
     margin-left: 30px;
     width: calc(100% - 15px) !important;
 }
@@ -28,84 +29,84 @@
     box-shadow: none;
 }
 
-.acc-parent{
+.acc-parent {
     height: 10px;
 }
 
 
-.modal-ul{
+.modal-ul {
     margin: 0;
     padding: 0;
 }
 
-.modal-ul li{
+.modal-ul li {
     padding: 5px;
     border-bottom: 1px solid #ccc;
 }
 
-.modal-ul li:hover{
+.modal-ul li:hover {
     cursor: pointer;
 }
 
-.modal-ul li:first-child{
+.modal-ul li:first-child {
     color: green;
 }
 
-.modal-ul li:nth-child(2){
+.modal-ul li:nth-child(2) {
     color: #F4CA16;
 }
 
-.modal-ul li:nth-child(3){
+.modal-ul li:nth-child(3) {
     color: blue;
 }
 
-.modal-ul li:last-child{
+.modal-ul li:last-child {
     color: red;
 }
 
 
-.modal-ul-delivry{
+.modal-ul-delivry {
     margin: 0;
     padding: 0;
 }
 
-.modal-ul-delivry li{
+.modal-ul-delivry li {
     padding: 5px;
     border-bottom: 1px solid #ccc;
 }
 
-.modal-ul-delivry li:hover{
+.modal-ul-delivry li:hover {
     cursor: pointer;
 }
 
-.modal-ul-delivry li:first-child{
+.modal-ul-delivry li:first-child {
     color: #3B82F6;
 }
 
-.modal-ul-delivry li:nth-child(2){
+.modal-ul-delivry li:nth-child(2) {
     color: #F4CA16;
 }
 
-.modal-ul-delivry li:nth-child(3){
+.modal-ul-delivry li:nth-child(3) {
     color: black;
 }
 
-.modal-ul-delivry li:nth-child(4){
+.modal-ul-delivry li:nth-child(4) {
     color: green;
 }
 
-.modal-ul-delivry li:nth-child(5){
+.modal-ul-delivry li:nth-child(5) {
     color: red;
 }
 
-.modal-ul-delivry li:nth-child(5) textarea{
+.modal-ul-delivry li:nth-child(5) textarea {
     border: 1px solid gray;
     border-radius: 5px;
     margin-top: 5px;
     padding: 8px;
 }
 
-.modal-ul-delivry li:nth-child(5) textarea:focus{
+.modal-ul-delivry li:nth-child(5) textarea:focus {
     outline: none;
     border: 1px solid gray;
 }
@@ -113,14 +114,14 @@
 
 /* Kanban style start */
 
-.kanban-container{
+.kanban-container {
     padding: 10px;
     display: flex;
     align-items: start;
     gap: 20px;
 }
 
-.kanban-column_container{
+.kanban-column_container {
     background-color: #3B82F6;
     max-width: 300px;
     width: 100%;
@@ -129,37 +130,36 @@
     padding: 10px 8px;
 }
 
-.kanban-column_component{
-}
+.kanban-column_component {}
 
-.kanban-column-header_container{
+.kanban-column-header_container {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 10px 5px;
 }
 
-.kanban-column-header_container h3{
+.kanban-column-header_container h3 {
     font-family: cursive;
 }
 
-.kanban-column-list_container{
+.kanban-column-list_container {
     display: flex;
     gap: 10px;
     flex-direction: column;
 }
 
-.kanban-list-item_container:hover{
+.kanban-list-item_container:hover {
     cursor: pointer;
 }
 
-.kanban-list-item_container{
+.kanban-list-item_container {
     background-color: #ffffff;
     border-radius: 5px;
     padding: 10px;
 }
 
-.kanban-list-item_component{
+.kanban-list-item_component {
     display: flex;
     align-items: center;
     gap: 30px;
@@ -169,7 +169,7 @@
     z-index: 1 !important;
 }
 
-.delivery-container{
+.delivery-container {
     width: 100% !important;
     display: flex;
     align-items: start;
@@ -178,7 +178,7 @@
     gap: 10px;
 }
 
-.delivery-item-container{
+.delivery-item-container {
     max-width: 300px;
     width: 100%;
     background-color: #3B82F6;
@@ -186,23 +186,23 @@
     padding: 7px;
 }
 
-.delivery-item-container_header{
+.delivery-item-container_header {
     padding: 5px 10px;
 }
 
-.delivery-item-container_header h3{
+.delivery-item-container_header h3 {
     font-size: 18px;
     font-weight: 600;
     color: #ffffff;
 }
 
-.delivery-item-container{
+.delivery-item-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.delivery-item-container_component{
+.delivery-item-container_component {
     background-color: #ffffff;
     padding: 5px;
     color: #000;
@@ -210,64 +210,65 @@
 }
 
 
-.item{
+.item {
     display: flex;
     gap: 7px;
     padding: 5px 3px;
 }
 
-.money-btn{
+.money-btn {
     border: 1px solid #ccc;
     padding: 1px 13px;
     border-radius: 6px;
 }
 
-.true{
+.true {
     color: green;
     border: 1px solid green;
 }
 
-.false{
+.false {
     color: red;
     border: 1px solid red;
 }
 
-.money-btn:hover{
+.money-btn:hover {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
-.image-conatiner{
+.image-conatiner {
     display: flex;
     justify-content: space-between;
     align-items: start;
 }
 
 
-#priceInput{
+#priceInput {
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 10px ;
+    padding: 10px;
     outline: .5px solid #ccc;
     width: 100% !important;
     margin-top: 8px;
 }
 
-#priceInput:focus{
+#priceInput:focus {
     outline: 1px solid #3B82F6;
     border: 1px solid #3B82F6;
 }
-.MuiInputBase-root{
+
+.MuiInputBase-root {
     background-color: #fff !important;
 }
 
-.add-inputs{
+.add-inputs {
     display: inline-block;
     text-align: end;
     max-width: 120px;
     width: 100%;
 }
 
-.dashboard-icon{
+.dashboard-icon {
     color: #FFC107;
     font-size: 28px;
 }
@@ -277,59 +278,198 @@
     overflow-x: scroll;
 } */
 
-.dashboard{
+/* .dashboard {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: nowrap;
-}
+} */
 
-.dashboard-item-cart{
+.dashboard-item-cart {
     /* max-width: 320px;
     width: 100%;
     min-width: 200px; */
     width: 270px;
 }
 
-.dashboart-cart-group-two{
+.dashboart-cart-group-two {
     display: flex;
     justify-content: space-between;
 }
 
-.error-product{
+.error-product {
     border-bottom: 1px solid red;
     border-radius: 5px;
 }
 
+.dashboard-main {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 0 15px;
+    gap: 25px;
+}
+
+.card {
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+    background-color: #fff;
+}
+
+
+.card-header,
+.card-footer {
+    border-color: #ebeef4;
+    background-color: #fff;
+    color: #798eb3;
+    padding: 15px;
+}
+
+.card-title {
+    padding: 20px 0 15px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #012970;
+    font-family: "Poppins", sans-serif;
+}
+
+.card-title span {
+    color: #899bbd;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.card-body {
+    padding: 0 20px 20px 20px;
+}
+
+.activity {
+    font-size: 14px;
+}
+
+.activity .activity-item .activite-label {
+    color: #888;
+    position: relative;
+    flex-shrink: 0;
+    flex-grow: 0;
+    min-width: 64px;
+}
+
+.activity .activity-item .activite-label::before {
+    content: "";
+    position: absolute;
+    right: -11px;
+    width: 4px;
+    top: 0;
+    bottom: 0;
+    background-color: #eceefe;
+}
+
+.activity .activity-item .activity-badge {
+    margin-top: 3px;
+    z-index: 1;
+    font-size: 11px;
+    line-height: 0;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 3px solid #fff;
+    flex-grow: 0;
+}
+
+.activity .activity-item .activity-content {
+    padding-left: 10px;
+    padding-bottom: 20px;
+}
+
+.activity .activity-item:first-child .activite-label::before {
+    top: 5px;
+}
+
+.activity .activity-item:last-child .activity-content {
+    padding-bottom: 0;
+}
+
+/* info - card */
+
+.dashboard .info-card {
+    padding-bottom: 10px;
+}
+
+.dashboard .info-card h6 {
+    font-size: 28px;
+    color: #012970;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard .card-icon {
+    font-size: 32px;
+    line-height: 0;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.dashboard .sales-card .card-icon {
+    color: #4154f1;
+    background: #f6f6fe;
+}
+
+.dashboard .revenue-card .card-icon {
+    color: #2eca6a;
+    background: #e0f8e9;
+}
+
+.dashboard .customers-card .card-icon {
+    color: #ff771d;
+    background: #ffecdf;
+}
+
+.dashboard .customers-card2 .card-icon {
+    color: yellow;
+    background: rgb(248, 248, 221);
+}
+
+.colorr {
+    background-color: #fff !important;
+}
+
+.App .MuiBox-root {
+    height: 100vh !important;
+}
+
 @media screen and (max-width:1500px) {
-    .dashboard-item-cart{
-        max-width: 200px ;
+    .dashboard-item-cart {
+        max-width: 200px;
         width: 100%;
     }
 }
 
 
 @media screen and (max-width:1400px) {
-    .dashboard-item-cart{
-        max-width: 200px ;
+    .dashboard-item-cart {
+        max-width: 200px;
         width: 100%;
     }
 
 }
 
 @media screen and (max-width:1200px) {
-    .dashboard-item-cart{
+    .dashboard-item-cart {
         max-width: 140px !important;
         width: 100%;
     }
 
-    .dashboard-icon{
+    .dashboard-icon {
         font-size: 18px;
     }
 
 }
 
 @media screen and (max-width:992px) {
-    .dashboard-item-cart{
+    .dashboard-item-cart {
         max-width: 140px !important;
     }
 
@@ -337,50 +477,53 @@
 }
 
 @media screen and (max-width:768px) {
-    .dashboard{
+    .dashboard {
         flex-wrap: wrap;
     }
-    
-    .dashboard-icon{
+
+    .dashboard-icon {
         font-size: 15px;
     }
 
-    .dashboard-item-cart{
+    .dashboard-item-cart {
         max-width: 150px !important;
+    }
+
+    .dashboard-main {
+        flex-wrap: wrap;
     }
 }
 
 @media screen and (max-width:680px) {
-    .dashboard-item-cart{
+    .dashboard-item-cart {
         max-width: 140px !important;
     }
 }
 
 @media screen and (max-width:660px) {
-    .dashboard-item-cart{
+    .dashboard-item-cart {
         max-width: 130px !important;
     }
 }
 
 @media screen and (max-width:564px) {
-    .dashboard-item-cart{
+    .dashboard-item-cart {
         max-width: 120px !important;
     }
-    .dashboard-icon{
+
+    .dashboard-icon {
         font-size: 12px;
     }
 }
+
 @media screen and (max-width:360px) {
-    .dashboard-item-cart{
+    .dashboard-item-cart {
         width: 200px !important;
     }
-    .dashboard-icon{
+
+    .dashboard-icon {
         font-size: 12px;
     }
 
-    
-}
 
-.chart-height-control{
-    height: 100px !important;
 }

@@ -46,7 +46,7 @@ const headCells = [
     id: "code verify",
     label: "Holati",
   },
- 
+
   {
     id: "code ",
     label: "Kod",
@@ -108,8 +108,8 @@ export default function Users() {
   const [filial, setFilial] = useState("");
   const [filialData, setFilialData] = useState([]);
   const navigate = useNavigate();
-  const [allUserCount, setAllUserCount] = useState()
-  const [UsersCount, setUsersCount] = useState({active: '', no_active: ''})
+  const [allUserCount, setAllUserCount] = useState();
+  const [UsersCount, setUsersCount] = useState({ active: "", no_active: "" });
 
   const getUsers = async () => {
     await Client.get(API_ENDPOINTS.USERS)
@@ -126,7 +126,10 @@ export default function Users() {
   const getUsersCount = async () => {
     await Client.get(API_ENDPOINTS.COUNT_USER)
       .then((resp) => {
-        setUsersCount({active: resp.active_users, no_active: resp.deactivate_users});
+        setUsersCount({
+          active: resp.active_users,
+          no_active: resp.deactivate_users,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -195,76 +198,93 @@ export default function Users() {
   useEffect(() => {
     getUsers();
     getFilial();
-    getUsersCount()
+    getUsersCount();
   }, []);
   return (
-    <div>
+    <div className="p-2">
       <div className="mb-5">
-        <h1 className="text-2xl font-sans">Jami foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[#3B82F6]">{allUserCount}</span>  {allUserCount ? "ta  " : ''}</h1>
-        <h1 className="text-2xl font-sans">Faol foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[green]">{UsersCount.active}</span>  {UsersCount.active ? "ta  " : ''}</h1>
+        <h1 className="text-2xl font-sans">
+          Jami foydalanuvchilar{" "}
+          <span className="slashed-zero font-semibold font-mono text-[#3B82F6]">
+            {allUserCount}
+          </span>{" "}
+          {allUserCount ? "ta  " : ""}
+        </h1>
+        <h1 className="text-2xl font-sans">
+          Faol foydalanuvchilar{" "}
+          <span className="slashed-zero font-semibold font-mono text-[green]">
+            {UsersCount.active}
+          </span>{" "}
+          {UsersCount.active ? "ta  " : ""}
+        </h1>
         {/* <h1 className="text-2xl font-sans">Faol emas foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[red]">{UsersCount.no_active}</span>  {UsersCount.no_active ? "ta  " : ''}</h1> */}
       </div>
-      <div className="flex items-center gap-1">
-        <input
-          type="text"
-          placeholder="Izlash"
-          className=" sm:w-full  w-1/3 px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
-          onChange={(e) => Search(e.target.value)}
-        />
-        <FormControl
-          sx={{ minWidth: 100 }}
-          size="small"
-          className="sm:w-full  w-1/3"
-        >
-          <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
-            Filial bo'yicha
-          </InputLabel>
-          <Select
-            className="py-0.5"
-            value={filial}
-            label="Holat bo'yicha"
-            onChange={handleChangeFilial}
-          >
-            <MenuItem value={""}>
-              <i className="fa-solid fa-minus"></i>{" "}
-            </MenuItem>
-            {filialData ? (
-              filialData?.map((item, i) => (
-                <MenuItem key={i} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
-            ) : (
-              <></>
-            )}
-          </Select>
-        </FormControl>
-        <FormControl
-          sx={{ minWidth: 100 }}
-          size="small"
-          className="sm:w-full  w-1/3"
-        >
-          <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
-            Rol bo'yicha
-          </InputLabel>
-          <Select
-            className="py-0.5"
-            value={role}
-            label="Holat bo'yicha"
-            onChange={handleChangeRole}
-          >
-            <MenuItem value={""}>
-              {" "}
-              <i className="fa-solid fa-minus"></i>{" "}
-            </MenuItem>
-            <MenuItem value={"customer"}>Foydalanuvchi</MenuItem>
-            <MenuItem value={"superadmin"}>Admin</MenuItem>
-           
-          </Select>
-        </FormControl>
-      </div>
       {data?.length >= 0 ? (
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%" }} className="colorr p-2 pt-3">
+          <div className="flex items-center gap-1">
+            <input
+              type="text"
+              placeholder="Izlash"
+              className=" sm:w-full  w-1/3 px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+              onChange={(e) => Search(e.target.value)}
+            />
+            <FormControl
+              sx={{ minWidth: 100 }}
+              size="small"
+              className="sm:w-full  w-1/3"
+            >
+              <InputLabel
+                id="demo-select-small-label"
+                placholder="Holat bo'yicha"
+              >
+                Filial bo'yicha
+              </InputLabel>
+              <Select
+                className="py-0.5"
+                value={filial}
+                label="Holat bo'yicha"
+                onChange={handleChangeFilial}
+              >
+                <MenuItem value={""}>
+                  <i className="fa-solid fa-minus"></i>{" "}
+                </MenuItem>
+                {filialData ? (
+                  filialData?.map((item, i) => (
+                    <MenuItem key={i} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </Select>
+            </FormControl>
+            <FormControl
+              sx={{ minWidth: 100 }}
+              size="small"
+              className="sm:w-full  w-1/3"
+            >
+              <InputLabel
+                id="demo-select-small-label"
+                placholder="Holat bo'yicha"
+              >
+                Rol bo'yicha
+              </InputLabel>
+              <Select
+                className="py-0.5"
+                value={role}
+                label="Holat bo'yicha"
+                onChange={handleChangeRole}
+              >
+                <MenuItem value={""}>
+                  {" "}
+                  <i className="fa-solid fa-minus"></i>{" "}
+                </MenuItem>
+                <MenuItem value={"customer"}>Foydalanuvchi</MenuItem>
+                <MenuItem value={"superadmin"}>Admin</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
           <Paper sx={{ width: "100%", mb: 2 }}>
             <TableContainer>
               <Table
@@ -342,7 +362,7 @@ export default function Users() {
                 </TableBody>
               </Table>
             </TableContainer>
-            {Math.ceil(count / 30) <= 1 && count ||  count === 0 ? (
+            {(Math.ceil(count / 30) <= 1 && count) || count === 0 ? (
               <></>
             ) : (
               <div className="m-3 mb-5">

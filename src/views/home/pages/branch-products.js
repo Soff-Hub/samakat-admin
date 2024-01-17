@@ -191,7 +191,7 @@ export default function EnhancedTable() {
 
 
   return (
-    <div>
+    <div className="p-2">
       <div className="mb-5">
         <NavHeaderSelect title="Filiallardagi mahsulotlar" />
       </div>
@@ -200,7 +200,7 @@ export default function EnhancedTable() {
         value={type}
         exclusive
         onChange={handleChange}
-        className="mt-5 flex items-center w-full"
+        className="mt-5 p-2 pt-3 flex items-center w-full colorr"
       >
         <ToggleButton className="w-full" value="bistro">
         Bistro
@@ -212,9 +212,9 @@ export default function EnhancedTable() {
 
       {data ? (
         <Box sx={{ minWidth: 300 }}>
-          <Paper sx={{ mb: 2 }}>
+          <Paper sx={{ mb: 2, p:2 }}>
             <TableContainer>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 colorr">
                 <input
                   type="text"
                   placeholder="Izlash"

@@ -57,12 +57,12 @@ export default function Branches() {
     getOrders();
   }, []);
   return (
-    <div>
+    <div className="p-2">
       <div className="mb-5">
-        <h1 className="text-2xl">Buyurtmalar</h1>
+        <h1 className="text-2xl"  >Buyurtmalar</h1>
       </div>
       {data ? (
-        <div className="block w-full border shadow-lg p-2 mt-5">
+        <div className="block w-full border shadow-lg p-2 colorr">
           <div className="flex items-center gap-1">
             <input
               type="text"
@@ -71,7 +71,7 @@ export default function Branches() {
               onChange={(e) => Search(e.target.value)}
             />
           </div>
-          <Table sx={{ minWidth: 300 }} aria-label="caption table">
+          <Table sx={{ minWidth: 300 }} aria-label="caption table" >
             <TableHead>
               <TableRow>
                 <TableCell>

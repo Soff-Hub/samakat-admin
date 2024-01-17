@@ -61,6 +61,8 @@ export const API_ENDPOINTS = {
     UPDATE_PROMO_CODE: 'admin/promo-code/update/',
 
     DASHBOARD:'admin/dashboard/statistic/',
+    DASHBOARD_PRODUCT:'admin/todays-best-selling-products/',
+    DASHBOARD_ORDER:'admin/todays-best-order/',
     MOTHLY_STATISTIC:'admin/monthly/statistic/',
 
     YEAR:'admin/year/list',

@@ -61,11 +61,12 @@ export default function Settings() {
   }, []);
 
   return (
-    <div  >
+    <div className="p-2" >
      <div className="mb-5">
         <h1 className="text-2xl">Sozlamalar</h1>
       </div>
       <div
+      className="colorr"
         style={{
           display: "flex",
           justifyContent: "space-between",

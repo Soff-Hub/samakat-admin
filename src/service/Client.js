@@ -12,9 +12,6 @@ class Client {
     return BaseService({
       url: url,
       method: "post",
-      // headers: {
-      //     "Content-Type":'multipart/form-data'
-      // } ,
       data: data,
     });
   }

@@ -82,7 +82,7 @@ export default function CollapsibleTable() {
     getData();
   }, []);
   return (
-    <>
+    <div className="p-2">
       <div className="mb-5">
         <h1 className="text-2xl">Manzillar</h1>
       </div>
@@ -130,6 +130,6 @@ export default function CollapsibleTable() {
           <CircularProgress />
         </Box>
       )}
-    </>
+    </div>
   );
 }

@@ -18,7 +18,6 @@ import Box from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
 import { Tooltip } from "antd";
 
-
 export default function ArxivOrders() {
   const [data, setData] = useState(null);
   const [count, setCount] = useState("");
@@ -54,17 +53,15 @@ export default function ArxivOrders() {
   };
 
   const getDate = (date) => {
-    const Date = date.slice(0,10)
-    const time = date.slice(11,18)
-    return time + '\n' + Date
-  }
+    const Date = date.slice(0, 10);
+    const time = date.slice(11, 18);
+    return time + "\n" + Date;
+  };
 
   const handleChange = async (e) => {
     setPage(1);
     setStatus(e.target.value);
-    await Client.get(
-      `${API_ENDPOINTS.ARCHIVE}?status=${e.target.value}`
-    )
+    await Client.get(`${API_ENDPOINTS.ARCHIVE}?status=${e.target.value}`)
       .then((resp) => {
         console.log(resp);
         setCount(resp.count);
@@ -73,32 +70,32 @@ export default function ArxivOrders() {
       .catch((err) => console.log(err));
   };
 
-
   useEffect(() => {
     getOrders();
   }, []);
 
   return (
-    <div>
+    <div className="p-2">
       <div className="mb-5">
         <h1 className="text-2xl">Buyurtmalar arxivi</h1>
       </div>
-      <ToggleButtonGroup
-        color="primary"
-        value={status}
-        exclusive
-        onChange={handleChange}
-        className="mt-5 flex items-center w-full"
-      >
-        <ToggleButton className="w-full" value="approved">
-          Tasdiqlanganlar
-        </ToggleButton>
-        <ToggleButton className="w-full" value="cancelled">
-          Bekor qilinganlar
-        </ToggleButton>
-      </ToggleButtonGroup>
+
       {data ? (
-        <div className="block w-full border shadow-lg p-2 mt-5">
+        <div className="block w-full border shadow-lg p-2 colorr">
+          <ToggleButtonGroup
+            color="primary"
+            value={status}
+            exclusive
+            onChange={handleChange}
+            className=" flex items-center w-full"
+          >
+            <ToggleButton className="w-full" value="approved">
+              Tasdiqlanganlar
+            </ToggleButton>
+            <ToggleButton className="w-full" value="cancelled">
+              Bekor qilinganlar
+            </ToggleButton>
+          </ToggleButtonGroup>
           <div className="flex items-center gap-1">
             <input
               type="text"
@@ -114,9 +111,7 @@ export default function ArxivOrders() {
                   <span className="font-bold text-[16px]">Id</span>
                 </TableCell>
                 <TableCell>
-                  <span className="font-bold text-[16px]">
-                    Foydalanuvchi 
-                  </span>
+                  <span className="font-bold text-[16px]">Foydalanuvchi</span>
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">Soni</span>
@@ -124,7 +119,7 @@ export default function ArxivOrders() {
                 <TableCell>
                   <span className="font-bold text-[16px]">Umumiy so'mma</span>
                 </TableCell>
-                
+
                 {/* <TableCell>
                     <span className="font-bold text-[16px]">Promo kod</span>
                   </TableCell> */}
@@ -170,16 +165,16 @@ export default function ArxivOrders() {
                         )}
                       </Link>
                     </TableCell>
-                   
+
                     <TableCell component="th" scope="row">
                       <Link
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
                         <span className="font-semibold">
-                          {row?.count_products} {" "}
+                          {row?.count_products}{" "}
                         </span>{" "}
-                        { row?.count_products ? "ta" : ""}
+                        {row?.count_products ? "ta" : ""}
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -243,7 +238,7 @@ export default function ArxivOrders() {
                         {row.created_at === null ? (
                           <i className="fa-solid fa-minus"></i>
                         ) : (
-                         getDate( row.created_at)
+                          getDate(row.created_at)
                         )}
                       </Link>
                     </TableCell>
@@ -260,21 +255,24 @@ export default function ArxivOrders() {
                             : "text-[#3B82F6]"
                         }`}
                       >
-                        
-                        {row.status === "approved"
-                          ? "tasdiqlangan"
-                          : row.status === "pending"
-                          ? "kutilmoqda"
-                          : row.status === "cancelled"
-                          ?
+                        {row.status === "approved" ? (
+                          "tasdiqlangan"
+                        ) : row.status === "pending" ? (
+                          "kutilmoqda"
+                        ) : row.status === "cancelled" ? (
                           <Tooltip
-                           title={`${row.commentary ? row.commentary : 'izohsiz'}`} placement="top">
+                            title={`${
+                              row.commentary ? row.commentary : "izohsiz"
+                            }`}
+                            placement="top"
+                          >
                             bekor qilingan
                           </Tooltip>
-                          
-                          : row.status === "process"
-                          ? "jarayonda"
-                          : ""}
+                        ) : row.status === "process" ? (
+                          "jarayonda"
+                        ) : (
+                          ""
+                        )}
                       </Link>
                     </TableCell>
                   </TableRow>

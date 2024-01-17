@@ -35,7 +35,10 @@ const ChartComponent = () => {
 
         setOptions({
           chart: {
-            id: "basic-bar",
+            type: 'area',
+            toolbar: {
+              show: false
+            },
           },
           xaxis: {
             categories: res?.map((el) => el.month),
@@ -45,6 +48,23 @@ const ChartComponent = () => {
               beginAtZero: false,
             },
           },
+          markers: {
+            size: 4,
+          },
+          colors: ["#4154f1", "#2eca6a", "#ff771d"],
+          fill: {
+            type: "gradient",
+            gradient: {
+              shadeIntensity: 1,
+              opacityFrom: 0.3,
+              opacityTo: 0.4,
+              stops: [0, 90, 100]
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          
         });
       })
       .catch((err) => {
@@ -75,34 +95,6 @@ const ChartComponent = () => {
             name: "Daromad",
             data: res?.map((el) => el.monthly_amount),
           },
-        ]);
-
-        setOptions({
-          chart: {
-            id: "basic-bar",
-          },
-          xaxis: {
-            categories: res?.map((el) => el.month),
-          },
-          scales: {
-            y: {
-              beginAtZero: false,
-            },
-          },
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const getStatistic = async () => {
-    await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}`)
-      .then((res) => {
-        setSeries([
-          // {
-          //   name: "Daromad",
-          //   data: res?.map((el) => el.monthly_amount),
-          // },
           {
             name: "Sotilgan mahsulot",
             data: res?.map((el) => JSON.parse(el.products_count)),
@@ -111,7 +103,10 @@ const ChartComponent = () => {
 
         setOptions({
           chart: {
-            id: "basic-bar",
+            type: 'area',
+            toolbar: {
+              show: false
+            },
           },
           xaxis: {
             categories: res?.map((el) => el.month),
@@ -121,6 +116,75 @@ const ChartComponent = () => {
               beginAtZero: false,
             },
           },
+          markers: {
+            size: 4,
+          },
+          colors: ["#4154f1", "#2eca6a", "#ff771d"],
+          fill: {
+            type: "gradient",
+            gradient: {
+              shadeIntensity: 1,
+              opacityFrom: 0.3,
+              opacityTo: 0.4,
+              stops: [0, 90, 100]
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getStatistic = async () => {
+    await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}`)
+      .then((res) => {
+        setSeries([
+          {
+            name: "Daromad",
+            data: res?.map((el) => el.monthly_amount),
+          },
+          {
+            name: "Sotilgan mahsulot",
+            data: res?.map((el) => JSON.parse(el.products_count)),
+          },
+        ]);
+        setOptions({
+          chart: {
+            type: 'area',
+            toolbar: {
+              show: false
+            },
+          },
+          xaxis: {
+            categories: res?.map((el) => el.month),
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+            },
+          },
+          markers: {
+            size: 4,
+          },
+          colors: ["#4154f1", "#2eca6a", "#ff771d"],
+          fill: {
+            type: "gradient",
+            gradient: {
+              shadeIntensity: 1,
+              opacityFrom: 0.3,
+              opacityTo: 0.4,
+              stops: [0, 90, 100]
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          
         });
       })
       .catch((err) => {
@@ -141,7 +205,7 @@ const ChartComponent = () => {
               data: daromadData,
             },
           ]);
-         
+
         } else if ( selectedYear && value === 'soni') {
           setSeries([
             {
@@ -175,11 +239,17 @@ const ChartComponent = () => {
   }, []);
 
   return (
-    <div className="app ">
+    <div className=""
+    style={{
+      maxWidth:'700px',
+      width:'100%',
+      height:'500px',
+      }}
+    >
       <Select
         style={{
-          width: "25%",
-          paddingLeft: "10px",
+          width: "100%",
+          // paddingLeft: "10px",
           margin: "8px 10px 8px 0 ",
         }}
         optionFilterProp="children"
@@ -187,26 +257,24 @@ const ChartComponent = () => {
         onChange={handleChangeSelect}
         options={year}
       />
-      <Radio.Group onChange={onChange} value={value}>
+      {/* <Radio.Group onChange={onChange} value={value}>
         <Radio value="daromad">Daromad</Radio>
         <Radio value="soni">Soni</Radio>
-      </Radio.Group>
+      </Radio.Group> */}
 
-      <div className="row w-full">
+      <div className="row">
         <div
-          className="mixed-chart"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
+         
         >
           {1 ? (
             <Chart
               options={options}
               series={series}
-              type="bar"
-              className="w-full chart-height-control"
-             
+              type="area"
+              style={{
+                backgroundColor:'#fff'
+              }}
+              // className=" chart-height-control"
             />
           ) : (
             <>load</>

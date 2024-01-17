@@ -214,59 +214,60 @@ export default function EnhancedTable() {
     getRetsipeData();
   }, []);
   return (
-    <>
+    <div className="p-2">
       <div className="mb-5">
         <NavHeaderSelect title="Retseptlar" />
       </div>
-      <ToggleButtonGroup
-        color="primary"
-        value={type}
-        exclusive
-        onChange={handleChange}
-        className="mt-5 flex items-center w-full"
-      >
-        <ToggleButton className="w-full" value="bistro">
-          Bistro
-        </ToggleButton>
-        <ToggleButton className="w-full" value="byuti">
-          Byuti
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <input
-        type="text"
-        placeholder="Izlash"
-        className=" px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
-        style={{ width: "100%" }}
-        onChange={(e) => Search(e.target.value)}
-      />
-      <div className="flex justify-end">
-        <Select
-          style={{
-            width: "25%",
-            paddingLeft: "10px",
-            margin: "8px 0",
-          }}
-          optionFilterProp="children"
-          placeholder="Filter"
-          onChange={handleChangeSelect}
-          options={[
-            {
-              label: "Hammasi",
-              value: "",
-            },
-            {
-              label: "Aktiv",
-              value: "true",
-            },
-            {
-              label: "Aktiv emas",
-              value: "false",
-            },
-          ]}
-        />
-      </div>
+
       {data?.length >= 0 ? (
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%" }} className="colorr p-2 pt-3">
+          <ToggleButtonGroup
+            color="primary"
+            value={type}
+            exclusive
+            onChange={handleChange}
+            className=" flex items-center w-full "
+          >
+            <ToggleButton className="w-full" value="bistro">
+              Bistro
+            </ToggleButton>
+            <ToggleButton className="w-full" value="byuti">
+              Byuti
+            </ToggleButton>
+          </ToggleButtonGroup>
+          <input
+            type="text"
+            placeholder="Izlash"
+            className=" px-3 ps-5 py-3 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+            style={{ width: "100%" }}
+            onChange={(e) => Search(e.target.value)}
+          />
+          <div className="flex justify-end">
+            <Select
+              style={{
+                width: "25%",
+                paddingLeft: "10px",
+                margin: "8px 0",
+              }}
+              optionFilterProp="children"
+              placeholder="Filter"
+              onChange={handleChangeSelect}
+              options={[
+                {
+                  label: "Hammasi",
+                  value: "",
+                },
+                {
+                  label: "Aktiv",
+                  value: "true",
+                },
+                {
+                  label: "Aktiv emas",
+                  value: "false",
+                },
+              ]}
+            />
+          </div>
           <Paper sx={{ width: "100%", mb: 2 }}>
             <TableContainer>
               <Table
@@ -322,11 +323,9 @@ export default function EnhancedTable() {
                 </TableBody>
               </Table>
             </TableContainer>
-            {
-              Math.ceil(count / 30) <= 1 || count === 0 ?
+            {Math.ceil(count / 30) <= 1 || count === 0 ? (
               <></>
-              :
-            (
+            ) : (
               <div className="m-3 mb-5 pb-4 pt-4">
                 <Stack spacing={2}>
                   <Typography> Sahifa : {page} </Typography>
@@ -360,6 +359,6 @@ export default function EnhancedTable() {
         setOpen={setOpen}
         handleDelete={handleDelete}
       />
-    </>
+    </div>
   );
 }

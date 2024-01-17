@@ -183,7 +183,7 @@ export default function Delivery() {
   }
 
   return (
-    <div>
+    <div className="p-2">
       <div className="mb-5">
         <h1 className="text-2xl">Kurer</h1>
       </div>

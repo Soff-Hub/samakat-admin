@@ -50,19 +50,20 @@ export default function Categories2() {
   }, []);
 
   return (
-    <div>
+    <div className="p-2 ">
       <NavHeaderSelect title="Kategoriyalar" />
+      <div className="colorr my-2 px-2">
       <ToggleButtonGroup
         color="primary"
         value={type}
         exclusive
         onChange={handleChange}
-        className="mt-5 flex items-center w-full"
+        className="mt-2 flex items-center w-full colorr p-2"
       >
-        <ToggleButton className="mt-5 flex items-center w-full" value="bistro">
+        <ToggleButton className="w-full" value="bistro">
           Bistro
         </ToggleButton>
-        <ToggleButton className="mt-5 flex items-center w-full" value="byuti">
+        <ToggleButton className="w-full" value="byuti">
           Byuti
         </ToggleButton>
       </ToggleButtonGroup>
@@ -73,13 +74,14 @@ export default function Categories2() {
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />
-      <div className="flex justify-between bg-[#EDF4FB] p-2 px-4 mb-1">
+      <div className="flex justify-between bg-[#fff] p-2 px-4 mb-1">
         <div className="font-bold text-[16px]">Nomi</div>
         <div className="font-bold text-[16px]">Amallar</div>
       </div>
       <hr />
       <div>
         <Row2 row={data} />
+      </div>
       </div>
     </div>
   );

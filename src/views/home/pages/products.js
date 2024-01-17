@@ -227,19 +227,22 @@ export default function EnhancedTable() {
     // eslint-disable-next-line
   }, []);
   return (
-    <>
+    <div className="p-2">
       <div className="">
         <NavHeaderSelect title="Mahsulotlar" />
       </div>
       <div className="mb-5">
         <h1 className="text-2xl font-sans">Jami mahsulotlar <span className="slashed-zero font-semibold font-mono text-[#3B82F6]">{constCount}</span>  {constCount ? "ta  " : ''}</h1>
       </div>
+     
+
+      <Box sx={{ width: "100%" }} className="colorr p-2 pt-3" >
       <ToggleButtonGroup
         color="primary"
         value={type}
         exclusive
         onChange={handleChange}
-        className="mt-5 flex items-center w-full"
+        className=" flex items-center w-full"
       >
         <ToggleButton className="w-full" value="bistro">
           Bistro
@@ -251,7 +254,7 @@ export default function EnhancedTable() {
       <input
         type="text"
         placeholder="Izlash"
-        className=" lg:w-1/3 md:w-1/3 sm:w-full   px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+        className=" lg:w-1/3 md:w-1/3 sm:w-full   px-3 ps-2 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
         onChange={(e) => Search(e.target.value)}
       />
       <FormControl
@@ -307,7 +310,6 @@ export default function EnhancedTable() {
             ))}
         </Select>
       </FormControl>
-      <Box sx={{ width: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <TableContainer>
             <Table
@@ -448,6 +450,6 @@ export default function EnhancedTable() {
         handleDelete={handleDelete}
         errorData={errorData}
       />
-    </>
+    </div>
   );
 }

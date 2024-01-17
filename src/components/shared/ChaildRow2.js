@@ -58,7 +58,7 @@ export function ChaildRow2({ row, Detele, type }) {
           id="panel2a-header"
           onClick={() => (rowData?.is_add_childe ? getCatgeoryChaild(rowData.id) : '')}
           className="acc-parent"
-          style={{ backgroundColor: "#EDF4FB", boxShadow: "none" }}
+          style={{ backgroundColor: "#fff", boxShadow: "none" }}
         >
           <div className="flex justify-between w-full">
             <div>{rowData.name}</div>

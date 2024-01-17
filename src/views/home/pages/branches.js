@@ -65,10 +65,10 @@ export default function Branches() {
   console.log("count", count);
 
   return (
-    <div>
+    <div className="p-2">
       <NavHeader title="Filiallar" />
       {data ? (
-        <div className="block w-full border shadow-lg p-2 mt-5">
+        <div className="block w-full border shadow-lg p-2 mt-5 colorr">
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
