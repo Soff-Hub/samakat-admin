@@ -256,16 +256,20 @@ export default function EnhancedTable() {
             Byuti
           </ToggleButton>
         </ToggleButtonGroup>
-        <input
+       <div style={{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+       }} >
+       <input
           type="text"
           placeholder="Izlash"
-          className=" lg:w-1/3 md:w-1/3 sm:w-full   px-3 ps-2 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+          className=" lg:w-1/3 md:w-1/3 sm:w-full   px-3 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
           onChange={(e) => Search(e.target.value)}
         />
         <FormControl
           size="small"
           className=" w-1/3  "
-          style={{ marginTop: "12px" }}
         >
           <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
             Kategoriya
@@ -290,10 +294,10 @@ export default function EnhancedTable() {
             )}
           </Select>
         </FormControl>
+
         <FormControl
           size="small"
           className="w-1/3 "
-          style={{ marginTop: "12px" }}
         >
           <InputLabel id="demo-select-small-label" placholder="Sotuv bo'yicha">
             Sotuv bo'yicha
@@ -315,6 +319,8 @@ export default function EnhancedTable() {
               ))}
           </Select>
         </FormControl>
+       </div>
+
         <Paper sx={{ width: "100%", mb: 2 }}>
           <TableContainer>
             <Table
