@@ -17,7 +17,7 @@ export default function AddInput({
   setChangeBranchCunt,
   change,
 }) {
-  console.log('dataF', dataF);
+  console.log("dataF", dataF);
   const [obj, setObj] = useState({ branch: "", quantity: "", id });
   const [select, setSelect] = useState([]);
 
@@ -30,54 +30,32 @@ export default function AddInput({
 
   const DeleteFilialItem = () => {
     deleteID(id);
-    console.log("addInputdan ketayotgan  delete id => ", id);
   };
-  
+
   const DeleteIDHighlight = () => {
     deleteIDHighlight(id);
   };
 
-  
-  useEffect(()=> {
+  useEffect(() => {
     setSelect(
       selectData?.map((el) => ({
         label: el?.name,
         value: el?.id,
       }))
     );
-  }, [selectData])
-
+  }, [selectData]);
 
   return selectData ? (
-    <div style={{ backgroundColor: "#EEEEEE" }} className="flex gap-x-10 p-3  ">
+    <div className="flex gap-x-10 p-3  ">
       <div className="mx-1">
-        {/* <FormControl sx={{ m: 0, minWidth: 220 }} size="small">
-          <InputLabel id="demo-select-small-label" placholder="Kategoriya">
-            Filial
-          </InputLabel>
-          <Select
-            label="Filial"
-            onChange={(e) => changeObj(e.target.value, "branch")}
-            defaultValue={"salom"}
-            // value={'salom'}
-            // required
-          >
-            {selectData?.map((item, i) => (
-              <MenuItem key={i} value={item.id}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl> */}
         <Select
-        placeholder="Filial"
-        sx={{ m: 0, minWidth: 220 }} size="small"
-          value={dataF?.branch}
+          sx={{ m: 0, minWidth: 220 }}
+          size="large"
+          value={dataF?.branch ? dataF?.branch : "Filial"}
           style={{
             width: 170,
-            height: 40,
-            //  backgroundColor:'#EEEEEE'
           }}
+          placeholder="Filial"
           onChange={(e) => changeObj(e, "branch")}
           options={select}
         />
@@ -86,11 +64,10 @@ export default function AddInput({
         <TextField
           label={"Soni"}
           variant="outlined"
-          backgroundColor='#ffffff'
+          backgroundColor="#ffffff"
           size="small"
           type="number"
-          // required
-          value={dataF?.quantity}
+          value={dataF?.branch ? dataF?.quantity : ""}
           onChange={(e) => {
             changeObj(e.target.value, "quantity");
           }}
@@ -100,7 +77,7 @@ export default function AddInput({
         style={{
           display: "flex",
           justifyItems: "end",
-          alignItems: "center",
+          alignItems: "flex-end",
         }}
       >
         <button type="button" onClick={() => DeleteFilialItem()}>
@@ -109,7 +86,7 @@ export default function AddInput({
       </div>
     </div>
   ) : (
-    <div className="flex  p-3" style={{ backgroundColor: "#EEEEEE" }}>
+    <div className="flex gap-x-10 p-3">
       <div className="mx-1">
         <TextField
           label="Tartib raqam"
@@ -117,7 +94,6 @@ export default function AddInput({
           size="small"
           style={{ marginTop: "10px", width: "150px" }}
           type="number"
-          // defaultValue={dataH?.order}
           value={dataH?.order}
           onChange={(e) => {
             changeObj(e.target.value, "order");
@@ -126,13 +102,9 @@ export default function AddInput({
       </div>
       <div className="mx-1 w-full">
         <TextField
-          id="outlined-multiline-static"
           label="Asosiy element "
           variant="outlined"
           className="w-full"
-          // required
-          multiline
-          rows={4}
           size="small"
           style={{ marginTop: "10px" }}
           type="text"

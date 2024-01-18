@@ -217,7 +217,6 @@ export default function Users() {
           </span>{" "}
           {UsersCount.active ? "ta  " : ""}
         </h1>
-        {/* <h1 className="text-2xl font-sans">Faol emas foydalanuvchilar <span className="slashed-zero font-semibold font-mono text-[red]">{UsersCount.no_active}</span>  {UsersCount.no_active ? "ta  " : ''}</h1> */}
       </div>
       {data?.length >= 0 ? (
         <Box sx={{ width: "100%" }} className="colorr p-2 pt-3">
@@ -225,7 +224,7 @@ export default function Users() {
             <input
               type="text"
               placeholder="Izlash"
-              className=" sm:w-full  w-1/3 px-3 ps-5 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+              className=" sm:w-full  w-1/3 px-2 ps-3 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
               onChange={(e) => Search(e.target.value)}
             />
             <FormControl

@@ -51,12 +51,6 @@ export default function Products() {
     {
       id: 0,
     },
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
   ]);
   const [filialInput, setFilialInput] = useState([
     {
@@ -232,7 +226,7 @@ export default function Products() {
     formData1.append("name", name);
     formData1.append("price", price);
     formData1.append("description", description);
-    if (discount === "") {
+    if (discount === "" || discount === null) {
       formData1.append("discount", 0);
     } else {
       formData1.append("discount", discount);
@@ -326,7 +320,7 @@ export default function Products() {
     formData1.append("name", name);
     formData1.append("price", price);
     formData1.append("description", description);
-    if (discount === "") {
+    if (discount === "" || discount === null) {
       formData1.append("discount", 0);
     } else {
       formData1.append("discount", discount);
@@ -419,7 +413,7 @@ export default function Products() {
     formData1.append("name", name);
     formData1.append("price", price);
     formData1.append("description", description);
-    if (discount === "") {
+    if (discount === "" || discount === null) {
       formData1.append("discount", 0);
     } else {
       formData1.append("discount", discount);
@@ -607,122 +601,144 @@ export default function Products() {
   return location.search.split("?")?.[2] === "edit" ? (
     // Mahsulotni tahrirlash
     editData ? (
-      <div className="flex">
+      <div className="flex gap-2 bg--color px-2 py-3 ">
         <div className="w-2/3">
           <h1 className="text-[28px] pb-3">Mahsulotni tahrirlash</h1>
           <Toaster />
-          <div className="flex gap-5">
+          <div className="w-full">
             <form
               onSubmit={handleSubmitEdit}
               className=" flex flex-col gap-5 create-branch-form"
             >
-              <Input
-                placeholder="Nomi *"
-                type="text"
-                defaultValue={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
-              <Input
-                placeholder="Narxi"
-                type="number"
-                // defaultValue={JSON.parse(editData?.price) || price}
-                value={price}
-                onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (
-                    inputValue === "" ||
-                    (+inputValue <= 50000000 && +inputValue > 0)
-                  ) {
-                    if (inputValue.includes(",") || inputValue.includes(".")) {
-                      const sanitizedValue = e.target.value.replace(
-                        /[,\.]/g,
-                        ""
-                      );
-                      setPrice(sanitizedValue);
-                    } else {
-                      console.log("ishladi", inputValue);
-                      setPrice(inputValue);
-                    }
-                  }
-                }}
-              />
-              <Input
-                placeholder="Chegirmasi ( % )"
-                type="number"
-                value={discount}
-                onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (
-                    inputValue === "" ||
-                    (+inputValue <= 100 && +inputValue >= 0)
-                  ) {
-                    if (inputValue.includes(",") || inputValue.includes(".")) {
-                      const sanitizedValue = e.target.value.replace(
-                        /[,\.]/g,
-                        ""
-                      );
-                      setDiscount(sanitizedValue);
-                    } else {
-                      setDiscount(inputValue);
-                    }
-                  }
-                }}
-              />
+              <div className="colorr p-4">
+                <div className="row">
+                  <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <span className="label--name font-bold">Nomi</span>
+                    <Input
+                      placeholder="Nomi *"
+                      type="text"
+                      className="py-2"
+                      defaultValue={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <span className="label--name font-bold">
+                      Bog'liq kategoriyalar
+                    </span>
+                    <Space
+                      style={{
+                        width: "100%",
+                        textAlign: "left",
+                      }}
+                      direction="vertical"
+                      className="py-2"
+                    >
+                      <Select
+                        mode="multiple"
+                        defaultValue={product_categories}
+                        allowClear
+                        style={{
+                          width: "100%",
+                        }}
+                        showSearch
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                          (option?.label ?? "").includes(input)
+                        }
+                        placeholder="Bog'liq kategoriyalar"
+                        onChange={handleChangeSelect}
+                        options={categoryList}
+                      />
+                    </Space>
+                  </div>
+                  <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <span className="label--name font-bold">Narxi</span>
+                    <Input
+                      placeholder="Narxi"
+                      type="number"
+                      value={price}
+                      className="py-2"
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                        if (
+                          inputValue === "" ||
+                          (+inputValue <= 50000000 && +inputValue > 0)
+                        ) {
+                          if (
+                            inputValue.includes(",") ||
+                            inputValue.includes(".")
+                          ) {
+                            const sanitizedValue = e.target.value.replace(
+                              /[,\.]/g,
+                              ""
+                            );
+                            setPrice(sanitizedValue);
+                          } else {
+                            console.log("ishladi", inputValue);
+                            setPrice(inputValue);
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <span className="label--name font-bold">
+                      Chegirmasi ( % )
+                    </span>
+                    <Input
+                      placeholder="Chegirmasi ( % )"
+                      type="number"
+                      value={discount}
+                      className="py-2"
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                        if (
+                          inputValue === "" ||
+                          (+inputValue <= 100 && +inputValue >= 0)
+                        ) {
+                          if (
+                            inputValue.includes(",") ||
+                            inputValue.includes(".")
+                          ) {
+                            const sanitizedValue = e.target.value.replace(
+                              /[,\.]/g,
+                              ""
+                            );
+                            setDiscount(sanitizedValue);
+                          } else {
+                            setDiscount(inputValue);
+                          }
+                        }
+                      }}
+                    />
+                  </div>
 
-              <Flex vertical gap={32}>
-                <TextArea
-                  showCount
-                  maxLength={100}
-                  placeholder="Izoh"
-                  style={{
-                    height: 120,
-                    resize: "none",
-                  }}
-                  defaultValue={editData?.description || description}
-                  onChange={(e) => {
-                    setDescription(e.target.value);
-                  }}
-                />
-              </Flex>
-
-              <Space
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                }}
-                direction="vertical"
-              >
-                <Select
-                  mode="multiple"
-                  defaultValue={product_categories}
-                  allowClear
-                  style={{
-                    width: "100%",
-                  }}
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  placeholder="Bog'liq kategoriyalar"
-                  onChange={handleChangeSelect}
-                  options={categoryList}
-                />
-              </Space>
-
-              <div>
-                <label className="font-normal font-sans text-lg">Sotuvda</label>
-                <Switch
-                  // checked={editData?.on_sale || on_sale}
-                  defaultChecked={editData?.on_sale || on_sale}
-                  onChange={handleChangeActiveShop}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
+                  <div className="col-12 py-2">
+                    <span className="label--name font-bold">Izoh</span>
+                    <Flex vertical gap={32}>
+                      <TextArea
+                        showCount
+                        maxLength={100}
+                        placeholder="Izoh"
+                        style={{
+                          height: 80,
+                          resize: "none",
+                        }}
+                        defaultValue={editData?.description || description}
+                        onChange={(e) => {
+                          setDescription(e.target.value);
+                        }}
+                      />
+                    </Flex>
+                  </div>
+                </div>
               </div>
+
               <div>
-                <Accordion>
+                {/* <Accordion>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -735,367 +751,326 @@ export default function Products() {
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <div style={{ display: "flex ", gap: "10px" }}>
-                      <div
-                        className="flex gap-3 flex-wrap"
-                        style={{ minWidth: "560px" }}
-                      >
-                        {imageData2.map((item, i) => {
-                          return (
-                            <>
-                              {item.image ? (
+                   
+                  </AccordionDetails>
+                </Accordion> */}
+
+                <div className="colorr p-2">
+                  <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                    {" "}
+                    Mahsulot galleriyasi
+                  </h2>
+                  <div style={{ display: "flex ", gap: "10px" }}>
+                    <div
+                      className="flex gap-3 flex-wrap"
+                      style={{ minWidth: "560px" }}
+                    >
+                      {imageData2.map((item, i) => {
+                        return (
+                          <>
+                            {item.image ? (
+                              <div
+                                onClick={() => showModal(item?.image, item.id)}
+                                style={{
+                                  maxWidth: "150px",
+                                  width: "150px",
+                                  backgroundImage: `url(${
+                                    item?.image ? item?.image : ""
+                                  })`,
+                                  backgroundSize: "cover",
+                                  height: "155px",
+                                  borderRadius: "5px",
+                                }}
+                              ></div>
+                            ) : (
+                              <div
+                                onClick={() =>
+                                  item.image
+                                    ? showModal(item?.image, item.id)
+                                    : console.log("rasm yoq")
+                                }
+                                style={{
+                                  maxWidth: "150px",
+                                  width: "150px",
+                                  backgroundImage: `url(${
+                                    item?.image ? item?.image : ""
+                                  })`,
+                                  backgroundSize: "cover",
+                                  height: "120px",
+                                  borderRadius: "5px",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  border: "1px solid #ccc",
+                                  position: "relative",
+                                }}
+                              >
+                                {item.image ? (
+                                  ""
+                                ) : (
+                                  <i
+                                    className="fa-regular fa-image"
+                                    style={{ fontSize: "35px" }}
+                                  ></i>
+                                )}
+                                {item?.image ? (
+                                  " "
+                                ) : (
+                                  <input
+                                    style={{
+                                      opacity: "0",
+                                      position: "absolute",
+                                      top: "0",
+                                      left: "0",
+                                      bottom: "0",
+                                      right: "0",
+                                    }}
+                                    onChange={(e) =>
+                                      setImageUrlUpdate(
+                                        e.target.files[0],
+                                        item.id
+                                      )
+                                    }
+                                    type="file"
+                                  />
+                                )}
+                              </div>
+                            )}
+
+                            <Modal
+                              title="Retsept Galleriyasi"
+                              open={isModalOpen}
+                              onOk={handleOk}
+                              onCancel={handleCancel}
+                              cancelText="Yopish"
+                              okButtonProps={{ style: { display: "none" } }}
+                            >
+                              <div
+                                style={{
+                                  maxWidth: "800px",
+                                  width: "100%",
+                                }}
+                              >
                                 <div
-                                  onClick={() =>
-                                    showModal(item?.image, item.id)
-                                  }
                                   style={{
-                                    maxWidth: "150px",
-                                    width: "150px",
+                                    width: "100%",
                                     backgroundImage: `url(${
-                                      item?.image ? item?.image : ""
+                                      imageLink?.image ? imageLink?.image : ""
                                     })`,
                                     backgroundSize: "cover",
-                                    height: "155px",
+                                    minHeight: "400px",
+                                    height: "100%",
                                     borderRadius: "5px",
                                   }}
                                 ></div>
-                              ) : (
                                 <div
-                                  onClick={() =>
-                                    item.image
-                                      ? showModal(item?.image, item.id)
-                                      : console.log("rasm yoq")
-                                  }
                                   style={{
-                                    maxWidth: "150px",
-                                    width: "150px",
-                                    backgroundImage: `url(${
-                                      item?.image ? item?.image : ""
-                                    })`,
-                                    backgroundSize: "cover",
-                                    height: "120px",
-                                    borderRadius: "5px",
+                                    width: "100%",
                                     display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    border: "1px solid #ccc",
-                                    position: "relative",
+                                    justifyContent: "end",
+                                    gap: "10px",
                                   }}
                                 >
-                                  {item.image ? (
-                                    ""
-                                  ) : (
-                                    <i
-                                      className="fa-regular fa-image"
-                                      style={{ fontSize: "35px" }}
-                                    ></i>
-                                  )}
-                                  {item?.image ? (
-                                    " "
-                                  ) : (
+                                  <div
+                                    onClick={() =>
+                                      handleDeleteImageApi(imageLink?.id)
+                                    }
+                                    className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                  >
+                                    O'chirish
+                                  </div>
+                                  <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                    Qo'shish
                                     <input
                                       style={{
-                                        opacity: "0",
-                                        position: "absolute",
-                                        top: "0",
-                                        left: "0",
-                                        bottom: "0",
-                                        right: "0",
+                                        display: "none",
                                       }}
                                       onChange={(e) =>
                                         setImageUrlUpdate(
                                           e.target.files[0],
-                                          item.id
+                                          imageLink.id
                                         )
                                       }
                                       type="file"
                                     />
-                                  )}
+                                  </label>
                                 </div>
-                              )}
-
-                              <Modal
-                                title="Retsept Galleriyasi"
-                                open={isModalOpen}
-                                onOk={handleOk}
-                                onCancel={handleCancel}
-                                cancelText="Yopish"
-                                okButtonProps={{ style: { display: "none" } }}
-                              >
-                                <div
-                                  style={{
-                                    maxWidth: "800px",
-                                    width: "100%",
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      width: "100%",
-                                      backgroundImage: `url(${
-                                        imageLink?.image ? imageLink?.image : ""
-                                      })`,
-                                      backgroundSize: "cover",
-                                      minHeight: "400px",
-                                      height: "100%",
-                                      borderRadius: "5px",
-                                    }}
-                                  ></div>
-                                  <div
-                                    style={{
-                                      width: "100%",
-                                      display: "flex",
-                                      justifyContent: "end",
-                                      gap: "10px",
-                                    }}
-                                  >
-                                    <div
-                                      onClick={() =>
-                                        handleDeleteImageApi(imageLink?.id)
-                                      }
-                                      className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
-                                    >
-                                      O'chirish
-                                    </div>
-                                    <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
-                                      Qo'shish
-                                      <input
-                                        style={{
-                                          display: "none",
-                                        }}
-                                        onChange={(e) =>
-                                          setImageUrlUpdate(
-                                            e.target.files[0],
-                                            imageLink.id
-                                          )
-                                        }
-                                        type="file"
-                                      />
-                                    </label>
-                                  </div>
-                                </div>
-                              </Modal>
-                            </>
-                          );
-                        })}
-                      </div>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "end",
-                          marginLeft: "-35px",
-                        }}
-                      >
-                        <Fab
-                          onClick={() =>
-                            addImageInputUpdate(imageData2.length + 1)
-                          }
-                          color="primary"
-                          aria-label="add"
-                        >
-                          <AddIcon />
-                        </Fab>
-                      </div>
+                              </div>
+                            </Modal>
+                          </>
+                        );
+                      })}
                     </div>
-                  </AccordionDetails>
-                </Accordion>
 
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography>
-                      <label className="font-normal font-sans text-lg">
-                        Mahsulot atributi
-                      </label>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div className="flex overflow-y-scroll border-5 flex-col">
-                      <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
-                        <i className="fa-solid fa-flask"></i>
-                        <TextField
-                          label="Tarkibi"
-                          variant="outlined"
-                          className="w-full"
-                          multiline
-                          maxRows={4}
-                          defaultValue={
-                            editData?.product_attribute?.ingredients ||
-                            ingredients
-                          }
-                          style={{ marginTop: "30px" }}
-                          onChange={(e) => {
-                            setingredients(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div className="mx-3 flex items-baseline gap-3">
-                        <i className="fa-solid fa-virus-covid"></i>
-                        <TextField
-                          label="Uglevod"
-                          variant="outlined"
-                          size="small"
-                          style={{ marginTop: "30px" }}
-                          className="w-full"
-                          type="number"
-                          defaultValue={carbohydrates}
-                          onChange={(e) => {
-                            setCarbohydrates(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div className="mx-3 flex items-baseline gap-3">
-                        <i className="fa-solid fa-vial-virus"></i>
-                        <TextField
-                          label="Kaloriya"
-                          variant="outlined"
-                          size="small"
-                          style={{ marginTop: "30px" }}
-                          className="w-full"
-                          type="number"
-                          defaultValue={kilocalories}
-                          onChange={(e) => {
-                            setKilocalories(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div className="mx-3 flex items-baseline gap-3">
-                        <i className="fa-solid fa-mortar-pestle"></i>
-                        <TextField
-                          label="Yog' miqdori"
-                          variant="outlined"
-                          size="small"
-                          style={{ marginTop: "30px" }}
-                          className="w-full"
-                          type="number"
-                          defaultValue={fats}
-                          onChange={(e) => {
-                            setFats(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div className="mx-3 flex items-baseline gap-3">
-                        <i className="fa-solid fa-bandage"></i>
-                        <TextField
-                          label="Protien"
-                          variant="outlined"
-                          size="small"
-                          style={{ marginTop: "30px" }}
-                          className="w-full"
-                          type="number"
-                          defaultValue={protein}
-                          onChange={(e) => {
-                            setProtein(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div className="mx-3 flex items-baseline gap-3">
-                        <i className="fa-solid fa-hotel"></i>
-                        <TextField
-                          label="Ishlab chiqaruvchi"
-                          variant="outlined"
-                          size="small"
-                          style={{ marginTop: "30px" }}
-                          className="w-full"
-                          type="text"
-                          defaultValue={manufacturer}
-                          onChange={(e) => {
-                            setManufacturer(e.target.value);
-                          }}
-                        />
-                      </div>
-
-                      <div className="mx-3 flex items-baseline gap-3">
-                        <i className="fa-solid fa-film"></i>
-                        <TextField
-                          label="Mahsulot soni yoki hajmi"
-                          variant="outlined"
-                          size="small"
-                          style={{ marginTop: "30px" }}
-                          className="w-full"
-                          type="text"
-                          defaultValue={specification}
-                          onChange={(e) => {
-                            setSpecification(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div className="mx-3 flex items-baseline gap-3">
-                        <i className="fa-solid fa-tower-broadcast"></i>
-                        <TextField
-                          label="Saqlash muddati"
-                          variant="outlined"
-                          size="small"
-                          className="w-full"
-                          style={{ marginTop: "30px" }}
-                          type="text"
-                          defaultValue={shelf_life}
-                          onChange={(e) => {
-                            setShelf_life(e.target.value);
-                          }}
-                        />
-                      </div>
-                      <div className="mx-3 flex items-baseline gap-3">
-                        <i className="fa-solid fa-list-ul"></i>
-                        <TextField
-                          label="Saqlash shartlari"
-                          variant="outlined"
-                          size="small"
-                          className="w-full"
-                          style={{ marginTop: "30px" }}
-                          type="text"
-                          defaultValue={storageConditions}
-                          onChange={(e) => {
-                            setStorageConditions(e.target.value);
-                          }}
-                          multiline
-                          rows={4}
-                        />
-                      </div>
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
-
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography>
-                      <label className="font-normal font-sans text-lg mt-5">
-                        Mahsulot asosiy elementlari
-                      </label>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
                     <div
-                      className="flex gap-x-12 p-3 mt-3"
-                      style={{ backgroundColor: "#EEEEEE" }}
+                      style={{
+                        display: "flex",
+                        alignItems: "end",
+                        marginLeft: "-35px",
+                      }}
                     >
-                      <p>
-                        <i className="fa-solid fa-arrow-down-9-1"></i> Tartib
-                        raqami
-                      </p>
-                      <p>
-                        <i className="fa-regular fa-star"></i> Asosiy element
-                      </p>
+                      <Fab
+                        onClick={() =>
+                          addImageInputUpdate(imageData2.length + 1)
+                        }
+                        color="primary"
+                        aria-label="add"
+                      >
+                        <AddIcon />
+                      </Fab>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-2 my-6 colorr">
+                  <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                    Mahsulot atributi{" "}
+                  </h2>
+                  <div className="row border-5 p-3">
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
+                      <TextField
+                        label="Uglevod"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="number"
+                        defaultValue={carbohydrates}
+                        onChange={(e) => {
+                          setCarbohydrates(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
+                      <TextField
+                        label="Kaloriya"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="number"
+                        defaultValue={kilocalories}
+                        onChange={(e) => {
+                          setKilocalories(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
+                      <TextField
+                        label="Yog' miqdori"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="number"
+                        defaultValue={fats}
+                        onChange={(e) => {
+                          setFats(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
+                      <TextField
+                        label="Protien"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="number"
+                        defaultValue={protein}
+                        onChange={(e) => {
+                          setProtein(e.target.value);
+                        }}
+                      />
                     </div>
 
-                    {atributInput?.map((item, i) => (
-                      <AddInput
-                        dataH={item}
-                        key={i}
-                        addFilialInput={addProductHighlightInput}
-                        id={item.id ? item.id : atributInput[i - 1]?.id + 1}
-                        deleteIDHighlight={deleteIDHighlight}
-                        change={change}
+                    <div className="col-6 p-2">
+                      <TextField
+                        label="Tarkibi"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={
+                          editData?.product_attribute?.ingredients ||
+                          ingredients
+                        }
+                        onChange={(e) => {
+                          setingredients(e.target.value);
+                        }}
                       />
-                    ))}
+                    </div>
+                    <div className="col-6 p-2">
+                      <TextField
+                        label="Ishlab chiqaruvchi"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={manufacturer}
+                        onChange={(e) => {
+                          setManufacturer(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-6 p-2">
+                      <TextField
+                        label="Mahsulot soni yoki hajmi"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={specification}
+                        onChange={(e) => {
+                          setSpecification(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-6 p-2">
+                      <TextField
+                        label="Saqlash muddati"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={shelf_life}
+                        onChange={(e) => {
+                          setShelf_life(e.target.value);
+                        }}
+                      />
+                    </div>
 
+                    <div className="col-12 p-2">
+                      <TextField
+                        label="Saqlash shartlari"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={storageConditions}
+                        onChange={(e) => {
+                          setStorageConditions(e.target.value);
+                        }}
+                        multiline
+                        rows={4}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="px-2 my-4 colorr">
+                  <h2 className="text-[18px] pl-3.5 pt-3 font-bold">
+                    Mahsulot asosiy elementlari
+                  </h2>
+                  <div className="flex justify-content-between">
+                    <div className="flex flex-col">
+                      {atributInput?.map((item, i) => (
+                        <AddInput
+                          dataH={item}
+                          key={i}
+                          addFilialInput={addProductHighlightInput}
+                          id={item.id ? item.id : atributInput[i - 1]?.id + 1}
+                          deleteIDHighlight={deleteIDHighlight}
+                          change={change}
+                        />
+                      ))}
+                    </div>
                     <div
                       onClick={() =>
                         addAtributInput(
@@ -1109,6 +1084,7 @@ export default function Products() {
                       style={{
                         display: "flex",
                         justifyContent: "flex-end",
+                        alignItems: "flex-end",
                         cursor: "pointer",
                       }}
                     >
@@ -1116,46 +1092,29 @@ export default function Products() {
                         <i className="fa-solid fa-circle-plus"></i> qo'shish
                       </p>{" "}
                     </div>
-                  </AccordionDetails>
-                </Accordion>
+                  </div>
+                </div>
 
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography>
-                      <label className="font-normal font-sans text-lg mt-5">
-                        Filiallardagi mahsulot
-                      </label>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div
-                      className="flex gap-x-48 p-3 px-3 mt-3"
-                      style={{ backgroundColor: "#EEEEEE" }}
-                    >
-                      <p>
-                        <i className="fa-solid fa-folder-tree"></i> Filiallar
-                      </p>
-                      <p>
-                        <i className="fa-solid fa-arrow-down-9-1"></i> Soni
-                      </p>
+                <div className="px-2 my-4 colorr">
+                  <h2 className="text-[18px] pl-3.5 pt-3 font-bold">
+                    Filiallardagi mahsulot
+                  </h2>
+                  <div className="flex justify-content-between">
+                    <div className="flex flex-col">
+                      {filialInput?.map((item, i) => (
+                        <AddInput
+                          dataF={item}
+                          selectData={branchData}
+                          key={i}
+                          addFilialInput={addFilialInput}
+                          id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
+                          deleteID={deleteID}
+                          change={change}
+                          // setChangeBranchCunt={setChangeBranchCunt}
+                          // setChangeBranch={setChangeBranch}
+                        />
+                      ))}
                     </div>
-                    {filialInput?.map((item, i) => (
-                      <AddInput
-                        dataF={item}
-                        selectData={branchData}
-                        key={i}
-                        addFilialInput={addFilialInput}
-                        id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
-                        deleteID={deleteID}
-                        change={change}
-                        // setChangeBranchCunt={setChangeBranchCunt}
-                        // setChangeBranch={setChangeBranch}
-                      />
-                    ))}
                     <div
                       onClick={() =>
                         addFormInput(
@@ -1176,8 +1135,17 @@ export default function Products() {
                         <i className="fa-solid fa-circle-plus"></i> qo'shish
                       </p>
                     </div>
-                  </AccordionDetails>
-                </Accordion>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="font-normal font-sans text-lg">Sotuvda</label>
+                <Switch
+                  defaultChecked={editData?.on_sale || on_sale}
+                  onChange={handleChangeActiveShop}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
               </div>
 
               <Button
@@ -1205,8 +1173,7 @@ export default function Products() {
               </Button>
             </Link>
           </div>
-          <h1 className="text-[20px] pb-5">Mahsulotning saytda ko'rinishi</h1>
-          <div className="border rounded p-2.5">
+          <div className="border rounded p-2.5 colorr">
             <div className="text-center w-full flex justify-center">
               <img
                 className="rounded border"
@@ -1423,35 +1390,6 @@ export default function Products() {
             ) : (
               ""
             )}
-            {/* {atributInput?.[0].content !== "" ||
-            atributInput?.[0].order !== "" ? (
-              <>
-                <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
-                  Mahsulot elementlari :
-                </p>
-                {atributInput?.map((el) => {
-                  return (
-                    <div
-                      key={el.id}
-                      style={{
-                        display: "flex",
-                        justifyContent: "start",
-                        alignItems: "baseline",
-                      }}
-                    >
-                      <span style={{ fontWeight: "600", paddingRight: "8px" }}>
-                        {el.order}
-                      </span>
-                      <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
-                        {el.content}
-                      </p>
-                    </div>
-                  );
-                })}
-              </>
-            ) : (
-              ""
-            )} */}
             {discount || price ? (
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
@@ -1475,7 +1413,7 @@ export default function Products() {
   ) : // Mahsulotga variant qoshish
   location.search.split("?")?.[2] === "addVariant" ? (
     editData ? (
-      <div className="flex">
+      <div className="flex gap-2 bg--color px-2 py-3">
         <div className="w-2/3">
           <h1 className="text-[28px] pb-3">
             {" "}
@@ -1492,482 +1430,452 @@ export default function Products() {
           <div className="flex gap-5">
             <form
               onSubmit={handleSubmitAddVariant}
-              className=" flex flex-col gap-5 create-branch-form"
+              className=" flex flex-col gap-2 create-branch-form"
             >
-              <Input
-                placeholder="Nomi *"
-                type="text"
-                defaultValue={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
-              <Input
-                placeholder="Narxi"
-                type="number"
-                value={price}
-                onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (
-                    inputValue === "" ||
-                    (+inputValue <= 50000000 && +inputValue > 0)
-                  ) {
-                    if (inputValue.includes(",") || inputValue.includes(".")) {
-                      const sanitizedValue = e.target.value.replace(
-                        /[,\.]/g,
-                        ""
-                      );
-                      setPrice(sanitizedValue);
-                    } else {
-                      setPrice(inputValue);
-                    }
-                  }
-                }}
-              />
-              <Input
-                placeholder="Chegirmasi ( % )"
-                type="number"
-                value={discount}
-                onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (
-                    inputValue === "" ||
-                    (+inputValue <= 100 && +inputValue >= 0)
-                  ) {
-                    if (inputValue.includes(",") || inputValue.includes(".")) {
-                      const sanitizedValue = e.target.value.replace(
-                        /[,\.]/g,
-                        ""
-                      );
-                      setDiscount(sanitizedValue);
-                    } else {
-                      setDiscount(inputValue);
-                    }
-                  }
-                }}
-              />
+              <div className="colorr p-4">
+                <div className="row">
+                  <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <span className="label--name font-bold">Nomi</span>
+                    <Input
+                      placeholder="Nomi *"
+                      type="text"
+                      className="py-2"
+                      defaultValue={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <span className="label--name font-bold">
+                      Bog'liq kategoriyalar
+                    </span>
+                    <Space
+                      style={{
+                        width: "100%",
+                        textAlign: "left",
+                      }}
+                      direction="vertical"
+                      className="py-2"
+                    >
+                      <Select
+                        mode="multiple"
+                        defaultValue={product_categories}
+                        allowClear
+                        style={{
+                          width: "100%",
+                        }}
+                        showSearch
+                        optionFilterProp="children"
+                        filterOption={(input, option) =>
+                          (option?.label ?? "").includes(input)
+                        }
+                        placeholder="Bog'liq kategoriyalar"
+                        onChange={handleChangeSelect}
+                        options={categoryList}
+                      />
+                    </Space>
+                  </div>
+                  <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <span className="label--name font-bold">Narxi</span>
+                    <Input
+                      placeholder="Narxi"
+                      type="number"
+                      value={price}
+                      className="py-2"
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                        if (
+                          inputValue === "" ||
+                          (+inputValue <= 50000000 && +inputValue > 0)
+                        ) {
+                          if (
+                            inputValue.includes(",") ||
+                            inputValue.includes(".")
+                          ) {
+                            const sanitizedValue = e.target.value.replace(
+                              /[,\.]/g,
+                              ""
+                            );
+                            setPrice(sanitizedValue);
+                          } else {
+                            console.log("ishladi", inputValue);
+                            setPrice(inputValue);
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <span className="label--name font-bold">
+                      Chegirmasi ( % )
+                    </span>
+                    <Input
+                      placeholder="Chegirmasi ( % )"
+                      type="number"
+                      value={discount}
+                      className="py-2"
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                        if (
+                          inputValue === "" ||
+                          (+inputValue <= 100 && +inputValue >= 0)
+                        ) {
+                          if (
+                            inputValue.includes(",") ||
+                            inputValue.includes(".")
+                          ) {
+                            const sanitizedValue = e.target.value.replace(
+                              /[,\.]/g,
+                              ""
+                            );
+                            setDiscount(sanitizedValue);
+                          } else {
+                            setDiscount(inputValue);
+                          }
+                        }
+                      }}
+                    />
+                  </div>
 
-              <Flex vertical gap={32}>
-                <TextArea
-                  showCount
-                  maxLength={100}
-                  placeholder="Izoh"
-                  style={{
-                    height: 120,
-                    resize: "none",
-                  }}
-                  defaultValue={editData?.description || description}
-                  onChange={(e) => {
-                    setDescription(e.target.value);
-                  }}
-                />
-              </Flex>
-
-              <Space
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                }}
-                direction="vertical"
-              >
-                <Select
-                  mode="multiple"
-                  defaultValue={product_categories}
-                  allowClear
-                  style={{
-                    width: "100%",
-                  }}
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  placeholder="Bog'liq kategoriyalar"
-                  onChange={handleChangeSelect}
-                  options={categoryList}
-                />
-              </Space>
-
-              <div>
-                <label className="font-normal font-sans text-lg">Sotuvda</label>
-                <Switch
-                  // checked={editData?.on_sale || on_sale}
-                  defaultChecked={editData?.on_sale || on_sale}
-                  onChange={handleChangeActiveShop}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
+                  <div className="col-12 py-2">
+                    <span className="label--name font-bold">Izoh</span>
+                    <Flex vertical gap={32}>
+                      <TextArea
+                        showCount
+                        maxLength={100}
+                        placeholder="Izoh"
+                        style={{
+                          height: 80,
+                          resize: "none",
+                        }}
+                        defaultValue={editData?.description || description}
+                        onChange={(e) => {
+                          setDescription(e.target.value);
+                        }}
+                      />
+                    </Flex>
+                  </div>
+                </div>
               </div>
+              
               <div>
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography>
-                      <label className="font-normal font-sans text-lg">
-                        Mahsulot galleriyasi
-                      </label>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div style={{ display: "flex ", gap: "10px" }}>
-                      <div
-                        className="flex gap-3 flex-wrap"
-                        style={{ minWidth: "560px" }}
-                      >
-                        {imageData2.map((item, i) => {
-                          return (
-                            <>
-                              {item.image ? (
+              <div className="colorr p-2">
+                  <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                    {" "}
+                    Mahsulot galleriyasi
+                  </h2>
+                  <div style={{ display: "flex ", gap: "10px" }}>
+                    <div
+                      className="flex gap-3 flex-wrap"
+                      style={{ minWidth: "560px" }}
+                    >
+                      {imageData2.map((item, i) => {
+                        return (
+                          <>
+                            {item.image ? (
+                              <div
+                                onClick={() => showModal(item?.image, item.id)}
+                                style={{
+                                  maxWidth: "150px",
+                                  width: "150px",
+                                  backgroundImage: `url(${
+                                    item?.image ? item?.image : ""
+                                  })`,
+                                  backgroundSize: "cover",
+                                  height: "155px",
+                                  borderRadius: "5px",
+                                }}
+                              ></div>
+                            ) : (
+                              <div
+                                onClick={() =>
+                                  item.image
+                                    ? showModal(item?.image, item.id)
+                                    : console.log("rasm yoq")
+                                }
+                                style={{
+                                  maxWidth: "150px",
+                                  width: "150px",
+                                  backgroundImage: `url(${
+                                    item?.image ? item?.image : ""
+                                  })`,
+                                  backgroundSize: "cover",
+                                  height: "120px",
+                                  borderRadius: "5px",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  border: "1px solid #ccc",
+                                  position: "relative",
+                                }}
+                              >
+                                {item.image ? (
+                                  ""
+                                ) : (
+                                  <i
+                                    className="fa-regular fa-image"
+                                    style={{ fontSize: "35px" }}
+                                  ></i>
+                                )}
+                                {item?.image ? (
+                                  " "
+                                ) : (
+                                  <input
+                                    style={{
+                                      opacity: "0",
+                                      position: "absolute",
+                                      top: "0",
+                                      left: "0",
+                                      bottom: "0",
+                                      right: "0",
+                                    }}
+                                    onChange={(e) =>
+                                      setImageUrlUpdate(
+                                        e.target.files[0],
+                                        item.id
+                                      )
+                                    }
+                                    type="file"
+                                  />
+                                )}
+                              </div>
+                            )}
+
+                            <Modal
+                              title="Retsept Galleriyasi"
+                              open={isModalOpen}
+                              onOk={handleOk}
+                              onCancel={handleCancel}
+                              cancelText="Yopish"
+                              okButtonProps={{ style: { display: "none" } }}
+                            >
+                              <div
+                                style={{
+                                  maxWidth: "800px",
+                                  width: "100%",
+                                }}
+                              >
                                 <div
-                                  onClick={() =>
-                                    showModal(item?.image, item.id)
-                                  }
                                   style={{
-                                    maxWidth: "150px",
-                                    width: "150px",
+                                    width: "100%",
                                     backgroundImage: `url(${
-                                      item?.image ? item?.image : ""
+                                      imageLink?.image ? imageLink?.image : ""
                                     })`,
                                     backgroundSize: "cover",
-                                    height: "155px",
+                                    minHeight: "400px",
+                                    height: "100%",
                                     borderRadius: "5px",
                                   }}
                                 ></div>
-                              ) : (
                                 <div
-                                  onClick={() =>
-                                    item.image
-                                      ? showModal(item?.image, item.id)
-                                      : console.log("rasm yoq")
-                                  }
                                   style={{
-                                    maxWidth: "150px",
-                                    width: "150px",
-                                    backgroundImage: `url(${
-                                      item?.image ? item?.image : ""
-                                    })`,
-                                    backgroundSize: "cover",
-                                    height: "120px",
-                                    borderRadius: "5px",
+                                    width: "100%",
                                     display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    border: "1px solid #ccc",
-                                    position: "relative",
+                                    justifyContent: "end",
+                                    gap: "10px",
                                   }}
                                 >
-                                  {item.image ? (
-                                    ""
-                                  ) : (
-                                    <i
-                                      className="fa-regular fa-image"
-                                      style={{ fontSize: "35px" }}
-                                    ></i>
-                                  )}
-                                  {item?.image ? (
-                                    " "
-                                  ) : (
+                                  <div
+                                    onClick={() =>
+                                      handleDeleteImageApi(imageLink?.id)
+                                    }
+                                    className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                  >
+                                    O'chirish
+                                  </div>
+                                  <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                    Qo'shish
                                     <input
                                       style={{
-                                        opacity: "0",
-                                        position: "absolute",
-                                        top: "0",
-                                        left: "0",
-                                        bottom: "0",
-                                        right: "0",
+                                        display: "none",
                                       }}
                                       onChange={(e) =>
                                         setImageUrlUpdate(
                                           e.target.files[0],
-                                          item.id
+                                          imageLink.id
                                         )
                                       }
                                       type="file"
                                     />
-                                  )}
+                                  </label>
                                 </div>
-                              )}
-
-                              <Modal
-                                title="Retsept Galleriyasi"
-                                open={isModalOpen}
-                                onOk={handleOk}
-                                onCancel={handleCancel}
-                                cancelText="Yopish"
-                                okButtonProps={{ style: { display: "none" } }}
-                              >
-                                <div
-                                  style={{
-                                    maxWidth: "800px",
-                                    width: "100%",
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      width: "100%",
-                                      backgroundImage: `url(${
-                                        imageLink?.image ? imageLink?.image : ""
-                                      })`,
-                                      backgroundSize: "cover",
-                                      minHeight: "400px",
-                                      height: "100%",
-                                      borderRadius: "5px",
-                                    }}
-                                  ></div>
-                                  <div
-                                    style={{
-                                      width: "100%",
-                                      display: "flex",
-                                      justifyContent: "end",
-                                      gap: "10px",
-                                    }}
-                                  >
-                                    <div
-                                      onClick={() =>
-                                        handleDeleteImageApiVariant(
-                                          imageLink?.id
-                                        )
-                                      }
-                                      className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
-                                    >
-                                      O'chirish
-                                    </div>
-                                    <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
-                                      Qo'shish
-                                      <input
-                                        style={{
-                                          display: "none",
-                                        }}
-                                        onChange={(e) =>
-                                          setImageUrlUpdate(
-                                            e.target.files[0],
-                                            imageLink.id
-                                          )
-                                        }
-                                        type="file"
-                                      />
-                                    </label>
-                                  </div>
-                                </div>
-                              </Modal>
-                            </>
-                          );
-                        })}
-                      </div>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "end",
-                          marginLeft: "-35px",
-                        }}
-                      >
-                        <Fab
-                          onClick={() =>
-                            addImageInputUpdate(imageData2.length + 1)
-                          }
-                          color="primary"
-                          aria-label="add"
-                        >
-                          <AddIcon />
-                        </Fab>
-                      </div>
+                              </div>
+                            </Modal>
+                          </>
+                        );
+                      })}
                     </div>
-                  </AccordionDetails>
-                </Accordion>
 
-                <label
-                  className="font-normal font-sans text-lg mt-2"
-                  style={{ marginTop: "15px", display: "block" }}
-                >
-                  Mahsulot atributi
-                </label>
-                <div className="flex overflow-y-scroll border-5 flex-col">
-                  <div className=" mx-3 mt-3 mb-1 flex items-baseline gap-3">
-                    <i className="fa-solid fa-flask"></i>
-                    <TextField
-                      label="Tarkibi"
-                      variant="outlined"
-                      className="w-full"
-                      multiline
-                      maxRows={4}
-                      defaultValue={
-                        editData?.product_attribute?.ingredients || ingredients
-                      }
-                      style={{ marginTop: "30px" }}
-                      onChange={(e) => {
-                        setingredients(e.target.value);
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "end",
+                        marginLeft: "-35px",
                       }}
-                    />
-                  </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-virus-covid"></i>
-                    <TextField
-                      label="Uglevod"
-                      variant="outlined"
-                      size="small"
-                      style={{ marginTop: "30px" }}
-                      className="w-full"
-                      type="number"
-                      defaultValue={carbohydrates}
-                      onChange={(e) => {
-                        setCarbohydrates(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-vial-virus"></i>
-                    <TextField
-                      label="Kaloriya"
-                      variant="outlined"
-                      size="small"
-                      style={{ marginTop: "30px" }}
-                      className="w-full"
-                      type="number"
-                      defaultValue={kilocalories}
-                      onChange={(e) => {
-                        setKilocalories(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-mortar-pestle"></i>
-                    <TextField
-                      label="Yog' miqdori"
-                      variant="outlined"
-                      size="small"
-                      style={{ marginTop: "30px" }}
-                      className="w-full"
-                      type="number"
-                      defaultValue={fats}
-                      onChange={(e) => {
-                        setFats(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-bandage"></i>
-                    <TextField
-                      label="Protien"
-                      variant="outlined"
-                      size="small"
-                      style={{ marginTop: "30px" }}
-                      className="w-full"
-                      type="number"
-                      defaultValue={protein}
-                      onChange={(e) => {
-                        setProtein(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-hotel"></i>
-                    <TextField
-                      label="Ishlab chiqaruvchi"
-                      variant="outlined"
-                      size="small"
-                      style={{ marginTop: "30px" }}
-                      className="w-full"
-                      type="text"
-                      required
-                      defaultValue={manufacturer}
-                      onChange={(e) => {
-                        setManufacturer(e.target.value);
-                      }}
-                    />
-                  </div>
-
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-film"></i>
-                    <TextField
-                      label="Mahsulot soni yoki hajmi"
-                      variant="outlined"
-                      size="small"
-                      style={{ marginTop: "30px" }}
-                      className="w-full"
-                      type="text"
-                      required
-                      defaultValue={specification}
-                      onChange={(e) => {
-                        setSpecification(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-tower-broadcast"></i>
-                    <TextField
-                      label="Saqlash muddati"
-                      variant="outlined"
-                      size="small"
-                      className="w-full"
-                      style={{ marginTop: "30px" }}
-                      type="text"
-                      required
-                      defaultValue={shelf_life}
-                      onChange={(e) => {
-                        setShelf_life(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-list-ul"></i>
-                    <TextField
-                      label="Saqlash shartlari"
-                      variant="outlined"
-                      size="small"
-                      className="w-full"
-                      style={{ marginTop: "30px" }}
-                      type="text"
-                      required
-                      defaultValue={storageConditions}
-                      onChange={(e) => {
-                        setStorageConditions(e.target.value);
-                      }}
-                      multiline
-                      rows={4}
-                    />
+                    >
+                      <Fab
+                        onClick={() =>
+                          addImageInputUpdate(imageData2.length + 1)
+                        }
+                        color="primary"
+                        aria-label="add"
+                      >
+                        <AddIcon />
+                      </Fab>
+                    </div>
                   </div>
                 </div>
 
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography>
-                      <label className="font-normal font-sans text-lg mt-5">
-                        Mahsulot asosiy elementlari
-                      </label>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div
-                      className="flex gap-x-12 p-3 mt-3"
-                      style={{ backgroundColor: "#EEEEEE" }}
-                    >
-                      <p>
-                        <i className="fa-solid fa-arrow-down-9-1"></i> Tartib
-                        raqami
-                      </p>
-                      <p>
-                        <i className="fa-regular fa-star"></i> Asosiy element
-                      </p>
+                <div className="p-2 my-6 colorr">
+                  <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                    Mahsulot atributi{" "}
+                  </h2>
+                  <div className="row border-5 p-3">
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
+                      <TextField
+                        label="Uglevod"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="number"
+                        defaultValue={carbohydrates}
+                        onChange={(e) => {
+                          setCarbohydrates(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
+                      <TextField
+                        label="Kaloriya"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="number"
+                        defaultValue={kilocalories}
+                        onChange={(e) => {
+                          setKilocalories(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
+                      <TextField
+                        label="Yog' miqdori"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="number"
+                        defaultValue={fats}
+                        onChange={(e) => {
+                          setFats(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
+                      <TextField
+                        label="Protien"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="number"
+                        defaultValue={protein}
+                        onChange={(e) => {
+                          setProtein(e.target.value);
+                        }}
+                      />
                     </div>
 
-                    {atributInput?.map((item, i) => (
-                      <AddInput
-                        dataH={item}
-                        key={i}
-                        addFilialInput={addProductHighlightInput}
-                        id={item.id ? item.id : atributInput[i - 1]?.id + 1}
-                        deleteIDHighlight={deleteIDHighlight}
-                        change={change}
+                    <div className="col-6 p-2">
+                      <TextField
+                        label="Tarkibi"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={
+                          editData?.product_attribute?.ingredients ||
+                          ingredients
+                        }
+                        onChange={(e) => {
+                          setingredients(e.target.value);
+                        }}
                       />
-                    ))}
+                    </div>
+                    <div className="col-6 p-2">
+                      <TextField
+                        label="Ishlab chiqaruvchi"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={manufacturer}
+                        onChange={(e) => {
+                          setManufacturer(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-6 p-2">
+                      <TextField
+                        label="Mahsulot soni yoki hajmi"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={specification}
+                        onChange={(e) => {
+                          setSpecification(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-6 p-2">
+                      <TextField
+                        label="Saqlash muddati"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={shelf_life}
+                        onChange={(e) => {
+                          setShelf_life(e.target.value);
+                        }}
+                      />
+                    </div>
 
+                    <div className="col-12 p-2">
+                      <TextField
+                        label="Saqlash shartlari"
+                        variant="outlined"
+                        size="small"
+                        className="w-full"
+                        type="text"
+                        defaultValue={storageConditions}
+                        onChange={(e) => {
+                          setStorageConditions(e.target.value);
+                        }}
+                        multiline
+                        rows={4}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="px-2 my-4 colorr">
+                  <h2 className="text-[18px] pl-3.5 pt-3 font-bold">
+                    Mahsulot asosiy elementlari
+                  </h2>
+                  <div className="flex justify-content-between">
+                    <div className="flex flex-col">
+                      {atributInput?.map((item, i) => (
+                        <AddInput
+                          dataH={item}
+                          key={i}
+                          addFilialInput={addProductHighlightInput}
+                          id={item.id ? item.id : atributInput[i - 1]?.id + 1}
+                          deleteIDHighlight={deleteIDHighlight}
+                          change={change}
+                        />
+                      ))}
+                    </div>
                     <div
                       onClick={() =>
                         addAtributInput(
@@ -1981,6 +1889,7 @@ export default function Products() {
                       style={{
                         display: "flex",
                         justifyContent: "flex-end",
+                        alignItems: "flex-end",
                         cursor: "pointer",
                       }}
                     >
@@ -1988,46 +1897,29 @@ export default function Products() {
                         <i className="fa-solid fa-circle-plus"></i> qo'shish
                       </p>{" "}
                     </div>
-                  </AccordionDetails>
-                </Accordion>
+                  </div>
+                </div>
 
-                <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography>
-                      <label className="font-normal font-sans text-lg mt-5">
-                        Filiallardagi mahsulot
-                      </label>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div
-                      className="flex gap-x-48 p-3 px-3 mt-3"
-                      style={{ backgroundColor: "#EEEEEE" }}
-                    >
-                      <p>
-                        <i className="fa-solid fa-folder-tree"></i> Filiallar
-                      </p>
-                      <p>
-                        <i className="fa-solid fa-arrow-down-9-1"></i> Soni
-                      </p>
+                <div className="px-2 my-4 colorr">
+                  <h2 className="text-[18px] pl-3.5 pt-3 font-bold">
+                    Filiallardagi mahsulot
+                  </h2>
+                  <div className="flex justify-content-between">
+                    <div className="flex flex-col">
+                      {filialInput?.map((item, i) => (
+                        <AddInput
+                          dataF={item}
+                          selectData={branchData}
+                          key={i}
+                          addFilialInput={addFilialInput}
+                          id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
+                          deleteID={deleteID}
+                          change={change}
+                          // setChangeBranchCunt={setChangeBranchCunt}
+                          // setChangeBranch={setChangeBranch}
+                        />
+                      ))}
                     </div>
-                    {filialInput?.map((item, i) => (
-                      <AddInput
-                        dataF={item}
-                        selectData={branchData}
-                        key={i}
-                        addFilialInput={addFilialInput}
-                        id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
-                        deleteID={deleteID}
-                        change={change}
-                        // setChangeBranchCunt={setChangeBranchCunt}
-                        // setChangeBranch={setChangeBranch}
-                      />
-                    ))}
                     <div
                       onClick={() =>
                         addFormInput(
@@ -2048,8 +1940,18 @@ export default function Products() {
                         <i className="fa-solid fa-circle-plus"></i> qo'shish
                       </p>
                     </div>
-                  </AccordionDetails>
-                </Accordion>
+                  </div>
+                </div>
+               
+              </div>
+
+              <div>
+                <label className="font-normal font-sans text-lg">Sotuvda</label>
+                <Switch
+                  defaultChecked={editData?.on_sale || on_sale}
+                  onChange={handleChangeActiveShop}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
               </div>
 
               <Button
@@ -2078,7 +1980,6 @@ export default function Products() {
               </Button>
             </Link>
           </div>
-          <h1 className="text-[20px] pb-5">Mahsulotning saytda ko'rinishi</h1>
           <div className="border rounded p-2.5">
             <div className="text-center w-full flex justify-center">
               <img
@@ -2370,6 +2271,9 @@ export default function Products() {
                     value={name}
                     required
                     className="py-2"
+                    style={{
+                      height: "35px",
+                    }}
                     onChange={(e) => {
                       setName(e.target.value);
                     }}
@@ -2392,7 +2296,7 @@ export default function Products() {
                       allowClear
                       style={{
                         width: "100%",
-                        height: "40px",
+                        // height: "40px",
                       }}
                       showSearch
                       optionFilterProp="children"
@@ -2415,6 +2319,9 @@ export default function Products() {
                     maxLength="16"
                     value={price}
                     className="py-2"
+                    style={{
+                      height: "35px",
+                    }}
                     required
                     onChange={(e) => {
                       const inputValue = e.target.value;
@@ -2448,6 +2355,9 @@ export default function Products() {
                     type="number"
                     className="py-2"
                     value={discount}
+                    style={{
+                      height: "35px",
+                    }}
                     onChange={(e) => {
                       const inputValue = e.target.value;
                       if (
@@ -2472,7 +2382,7 @@ export default function Products() {
                   />
                 </div>
                 <div className="col-12 pt-2">
-                  <span className="label--name font-bold" >Izoh</span>
+                  <span className="label--name font-bold">Izoh</span>
                   <Flex vertical gap={32}>
                     <TextArea
                       showCount
@@ -2501,7 +2411,6 @@ export default function Products() {
                   {" "}
                   Mahsulot galleriyasi
                 </h2>
-                <hr />
                 <div
                   style={{
                     display: "flex ",
@@ -2654,34 +2563,13 @@ export default function Products() {
                 <h2 className="text-[18px] pl-3.5 py-3 font-bold">
                   Mahsulot atributi{" "}
                 </h2>
-                <hr />
-                <div
-                  style={{ height: "400px" }}
-                  className="flex overflow-y-scroll border-5 flex-col"
-                >
-                  <div className=" mx-3 mb-1 flex items-baseline gap-3">
-                    <i className="fa-solid fa-flask"></i>
-                    <TextField
-                      label="Tarkibi"
-                      className="w-full"
-                      variant="outlined"
-                      multiline
-                      maxRows={4}
-                      value={ingredients}
-                      style={{ marginTop: "30px" }}
-                      onChange={(e) => {
-                        setingredients(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-virus-covid"></i>
+                <div className=" border-5 row p-3">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
                     <TextField
                       label="Uglevod"
                       variant="outlined"
                       size="small"
                       className="w-full"
-                      style={{ height: "10px", marginTop: "30px" }}
                       type="number"
                       value={carbohydrates}
                       onChange={(e) => {
@@ -2689,14 +2577,12 @@ export default function Products() {
                       }}
                     />
                   </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-vial-virus"></i>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
                     <TextField
                       label="Kaloriya"
                       variant="outlined"
                       size="small"
                       className="w-full"
-                      style={{ height: "10px", marginTop: "30px" }}
                       type="number"
                       value={kilocalories}
                       onChange={(e) => {
@@ -2704,14 +2590,12 @@ export default function Products() {
                       }}
                     />
                   </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-mortar-pestle"></i>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
                     <TextField
                       label="Yog' miqdori"
                       variant="outlined"
                       className="w-full"
                       size="small"
-                      style={{ height: "10px", marginTop: "30px" }}
                       type="number"
                       value={fats}
                       onChange={(e) => {
@@ -2719,14 +2603,12 @@ export default function Products() {
                       }}
                     />
                   </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-bandage"></i>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 col-6  p-2">
                     <TextField
                       className="w-full"
                       label="Protien"
                       variant="outlined"
                       size="small"
-                      style={{ height: "10px", marginTop: "30px" }}
                       type="number"
                       value={protein}
                       onChange={(e) => {
@@ -2734,14 +2616,25 @@ export default function Products() {
                       }}
                     />
                   </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-hotel"></i>
+                  <div className="col-6 p-2">
+                    <TextField
+                      label="Tarkibi"
+                      variant="outlined"
+                      size="small"
+                      className="w-full"
+                      type="number"
+                      value={ingredients}
+                      onChange={(e) => {
+                        setingredients(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col-6 p-2">
                     <TextField
                       className="w-full"
                       label="Ishlab chiqaruvchi"
                       variant="outlined"
                       size="small"
-                      style={{ height: "10px", marginTop: "30px" }}
                       type="text"
                       required
                       value={manufacturer}
@@ -2751,14 +2644,12 @@ export default function Products() {
                     />
                   </div>
 
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-film"></i>
+                  <div className="col-6 p-2">
                     <TextField
                       className="w-full"
                       label="Mahsulot soni yoki hajmi"
                       variant="outlined"
                       size="small"
-                      style={{ height: "10px", marginTop: "30px" }}
                       type="text"
                       required
                       value={specification}
@@ -2767,14 +2658,12 @@ export default function Products() {
                       }}
                     />
                   </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-tower-broadcast"></i>
+                  <div className="col-6 p-2">
                     <TextField
                       className="w-full"
                       label="Saqlash muddati"
                       variant="outlined"
                       size="small"
-                      style={{ height: "10px", marginTop: "30px" }}
                       type="text"
                       value={shelf_life}
                       onChange={(e) => {
@@ -2782,18 +2671,16 @@ export default function Products() {
                       }}
                     />
                   </div>
-                  <div className="mx-3 flex items-baseline gap-3">
-                    <i className="fa-solid fa-list-ul"></i>
+                  <div className="col-12 p-1">
                     <TextField
                       className="w-full"
                       label="Saqlash shartlari"
                       variant="outlined"
                       size="small"
-                      style={{ height: "10px", marginTop: "30px" }}
                       type="text"
                       required
                       multiline
-                      rows={4}
+                      rows={2}
                       value={storageConditions}
                       onChange={(e) => {
                         setStorageConditions(e.target.value);
@@ -2803,116 +2690,85 @@ export default function Products() {
                 </div>
               </div>
 
-              <div
-                style={{ border: "1px solid #EEEEEE" }}
-                className="p-2 my-4 colorr"
-              >
-                <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+              <div className="px-2 my-4 colorr">
+                <h2 className="text-[18px] pl-3.5 pt-3 font-bold">
                   Mahsulot asosiy elementlari
                 </h2>
-                <hr />
-                <div
-                  className="flex gap-x-12 p-3 mt-3"
-                  style={{ backgroundColor: "#EEEEEE" }}
-                >
-                  <p>
-                    <i className="fa-solid fa-arrow-down-9-1"></i> Tartib raqami
-                  </p>
-                  <p>
-                    <i className="fa-regular fa-star"></i> Asosiy element
-                  </p>
-                </div>
                 {/* qoshish */}
-                {atributInput?.map((item, i) => (
-                  <AddInput
-                    // key={i}
-                    // addFilialInput={addProductHighlightInput}
-                    // id={i + 1}
-                    // deleteIDHighlight={deleteIDHighlight}
-                    // // setChangeBranchCunt={setChangeBranchCunt}
-                    // // setChangeBranch={setChangeBranch}
-                    // dataH={item}
-                    // change={change}
+                <div className="flex justify-content-between">
+                  <div className="flex flex-col">
+                    {atributInput?.map((item, i) => (
+                      <AddInput
+                        dataH={item}
+                        key={i}
+                        addFilialInput={addProductHighlightInput}
+                        id={item.id ? item.id : atributInput[i - 1]?.id + 1}
+                        deleteIDHighlight={deleteIDHighlight}
+                        change={change}
+                      />
+                    ))}
+                  </div>
 
-                    dataH={item}
-                    key={i}
-                    addFilialInput={addProductHighlightInput}
-                    id={item.id ? item.id : atributInput[i - 1]?.id + 1}
-                    deleteIDHighlight={deleteIDHighlight}
-                    change={change}
-                  />
-                ))}
-
-                <div
-                  onClick={() =>
-                    addAtributInput(
-                      { content: "", order: "" },
-                      atributInput.length + 1
-                    )
-                  }
-                  className="p-3"
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    cursor: "pointer",
-                  }}
-                >
-                  <p>
-                    <i className="fa-solid fa-circle-plus"></i> qo'shish
-                  </p>{" "}
+                  <div
+                    onClick={() =>
+                      addAtributInput(
+                        { content: "", order: "" },
+                        atributInput.length + 1
+                      )
+                    }
+                    className="p-2"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "flex-end",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <p>
+                      <i className="fa-solid fa-circle-plus"></i> qo'shish
+                    </p>{" "}
+                  </div>
                 </div>
               </div>
 
-              <div
-                style={{ border: "1px solid #EEEEEE" }}
-                className="p-2 my-4 colorr"
-              >
-                <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+              <div className="p-2 my-4 colorr">
+                <h2 className="text-[18px] pl-3.5 pt-2 font-bold">
                   Filiallardagi mahsulot{" "}
                 </h2>
-                <hr />
-                <div
-                  className="flex gap-x-48 p-3 px-3 mt-3"
-                  style={{ backgroundColor: "#EEEEEE" }}
-                >
-                  <p>
-                    <i className="fa-solid fa-folder-tree"></i> Filiallar
-                  </p>
-                  <p>
-                    <i className="fa-solid fa-arrow-down-9-1"></i> Soni
-                  </p>
-                </div>
-                {filialInput?.map((item, i) => (
-                  <AddInput
-                    selectData={branchData}
-                    key={i}
-                    dataF={item}
-                    addFilialInput={addFilialInput}
-                    id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
-                    deleteID={deleteID}
-                    // setChangeBranchCunt={setChangeBranchCunt}
-                    // setChangeBranch={setChangeBranch}
-                  />
-                ))}
-                <div
-                  onClick={() =>
-                    addFormInput(
-                      { branch: "", quantity: "" },
-                      filialInput?.length === 0
-                        ? 1
-                        : filialInput[filialInput.length - 1].id + 1
-                    )
-                  }
-                  className="p-3"
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    cursor: "pointer",
-                  }}
-                >
-                  <p>
-                    <i className="fa-solid fa-circle-plus"></i> qo'shish{" "}
-                  </p>
+                <div className="flex justify-content-between">
+                  <div className="flex flex-col">
+                    {filialInput?.map((item, i) => (
+                      <AddInput
+                        selectData={branchData}
+                        key={i}
+                        dataF={item}
+                        addFilialInput={addFilialInput}
+                        id={item.id ? item.id : addFilialInput[i - 1]?.id + 1}
+                        deleteID={deleteID}
+                      />
+                    ))}
+                  </div>
+                  <div
+                    onClick={() =>
+                      addFormInput(
+                        { branch: "", quantity: "" },
+                        filialInput?.length === 0
+                          ? 1
+                          : filialInput[filialInput.length - 1].id + 1
+                      )
+                    }
+                    className="p-2"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "flex-end",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <p>
+                      <i className="fa-solid fa-circle-plus"></i> qo'shish{" "}
+                    </p>
+                  </div>
                 </div>
               </div>
               <div>
@@ -2940,8 +2796,7 @@ export default function Products() {
       </div>
 
       <div className="w-1/3 font-sans">
-        {/* <h1 className="text-[22px] pb-4">Mahsulotning saytda ko'rinishi</h1> */}
-        <div className="border rounded p-2 mt-5 colorr">
+        <div className="border rounded p-2 mt-5  colorr">
           <div className="text-center w-full flex justify-center">
             <img
               className="rounded border"
@@ -2961,9 +2816,9 @@ export default function Products() {
             }}
             className="text-[18px] text-[#404040] font-serif font-bold text-slate-600"
           >
-            {name ? name : "Mahsulot nomi" + " "}
+            {name ? name : " "}
 
-            <span className=" font-bold text-slate-400 ml-2">
+            <span className=" font-bold text-slate-400 ml-2 ">
               {specification ? `${specification}` : ""}
             </span>
           </h3>
@@ -3135,36 +2990,6 @@ export default function Products() {
           ) : (
             <></>
           )}
-
-          {/* {atributInput?.[0].content !== "" ||
-          atributInput?.[0].order !== "" ? (
-            <>
-              <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
-                Mahsulot elementlari :
-              </p>
-              {atributInput?.map((el) => {
-                return (
-                  <div
-                    key={el.id}
-                    style={{
-                      display: "flex",
-                      justifyContent: "start",
-                      alignItems: "baseline",
-                    }}
-                  >
-                    <span style={{ fontWeight: "600", paddingRight: "8px" }}>
-                      {el.order}
-                    </span>
-                    <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
-                      {el.content}
-                    </p>
-                  </div>
-                );
-              })}
-            </>
-          ) : (
-            ""
-          )} */}
 
           {price ? (
             <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">

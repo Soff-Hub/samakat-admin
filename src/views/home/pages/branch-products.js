@@ -155,6 +155,7 @@ export default function EnhancedTable() {
             value: el.id,
           }))
         );
+        
       })
       .catch((err) => {
         console.log(err);
@@ -179,16 +180,9 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     getFilial();
+
     // eslint-disable-next-line
   }, []);
-
-  if (filialData?.length > 0) {
-    filialData.push({
-      label: "Hammasi",
-      value: "",
-    });
-  }
-
 
   return (
     <div className="px-2 py-3 bg--color">
@@ -202,17 +196,17 @@ export default function EnhancedTable() {
         onChange={handleChange}
         className="mt-5 p-2 pt-3 flex items-center w-full colorr"
       >
-        <ToggleButton className="w-full" value="bistro">
-        Bistro
+        <ToggleButton type="outline" className="w-full" value="bistro">
+          Bistro
         </ToggleButton>
         <ToggleButton className="w-full" value="byuti">
-        Byuti
+          Byuti
         </ToggleButton>
       </ToggleButtonGroup>
 
       {data ? (
         <Box sx={{ minWidth: 300 }}>
-          <Paper sx={{ mb: 2, p:2 }}>
+          <Paper sx={{ mb: 2, p: 2 }}>
             <TableContainer>
               <div className="flex items-center gap-1 colorr">
                 <input
@@ -229,7 +223,10 @@ export default function EnhancedTable() {
                     height: "47px",
                   }}
                   onChange={handleChangeFilial}
-                  options={filialData}
+                  options={[{
+                    label: "Hammasi",
+                    value: "",
+                  }, ...filialData] }
                 ></Select>
               </div>
               <Table
@@ -258,7 +255,6 @@ export default function EnhancedTable() {
                           </Link>
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
-
                           <Link to={`actions/?edit?${row.id}`}>
                             <IconButton color="primary">
                               <DriveFileRenameOutlineOutlinedIcon />
@@ -268,7 +264,7 @@ export default function EnhancedTable() {
                             color="error"
                             onClick={() => {
                               setDeleteId(row.id);
-                                setOpen(true);
+                              setOpen(true);
                             }}
                             aria-label="delete"
                           >

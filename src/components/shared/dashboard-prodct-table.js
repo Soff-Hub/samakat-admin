@@ -32,7 +32,11 @@ export default function DashboardProdctTable() {
 
             <table class="table table-borderless datatable">
               <thead>
-                <tr>
+                <tr
+                  style={{
+                    borderBottom: "2px solid #ccc",
+                  }}
+                >
                   <th scope="col">Id</th>
                   <th scope="col">Filial</th>
                   <th scope="col">To'lov</th>
@@ -42,7 +46,11 @@ export default function DashboardProdctTable() {
               </thead>
               <tbody>
                 {data?.map((el) => (
-                  <tr>
+                  <tr
+                    style={{
+                      borderBottom: "1px solid #ccc",
+                    }}
+                  >
                     <th scope="row">
                       <a href="#">{el?.id}</a>
                     </th>
