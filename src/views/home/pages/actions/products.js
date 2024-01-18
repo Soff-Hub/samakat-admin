@@ -2622,7 +2622,7 @@ export default function Products() {
                       variant="outlined"
                       size="small"
                       className="w-full"
-                      type="number"
+                      type="text"
                       value={ingredients}
                       onChange={(e) => {
                         setingredients(e.target.value);
