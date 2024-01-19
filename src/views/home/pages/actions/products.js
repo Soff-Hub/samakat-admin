@@ -603,18 +603,21 @@ export default function Products() {
     editData ? (
       <div className="flex gap-2 bg--color px-2 py-3 ">
         <div className="w-2/3">
-          <h1 className="text-[28px] pb-3">Mahsulotni tahrirlash</h1>
+          <h1 className="text-[28px] pb-4">Mahsulotni tahrirlash</h1>
           <Toaster />
           <div className="w-full">
             <form
               onSubmit={handleSubmitEdit}
-              className=" flex flex-col gap-5 create-branch-form"
+              className=" flex flex-col gap-4 create-branch-form"
             >
               <div className="colorr p-4">
                 <div className="row">
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">Nomi</span>
                     <Input
+                     style={{
+                      height: "35px",
+                    }}
                       placeholder="Nomi *"
                       type="text"
                       className="py-2"
@@ -634,7 +637,6 @@ export default function Products() {
                         textAlign: "left",
                       }}
                       direction="vertical"
-                      className="py-2"
                     >
                       <Select
                         mode="multiple"
@@ -657,6 +659,9 @@ export default function Products() {
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">Narxi</span>
                     <Input
+                     style={{
+                      height: "35px",
+                    }}
                       placeholder="Narxi"
                       type="number"
                       value={price}
@@ -689,6 +694,9 @@ export default function Products() {
                       Chegirmasi ( % )
                     </span>
                     <Input
+                     style={{
+                      height: "35px",
+                    }}
                       placeholder="Chegirmasi ( % )"
                       type="number"
                       value={discount}
@@ -721,11 +729,11 @@ export default function Products() {
                     <Flex vertical gap={32}>
                       <TextArea
                         showCount
-                        maxLength={100}
+                        maxLength={1000}
                         placeholder="Izoh"
                         style={{
                           height: 80,
-                          resize: "none",
+                          resize: "true",
                         }}
                         defaultValue={editData?.description || description}
                         onChange={(e) => {
@@ -760,7 +768,7 @@ export default function Products() {
                     {" "}
                     Mahsulot galleriyasi
                   </h2>
-                  <div style={{ display: "flex ", gap: "10px" }}>
+                  <div style={{ display: "flex ", justifyContent:'space-between' , gap: "10px" }}>
                     <div
                       className="flex gap-3 flex-wrap"
                       style={{ minWidth: "560px" }}
@@ -1415,7 +1423,7 @@ export default function Products() {
     editData ? (
       <div className="flex gap-2 bg--color px-2 py-3">
         <div className="w-2/3">
-          <h1 className="text-[28px] pb-3">
+          <h1 className="text-[28px] pb-4">
             {" "}
             <u>
               {editData.name +
@@ -1437,6 +1445,9 @@ export default function Products() {
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">Nomi</span>
                     <Input
+                     style={{
+                      height: "35px",
+                    }}
                       placeholder="Nomi *"
                       type="text"
                       className="py-2"
@@ -1456,7 +1467,6 @@ export default function Products() {
                         textAlign: "left",
                       }}
                       direction="vertical"
-                      className="py-2"
                     >
                       <Select
                         mode="multiple"
@@ -1479,6 +1489,9 @@ export default function Products() {
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">Narxi</span>
                     <Input
+                     style={{
+                      height: "35px",
+                    }}
                       placeholder="Narxi"
                       type="number"
                       value={price}
@@ -1511,6 +1524,9 @@ export default function Products() {
                       Chegirmasi ( % )
                     </span>
                     <Input
+                     style={{
+                      height: "35px",
+                    }}
                       placeholder="Chegirmasi ( % )"
                       type="number"
                       value={discount}
@@ -1543,11 +1559,11 @@ export default function Products() {
                     <Flex vertical gap={32}>
                       <TextArea
                         showCount
-                        maxLength={100}
+                        maxLength={1000}
                         placeholder="Izoh"
                         style={{
                           height: 80,
-                          resize: "none",
+                          resize: "true",
                         }}
                         defaultValue={editData?.description || description}
                         onChange={(e) => {
@@ -1560,12 +1576,12 @@ export default function Products() {
               </div>
               
               <div>
-              <div className="colorr p-2">
+              <div className="colorr p-2 mt-4">
                   <h2 className="text-[18px] pl-3.5 py-3 font-bold">
                     {" "}
                     Mahsulot galleriyasi
                   </h2>
-                  <div style={{ display: "flex ", gap: "10px" }}>
+                  <div style={{ display: "flex ",justifyContent:'space-between', gap: "10px" }}>
                     <div
                       className="flex gap-3 flex-wrap"
                       style={{ minWidth: "560px" }}
@@ -2252,9 +2268,9 @@ export default function Products() {
     )
   ) : (
     // Mahsulot qoshish
-    <div className="flex gap-2 bg--color px-2 py-3">
+    <div className="flex  gap-1 bg--color px-2 py-3">
       <div className="w-2/3">
-        <h1 className="text-[35px] pb-3">Mahsulot qo'shish</h1>
+        <h1 className="text-[35px] pb-2">Mahsulot qo'shish</h1>
         <Toaster />
         <div className="w-full">
           <form
@@ -2389,7 +2405,8 @@ export default function Products() {
                       maxLength={1000}
                       placeholder="Izoh"
                       style={{
-                        height: 100,
+                        height: 80,
+                        resize: "true",
                       }}
                       value={description}
                       onChange={(e) => {
@@ -2621,7 +2638,7 @@ export default function Products() {
                       variant="outlined"
                       size="small"
                       className="w-full"
-                      type="text"
+                      type="number"
                       value={ingredients}
                       onChange={(e) => {
                         setingredients(e.target.value);
@@ -2795,7 +2812,7 @@ export default function Products() {
       </div>
 
       <div className="w-1/3 font-sans">
-        <div className="border rounded p-2 mt-5  colorr">
+        <div className="border rounded px-2 py-3 mt-5  colorr">
           <div className="text-center w-full flex justify-center">
             <img
               className="rounded border"

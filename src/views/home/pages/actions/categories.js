@@ -182,7 +182,7 @@ function Categories() {
 
   return loaction.search.split("?").length === 4 ? (
     itemData ? (
-      <div>
+      <div className="py-3">
         <div className="flex items-center justify-between">
           <h1 className="text-[28px] pb-3">Kategoriyani tahrirlash</h1>
           <Link to="/categories">
@@ -201,7 +201,7 @@ function Categories() {
           <div className="flex gap-5">
             <form
               onSubmit={handleSubmitEdit}
-              className="w-1/2 m-auto mt-6 flex flex-col gap-5 create-branch-form"
+              className="w-1/2 m-auto mt-6 flex flex-col gap-3 colorr p-3 create-branch-form"
             >
               <TextField
                 label="Ota kategoriya"
@@ -326,7 +326,7 @@ function Categories() {
       <></>
     )
   ) : (
-    <div>
+    <div className="py-3">
       <h1 className="text-[35px] pb-3 text-center">Kategoriya qo'shish</h1>
       <Toaster />
       <div className="flex gap-5">
@@ -338,7 +338,7 @@ function Categories() {
               ? handleCHaildSubmit
               : ""
           }
-          className="w-1/2 m-auto mt-6 flex flex-col gap-5 create-branch-form"
+          className="w-1/2 m-auto mt-6 flex flex-col gap-3 p-3 colorr create-branch-form"
         >
           {loaction.search.split("?").length === 5 ? (
             <TextField
