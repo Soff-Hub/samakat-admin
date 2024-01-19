@@ -120,7 +120,7 @@ export default function Orders() {
                 value={
                   data && data?.status === "approved"
                     ? "tasdiqlangan"
-                    : data && data?.status === "process"
+                    : data && data?.status === "pending"
                     ? "jarayonda"
                     : data && data?.status === "cancelled"
                     ? "bekor qilingan"

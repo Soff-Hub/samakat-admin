@@ -615,9 +615,9 @@ export default function Products() {
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">Nomi</span>
                     <Input
-                     style={{
-                      height: "35px",
-                    }}
+                      style={{
+                        height: "35px",
+                      }}
                       placeholder="Nomi *"
                       type="text"
                       className="py-2"
@@ -659,9 +659,9 @@ export default function Products() {
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">Narxi</span>
                     <Input
-                     style={{
-                      height: "35px",
-                    }}
+                      style={{
+                        height: "35px",
+                      }}
                       placeholder="Narxi"
                       type="number"
                       value={price}
@@ -694,9 +694,9 @@ export default function Products() {
                       Chegirmasi ( % )
                     </span>
                     <Input
-                     style={{
-                      height: "35px",
-                    }}
+                      style={{
+                        height: "35px",
+                      }}
                       placeholder="Chegirmasi ( % )"
                       type="number"
                       value={discount}
@@ -768,7 +768,13 @@ export default function Products() {
                     {" "}
                     Mahsulot galleriyasi
                   </h2>
-                  <div style={{ display: "flex ", justifyContent:'space-between' , gap: "10px" }}>
+                  <div
+                    style={{
+                      display: "flex ",
+                      justifyContent: "space-between",
+                      gap: "10px",
+                    }}
+                  >
                     <div
                       className="flex gap-3 flex-wrap"
                       style={{ minWidth: "560px" }}
@@ -1445,9 +1451,9 @@ export default function Products() {
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">Nomi</span>
                     <Input
-                     style={{
-                      height: "35px",
-                    }}
+                      style={{
+                        height: "35px",
+                      }}
                       placeholder="Nomi *"
                       type="text"
                       className="py-2"
@@ -1489,9 +1495,9 @@ export default function Products() {
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">Narxi</span>
                     <Input
-                     style={{
-                      height: "35px",
-                    }}
+                      style={{
+                        height: "35px",
+                      }}
                       placeholder="Narxi"
                       type="number"
                       value={price}
@@ -1524,9 +1530,9 @@ export default function Products() {
                       Chegirmasi ( % )
                     </span>
                     <Input
-                     style={{
-                      height: "35px",
-                    }}
+                      style={{
+                        height: "35px",
+                      }}
                       placeholder="Chegirmasi ( % )"
                       type="number"
                       value={discount}
@@ -1574,14 +1580,20 @@ export default function Products() {
                   </div>
                 </div>
               </div>
-              
+
               <div>
-              <div className="colorr p-2 mt-4">
+                <div className="colorr p-2 mt-4">
                   <h2 className="text-[18px] pl-3.5 py-3 font-bold">
                     {" "}
                     Mahsulot galleriyasi
                   </h2>
-                  <div style={{ display: "flex ",justifyContent:'space-between', gap: "10px" }}>
+                  <div
+                    style={{
+                      display: "flex ",
+                      justifyContent: "space-between",
+                      gap: "10px",
+                    }}
+                  >
                     <div
                       className="flex gap-3 flex-wrap"
                       style={{ minWidth: "560px" }}
@@ -1958,7 +1970,6 @@ export default function Products() {
                     </div>
                   </div>
                 </div>
-               
               </div>
 
               <div>
