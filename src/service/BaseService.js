@@ -7,7 +7,7 @@ import { logoutSuccess } from "store/slice"
 
 const BaseService = axios.create({
     baseURL: appConfig.apiPrefix,
-    timeout: 10000,
+    timeout: 200000,
 })
 
 const unAuthorizeCode = [403]
