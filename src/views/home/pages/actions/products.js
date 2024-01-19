@@ -2386,11 +2386,10 @@ export default function Products() {
                   <Flex vertical gap={32}>
                     <TextArea
                       showCount
-                      maxLength={100}
+                      maxLength={1000}
                       placeholder="Izoh"
                       style={{
-                        height: 80,
-                        resize: "none",
+                        height: 100,
                       }}
                       value={description}
                       onChange={(e) => {
