@@ -50,7 +50,7 @@ export default function Categories2() {
   }, []);
 
   return (
-    <div className="px-2 py-3">
+    <div className="px-2 py-3 bg--color">
       <NavHeaderSelect title="Kategoriyalar" />
       <div className="colorr my-2 px-2">
       <ToggleButtonGroup

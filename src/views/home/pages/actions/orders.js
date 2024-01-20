@@ -6,9 +6,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import {
   Button,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
   TextField,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -48,8 +45,8 @@ export default function Orders() {
 
 
   return (
-    <div className="px-2 py-3">
-      <div className="flex items-center justify-between">
+    <div className="px-2 py-3 bg--color">
+      <div className="flex items-center justify-between bg--color">
         <h1 className="text-[28px] pb-3">Buyurtma</h1>
         <Link to="/orders">
           <Button
@@ -120,7 +117,7 @@ export default function Orders() {
                 value={
                   data && data?.status === "approved"
                     ? "tasdiqlangan"
-                    : data && data?.status === "pending"
+                    : data && data?.status === "process"
                     ? "jarayonda"
                     : data && data?.status === "cancelled"
                     ? "bekor qilingan"
@@ -161,8 +158,17 @@ export default function Orders() {
               <ul className="border-[#AEB2B8] py-2 text-start border rounded">
               {
                   data?.product_count?.map((el,i) => (
-                    <li className="font-normal font-sans text-base pl-2" >
-                     {i+1}. {el.product}
+                    <li className="font-normal font-sans text-base pl-2 my-2" >
+                      <a style={{
+                        display:'flex',
+                        alignItems:'center',
+                        gap:'5px'
+                      }} 
+                       href={`/products/actions/?bistro?edit?${el.product_slug}`}>
+
+                     {i+1}. <img src={el.image} width={50} alt="alokand.uz" /> {el.product}
+
+                      </a>
                     </li>
                   ))
                 }
