@@ -192,7 +192,7 @@ export default function Retsepts() {
             <div className="flex gap-5">
               <form
                 onSubmit={handleSubmitEdit}
-                className="w-full flex flex-col gap-4 colorr p-2 create-branch-form"
+                className="w-full flex flex-col gap-4 colorr p-3 create-branch-form"
               >
                 <div>
                   <label className="text-slate-400">Filial :</label>
@@ -290,7 +290,7 @@ export default function Retsepts() {
         <div className="flex gap-5">
           <form
             onSubmit={handleSubmitAdd}
-            className="w-full flex flex-col gap-4 create-branch-form colorr p-2"
+            className="w-full flex flex-col gap-4 create-branch-form colorr p-3"
           >
             <Select
               mode="select"

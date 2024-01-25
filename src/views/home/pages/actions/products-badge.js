@@ -36,36 +36,35 @@ export default function Aksiya() {
     e.preventDefault();
     if (discount >= 1) {
       const formData = new FormData();
-    formData.append("text", text);
-    formData.append("textColor", badge);
-    formData.append("discount", discount);
-    if (!relatedCategory?.[0]?.label) {
-      formData.append("products", JSON.stringify(relatedCategory));
-    }
-    if (img) {
-      formData.append("image", img);
-    }
-    setSubmiting(true);
-    await Client.patch(
-      API_ENDPOINTS.PATCH_BADGE + `${location.search.split("?")[2]}/`,
-      formData
-    )
-      .then((data) => {
-        toast.success("Aksiya muvaffaqiyatli tahrirlandi");
-        setTimeout(() => {
-          navigate("/product-badge");
-        }, 300);
-      })
-      .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
-      });
+      formData.append("text", text);
+      formData.append("textColor", badge);
+      formData.append("discount", discount);
+      if (!relatedCategory?.[0]?.label) {
+        formData.append("products", JSON.stringify(relatedCategory));
+      }
+      if (img) {
+        formData.append("image", img);
+      }
+      setSubmiting(true);
+      await Client.patch(
+        API_ENDPOINTS.PATCH_BADGE + `${location.search.split("?")[2]}/`,
+        formData
+      )
+        .then((data) => {
+          toast.success("Aksiya muvaffaqiyatli tahrirlandi");
+          setTimeout(() => {
+            navigate("/product-badge");
+          }, 300);
+        })
+        .catch((err) => {
+          toast.error("Xatolik! Qayta urinib ko'ring");
+        });
 
-    setSubmiting(false);
-    document.querySelector(".create-branch-form").reset()
+      setSubmiting(false);
+      document.querySelector(".create-branch-form").reset();
     } else {
       setProductSelect(false);
     }
-    
   };
 
   const handleSubmitAdd = async () => {
@@ -102,9 +101,9 @@ export default function Aksiya() {
   };
 
   const DiscountPrice = (e) => {
-    setDiscount(e.target.value)
-   setProductSelect(true)
-  }
+    setDiscount(e.target.value);
+    setProductSelect(true);
+  };
 
   const getProducts = async (e) => {
     await Client.get(
@@ -177,7 +176,7 @@ export default function Aksiya() {
           <div className="flex gap-5">
             <form
               onSubmit={handleSubmitEdit}
-              className="w-1/2 m-auto flex mt-4 flex-col gap-4 colorr p-2 create-branch-form"
+              className="w-1/2 m-auto flex mt-4 flex-col gap-4 colorr p-3 create-branch-form"
             >
               <TextField
                 label="Aksiya matni"
@@ -227,20 +226,18 @@ export default function Aksiya() {
               </Space>
 
               <div className={!productSelect ? "error-product" : ""}>
-
-              <TextField
-                label="Chegirmasi (%)"
-                variant="outlined"
-                size="large"
-                type="number"
-                style={{ width: "100%" }}
-                defaultValue={discount}
-                onChange={(e) => {
-                 (DiscountPrice(e))
-                }}
-              />
+                <TextField
+                  label="Chegirmasi (%)"
+                  variant="outlined"
+                  size="large"
+                  type="number"
+                  style={{ width: "100%" }}
+                  defaultValue={discount}
+                  onChange={(e) => {
+                    DiscountPrice(e);
+                  }}
+                />
               </div>
-
 
               <Button
                 variant="outlined"
@@ -267,14 +264,14 @@ export default function Aksiya() {
       </Box>
     )
   ) : (
-    <div className="px-2 py-3" >
+    <div className="px-2 py-3">
       <div className="text-center">
         <h1 className="text-[35px] pb-3">Aksiya qo'shish</h1>
         <Toaster />
         <div className="flex gap-5">
           <Form
             onFinish={(e) => handleSubmitAdd(e)}
-            className="w-1/2 m-auto  flex flex-col gap-4 colorr p-2 create-branch-form"
+            className="w-1/2 m-auto  flex flex-col gap-4 colorr p-3 create-branch-form"
           >
             <TextField
               label="Aksiya nomi"
@@ -330,7 +327,7 @@ export default function Aksiya() {
                 type="number"
                 defaultValue={discount}
                 onChange={(e) => {
-                  (DiscountPrice(e));
+                  DiscountPrice(e);
                 }}
               />
             </div>

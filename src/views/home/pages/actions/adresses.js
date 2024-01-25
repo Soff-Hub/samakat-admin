@@ -117,8 +117,8 @@ export default function Adresses() {
           </Button>
         </Link>
       </div>
-      <div className="flex g-3">
-        <div className="w-1/2" style={{ height: 400 }}>
+      <div className="flex g-3 align-baseline">
+        <div className="w-1/2 mt-4" style={{ height: 400 }}>
           <LoadScript
             googleMapsApiKey={"AIzaSyDJEtT1hiuEuRHOy366iwruiyFl0vcaBTM"}
           >
@@ -145,7 +145,7 @@ export default function Adresses() {
         </div>
         <form
           onSubmit={submit}
-          className="w-1/2 flex flex-col gap-4 colorr p-2 mt-6 ml-4 create-branch-form"
+          className="w-1/2 flex flex-col gap-4 colorr p-3 mt-6 ml-4 create-branch-form"
         >
           <TextField
             label="Filial nomi"

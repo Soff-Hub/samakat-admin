@@ -214,7 +214,7 @@ function Login() {
           </div>
           <form
             onSubmit={handleSubmitEdit}
-            className="w-1/3 flex flex-col gap-5 create-branch-form colorr p-2 "
+            className="w-1/3 flex flex-col gap-5 create-branch-form colorr p-3 "
           >
             <TextField
               label="Filial nomi"
