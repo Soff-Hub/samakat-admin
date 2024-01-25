@@ -131,6 +131,11 @@ export default function EnhancedTable() {
       name: "Sotuvda emas",
       value: "false",
     },
+    {
+      id: 3,
+      name: "Tugagan mahsulotlar",
+      value: "tugagan",
+    },
   ]);
 
   const handleChange = async (e) => {
@@ -259,7 +264,8 @@ export default function EnhancedTable() {
        <div style={{
         display:'flex',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        gap:'10px'
        }} >
        <input
           type="text"

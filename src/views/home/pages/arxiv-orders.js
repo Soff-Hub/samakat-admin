@@ -147,7 +147,7 @@ export default function ArxivOrders() {
                   >
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/?" + row.id}
+                        to={"/orders/actions/?" + row.id}
                         className="hover:underline"
                       >
                         {row.id}
@@ -155,7 +155,7 @@ export default function ArxivOrders() {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/?" + row.id}
+                        to={"/orders/actions/?" + row.id}
                         className="hover:underline"
                       >
                         {row.user_about ? (
@@ -168,7 +168,7 @@ export default function ArxivOrders() {
 
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/?" + row.id}
+                        to={"/orders/actions/?" + row.id}
                         className="hover:underline"
                       >
                         <span className="font-semibold">
@@ -179,7 +179,7 @@ export default function ArxivOrders() {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/?" + row.id}
+                        to={"/orders/actions/?" + row.id}
                         className="hover:underline"
                       >
                         <span className="font-semibold">
@@ -200,7 +200,7 @@ export default function ArxivOrders() {
                       </TableCell> */}
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/?" + row.id}
+                        to={"/orders/actions/?" + row.id}
                         className="hover:underline"
                       >
                         {row.address === null ? (
@@ -212,7 +212,7 @@ export default function ArxivOrders() {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/?" + row.id}
+                        to={"/orders/actions/?" + row.id}
                         className="hover:underline"
                       >
                         {row.payment_type === "by_card" ? (
@@ -232,7 +232,7 @@ export default function ArxivOrders() {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/?" + row.id}
+                        to={"/orders/actions/?" + row.id}
                         className="hover:underline"
                       >
                         {row.created_at === null ? (
@@ -244,7 +244,7 @@ export default function ArxivOrders() {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/?" + row.id}
+                        to={"/orders/actions/?" + row.id}
                         className={`hover:underline ${
                           row.status === "approved"
                             ? " text-[green]"

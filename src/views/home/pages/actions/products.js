@@ -746,192 +746,184 @@ export default function Products() {
               </div>
 
               <div>
-                {/* <Accordion>
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <Typography>
-                      <label className="font-normal font-sans text-lg">
-                        Mahsulot galleriyasi
-                      </label>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                   
-                  </AccordionDetails>
-                </Accordion> */}
-
                 <div className="colorr p-2">
-                  <h2 className="text-[18px] pl-3.5 py-3 font-bold">
-                    {" "}
-                    Mahsulot galleriyasi
-                  </h2>
-                  <div
-                    style={{
-                      display: "flex ",
-                      justifyContent: "space-between",
-                      gap: "10px",
-                    }}
-                  >
-                    <div
-                      className="flex gap-3 flex-wrap"
-                      style={{ minWidth: "560px" }}
-                    >
-                      {imageData2.map((item, i) => {
-                        return (
-                          <>
-                            {item.image ? (
-                              <div
-                                onClick={() => showModal(item?.image, item.id)}
-                                style={{
-                                  maxWidth: "150px",
-                                  width: "150px",
-                                  backgroundImage: `url(${
-                                    item?.image ? item?.image : ""
-                                  })`,
-                                  backgroundSize: "cover",
-                                  height: "155px",
-                                  borderRadius: "5px",
-                                }}
-                              ></div>
-                            ) : (
-                              <div
-                                onClick={() =>
-                                  item.image
-                                    ? showModal(item?.image, item.id)
-                                    : console.log("rasm yoq")
-                                }
-                                style={{
-                                  maxWidth: "150px",
-                                  width: "150px",
-                                  backgroundImage: `url(${
-                                    item?.image ? item?.image : ""
-                                  })`,
-                                  backgroundSize: "cover",
-                                  height: "120px",
-                                  borderRadius: "5px",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  border: "1px solid #ccc",
-                                  position: "relative",
-                                }}
-                              >
+                  <div className="row">
+                    <div className="col-12">
+                      <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                        {" "}
+                        Mahsulot galleriyasi
+                      </h2>
+                      <div
+                        style={{
+                          display: "flex ",
+                          justifyContent: "space-between",
+                          gap: "10px",
+                        }}
+                        className="px-3"
+                      >
+                        <div
+                          className="flex gap-3 flex-wrap"
+                          style={{ minWidth: "560px" }}
+                        >
+                          {imageData2.map((item, i) => {
+                            return (
+                              <>
                                 {item.image ? (
-                                  ""
-                                ) : (
-                                  <i
-                                    className="fa-regular fa-image"
-                                    style={{ fontSize: "35px" }}
-                                  ></i>
-                                )}
-                                {item?.image ? (
-                                  " "
-                                ) : (
-                                  <input
-                                    style={{
-                                      opacity: "0",
-                                      position: "absolute",
-                                      top: "0",
-                                      left: "0",
-                                      bottom: "0",
-                                      right: "0",
-                                    }}
-                                    onChange={(e) =>
-                                      setImageUrlUpdate(
-                                        e.target.files[0],
-                                        item.id
-                                      )
-                                    }
-                                    type="file"
-                                  />
-                                )}
-                              </div>
-                            )}
-
-                            <Modal
-                              title="Retsept Galleriyasi"
-                              open={isModalOpen}
-                              onOk={handleOk}
-                              onCancel={handleCancel}
-                              cancelText="Yopish"
-                              okButtonProps={{ style: { display: "none" } }}
-                            >
-                              <div
-                                style={{
-                                  maxWidth: "800px",
-                                  width: "100%",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    width: "100%",
-                                    backgroundImage: `url(${
-                                      imageLink?.image ? imageLink?.image : ""
-                                    })`,
-                                    backgroundSize: "cover",
-                                    minHeight: "400px",
-                                    height: "100%",
-                                    borderRadius: "5px",
-                                  }}
-                                ></div>
-                                <div
-                                  style={{
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent: "end",
-                                    gap: "10px",
-                                  }}
-                                >
                                   <div
                                     onClick={() =>
-                                      handleDeleteImageApi(imageLink?.id)
+                                      showModal(item?.image, item.id)
                                     }
-                                    className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                    style={{
+                                      maxWidth: "150px",
+                                      width: "150px",
+                                      backgroundImage: `url(${
+                                        item?.image ? item?.image : ""
+                                      })`,
+                                      backgroundSize: "cover",
+                                      height: "155px",
+                                      borderRadius: "5px",
+                                    }}
+                                  ></div>
+                                ) : (
+                                  <div
+                                    onClick={() =>
+                                      item.image
+                                        ? showModal(item?.image, item.id)
+                                        : console.log("rasm yoq")
+                                    }
+                                    style={{
+                                      maxWidth: "150px",
+                                      width: "150px",
+                                      backgroundImage: `url(${
+                                        item?.image ? item?.image : ""
+                                      })`,
+                                      backgroundSize: "cover",
+                                      height: "120px",
+                                      borderRadius: "5px",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      border: "1px solid #ccc",
+                                      position: "relative",
+                                    }}
                                   >
-                                    O'chirish
+                                    {item.image ? (
+                                      ""
+                                    ) : (
+                                      <i
+                                        className="fa-regular fa-image"
+                                        style={{ fontSize: "35px" }}
+                                      ></i>
+                                    )}
+                                    {item?.image ? (
+                                      " "
+                                    ) : (
+                                      <input
+                                        style={{
+                                          opacity: "0",
+                                          position: "absolute",
+                                          top: "0",
+                                          left: "0",
+                                          bottom: "0",
+                                          right: "0",
+                                        }}
+                                        onChange={(e) =>
+                                          setImageUrlUpdate(
+                                            e.target.files[0],
+                                            item.id
+                                          )
+                                        }
+                                        type="file"
+                                      />
+                                    )}
                                   </div>
-                                  <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
-                                    Qo'shish
-                                    <input
-                                      style={{
-                                        display: "none",
-                                      }}
-                                      onChange={(e) =>
-                                        setImageUrlUpdate(
-                                          e.target.files[0],
-                                          imageLink.id
-                                        )
-                                      }
-                                      type="file"
-                                    />
-                                  </label>
-                                </div>
-                              </div>
-                            </Modal>
-                          </>
-                        );
-                      })}
-                    </div>
+                                )}
 
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "end",
-                        marginLeft: "-35px",
-                      }}
-                    >
-                      <Fab
-                        onClick={() =>
-                          addImageInputUpdate(imageData2.length + 1)
-                        }
-                        color="primary"
-                        aria-label="add"
-                      >
-                        <AddIcon />
-                      </Fab>
+                                <Modal
+                                  title="Retsept Galleriyasi"
+                                  open={isModalOpen}
+                                  onOk={handleOk}
+                                  onCancel={handleCancel}
+                                  cancelText="Yopish"
+                                  okButtonProps={{ style: { display: "none" } }}
+                                >
+                                  <div
+                                    style={{
+                                      maxWidth: "800px",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        width: "100%",
+                                        backgroundImage: `url(${
+                                          imageLink?.image
+                                            ? imageLink?.image
+                                            : ""
+                                        })`,
+                                        backgroundSize: "cover",
+                                        minHeight: "400px",
+                                        height: "100%",
+                                        borderRadius: "5px",
+                                      }}
+                                    ></div>
+                                    <div
+                                      style={{
+                                        width: "100%",
+                                        display: "flex",
+                                        justifyContent: "end",
+                                        gap: "10px",
+                                      }}
+                                    >
+                                      <div
+                                        onClick={() =>
+                                          handleDeleteImageApi(imageLink?.id)
+                                        }
+                                        className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                      >
+                                        O'chirish
+                                      </div>
+                                      <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                        Qo'shish
+                                        <input
+                                          style={{
+                                            display: "none",
+                                          }}
+                                          onChange={(e) =>
+                                            setImageUrlUpdate(
+                                              e.target.files[0],
+                                              imageLink.id
+                                            )
+                                          }
+                                          type="file"
+                                        />
+                                      </label>
+                                    </div>
+                                  </div>
+                                </Modal>
+                              </>
+                            );
+                          })}
+                        </div>
+
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "end",
+                            marginLeft: "-35px",
+                          }}
+                        >
+                          <Fab
+                            onClick={() =>
+                              addImageInputUpdate(imageData2.length + 1)
+                            }
+                            color="primary"
+                            aria-label="add"
+                          >
+                            <AddIcon />
+                          </Fab>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1583,174 +1575,183 @@ export default function Products() {
 
               <div>
                 <div className="colorr p-2 mt-4">
-                  <h2 className="text-[18px] pl-3.5 py-3 font-bold">
-                    {" "}
-                    Mahsulot galleriyasi
-                  </h2>
-                  <div
-                    style={{
-                      display: "flex ",
-                      justifyContent: "space-between",
-                      gap: "10px",
-                    }}
-                  >
-                    <div
-                      className="flex gap-3 flex-wrap"
-                      style={{ minWidth: "560px" }}
-                    >
-                      {imageData2.map((item, i) => {
-                        return (
-                          <>
-                            {item.image ? (
-                              <div
-                                onClick={() => showModal(item?.image, item.id)}
-                                style={{
-                                  maxWidth: "150px",
-                                  width: "150px",
-                                  backgroundImage: `url(${
-                                    item?.image ? item?.image : ""
-                                  })`,
-                                  backgroundSize: "cover",
-                                  height: "155px",
-                                  borderRadius: "5px",
-                                }}
-                              ></div>
-                            ) : (
-                              <div
-                                onClick={() =>
-                                  item.image
-                                    ? showModal(item?.image, item.id)
-                                    : console.log("rasm yoq")
-                                }
-                                style={{
-                                  maxWidth: "150px",
-                                  width: "150px",
-                                  backgroundImage: `url(${
-                                    item?.image ? item?.image : ""
-                                  })`,
-                                  backgroundSize: "cover",
-                                  height: "120px",
-                                  borderRadius: "5px",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  border: "1px solid #ccc",
-                                  position: "relative",
-                                }}
-                              >
+                  <div className="row">
+                    <div className="col-12">
+                      <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                        {" "}
+                        Mahsulot galleriyasi
+                      </h2>
+                      <div
+                        style={{
+                          display: "flex ",
+                          justifyContent: "space-between",
+                          gap: "10px",
+                        }}
+                        className="px-3"
+                      >
+                        <div
+                          className="flex gap-3 flex-wrap"
+                          style={{ minWidth: "560px" }}
+                        >
+                          {imageData2.map((item, i) => {
+                            return (
+                              <>
                                 {item.image ? (
-                                  ""
-                                ) : (
-                                  <i
-                                    className="fa-regular fa-image"
-                                    style={{ fontSize: "35px" }}
-                                  ></i>
-                                )}
-                                {item?.image ? (
-                                  " "
-                                ) : (
-                                  <input
-                                    style={{
-                                      opacity: "0",
-                                      position: "absolute",
-                                      top: "0",
-                                      left: "0",
-                                      bottom: "0",
-                                      right: "0",
-                                    }}
-                                    onChange={(e) =>
-                                      setImageUrlUpdate(
-                                        e.target.files[0],
-                                        item.id
-                                      )
-                                    }
-                                    type="file"
-                                  />
-                                )}
-                              </div>
-                            )}
-
-                            <Modal
-                              title="Retsept Galleriyasi"
-                              open={isModalOpen}
-                              onOk={handleOk}
-                              onCancel={handleCancel}
-                              cancelText="Yopish"
-                              okButtonProps={{ style: { display: "none" } }}
-                            >
-                              <div
-                                style={{
-                                  maxWidth: "800px",
-                                  width: "100%",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    width: "100%",
-                                    backgroundImage: `url(${
-                                      imageLink?.image ? imageLink?.image : ""
-                                    })`,
-                                    backgroundSize: "cover",
-                                    minHeight: "400px",
-                                    height: "100%",
-                                    borderRadius: "5px",
-                                  }}
-                                ></div>
-                                <div
-                                  style={{
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent: "end",
-                                    gap: "10px",
-                                  }}
-                                >
                                   <div
                                     onClick={() =>
-                                      handleDeleteImageApi(imageLink?.id)
+                                      showModal(item?.image, item.id)
                                     }
-                                    className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                    style={{
+                                      maxWidth: "150px",
+                                      width: "150px",
+                                      backgroundImage: `url(${
+                                        item?.image ? item?.image : ""
+                                      })`,
+                                      backgroundSize: "cover",
+                                      height: "155px",
+                                      borderRadius: "5px",
+                                    }}
+                                  ></div>
+                                ) : (
+                                  <div
+                                    onClick={() =>
+                                      item.image
+                                        ? showModal(item?.image, item.id)
+                                        : console.log("rasm yoq")
+                                    }
+                                    style={{
+                                      maxWidth: "150px",
+                                      width: "150px",
+                                      backgroundImage: `url(${
+                                        item?.image ? item?.image : ""
+                                      })`,
+                                      backgroundSize: "cover",
+                                      height: "120px",
+                                      borderRadius: "5px",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      border: "1px solid #ccc",
+                                      position: "relative",
+                                    }}
                                   >
-                                    O'chirish
+                                    {item.image ? (
+                                      ""
+                                    ) : (
+                                      <i
+                                        className="fa-regular fa-image"
+                                        style={{ fontSize: "35px" }}
+                                      ></i>
+                                    )}
+                                    {item?.image ? (
+                                      " "
+                                    ) : (
+                                      <input
+                                        style={{
+                                          opacity: "0",
+                                          position: "absolute",
+                                          top: "0",
+                                          left: "0",
+                                          bottom: "0",
+                                          right: "0",
+                                        }}
+                                        onChange={(e) =>
+                                          setImageUrlUpdate(
+                                            e.target.files[0],
+                                            item.id
+                                          )
+                                        }
+                                        type="file"
+                                      />
+                                    )}
                                   </div>
-                                  <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
-                                    Qo'shish
-                                    <input
-                                      style={{
-                                        display: "none",
-                                      }}
-                                      onChange={(e) =>
-                                        setImageUrlUpdate(
-                                          e.target.files[0],
-                                          imageLink.id
-                                        )
-                                      }
-                                      type="file"
-                                    />
-                                  </label>
-                                </div>
-                              </div>
-                            </Modal>
-                          </>
-                        );
-                      })}
-                    </div>
+                                )}
 
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "end",
-                        marginLeft: "-35px",
-                      }}
-                    >
-                      <Fab
-                        onClick={() =>
-                          addImageInputUpdate(imageData2.length + 1)
-                        }
-                        color="primary"
-                        aria-label="add"
-                      >
-                        <AddIcon />
-                      </Fab>
+                                <Modal
+                                  title="Retsept Galleriyasi"
+                                  open={isModalOpen}
+                                  onOk={handleOk}
+                                  onCancel={handleCancel}
+                                  cancelText="Yopish"
+                                  okButtonProps={{ style: { display: "none" } }}
+                                >
+                                  <div
+                                    style={{
+                                      maxWidth: "800px",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        width: "100%",
+                                        backgroundImage: `url(${
+                                          imageLink?.image
+                                            ? imageLink?.image
+                                            : ""
+                                        })`,
+                                        backgroundSize: "cover",
+                                        minHeight: "400px",
+                                        height: "100%",
+                                        borderRadius: "5px",
+                                      }}
+                                    ></div>
+                                    <div
+                                      style={{
+                                        width: "100%",
+                                        display: "flex",
+                                        justifyContent: "end",
+                                        gap: "10px",
+                                      }}
+                                    >
+                                      <div
+                                        onClick={() =>
+                                          handleDeleteImageApi(imageLink?.id)
+                                        }
+                                        className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                      >
+                                        O'chirish
+                                      </div>
+                                      <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                        Qo'shish
+                                        <input
+                                          style={{
+                                            display: "none",
+                                          }}
+                                          onChange={(e) =>
+                                            setImageUrlUpdate(
+                                              e.target.files[0],
+                                              imageLink.id
+                                            )
+                                          }
+                                          type="file"
+                                        />
+                                      </label>
+                                    </div>
+                                  </div>
+                                </Modal>
+                              </>
+                            );
+                          })}
+                        </div>
+
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "end",
+                            marginLeft: "-35px",
+                          }}
+                        >
+                          <Fab
+                            onClick={() =>
+                              addImageInputUpdate(imageData2.length + 1)
+                            }
+                            color="primary"
+                            aria-label="add"
+                          >
+                            <AddIcon />
+                          </Fab>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2228,35 +2229,6 @@ export default function Products() {
             ) : (
               ""
             )}
-            {/* {atributInput?.[0].content !== "" ||
-            atributInput?.[0].order !== "" ? (
-              <>
-                <p className="text-[13px]  font-semibold text-[#ababab] leading-[18px] pt-2 max-w-xs">
-                  Mahsulot elementlari :
-                </p>
-                {atributInput?.map((el) => {
-                  return (
-                    <div
-                      key={el.id}
-                      style={{
-                        display: "flex",
-                        justifyContent: "start",
-                        alignItems: "baseline",
-                      }}
-                    >
-                      <span style={{ fontWeight: "600", paddingRight: "8px" }}>
-                        {el.order}
-                      </span>
-                      <p className="text-[13px] leading-[18px] font-medium text-slate-600 pb-2 max-w-xs">
-                        {el.content}
-                      </p>
-                    </div>
-                  );
-                })}
-              </>
-            ) : (
-              ""
-            )} */}
             {discount || price ? (
               <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
@@ -2434,151 +2406,161 @@ export default function Products() {
                 style={{ border: "1px solid #EEEEEE" }}
                 className="p-2 colorr"
               >
-                <h2 className="text-[18px] pl-3.5 py-3 font-bold">
-                  {" "}
-                  Mahsulot galleriyasi
-                </h2>
-                <div
-                  style={{
-                    display: "flex ",
-                    justifyContent: "space-between",
-                    padding: "15px 5px",
-                  }}
-                >
-                  <div
-                    className="flex gap-3 flex-wrap"
-                    style={{ minWidth: "490px" }}
-                  >
-                    {addHandleImageData?.map((item, i) => {
-                      return (
-                        <>
-                          <div
-                            key={item.id}
-                            onClick={() =>
-                              item.image
-                                ? showModalAdd(item?.image, item.id)
-                                : console.log("rasm yoq")
-                            }
-                            style={{
-                              maxWidth: "150px",
-                              width: "150px",
-                              backgroundImage: `url(${
-                                item?.image ? item?.image : ""
-                              })`,
-                              backgroundSize: "cover",
-                              height: "155px",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              border: "1px solid #ccc",
-                              borderRadius: "5px",
-                              position: "relative",
-                            }}
-                          >
-                            {item.image ? (
-                              ""
-                            ) : (
-                              <i
-                                className="fa-regular fa-image"
-                                style={{ fontSize: "35px" }}
-                              ></i>
-                            )}
-                            {item?.image ? (
-                              " "
-                            ) : (
-                              <input
-                                style={{
-                                  opacity: "0",
-                                  position: "absolute",
-                                  top: "0",
-                                  left: "0",
-                                  bottom: "0",
-                                  right: "0",
-                                }}
-                                onChange={(e) =>
-                                  setImageUrlAdd(e?.target?.files[0], item?.id)
-                                }
-                                type="file"
-                              />
-                            )}
-                          </div>
-
-                          <Modal
-                            title="Mahsulot Galleriyasi"
-                            open={isModalOpenAdd}
-                            // onOk={handleOk}
-                            onCancel={handleCancelAdd}
-                            cancelText="Yopish"
-                            okButtonProps={{ style: { display: "none" } }}
-                          >
-                            <div
-                              style={{
-                                maxWidth: "800px",
-                                width: "100%",
-                              }}
-                            >
+                <div className="row">
+                  <div className="col-12">
+                    <h2 className="text-[18px] pl-3.5 py-3 font-bold">
+                      {" "}
+                      Mahsulot galleriyasi
+                    </h2>
+                    <div
+                      style={{
+                        display: "flex ",
+                        justifyContent: "space-between",
+                        padding: "15px 5px",
+                      }}
+                      className="px-3"
+                    >
+                      <div
+                        className="flex gap-3 flex-wrap"
+                        style={{ minWidth: "490px" }}
+                      >
+                        {addHandleImageData?.map((item, i) => {
+                          return (
+                            <>
                               <div
+                                key={item.id}
+                                onClick={() =>
+                                  item.image
+                                    ? showModalAdd(item?.image, item.id)
+                                    : console.log("rasm yoq")
+                                }
                                 style={{
-                                  width: "100%",
+                                  maxWidth: "150px",
+                                  width: "150px",
                                   backgroundImage: `url(${
-                                    addImageLink?.image
-                                      ? addImageLink?.image
-                                      : ""
+                                    item?.image ? item?.image : ""
                                   })`,
                                   backgroundSize: "cover",
-                                  minHeight: "400px",
-                                  height: "100%",
-                                  borderRadius: "5px",
-                                }}
-                              ></div>
-                              <div
-                                style={{
-                                  width: "100%",
+                                  height: "155px",
                                   display: "flex",
-                                  justifyContent: "end",
-                                  gap: "10px",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  border: "1px solid #ccc",
+                                  borderRadius: "5px",
+                                  position: "relative",
                                 }}
                               >
-                                <div
-                                  onClick={() =>
-                                    handleDeleteImageAddApi(addImageLink?.id)
-                                  }
-                                  className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
-                                >
-                                  O'chirish
-                                </div>
-                                <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
-                                  Qo'shish
+                                {item.image ? (
+                                  ""
+                                ) : (
+                                  <i
+                                    className="fa-regular fa-image"
+                                    style={{ fontSize: "35px" }}
+                                  ></i>
+                                )}
+                                {item?.image ? (
+                                  " "
+                                ) : (
                                   <input
                                     style={{
-                                      display: "none",
+                                      opacity: "0",
+                                      position: "absolute",
+                                      top: "0",
+                                      left: "0",
+                                      bottom: "0",
+                                      right: "0",
                                     }}
                                     onChange={(e) =>
                                       setImageUrlAdd(
                                         e?.target?.files[0],
-                                        addImageLink?.id
+                                        item?.id
                                       )
                                     }
                                     type="file"
                                   />
-                                </label>
+                                )}
                               </div>
-                            </div>
-                          </Modal>
-                        </>
-                      );
-                    })}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <Fab
-                      onClick={() =>
-                        addImageInput(addHandleImageData.length + 1)
-                      }
-                      color="primary"
-                      aria-label="add"
-                    >
-                      <AddIcon />
-                    </Fab>
+
+                              <Modal
+                                title="Mahsulot Galleriyasi"
+                                open={isModalOpenAdd}
+                                // onOk={handleOk}
+                                onCancel={handleCancelAdd}
+                                cancelText="Yopish"
+                                okButtonProps={{ style: { display: "none" } }}
+                              >
+                                <div
+                                  style={{
+                                    maxWidth: "800px",
+                                    width: "100%",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      width: "100%",
+                                      backgroundImage: `url(${
+                                        addImageLink?.image
+                                          ? addImageLink?.image
+                                          : ""
+                                      })`,
+                                      backgroundSize: "cover",
+                                      minHeight: "400px",
+                                      height: "100%",
+                                      borderRadius: "5px",
+                                    }}
+                                  ></div>
+                                  <div
+                                    style={{
+                                      width: "100%",
+                                      display: "flex",
+                                      justifyContent: "end",
+                                      gap: "10px",
+                                    }}
+                                  >
+                                    <div
+                                      onClick={() =>
+                                        handleDeleteImageAddApi(
+                                          addImageLink?.id
+                                        )
+                                      }
+                                      className=" cursor-pointer py-1.5 px-2 bg-red-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                    >
+                                      O'chirish
+                                    </div>
+                                    <label className=" cursor-pointer py-1.5 px-2 bg-green-500 mt-2 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75">
+                                      Qo'shish
+                                      <input
+                                        style={{
+                                          display: "none",
+                                        }}
+                                        onChange={(e) =>
+                                          setImageUrlAdd(
+                                            e?.target?.files[0],
+                                            addImageLink?.id
+                                          )
+                                        }
+                                        type="file"
+                                      />
+                                    </label>
+                                  </div>
+                                </div>
+                              </Modal>
+                            </>
+                          );
+                        })}
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Fab
+                          onClick={() =>
+                            addImageInput(addHandleImageData.length + 1)
+                          }
+                          color="primary"
+                          aria-label="add"
+                        >
+                          <AddIcon />
+                        </Fab>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

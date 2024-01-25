@@ -95,7 +95,7 @@ export default function Dashboard() {
           <div class="card info-card customers-card2">
             <div class="card-body">
               <h5 class="card-title">
-                Soni <span>| Jami mahsulotlar</span>
+                Soni <span>| Sotilgan mahsulotlar</span>
               </h5>
 
               <div class="d-flex align-items-center">
