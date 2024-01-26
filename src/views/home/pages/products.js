@@ -117,9 +117,12 @@ export default function EnhancedTable() {
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [category, setCategory] = useState(null);
-  const [categoryValue, setCategoryValue] = useState(null);
+  const [categoryValue, setCategoryValue] = useState('');
   const [SaleValue, setSaleValue] = useState(null);
+  const [BranchValue, setBranchValue] = useState('');
   const [errorData, setErrorData] = useState("");
+  const [branchList, setBranchList] = useState(null);
+  const [quantity, setQuantity] = useState("");
   const [sale_product, setSale_product] = useState([
     {
       id: 1,
@@ -171,6 +174,15 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
+  const getBranchList = async () => {
+    await Client.get(`${API_ENDPOINTS.GET_BRANCHS}`)
+      .then((resp) => {
+        console.log('branch', resp.results);
+        setBranchList(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const Search = async (e) => {
     await Client.get(`${API_ENDPOINTS.PRODUCT}?type=${type}&search=${e}`)
       .then((resp) => {
@@ -206,7 +218,7 @@ export default function EnhancedTable() {
   const handleChangeCategory = async (event) => {
     setCategoryValue(event.target.value);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&product_categories__category_id=${event.target.value}`
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&product_categories__category_id=${event.target.value}&product_count_branch__branch=${BranchValue}&product_count_branch__quantity=${quantity}&on_sale=${SaleValue}`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -214,10 +226,26 @@ export default function EnhancedTable() {
       })
       .catch((err) => console.log(err));
   };
+
   const handleChangeSale = async (event) => {
+    if (event.target.value === "tugagan") {
+      setQuantity(0)
+    }
     setSaleValue(event.target.value);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&on_sale=${event.target.value}`
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&on_sale=${event.target.value === "tugagan" ? '' : event.target.value}&product_count_branch__quantity=${event.target.value === "tugagan" ? 0 : ''}&product_count_branch__branch=${BranchValue}`
+    )
+      .then((resp) => {
+        setCount(resp.results);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleChangeBranch = async (event) => {
+    setBranchValue(event.target.value);
+    await Client.get(
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&on_sale=${SaleValue}&product_count_branch__branch=${event.target.value}&product_count_branch__quantity=${quantity}&product_categories__category_id=${categoryValue}`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -229,8 +257,10 @@ export default function EnhancedTable() {
   useEffect(() => {
     getProductData();
     getCategory();
+    getBranchList()
     // eslint-disable-next-line
   }, []);
+  
   return (
     <div className="px-2 py-3">
       <div>
@@ -325,6 +355,35 @@ export default function EnhancedTable() {
               ))}
           </Select>
         </FormControl>
+
+        <FormControl
+          size="small"
+          className="w-1/3 "
+        >
+          <InputLabel id="demo-select-small-label" placholder="Filial bo'yicha">
+           Filial
+          </InputLabel>
+          <Select
+            className="py-0.5"
+            value={BranchValue}
+            label="Sotuv bo'yicha"
+            onChange={handleChangeBranch}
+          >
+            <MenuItem value={" "}>
+              <i className="fa-solid fa-minus"></i>{" "}
+            </MenuItem>
+            {
+              branchList?.map((item) => {
+                return  <MenuItem value={item.id} key={item.id} >
+                {item.name}
+              </MenuItem>
+              })
+            }
+            
+          </Select>
+        </FormControl>
+
+
        </div>
 
         <Paper sx={{ width: "100%", mb: 2 }}>
