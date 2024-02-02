@@ -24,7 +24,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="dashboard-container dashboard pt-4" style={{
+    <div className="dashboard-container dashboard pt-4 container" style={{
       backgroundColor:'#F1F4FA'
     }}>
       <div className="row px-3">
@@ -84,7 +84,6 @@ export default function Dashboard() {
                 <div class="ps-3">
                   <h6>{data?.total_for_last_month}</h6>
                   <span class="text-danger small pt-1 fw-bold">so'm</span>{" "}
-                  {/* <span class="text-muted small pt-2 ps-1">decrease</span> */}
                 </div>
               </div>
             </div>
@@ -105,7 +104,6 @@ export default function Dashboard() {
                 <div class="ps-3">
                   <h6>{data?.total_sold_products}</h6>
                   <span class="text-danger small pt-1 fw-bold">ta</span>{" "}
-                  {/* <span class="text-muted small pt-2 ps-1">decrease</span> */}
                 </div>
               </div>
             </div>
