@@ -112,14 +112,14 @@ export default function Dashboard() {
 
       </div>
 
-      {1 ? (
-        <>
+      {data ? (
+        <div className="pb-2">
         <div className="dashboard-main">
           <ChartComponent />
           <DashboardRight />
         </div>
         <DashboardProdctTable/>
-        </>
+        </div>
       ) : (
         <Box
           sx={{

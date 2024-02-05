@@ -41,6 +41,7 @@ export default function DashboardProdctTable() {
                   <th scope="col">Filial</th>
                   <th scope="col">To'lov</th>
                   <th scope="col">Narxi</th>
+                  <th scope="col">Sanasi</th>
                   <th scope="col">Status</th>
                 </tr>
               </thead>
@@ -55,12 +56,14 @@ export default function DashboardProdctTable() {
                       <a href="#">{el?.id}</a>
                     </th>
                     <td>{el?.branch?.name}</td>
+                    
                     <td>
                       <span class="text-primary">
                         {el?.is_paid ? "To'langan" : "To'lanmagan"}
                       </span>
                     </td>
                     <td>{el?.total_amount} so'm</td>
+                    <td>{el?.created_at?.substring(0,10)}</td>
                     <td>
                       {el?.status === "cancelled" ? (
                         <span class="badge bg-danger">Bekor qilingan</span>
