@@ -12,6 +12,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 import SendAndArchiveIcon from '@mui/icons-material/SendAndArchive';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 export const navigationConfig = [
     {
@@ -28,6 +29,11 @@ export const navigationConfig = [
         name: 'Filiallar',
         path: '/branches',
         icon: <LocationOnIcon />,
+    },
+    {
+        name: 'Xodimlar',
+        path: '/employee',
+        icon: <GroupAddIcon />,
     },
     {
         name: 'Filiallardagi mahsulotlar',

@@ -473,6 +473,24 @@ html body #root .App{
     height: 100%;
 }
 
+.employee_form{
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.employee_form div p{
+    font-weight: 400;
+    font-size: 15px;
+    color: #000;
+}
+
 
 @media screen and (min-width:1036px) and (max-width:1330px) {
     .dashboard .info-card{
