@@ -1,31 +1,35 @@
 import NavHeader from "components/shared/NavHeader";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Space, Table, Tag } from "antd";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import IconButton from "@mui/material/IconButton";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import { Link } from "react-router-dom";
+import Client from "service/Client";
+import { API_ENDPOINTS } from "service/ApiEndpoints";
 
 function Employee() {
+  const [data, setData] = useState(null);
+  // const [count, setCount] = useState(null)
   const columns = [
     {
-      title: "Ism familiya",
-      dataIndex: "name",
+      title: "Ism",
+      dataIndex: "first_name",
       key: "name",
-      render: (text) => <a>{text}</a>,
+      render: (first_name) => <a>{first_name}</a>,
     },
     {
       title: "Nomer",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "phone",
+      key: "phone",
     },
     {
       title: "Tahrirlash",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
+      key: "id",
+      dataIndex: "id",
+      render: (id) => (
         <>
-          <Link to={"actions/"}>
+          <Link to={`actions/${id}`}>
             <IconButton color="primary">
               <DriveFileRenameOutlineOutlinedIcon />
             </IconButton>
@@ -35,16 +39,15 @@ function Employee() {
     },
     {
       title: "O'chirish",
-      key: "tags",
-      dataIndex: "tags",
-      render: (_, { tags }) => (
+      key: "id",
+      dataIndex: "id",
+      render: (id) => (
         <>
           <IconButton
             color="error"
-            // onClick={() => {
-            //   setDeleteId();
-            //   setOpen(true);
-            // }}
+            onClick={() => {
+              deleteImployee(id);
+            }}
             aria-label="delete"
           >
             <DeleteSharpIcon />
@@ -53,29 +56,30 @@ function Employee() {
       ),
     },
   ];
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-  ];
+
+  const deleteImployee = async (id) => {
+    const data = { id: id };
+    await Client.delete(API_ENDPOINTS.DETAIL_EMPLOYEE + `${id}/`, data)
+      .then((resp) => {
+        getOrders();
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  async function getOrders() {
+    await Client.get(API_ENDPOINTS.EMPLOYEE)
+      .then((resp) => {
+        setData(resp.results);
+        // setCount(resp.count);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    getOrders();
+  }, []);
+
   return (
     <div className="px-2 py-3">
       <NavHeader title="Xodimlar" />
@@ -86,4 +90,4 @@ function Employee() {
   );
 }
 
-export default Employee
+export default Employee;

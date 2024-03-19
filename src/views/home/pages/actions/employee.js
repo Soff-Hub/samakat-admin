@@ -1,30 +1,89 @@
 import { Button } from "@mui/material";
 import { Input } from "antd";
 import { useForm, Controller } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
 import { useState } from "react";
+import Client from "service/Client";
+import toast, { Toaster } from "react-hot-toast";
+import { API_ENDPOINTS } from "service/ApiEndpoints";
+import { useEffect } from "react";
 
 function Employee() {
   const [submit, setSubmit] = useState(false);
-  const { control, handleSubmit } = useForm({
+  const query = useParams();
+  const navigate = useNavigate();
+  const { reset, control, handleSubmit, setValue } = useForm({
     defaultValues: {
-      name: "",
-      nomer: "",
+      first_name: "",
+      phone: "",
+      password_info: "",
     },
   });
-  const onSubmit = (data) => {
-    setSubmit(true);
 
-    console.log(data);
+  const onSubmit = async (data) => {
+    setSubmit(true);
+    await Client.post(API_ENDPOINTS.CREATE_EMPLOYEE, data)
+      .then((data) => {
+        toast.success("Xodim muvaffaqiyatli qo'shildi");
+        reset(data);
+        setTimeout(() => {
+          navigate("/employee");
+        }, 300);
+        setSubmit(false);
+      })
+      .catch((err) => {
+        if (err?.response?.data?.msg) {
+          toast.error(err?.response?.data?.msg);
+        } else {
+          toast.error("Xatolik! Qayta urinib ko'ring");
+        }
+        setSubmit(false);
+      });
   };
+
+  const employeeDetail = async (id) => {
+    await Client.get(API_ENDPOINTS.DETAIL_EMPLOYEE + `${id}/`)
+      .then((data) => {
+        Object.keys(data).map((key) => setValue(key, data[key]));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const onUpdate = async (data) => {
+    setSubmit(true);
+    await Client.patch(API_ENDPOINTS.DETAIL_EMPLOYEE + `${query["*"]}/`, data)
+      .then((data) => {
+        toast.success("Xodim muvaffaqiyatli yangilandi");
+        reset(data);
+        setSubmit(false);
+        setTimeout(() => {
+          navigate("/employee");
+        }, 300);
+      })
+      .catch((err) => {
+        if (err?.response?.data?.msg) {
+          toast.error(err?.response?.data?.msg);
+        } else {
+          toast.error("Xatolik! Qayta urinib ko'ring");
+        }
+        setSubmit(false);
+      });
+  };
+
+  useEffect(() => {
+    employeeDetail(query["*"]);
+  }, [query["*"]]);
 
   return (
     <div className="py-3 px-2">
+      <Toaster />
       <div className="flex items-center justify-between">
         <h1 className="text-[35px] pb-3">Xodim qo'shish</h1>
-        <Link to="/branches">
+        <Link to="/employee">
           <Button
             variant="contained"
             color="info"
@@ -35,24 +94,36 @@ function Employee() {
           </Button>
         </Link>
       </div>
-      {true ? (
+      {!query["*"] ? (
         <form className="employee_form" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <p>Ism familiya</p>
+            <p>Ism</p>
             <Controller
-              name="name"
+              name="first_name"
               control={control}
               render={({ field }) => (
-                <Input {...field} placeholder="Ism familiya" />
+                <Input {...field} placeholder="Ism" required />
               )}
             />
           </div>
           <div>
             <p>Nomer</p>
             <Controller
-              name="nomer"
+              name="phone"
               control={control}
-              render={({ field }) => <Input {...field} placeholder="Nomer" />}
+              render={({ field }) => (
+                <Input {...field} placeholder="Nomer" required />
+              )}
+            />
+          </div>
+          <div>
+            <p>Parol</p>
+            <Controller
+              name="password_info"
+              control={control}
+              render={({ field }) => (
+                <Input {...field} placeholder="Parol" required />
+              )}
             />
           </div>
 
@@ -71,23 +142,33 @@ function Employee() {
           </div>
         </form>
       ) : (
-        <form className="employee_form" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          id="create-form"
+          className="employee_form"
+          onSubmit={handleSubmit(onUpdate)}
+        >
           <div>
-            <p>Ism familiya Tah</p>
+            <p>Ism</p>
             <Controller
-              name="name"
+              name="first_name"
               control={control}
-              render={({ field }) => (
-                <Input {...field} placeholder="Ism familiya" />
-              )}
+              render={({ field }) => <Input {...field} placeholder="Ism" />}
             />
           </div>
           <div>
             <p>Nomer</p>
             <Controller
-              name="nomer"
+              name="phone"
               control={control}
               render={({ field }) => <Input {...field} placeholder="Nomer" />}
+            />
+          </div>
+          <div>
+            <p>Parol</p>
+            <Controller
+              name="password_info"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Parol" />}
             />
           </div>
 
@@ -101,7 +182,7 @@ function Employee() {
               startIcon={<SaveIcon />}
               disabled={submit}
             >
-              {submit ? "Qo'shilmoqda" : "Qo'shish"}
+              {submit ? "Saqlanmoqda" : "Saqlash"}
             </Button>
           </div>
         </form>

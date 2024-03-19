@@ -101,7 +101,7 @@ export default function Settings() {
           </Button>
         </div>
         <Modal
-          title="Yetkazib berish vaqtini tahrirlash"
+          title="Tahrirlash"
           open={isModalOpen}
           onOk={() => handleOk(data?.id)}
           onCancel={handleCancel}

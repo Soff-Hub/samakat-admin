@@ -72,4 +72,9 @@ export const API_ENDPOINTS = {
     PROCESS:'admin/process/order/',
 
     ARCHIVE: 'admin/archive/order/',
+
+    EMPLOYEE: 'admin/employees/',
+    CREATE_EMPLOYEE: 'admin/employees/create/',
+    DETAIL_EMPLOYEE: 'admin/employees/',
+
 }

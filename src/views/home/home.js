@@ -15,7 +15,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { navigationConfig } from "configs/navigationConfig";
+import {
+  navigationConfig,
+  navigationConfigEmployee,
+} from "configs/navigationConfig";
 import {
   Link,
   Route,
@@ -24,13 +27,16 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useEffect } from "react";
-import { adminActionRoutes } from "configs/routes.config/routes";
+import {
+  adminActionRoutes,
+  employeActionRoutes,
+} from "configs/routes.config/routes";
 import AppRoute from "components/route/AppRoute";
 import UserDropdown from "components/shared/UserDropdown";
 import { Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "store/slice";
-import Logo from '../../assets/images/logo-white.png'
+import Logo from "../../assets/images/logo-white.png";
 
 const drawerWidth = 300;
 
@@ -104,7 +110,7 @@ export default function MiniDrawer() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { currentPage } = useSelector((state) => state.admin);
+  const { currentPage, role, isLoginning } = useSelector((state) => state.admin);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -115,21 +121,37 @@ export default function MiniDrawer() {
   };
 
   const currentPageConverter = (page) => {
-    const current = navigationConfig.find(
-      (el) => el.path.split("/")[1] === page.split("/")[1]
-    );
-    dispatch(setCurrentPage(current?.name || "Dashboard"));
+    if (role === 'superadmin') {
+      const current = navigationConfig.find(
+        (el) => el.path.split("/")[1] === page.split("/")[1]
+      );
+      dispatch(setCurrentPage(current?.name || "Dashboard"));
+    }else{
+      const current = navigationConfigEmployee.find(
+        (el) => el.path.split("/")[1] === page.split("/")[1]
+      );
+      dispatch(setCurrentPage(current?.name || "Buyurtmalar"));
+    }
   };
 
+
   useEffect(() => {
-    if (location.pathname === "/") {
-      navigate("/dashboard");
+    if (role === "superadmin") {
+      if (location.pathname === "/") {
+        navigate("/dashboard");
+      }
+    }else if (role === "employee"){
+      if (location.pathname === "/") {
+        navigate("/orders");
+      }
     }
 
     currentPageConverter(location.pathname);
+    console.log('location.pathname', location.pathname);
+    
 
     // eslint-disable-next-line
-  }, [location.pathname, navigationConfig]);
+  }, [location.pathname, navigationConfig, role, isLoginning]);
 
   return (
     <Box sx={{ display: "flex", minWidth: 650 }}>
@@ -156,65 +178,116 @@ export default function MiniDrawer() {
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <img style={{width:'80%'}} src={Logo} alt="aloqand" />
+          <img style={{ width: "80%" }} src={Logo} alt="aloqand" />
           <IconButton onClick={handleDrawerClose}>
             <MenuOpenIcon />
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
-          {navigationConfig?.map((item, index) => (
-            <ListItem
-              key={index}
-              disablePadding
-              sx={{ display: "block" }}
-              className={
-                item.name === currentPage ? "bg-blue-500 text-white" : ""
-              }
-            >
-              <Link to={item.path}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
+          {role === "superadmin"
+            ? navigationConfig?.map((item, index) => (
+                <ListItem
+                  key={index}
+                  disablePadding
+                  sx={{ display: "block" }}
+                  className={
+                    item.name === currentPage ? "bg-blue-500 text-white" : ""
+                  }
                 >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 1 : "auto",
-                      justifyContent: "center",
-                      color: item.name === currentPage ? "#fff" : "",
-                    }}
-                  >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.name}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </Link>
-              <Divider />
-            </ListItem>
-          ))}
+                  <Link to={item.path}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 1 : "auto",
+                          justifyContent: "center",
+                          color: item.name === currentPage ? "#fff" : "",
+                        }}
+                      >
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={item.name}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                  <Divider />
+                </ListItem>
+              ))
+            : navigationConfigEmployee?.map((item, index) => (
+                <ListItem
+                  key={index}
+                  disablePadding
+                  sx={{ display: "block" }}
+                  className={
+                    item.name === currentPage ? "bg-blue-500 text-white" : ""
+                  }
+                >
+                  <Link to={item.path}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 1 : "auto",
+                          justifyContent: "center",
+                          color: item.name === currentPage ? "#fff" : "",
+                        }}
+                      >
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={item.name}
+                        sx={{ opacity: open ? 1 : 0 }}
+                      />
+                    </ListItemButton>
+                  </Link>
+                  <Divider />
+                </ListItem>
+              ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 2, p: 0 }} style={{backgroundColor:'#F2F5FB', height:'100%'}} >
+      <Box
+        component="main"
+        sx={{ flexGrow: 2, p: 0 }}
+        style={{ backgroundColor: "#F2F5FB", height: "100%" }}
+      >
         <DrawerHeader />
         <div>
           <Suspense>
             <Routes>
-              {adminActionRoutes.map((route, index) => {
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={<AppRoute component={route.component} />}
-                  />
-                );
-              })}
+              {role === "superadmin"
+                ? adminActionRoutes.map((route, index) => {
+                    return (
+                      <Route
+                        key={index}
+                        path={route.path}
+                        element={<AppRoute component={route.component} />}
+                      />
+                    );
+                  })
+                : employeActionRoutes.map((route, index) => {
+                    return (
+                      <Route
+                        key={index}
+                        path={route.path}
+                        element={<AppRoute component={route.component} />}
+                      />
+                    );
+                  })}
             </Routes>
           </Suspense>
         </div>
