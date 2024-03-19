@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Select } from "antd";
-import { Radio } from "antd";
 
 const ChartComponent = () => {
   const [options, setOptions] = useState({});
@@ -12,65 +11,7 @@ const ChartComponent = () => {
   const [year, setYear] = useState(null);
   const [value, setValue] = useState("daromad");
 
-  const onChange = async (e) => {
-    setValue(e.target.value);
 
-    await Client.get(`${API_ENDPOINTS.MOTHLY_STATISTIC}`)
-      .then((res) => {
-        if (e.target.value === "daromad") {
-          setSeries([
-            {
-              name: "Daromad",
-              data: res?.map((el) => el.monthly_amount),
-            },
-          ]);
-        } else if (e.target.value === "soni") {
-          setSeries([
-            {
-              name: "Sotilgan mahsulot",
-              data: res?.map((el) => JSON.parse(el.products_count)),
-            },
-          ]);
-        }
-
-        setOptions({
-          chart: {
-            type: 'area',
-            toolbar: {
-              show: false
-            },
-          },
-          xaxis: {
-            categories: res?.map((el) => el.month),
-          },
-          scales: {
-            y: {
-              beginAtZero: false,
-            },
-          },
-          markers: {
-            size: 4,
-          },
-          colors: ["#4154f1", "#2eca6a", "#ff771d"],
-          fill: {
-            type: "gradient",
-            gradient: {
-              shadeIntensity: 1,
-              opacityFrom: 0.3,
-              opacityTo: 0.4,
-              stops: [0, 90, 100]
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   const getYear = async () => {
     await Client.get(API_ENDPOINTS.YEAR)
