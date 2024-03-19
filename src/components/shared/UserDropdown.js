@@ -40,7 +40,6 @@ export default function UserDropdown() {
         // eslint-disable-next-line
     }, [user])
     
-console.log('user', user);
 
     return (
         <div className='ms-auto'>

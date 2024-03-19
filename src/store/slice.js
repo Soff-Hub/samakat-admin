@@ -14,7 +14,6 @@ const slice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
-      console.log("state", state);
       state.token = action.payload?.token.access;
 
       localStorage.setItem("admin", action.payload?.token.access);
@@ -23,8 +22,10 @@ const slice = createSlice({
       state.isLoginning = true;
 
       if (action.payload?.role === "employee") {
+         // eslint-disable-next-line
         location.replace("orders");
       } else if (action.payload?.role === "superadmin") {
+         // eslint-disable-next-line
         location.replace("dashboard");
       }
     },
@@ -43,6 +44,7 @@ const slice = createSlice({
     },
   },
 });
+
 
 export const { loginSuccess, logoutSuccess, setUser, setCurrentPage } =
   slice.actions;
