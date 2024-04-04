@@ -78,7 +78,6 @@ export default function Adresses() {
   const getData = async (id) => {
     await Client.get(`${API_ENDPOINTS.ADDRESS_DETAIL}${id}/`)
       .then((res) => {
-        console.log(res);
         setData(res);
         setPosition({
           lat: Number(res.address.latitude),

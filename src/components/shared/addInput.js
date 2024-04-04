@@ -17,7 +17,7 @@ export default function AddInput({
   setChangeBranchCunt,
   change,
 }) {
-  console.log("dataF", dataF);
+  // console.log("dataF", dataF);
   const [obj, setObj] = useState({ branch: "", quantity: "", id });
   const [select, setSelect] = useState([]);
 
@@ -67,7 +67,7 @@ export default function AddInput({
           backgroundColor="#ffffff"
           size="small"
           type="number"
-          value={dataF?.branch ? dataF?.quantity : ""}
+          value={dataF?.quantity ? dataF?.quantity : ""}
           onChange={(e) => {
             changeObj(e.target.value, "quantity");
           }}

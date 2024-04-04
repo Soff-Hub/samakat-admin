@@ -17,8 +17,6 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
@@ -134,30 +132,14 @@ EnhancedTableToolbar.propTypes = {
 
 export default function EnhancedTable() {
   const [page, setPage] = React.useState(1);
-  const [type, setType] = React.useState("bistro");
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [active, setActive] = useState("");
 
-  const handleChange = async (e) => {
-    setPage(1);
-    setType(e.target.value);
-    await Client.get(
-      `${API_ENDPOINTS.RETCIPE}?page=${page}&type=${e.target.value}`
-    )
-      .then((resp) => {
-        console.log(resp);
-        setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-
   const getRetsipeData = async () => {
     setPage(1);
-    setType("bistro");
     await Client.get(`${API_ENDPOINTS.RETCIPE}?page=1&type=bistro`)
       .then((resp) => {
         setCount(resp.count);
@@ -168,7 +150,7 @@ export default function EnhancedTable() {
 
   const Search = async (e) => {
     await Client.get(
-      `${API_ENDPOINTS.RETCIPE}?search=${e}&type=${type}&is_active=${active}`
+      `${API_ENDPOINTS.RETCIPE}?search=${e}&is_active=${active}`
     )
       .then((resp) => {
         setCount(resp.count);
@@ -189,9 +171,8 @@ export default function EnhancedTable() {
 
   const handleChangePag = async (event, value) => {
     setPage(value);
-    await Client.get(`${API_ENDPOINTS.RETCIPE}?page=${value}&type=${type}`)
+    await Client.get(`${API_ENDPOINTS.RETCIPE}?page=${value}`)
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })
@@ -201,7 +182,7 @@ export default function EnhancedTable() {
   const handleChangeSelect = async (e) => {
     setActive(e);
     await Client.get(
-      `${API_ENDPOINTS.RETCIPE}?page=${page}&type=${type}&is_active=${e}`
+      `${API_ENDPOINTS.RETCIPE}?page=${page}&is_active=${e}`
     )
       .then((resp) => {
         setCount(resp.count);
@@ -221,20 +202,6 @@ export default function EnhancedTable() {
 
       {data?.length >= 0 ? (
         <Box sx={{ width: "100%" }} className="colorr p-2 pt-3">
-          <ToggleButtonGroup
-            color="primary"
-            value={type}
-            exclusive
-            onChange={handleChange}
-            className=" flex items-center w-full "
-          >
-            <ToggleButton className="w-full" value="bistro">
-              Bistro
-            </ToggleButton>
-            <ToggleButton className="w-full" value="byuti">
-              Byuti
-            </ToggleButton>
-          </ToggleButtonGroup>
           <input
             type="text"
             placeholder="Izlash"

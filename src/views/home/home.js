@@ -147,7 +147,6 @@ export default function MiniDrawer() {
     }
 
     currentPageConverter(location.pathname);
-    console.log('location.pathname', location.pathname);
     
 
     // eslint-disable-next-line

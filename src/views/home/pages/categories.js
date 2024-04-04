@@ -1,29 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import NavHeaderSelect from "components/shared/NavHeaderSelect";
 import { Row2 } from "components/shared/Row2";
 
 export default function Categories2() {
   const [data, setData] = useState(null);
   const [page, setPage] = React.useState(1);
-  const [type, setType] = useState("bistro");
-
-  const handleChange = async (e) => {
-    setType(e.target.value);
-    setPage(1);
-    await Client.get(
-      `${API_ENDPOINTS.CATEGORIES}?page=${page}&type=${e.target.value}&parent_is_null=true`
-    )
-      .then((resp) => {
-        console.log('first data => ', resp.results);
-        
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
 
   async function getCategories() {
     await Client.get(
@@ -36,7 +19,7 @@ export default function Categories2() {
   }
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.CATEGORIES}?type=${type}&search=${e}`)
+    await Client.get(`${API_ENDPOINTS.CATEGORIES}?search=${e}`)
       .then((resp) => {
         setData(resp.results);
       })
@@ -53,20 +36,6 @@ export default function Categories2() {
     <div className="px-2 py-3 bg--color">
       <NavHeaderSelect title="Kategoriyalar" />
       <div className="colorr my-2 px-2">
-      <ToggleButtonGroup
-        color="primary"
-        value={type}
-        exclusive
-        onChange={handleChange}
-        className="mt-2 flex items-center w-full colorr p-2"
-      >
-        <ToggleButton className="w-full" value="bistro">
-          Bistro
-        </ToggleButton>
-        <ToggleButton className="w-full" value="byuti">
-          Byuti
-        </ToggleButton>
-      </ToggleButtonGroup>
       <input
         type="text"
         placeholder="Izlash"

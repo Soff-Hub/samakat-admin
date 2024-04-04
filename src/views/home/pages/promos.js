@@ -102,7 +102,6 @@ export default function EnhancedTable() {
   const [deleteId, setDeleteId] = useState(null);
 
   const handleClick = (event, id) => {
-    console.log('ee', event, id);
     
   };
 
@@ -110,7 +109,6 @@ export default function EnhancedTable() {
     setPage(value);
     await Client.get(`${API_ENDPOINTS.ADDRESS}?page=${value}`)
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })
@@ -150,7 +148,6 @@ export default function EnhancedTable() {
   useEffect(() => {
     getData();
   }, []);
-console.log('promo', data);
   return (
     <>
       <div className="mb-5">

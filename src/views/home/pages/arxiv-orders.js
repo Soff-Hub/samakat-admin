@@ -45,7 +45,6 @@ export default function ArxivOrders() {
     setPage(value);
     await Client.get(`${API_ENDPOINTS.ARCHIVE}?page=${value}`)
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })
@@ -63,7 +62,6 @@ export default function ArxivOrders() {
     setStatus(e.target.value);
     await Client.get(`${API_ENDPOINTS.ARCHIVE}?status=${e.target.value}`)
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })

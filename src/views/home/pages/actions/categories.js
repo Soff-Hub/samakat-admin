@@ -8,7 +8,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Select, Space } from "antd";
 
-
 function Categories() {
   const [submiting, setSubmiting] = useState(false);
   const [formVal, setFormVal] = useState({
@@ -23,16 +22,14 @@ function Categories() {
   const [lifeImage, setLifeImage] = useState(null);
   const navigate = useNavigate();
   const loaction = useLocation();
-  const [product, setProduct] = useState([])
-  const [productApi, setProductApi] = useState(null)
-  const [defaultData, setDefaultData] = useState([])
+  const [product, setProduct] = useState([]);
+  const [productApi, setProductApi] = useState(null);
+  const [defaultData, setDefaultData] = useState([]);
 
   const handleChangeRelatedCategory = (event) => {
     setProduct(event);
-    console.log("=>",event);
   };
 
-  console.log("=> 0",product);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -93,11 +90,13 @@ function Categories() {
         setFormVal(resp);
         setItemData(resp);
         setLifeImage(resp.image);
-        setProduct(resp.products?.map((el) => el.id))
-        setDefaultData(resp.products?.map((el) => ({
-          value : el.id,
-          label:el.name
-        })))
+        setProduct(resp.products?.map((el) => el.id));
+        setDefaultData(
+          resp.products?.map((el) => ({
+            value: el.id,
+            label: el.name,
+          }))
+        );
       })
       .catch((err) => console.log(err));
   };
@@ -107,7 +106,6 @@ function Categories() {
       `${API_ENDPOINTS.CATEGORIES}detail/${loaction.search.split("?")[4]}/`
     )
       .then((resp) => {
-        console.log("detail", resp);
         setParentName(resp);
       })
       .catch((err) => console.log(err));
@@ -120,7 +118,7 @@ function Categories() {
     formData.append("name", formVal.name);
     formData.append("order", formVal.order);
     formData.append("type", formVal.type);
-    
+
     formData.append("products", JSON.stringify(product));
     if (img) {
       formData.append("image", img);
@@ -144,16 +142,18 @@ function Categories() {
 
   const getProduct = async () => {
     await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}`)
-    .then((res) => {
-      setProductApi(res?.map((el) => ({
-        value : el.id,
-        label:el.name
-      })))
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  }
+      .then((res) => {
+        setProductApi(
+          res?.map((el) => ({
+            value: el.id,
+            label: el.name,
+          }))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     if (loaction.search.split("?").length === 4) {
@@ -176,9 +176,8 @@ function Categories() {
   };
 
   useEffect(() => {
-    getProduct()
-  }, [])
-
+    getProduct();
+  }, []);
 
   return loaction.search.split("?").length === 4 ? (
     itemData ? (
@@ -234,33 +233,34 @@ function Categories() {
                 }}
                 type="number"
               />
-              {
-                !itemData.child_is_available ? 
+              {!itemData.child_is_available ? (
                 <Space
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                }}
-                direction="vertical"
-              >
-                <Select
-                  mode="multiple"
-                  allowClear
                   style={{
                     width: "100%",
+                    textAlign: "left",
                   }}
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  placeholder="Mahsulotlar"
-                  onChange={handleChangeRelatedCategory}
-                  defaultValue={defaultData}
-                  options={productApi}
-                />
-              </Space> : ''
-              }
+                  direction="vertical"
+                >
+                  <Select
+                    mode="multiple"
+                    allowClear
+                    style={{
+                      width: "100%",
+                    }}
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      (option?.label ?? "").includes(input)
+                    }
+                    placeholder="Mahsulotlar"
+                    onChange={handleChangeRelatedCategory}
+                    defaultValue={defaultData}
+                    options={productApi}
+                  />
+                </Space>
+              ) : (
+                ""
+              )}
 
               <div className="image-conatiner">
                 <div
@@ -276,7 +276,7 @@ function Categories() {
                     position: "relative",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
-                    backgroundSize:'contain',
+                    backgroundSize: "contain",
                   }}
                 >
                   {lifeImage ? (
@@ -376,35 +376,33 @@ function Categories() {
             type="number"
           />
 
-            
-          {
-             loaction.search.split("?").length === 5
-             ? 
-             <Space
-             style={{
-               width: "100%",
-               textAlign: "left",
-             }}
-             direction="vertical"
-           >
-             <Select
-               mode="multiple"
-               allowClear
-               style={{
-                 width: "100%",
-               }}
-               showSearch
-               optionFilterProp="children"
-               filterOption={(input, option) =>
-                 (option?.label ?? "").includes(input)
-               }
-               placeholder="Mahsulotlar"
-               onChange={handleChangeRelatedCategory}
-               options={productApi}
-             />
-           </Space>
-             : ""
-          }
+          {loaction.search.split("?").length === 5 ? (
+            <Space
+              style={{
+                width: "100%",
+                textAlign: "left",
+              }}
+              direction="vertical"
+            >
+              <Select
+                mode="multiple"
+                allowClear
+                style={{
+                  width: "100%",
+                }}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "").includes(input)
+                }
+                placeholder="Mahsulotlar"
+                onChange={handleChangeRelatedCategory}
+                options={productApi}
+              />
+            </Space>
+          ) : (
+            ""
+          )}
 
           <div className="image-conatiner">
             <div
@@ -421,7 +419,7 @@ function Categories() {
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 textAlign: "center",
-                backgroundSize:'contain'
+                backgroundSize: "contain",
               }}
             >
               {lifeImage ? (
@@ -453,7 +451,6 @@ function Categories() {
               Delete
             </Button>
           </div>
-
 
           <Button
             variant="outlined"

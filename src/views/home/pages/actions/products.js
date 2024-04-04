@@ -8,11 +8,6 @@ import Switch from "@mui/material/Switch";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddInput from "components/shared/addInput";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TextArea from "antd/es/input/TextArea";
@@ -31,6 +26,7 @@ export default function Products() {
   const location = useLocation();
   const [name, setName] = useState("");
   const [price, setPrice] = useState(null);
+  const [buyCost, setBuyCost] = useState("");
   const [description, setDescription] = useState("");
   const [discount, setDiscount] = useState(null);
   const [on_sale, setOn_sale] = React.useState(false);
@@ -145,10 +141,10 @@ export default function Products() {
 
   const deleteID = (i) => {
     setFilialInput(filialInput.filter((item) => item.id !== i));
-    console.log(" productga kelgan delete id == ", image);
+    // console.log(" productga kelgan delete id == ", image);
   };
 
-  console.log("filial input", filialInput);
+  // console.log("filial input", filialInput);
   const addFormInput = (value, id) => {
     setFilialInput([...filialInput, { id, ...value }]);
   };
@@ -166,14 +162,14 @@ export default function Products() {
     }
   };
 
-  const handleDeleteImageApiVariant = (id) => {
-    setIsModalOpen(false);
-    const data = imageData2.filter((el) => el.id !== id);
-    setImageData2(data);
-    if (imageData.find((el) => el.id !== id)) {
-      delID.push(id);
-    }
-  };
+  // const handleDeleteImageApiVariant = (id) => {
+  //   setIsModalOpen(false);
+  //   const data = imageData2.filter((el) => el.id !== id);
+  //   setImageData2(data);
+  //   if (imageData.find((el) => el.id !== id)) {
+  //     delID.push(id);
+  //   }
+  // };
 
   const setImageUrlUpdate = (url, id) => {
     // setIsModalOpen(false);
@@ -225,6 +221,7 @@ export default function Products() {
     );
     formData1.append("name", name);
     formData1.append("price", price);
+    formData1.append("original_price", buyCost);
     formData1.append("description", description);
     if (discount === "" || discount === null) {
       formData1.append("discount", 0);
@@ -369,7 +366,6 @@ export default function Products() {
 
     await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT}`, formData1)
       .then((data) => {
-        console.log("data", data);
         toast.success("Mahsulotdan muvaffaqiyatli variant yaratildi");
         navigate("/products");
         setSubmiting(false);
@@ -412,6 +408,7 @@ export default function Products() {
     );
     formData1.append("name", name);
     formData1.append("price", price);
+    formData1.append("original_price", buyCost);
     formData1.append("description", description);
     if (discount === "" || discount === null) {
       formData1.append("discount", 0);
@@ -465,7 +462,6 @@ export default function Products() {
       formData1
     )
       .then((data) => {
-        console.log(data);
         toast.success("Mahsulot muvaffaqiyatli saqlandi");
         navigate("/products");
         setSubmiting(false);
@@ -506,7 +502,6 @@ export default function Products() {
       API_ENDPOINTS.DETAIL_PRODUCT + location.search.split("?")[3]
     )
       .then((res) => {
-        // console.log("ress=>", res);
         setEditData(res);
         setImageData(
           res?.product_galereya?.map((el, i) => ({
@@ -552,6 +547,7 @@ export default function Products() {
         setDiscount(res?.discount);
         setDescription(res?.description);
         setPrice(JSON.parse(res?.price));
+        setBuyCost(JSON.parse(res?.original_price));
         setDiscount(res?.discount);
         setCarbohydrates(res?.product_attribute?.carbohydrates);
         setingredients(res?.product_attribute?.ingredients);
@@ -657,37 +653,76 @@ export default function Products() {
                     </Space>
                   </div>
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                    <span className="label--name font-bold">Narxi</span>
-                    <Input
-                      style={{
-                        height: "35px",
-                      }}
-                      placeholder="Narxi"
-                      type="number"
-                      value={price}
-                      className="py-2"
-                      onChange={(e) => {
-                        const inputValue = e.target.value;
-                        if (
-                          inputValue === "" ||
-                          (+inputValue <= 50000000 && +inputValue > 0)
-                        ) {
-                          if (
-                            inputValue.includes(",") ||
-                            inputValue.includes(".")
-                          ) {
-                            const sanitizedValue = e.target.value.replace(
-                              /[,\.]/g,
-                              ""
-                            );
-                            setPrice(sanitizedValue);
-                          } else {
-                            console.log("ishladi", inputValue);
-                            setPrice(inputValue);
-                          }
-                        }
-                      }}
-                    />
+                    <div class="row">
+                      <div className="col-6">
+                        <span className="label--name font-bold">
+                          Sotiladigan narx *
+                        </span>
+                        <Input
+                          style={{
+                            height: "35px",
+                          }}
+                          placeholder="Narxi"
+                          type="number"
+                          value={price}
+                          className="py-2"
+                          onChange={(e) => {
+                            const inputValue = e.target.value;
+                            if (
+                              inputValue === "" ||
+                              (+inputValue <= 50000000 && +inputValue > 0)
+                            ) {
+                              if (
+                                inputValue.includes(",") ||
+                                inputValue.includes(".")
+                              ) {
+                                const sanitizedValue = e.target.value.replace(
+                                  /[,\.]/g,
+                                  ""
+                                );
+                                setPrice(sanitizedValue);
+                              } else {
+                                setPrice(inputValue);
+                              }
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <span className="label--name font-bold">
+                          Sotib olingan narx *
+                        </span>
+                        <Input
+                          style={{
+                            height: "35px",
+                          }}
+                          placeholder="Narxi"
+                          type="number"
+                          value={buyCost}
+                          className="py-2"
+                          onChange={(e) => {
+                            const inputValue = e.target.value;
+                            if (
+                              inputValue === "" ||
+                              (+inputValue <= 50000000 && +inputValue > 0)
+                            ) {
+                              if (
+                                inputValue.includes(",") ||
+                                inputValue.includes(".")
+                              ) {
+                                const sanitizedValue = e.target.value.replace(
+                                  /[,\.]/g,
+                                  ""
+                                );
+                                setPrice(sanitizedValue);
+                              } else {
+                                setPrice(inputValue);
+                              }
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">
@@ -1485,37 +1520,77 @@ export default function Products() {
                     </Space>
                   </div>
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                    <span className="label--name font-bold">Narxi</span>
-                    <Input
-                      style={{
-                        height: "35px",
-                      }}
-                      placeholder="Narxi"
-                      type="number"
-                      value={price}
-                      className="py-2"
-                      onChange={(e) => {
-                        const inputValue = e.target.value;
-                        if (
-                          inputValue === "" ||
-                          (+inputValue <= 50000000 && +inputValue > 0)
-                        ) {
-                          if (
-                            inputValue.includes(",") ||
-                            inputValue.includes(".")
-                          ) {
-                            const sanitizedValue = e.target.value.replace(
-                              /[,\.]/g,
-                              ""
-                            );
-                            setPrice(sanitizedValue);
-                          } else {
-                            console.log("ishladi", inputValue);
-                            setPrice(inputValue);
-                          }
-                        }
-                      }}
-                    />
+                    <div className="row">
+                      <div className="col-6">
+                        <span className="label--name font-bold">
+                          Sotiladigan narx
+                        </span>
+                        <Input
+                          style={{
+                            height: "35px",
+                          }}
+                          placeholder="Narxi"
+                          type="number"
+                          value={price}
+                          className="py-2"
+                          onChange={(e) => {
+                            const inputValue = e.target.value;
+                            if (
+                              inputValue === "" ||
+                              (+inputValue <= 50000000 && +inputValue > 0)
+                            ) {
+                              if (
+                                inputValue.includes(",") ||
+                                inputValue.includes(".")
+                              ) {
+                                const sanitizedValue = e.target.value.replace(
+                                  /[,\.]/g,
+                                  ""
+                                );
+                                setPrice(sanitizedValue);
+                              } else {
+                                setPrice(inputValue);
+                              }
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <span className="label--name font-bold">
+                          Sotib olingan narx
+                        </span>
+                        <Input
+                          style={{
+                            height: "35px",
+                          }}
+                          placeholder="Narxi"
+                          type="number"
+                          value={buyCost}
+                          className="py-2"
+                          onChange={(e) => {
+                            const inputValue = e.target.value;
+                            if (
+                              inputValue === "" ||
+                              (+inputValue <= 50000000 && +inputValue > 0)
+                            ) {
+                              if (
+                                inputValue.includes(",") ||
+                                inputValue.includes(".")
+                              ) {
+                                const sanitizedValue = e.target.value.replace(
+                                  /[,\.]/g,
+                                  ""
+                                );
+                                setBuyCost(sanitizedValue);
+                              } else {
+                                console.log("ishladi", inputValue);
+                                setBuyCost(inputValue);
+                              }
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">
@@ -2311,40 +2386,82 @@ export default function Products() {
               </div>
               <div className="row py-3">
                 <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                  <span className="label--name font-bold">Narxi *</span>
-                  <Input
-                    placeholder="Narxi *"
-                    type="number"
-                    maxLength="16"
-                    value={price}
-                    className="py-2"
-                    style={{
-                      height: "35px",
-                    }}
-                    required
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      console.log("value => ", inputValue);
-                      if (
-                        inputValue === "" ||
-                        (parseInt(inputValue) <= 50000000 &&
-                          parseInt(inputValue) > 0)
-                      ) {
-                        if (
-                          inputValue.includes(",") ||
-                          inputValue.includes(".")
-                        ) {
-                          const sanitizedValue = e.target.value.replace(
-                            /[,\.]/g,
-                            ""
-                          );
-                          setPrice(sanitizedValue);
-                        } else {
-                          setPrice(inputValue);
-                        }
-                      }
-                    }}
-                  />
+                  <div class="row">
+                    <div className="col-6">
+                      <span className="label--name font-bold">
+                        Sotiladigan narx *
+                      </span>
+                      <Input
+                        placeholder="Sotiladigan narx *"
+                        type="number"
+                        maxLength="16"
+                        value={price}
+                        className="py-2"
+                        style={{
+                          height: "35px",
+                        }}
+                        required
+                        onChange={(e) => {
+                          const inputValue = e.target.value;
+                          if (
+                            inputValue === "" ||
+                            (parseInt(inputValue) <= 50000000 &&
+                              parseInt(inputValue) > 0)
+                          ) {
+                            if (
+                              inputValue.includes(",") ||
+                              inputValue.includes(".")
+                            ) {
+                              const sanitizedValue = e.target.value.replace(
+                                /[,\.]/g,
+                                ""
+                              );
+                              setPrice(sanitizedValue);
+                            } else {
+                              setPrice(inputValue);
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="col-6">
+                      <span className="label--name font-bold">
+                        Sotib olingan narx *
+                      </span>
+                      <Input
+                        placeholder="Olingan narx *"
+                        type="number"
+                        maxLength="16"
+                        value={buyCost}
+                        className="py-2"
+                        style={{
+                          height: "35px",
+                        }}
+                        required
+                        onChange={(e) => {
+                          const inputValue = e.target.value;
+                          if (
+                            inputValue === "" ||
+                            (parseInt(inputValue) <= 50000000 &&
+                              parseInt(inputValue) > 0)
+                          ) {
+                            if (
+                              inputValue.includes(",") ||
+                              inputValue.includes(".")
+                            ) {
+                              const sanitizedValue = e.target.value.replace(
+                                /[,\.]/g,
+                                ""
+                              );
+                              setBuyCost(sanitizedValue);
+                            } else {
+                              setBuyCost(inputValue);
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">

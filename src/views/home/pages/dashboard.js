@@ -24,9 +24,12 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="dashboard-container dashboard pt-4 container" style={{
-      backgroundColor:'#F1F4FA'
-    }}>
+    <div
+      className="dashboard-container dashboard pt-4 container"
+      style={{
+        backgroundColor: "#F1F4FA",
+      }}
+    >
       <div className="row px-3">
         <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
           <div class="card info-card sales-card">
@@ -37,7 +40,7 @@ export default function Dashboard() {
 
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-cart"></i>
+                  <i class="fa-solid fa-chart-line"></i>
                 </div>
                 <div class="ps-3">
                   <h6>{data?.todays_amount}</h6>
@@ -53,7 +56,7 @@ export default function Dashboard() {
           <div class="card info-card revenue-card">
             <div class="card-body">
               <h5 class="card-title">
-                Daromad <span>| Jami</span>
+                Soff foyda <span>| Bugungi</span>
               </h5>
 
               <div class="d-flex align-items-center">
@@ -79,7 +82,7 @@ export default function Dashboard() {
 
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-cash-coin"></i>
+                  <i class="bi bi-cash-coin"></i>
                 </div>
                 <div class="ps-3">
                   <h6>{data?.total_for_last_month}</h6>
@@ -94,31 +97,30 @@ export default function Dashboard() {
           <div class="card info-card customers-card2">
             <div class="card-body">
               <h5 class="card-title">
-                Soni <span>| Sotilgan mahsulotlar</span>
+                Soff foyda <span>| Oxirgi 30 kunlik</span>
               </h5>
 
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-bar-chart-fill"></i>
+                  <i class="fa-solid fa-money-bill-trend-up"></i>
                 </div>
                 <div class="ps-3">
                   <h6>{data?.total_sold_products}</h6>
-                  <span class="text-danger small pt-1 fw-bold">ta</span>{" "}
+                  <span class="text-danger small pt-1 fw-bold">so'm</span>{" "}
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
 
       {data ? (
         <div className="pb-2">
-        <div className="dashboard-main">
-          <ChartComponent />
-          <DashboardRight />
-        </div>
-        <DashboardProdctTable/>
+          <div className="dashboard-main">
+            <ChartComponent />
+            <DashboardRight />
+          </div>
+          <DashboardProdctTable />
         </div>
       ) : (
         <Box

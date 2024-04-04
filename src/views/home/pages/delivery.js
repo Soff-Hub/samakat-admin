@@ -54,7 +54,6 @@ export default function Delivery() {
       };
       await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
         .then((resp) => {
-          console.log(resp);
           getOrders();
           message.open({
             type: "success",
@@ -83,7 +82,6 @@ export default function Delivery() {
       };
       await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
         .then((resp) => {
-          console.log(resp);
           getOrders();
           message.open({
             type: "success",

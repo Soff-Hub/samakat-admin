@@ -309,6 +309,9 @@
 }
 
 .card {
+    max-width: 100%;
+    width: 100%;
+    min-height: 185px;
     margin-bottom: 30px;
     border: none;
     border-radius: 5px;
@@ -428,8 +431,8 @@
 }
 
 .dashboard .customers-card2 .card-icon {
-    color: yellow;
-    background: rgb(248, 248, 221);
+    color: aqua;
+    background: rgb(217 248 250);
 }
 
 .colorr {

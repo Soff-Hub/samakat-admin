@@ -100,8 +100,6 @@ export default function Retsepts() {
       API_ENDPOINTS.DETAIL_PRODUCT_COUNT_BRANCH + location.search.split("?")[2]
     )
       .then((res) => {
-        console.log("res", res);
-
         setEditData(res);
       })
       .catch((err) => {
@@ -166,11 +164,9 @@ export default function Retsepts() {
     setError(false);
   };
 
-  console.log("product", location.search.split("?")[1]);
-
   return location.search.split("?")[1] === "edit" ? (
     editData ? (
-      <div className="p-3" >
+      <div className="p-3">
         <div className="flex items-center justify-between">
           <h1 className="text-[28px] pb-3">
             Filiallardagi mahsulotlarni tahrirlash

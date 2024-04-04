@@ -12,8 +12,6 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
@@ -110,16 +108,16 @@ EnhancedTableHead.propTypes = {
 
 export default function EnhancedTable() {
   const [page, setPage] = React.useState(1);
-  const [type, setType] = React.useState("bistro");
+  // const [type, setType] = React.useState("bistro");
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState("");
   const [constCount, setConstCount] = useState("");
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [category, setCategory] = useState(null);
-  const [categoryValue, setCategoryValue] = useState('');
+  const [categoryValue, setCategoryValue] = useState("");
   const [SaleValue, setSaleValue] = useState(null);
-  const [BranchValue, setBranchValue] = useState('');
+  const [BranchValue, setBranchValue] = useState("");
   const [errorData, setErrorData] = useState("");
   const [branchList, setBranchList] = useState(null);
   const [quantity, setQuantity] = useState("");
@@ -141,23 +139,8 @@ export default function EnhancedTable() {
     },
   ]);
 
-  const handleChange = async (e) => {
-    setType(e.target.value);
-    setPage(1);
-    await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${e.target.value}`
-    )
-      .then((resp) => {
-        setCount(resp.count);
-        setData(resp.results);
-        setConstCount(resp.count);
-      })
-      .catch((err) => console.log(err));
-  };
-
   const getProductData = async () => {
     setPage(1);
-    setType("bistro");
     await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}&type=bistro`)
       .then((resp) => {
         setCount(resp.count);
@@ -177,14 +160,13 @@ export default function EnhancedTable() {
   const getBranchList = async () => {
     await Client.get(`${API_ENDPOINTS.GET_BRANCHS}`)
       .then((resp) => {
-        console.log('branch', resp.results);
         setBranchList(resp.results);
       })
       .catch((err) => console.log(err));
   };
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT}?type=${type}&search=${e}`)
+    await Client.get(`${API_ENDPOINTS.PRODUCT}?search=${e}`)
       .then((resp) => {
         setCount(resp.count);
         setData(resp.results);
@@ -195,7 +177,6 @@ export default function EnhancedTable() {
   const handleDelete = async () => {
     await Client.delete(`${API_ENDPOINTS.DELETE_PRODUCT}${deleteId}/`)
       .then((resp) => {
-        console.log(resp);
         setOpen(false);
         getProductData();
       })
@@ -207,7 +188,7 @@ export default function EnhancedTable() {
 
   const handleChangePag = async (event, value) => {
     setPage(value);
-    await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${value}&type=${type}`)
+    await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${value}`)
       .then((resp) => {
         setCount(resp.count);
         setData(resp.results);
@@ -218,7 +199,7 @@ export default function EnhancedTable() {
   const handleChangeCategory = async (event) => {
     setCategoryValue(event.target.value);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&product_categories__category_id=${event.target.value}&product_count_branch__branch=${BranchValue}&product_count_branch__quantity=${quantity}&on_sale=${SaleValue}`
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&product_categories__category_id=${event.target.value}&product_count_branch__branch=${BranchValue}&product_count_branch__quantity=${quantity}&on_sale=${SaleValue}`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -229,11 +210,15 @@ export default function EnhancedTable() {
 
   const handleChangeSale = async (event) => {
     if (event.target.value === "tugagan") {
-      setQuantity(0)
+      setQuantity(0);
     }
     setSaleValue(event.target.value);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&on_sale=${event.target.value === "tugagan" ? '' : event.target.value}&product_count_branch__quantity=${event.target.value === "tugagan" ? 0 : ''}&product_count_branch__branch=${BranchValue}`
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&on_sale=${
+        event.target.value === "tugagan" ? "" : event.target.value
+      }&product_count_branch__quantity=${
+        event.target.value === "tugagan" ? 0 : ""
+      }&product_count_branch__branch=${BranchValue}`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -245,7 +230,7 @@ export default function EnhancedTable() {
   const handleChangeBranch = async (event) => {
     setBranchValue(event.target.value);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&type=${type}&on_sale=${SaleValue}&product_count_branch__branch=${event.target.value}&product_count_branch__quantity=${quantity}&product_categories__category_id=${categoryValue}`
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&on_sale=${SaleValue}&product_count_branch__branch=${event.target.value}&product_count_branch__quantity=${quantity}&product_categories__category_id=${categoryValue}`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -257,10 +242,10 @@ export default function EnhancedTable() {
   useEffect(() => {
     getProductData();
     getCategory();
-    getBranchList()
+    getBranchList();
     // eslint-disable-next-line
   }, []);
-  
+
   return (
     <div className="px-2 py-3">
       <div>
@@ -277,114 +262,99 @@ export default function EnhancedTable() {
       </div>
 
       <Box sx={{ width: "100%" }} className="colorr p-2 pt-3">
-        <ToggleButtonGroup
-          color="primary"
-          value={type}
-          exclusive
-          onChange={handleChange}
-          className=" flex items-center w-full"
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "10px",
+          }}
         >
-          <ToggleButton className="w-full" value="bistro">
-            Bistro
-          </ToggleButton>
-          <ToggleButton className="w-full" value="byuti">
-            Byuti
-          </ToggleButton>
-        </ToggleButtonGroup>
-       <div style={{
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center',
-        gap:'10px'
-       }} >
-       <input
-          type="text"
-          placeholder="Izlash"
-          className=" lg:w-1/3 md:w-1/3 sm:w-full   px-3 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
-          onChange={(e) => Search(e.target.value)}
-        />
-        <FormControl
-          size="small"
-          className=" w-1/3  "
-        >
-          <InputLabel id="demo-select-small-label" placholder="Holat bo'yicha">
-            Kategoriya
-          </InputLabel>
-          <Select
-            className="py-0.5"
-            value={categoryValue}
-            label="Holat bo'yicha"
-            onChange={handleChangeCategory}
-          >
-            <MenuItem value={""}>
-              <i className="fa-solid fa-minus"></i>{" "}
-            </MenuItem>
-            {category ? (
-              category?.map((item, i) => (
-                <MenuItem key={i} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
-            ) : (
-              <></>
-            )}
-          </Select>
-        </FormControl>
-
-        <FormControl
-          size="small"
-          className="w-1/3 "
-        >
-          <InputLabel id="demo-select-small-label" placholder="Sotuv bo'yicha">
-            Sotuv bo'yicha
-          </InputLabel>
-          <Select
-            className="py-0.5"
-            value={SaleValue}
-            label="Sotuv bo'yicha"
-            onChange={handleChangeSale}
-          >
-            <MenuItem value={""}>
-              <i className="fa-solid fa-minus"></i>{" "}
-            </MenuItem>
-            {sale_product &&
-              sale_product?.map((item, i) => (
-                <MenuItem key={i} value={item.value}>
-                  {item.name}
-                </MenuItem>
-              ))}
-          </Select>
-        </FormControl>
-
-        <FormControl
-          size="small"
-          className="w-1/3 "
-        >
-          <InputLabel id="demo-select-small-label" placholder="Filial bo'yicha">
-           Filial
-          </InputLabel>
-          <Select
-            className="py-0.5"
-            value={BranchValue}
-            label="Sotuv bo'yicha"
-            onChange={handleChangeBranch}
-          >
-            <MenuItem value={" "}>
-              <i className="fa-solid fa-minus"></i>{" "}
-            </MenuItem>
-            {
-              branchList?.map((item) => {
-                return  <MenuItem value={item.id} key={item.id} >
-                {item.name}
+          <input
+            type="text"
+            placeholder="Izlash"
+            className=" lg:w-1/3 md:w-1/3 sm:w-full   px-3 py-2 border-2 rounded-md my-3 border-3  hover:outline-none focus:outline-none active:outline-none"
+            onChange={(e) => Search(e.target.value)}
+          />
+          <FormControl size="small" className=" w-1/3  ">
+            <InputLabel
+              id="demo-select-small-label"
+              placholder="Holat bo'yicha"
+            >
+              Kategoriya
+            </InputLabel>
+            <Select
+              className="py-0.5"
+              value={categoryValue}
+              label="Holat bo'yicha"
+              onChange={handleChangeCategory}
+            >
+              <MenuItem value={""}>
+                <i className="fa-solid fa-minus"></i>{" "}
               </MenuItem>
-              })
-            }
-            
-          </Select>
-        </FormControl>
+              {category ? (
+                category?.map((item, i) => (
+                  <MenuItem key={i} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                ))
+              ) : (
+                <></>
+              )}
+            </Select>
+          </FormControl>
 
+          <FormControl size="small" className="w-1/3 ">
+            <InputLabel
+              id="demo-select-small-label"
+              placholder="Sotuv bo'yicha"
+            >
+              Sotuv bo'yicha
+            </InputLabel>
+            <Select
+              className="py-0.5"
+              value={SaleValue}
+              label="Sotuv bo'yicha"
+              onChange={handleChangeSale}
+            >
+              <MenuItem value={""}>
+                <i className="fa-solid fa-minus"></i>{" "}
+              </MenuItem>
+              {sale_product &&
+                sale_product?.map((item, i) => (
+                  <MenuItem key={i} value={item.value}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
 
-       </div>
+          <FormControl size="small" className="w-1/3 ">
+            <InputLabel
+              id="demo-select-small-label"
+              placholder="Filial bo'yicha"
+            >
+              Filial
+            </InputLabel>
+            <Select
+              className="py-0.5"
+              value={BranchValue}
+              label="Sotuv bo'yicha"
+              onChange={handleChangeBranch}
+            >
+              <MenuItem value={" "}>
+                <i className="fa-solid fa-minus"></i>{" "}
+              </MenuItem>
+              {branchList?.map((item) => {
+                return (
+                  <MenuItem value={item.id} key={item.id}>
+                    {item.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </div>
 
         <Paper sx={{ width: "100%", mb: 2 }}>
           <TableContainer>

@@ -62,7 +62,6 @@ export default function Branches() {
   useEffect(() => {
     getBranches();
   }, []);
-  console.log("count", count);
 
   return (
     <div className="px-2 py-3">

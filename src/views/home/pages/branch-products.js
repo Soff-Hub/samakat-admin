@@ -10,8 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Link } from "react-router-dom";
@@ -81,29 +79,16 @@ EnhancedTableHead.propTypes = {
 
 export default function EnhancedTable() {
   const [page, setPage] = React.useState(1);
-  const [type, setType] = React.useState("bistro");
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState(10);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [branch, setBranch] = useState("");
   const [filialData, setFilialData] = useState([]);
-  const handleChange = async (e) => {
-    setType(e.target.value);
-    setPage(1);
-    await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?page=${page}&branch=${branch}&product__type=${e.target.value}`
-    )
-      .then((resp) => {
-        setCount(resp.count);
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
 
   const Search = async (e) => {
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&product__type=${type}&search=${e}`
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&search=${e}`
     )
       .then((resp) => {
         setCount(resp.count);
@@ -113,9 +98,7 @@ export default function EnhancedTable() {
   };
   const handleChangeFilial = async (event) => {
     setBranch(event);
-    await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event}&product__type=${type}`
-    )
+    await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event}`)
       .then((resp) => {
         setData(resp.results);
       })
@@ -124,9 +107,8 @@ export default function EnhancedTable() {
 
   const handleChangePag = async (event, value) => {
     setPage(value);
-    await Client.get(`${API_ENDPOINTS.RETCIPE}?page=${value}&type=${type}`)
+    await Client.get(`${API_ENDPOINTS.RETCIPE}?page=${value}`)
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })
@@ -134,10 +116,7 @@ export default function EnhancedTable() {
   };
   const getRetsipeData = async () => {
     setPage(1);
-    setType("bistro");
-    await Client.get(
-      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?product__type=${type}`
-    )
+    await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}`)
       .then((resp) => {
         setCount(resp.count);
         setData(resp.results);
@@ -155,7 +134,6 @@ export default function EnhancedTable() {
             value: el.id,
           }))
         );
-        
       })
       .catch((err) => {
         console.log(err);
@@ -189,20 +167,6 @@ export default function EnhancedTable() {
       <div>
         <NavHeaderSelect title="Filiallardagi mahsulotlar" />
       </div>
-      <ToggleButtonGroup
-        color="primary"
-        value={type}
-        exclusive
-        onChange={handleChange}
-        className="mt-5 p-2 pt-3 flex items-center w-full colorr"
-      >
-        <ToggleButton type="outline" className="w-full" value="bistro">
-          Bistro
-        </ToggleButton>
-        <ToggleButton className="w-full" value="byuti">
-          Byuti
-        </ToggleButton>
-      </ToggleButtonGroup>
 
       {data ? (
         <Box sx={{ minWidth: 300 }}>
@@ -223,10 +187,13 @@ export default function EnhancedTable() {
                     height: "47px",
                   }}
                   onChange={handleChangeFilial}
-                  options={[{
-                    label: "Hammasi",
-                    value: "",
-                  }, ...filialData] }
+                  options={[
+                    {
+                      label: "Hammasi",
+                      value: "",
+                    },
+                    ...filialData,
+                  ]}
                 ></Select>
               </div>
               <Table

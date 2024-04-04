@@ -31,7 +31,6 @@ export default function Settings() {
     };
     await Client.patch(API_ENDPOINTS.SETTINGS, data)
       .then((resp) => {
-        console.log(resp);
         getData();
         message.open({
           type: "success",

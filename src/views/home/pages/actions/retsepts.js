@@ -74,7 +74,6 @@ export default function Retsepts() {
 
   const handleChangeRelatedCategory = (event) => {
     setRelatedCategory(event);
-    console.log(event);
   };
   const handleChangeActive = (event) => {
     setChecked(event.target.checked);
@@ -89,8 +88,6 @@ export default function Retsepts() {
     setImageData2([...imageData2, { id: e }]);
   };
   const addImageInputPost = (e) => {
-    console.log("e", e);
-
     setAddHandleImageData([...addHandleImageData, { id: e }]);
   };
 
@@ -236,7 +233,6 @@ export default function Retsepts() {
       API_ENDPOINTS.DETAIL_RECIPE + location.search.split("?")[2]
     )
       .then((res) => {
-        console.log(res);
         if (res?.type === "bistro") {
           getCategory("bistro");
         } else if (res?.type === "byuti") {

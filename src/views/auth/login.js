@@ -39,7 +39,6 @@ function Login() {
       })
       .catch((err) => {
         openNotification(err?.response?.data?.msg?.[0]);
-        console.log('xatooo', err?.response?.data?.phone?.[0], err?.response?.data?.msg?.[0]);
         
         setErrPhone(err?.response?.data?.msg?.[0]);
         setErrPass(err?.response?.data?.msg?.[0]);

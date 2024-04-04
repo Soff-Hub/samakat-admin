@@ -70,7 +70,6 @@ export default function CollapsibleTable() {
     setPage(value);
     await Client.get(`${API_ENDPOINTS.ADDRESS}?page=${value}`)
       .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setData(resp.results);
       })

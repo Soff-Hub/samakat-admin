@@ -17,8 +17,6 @@ import {
   CircularProgress,
   Pagination,
   Stack,
-  ToggleButton,
-  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
@@ -98,10 +96,8 @@ export default function CollapsibleTable() {
   const [page, setPage] = React.useState(1);
   const [openDelete, setOpen] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState(null);
-  const [type, setType] = React.useState("bistro");
 
   const getBadge = async () => {
-
     await Client.get(API_ENDPOINTS.BADGE)
       .then((res) => {
         setBadgeData(res.results);
@@ -115,7 +111,6 @@ export default function CollapsibleTable() {
   const handleDelete = async () => {
     await Client.delete(`${API_ENDPOINTS.DELETE_BADGE}${deleteId}/`)
       .then((resp) => {
-        console.log(resp);
         setOpen(false);
         getBadge();
       })
@@ -126,21 +121,6 @@ export default function CollapsibleTable() {
     setPage(value);
     await Client.get(`${API_ENDPOINTS.BADGE}?page=${value}`)
       .then((resp) => {
-        console.log(resp);
-        setCount(resp.count);
-        setBadgeData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleChange = async (e) => {
-    setPage(1);
-    setType(e.target.value);
-    await Client.get(
-      `${API_ENDPOINTS.BADGE}?page=${page}&type=${e.target.value}`
-    )
-      .then((resp) => {
-        console.log(resp);
         setCount(resp.count);
         setBadgeData(resp.results);
       })
@@ -156,20 +136,6 @@ export default function CollapsibleTable() {
       <div>
         <NavHeaderSelect title="Mahsulot aksiyalari" />
       </div>
-      <ToggleButtonGroup
-        color="primary"
-        value={type}
-        exclusive
-        onChange={handleChange}
-        className="mt-5 flex items-center w-full"
-      >
-        <ToggleButton className="w-full" value="bistro">
-          Bistro
-        </ToggleButton>
-        <ToggleButton className="w-full" value="byuti">
-          Byuti
-        </ToggleButton>
-      </ToggleButtonGroup>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
