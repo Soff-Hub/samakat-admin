@@ -11,7 +11,8 @@ import { Select, Space } from "antd";
 function Categories() {
   const [submiting, setSubmiting] = useState(false);
   const [formVal, setFormVal] = useState({
-    name: "",
+    name_uz: "",
+    name_ru: "",
     order: 0,
     parent: "",
     type: "",
@@ -19,6 +20,7 @@ function Categories() {
   const [itemData, setItemData] = useState(null);
   const [img, setImage] = useState(null);
   const [parentName, setParentName] = useState(null);
+  const [parentNameRu, setParentNameRu] = useState(null);
   const [lifeImage, setLifeImage] = useState(null);
   const navigate = useNavigate();
   const loaction = useLocation();
@@ -33,7 +35,8 @@ function Categories() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name", formVal.name);
+    formData.append("name_uz", formVal.name_uz);
+    formData.append("name_ru", formVal.name_ru);
     formData.append("order", formVal.order);
     if (img) {
       formData.append("image", img);
@@ -58,7 +61,8 @@ function Categories() {
   const handleCHaildSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name", formVal.name);
+    formData.append("name_uz", formVal.name_uz);
+    formData.append("name_ru", formVal.name_ru);
     formData.append("parent", loaction.search.split("?")[2]);
     formData.append("order", formVal.order);
     if (img) {
@@ -115,7 +119,8 @@ function Categories() {
     e.preventDefault();
     setSubmiting(true);
     const formData = new FormData();
-    formData.append("name", formVal.name);
+    formData.append("name_uz", formVal.name_uz);
+    formData.append("name_ru", formVal.name_ru);
     formData.append("order", formVal.order);
     formData.append("type", formVal.type);
 
@@ -209,17 +214,36 @@ function Categories() {
                 type="text"
                 value={itemData?.parent !== null ? itemData?.parent : "yo'q"}
               />
-              <TextField
-                label="Kategoriya nomi"
-                variant="outlined"
-                size="large"
-                type="text"
-                required
-                defaultValue={itemData.name}
-                onChange={(e) => {
-                  setFormVal((c) => ({ ...c, name: e.target.value }));
-                }}
-              />
+              <div className="row">
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <TextField
+                    label="Kategoriya nomi"
+                    variant="outlined"
+                    size="large"
+                    type="text"
+                    required
+                    className="w-100"
+                    defaultValue={itemData.name_uz}
+                    onChange={(e) => {
+                      setFormVal((c) => ({ ...c, name_uz: e.target.value }));
+                    }}
+                  />
+                </div>
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <TextField
+                    label="Kategoriya nomi (ru)"
+                    variant="outlined"
+                    size="large"
+                    type="text"
+                    required
+                    className="w-100"
+                    defaultValue={itemData.name_ru}
+                    onChange={(e) => {
+                      setFormVal((c) => ({ ...c, name_ru: e.target.value }));
+                    }}
+                  />
+                </div>
+              </div>
 
               <TextField
                 label="Tartib raqami"
@@ -352,17 +376,36 @@ function Categories() {
             ""
           )}
 
-          <TextField
-            label="Kategoriya nomi"
-            variant="outlined"
-            size="large"
-            type="text"
-            required
-            value={formVal.name}
-            onChange={(e) => {
-              setFormVal((c) => ({ ...c, name: e.target.value }));
-            }}
-          />
+          <div className="row">
+            <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+              <TextField
+                label="Kategoriya nomi"
+                variant="outlined"
+                size="large"
+                type="text"
+                required
+                className="w-100"
+                value={formVal.name_uz}
+                onChange={(e) => {
+                  setFormVal((c) => ({ ...c, name_uz: e.target.value }));
+                }}
+              />
+            </div>
+            <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+              <TextField
+                label="Kategoriya nomi (ru) "
+                variant="outlined"
+                size="large"
+                type="text"
+                required
+                className="w-100"
+                value={formVal.name_ru}
+                onChange={(e) => {
+                  setFormVal((c) => ({ ...c, name_ru: e.target.value }));
+                }}
+              />
+            </div>
+          </div>
           <TextField
             label="Tartib raqami"
             variant="outlined"
