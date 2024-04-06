@@ -11,6 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 import AddInput from "components/shared/addInput";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TextArea from "antd/es/input/TextArea";
+import Test from "./test";
 
 export default function Products() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,6 +63,13 @@ export default function Products() {
       order: "",
     },
   ]);
+  const [nameRu, setNameRu] = useState("");
+  const [descriptionRu, setDescriptionRu] = useState("");
+  const [ingredientsRu, setIngredientsRu] = useState("");
+  const [specificationRu, setSpecificationRu] = useState("");
+  const [manufacturerRu, setManufacturerRu] = useState("");
+  const [shelf_lifeRu, setShelf_lifeRu] = useState("");
+  const [storageConditionsRu, setStorageConditionsRu] = useState("");
   const navigate = useNavigate();
 
   const showModalAdd = (url, id) => {
@@ -81,7 +89,6 @@ export default function Products() {
   };
 
   const setImageUrlAdd = (url, id) => {
-    // setSelectImage(url);
     if (url) {
       setAddImageLink({ image: window.URL.createObjectURL(url), id: id });
       for (let i = 0; i < addHandleImageData.length; i++) {
@@ -122,7 +129,6 @@ export default function Products() {
 
   const addFilialInput = (value, id) => {
     let findItem = filialInput.find((elem) => elem.id === id);
-    // console.log(findItem, "sssssssssssssss", filialInput, id);
     findItem.branch = Number(value?.branch);
     findItem.quantity = value?.quantity;
     setFilialInput([...filialInput]);
@@ -141,10 +147,8 @@ export default function Products() {
 
   const deleteID = (i) => {
     setFilialInput(filialInput.filter((item) => item.id !== i));
-    // console.log(" productga kelgan delete id == ", image);
   };
 
-  // console.log("filial input", filialInput);
   const addFormInput = (value, id) => {
     setFilialInput([...filialInput, { id, ...value }]);
   };
@@ -162,17 +166,7 @@ export default function Products() {
     }
   };
 
-  // const handleDeleteImageApiVariant = (id) => {
-  //   setIsModalOpen(false);
-  //   const data = imageData2.filter((el) => el.id !== id);
-  //   setImageData2(data);
-  //   if (imageData.find((el) => el.id !== id)) {
-  //     delID.push(id);
-  //   }
-  // };
-
   const setImageUrlUpdate = (url, id) => {
-    // setIsModalOpen(false);
     setImageLink({ image: window.URL.createObjectURL(url), id: id });
     for (let i = 0; i < imageData2.length; i++) {
       if (imageData2[i].id === id) {
@@ -209,20 +203,27 @@ export default function Products() {
       "product_attribute",
       JSON.stringify({
         carbohydrates: carbohydrates,
-        ingredients: ingredients,
+        ingredients_uz: ingredients,
+        ingredients_ru: ingredientsRu,
         fats: fats,
         kilocalories: kilocalories,
-        manufacturer: manufacturer,
+        manufacturer_uz: manufacturer,
+        manufacturer_ru: manufacturerRu,
         protein: protein,
-        storageConditions: storageConditions,
-        specification: specification,
-        shelf_life: shelf_life,
+        storageConditions_uz: storageConditions,
+        storageConditions_ru: storageConditionsRu,
+        specification_uz: specification,
+        specification_ru: specificationRu,
+        shelf_life_uz: shelf_life,
+        shelf_life_ru: shelf_lifeRu,
       })
     );
-    formData1.append("name", name);
+    formData1.append("name_uz", name);
+    formData1.append("name_ru", nameRu);
     formData1.append("price", price);
     formData1.append("original_price", buyCost);
-    formData1.append("description", description);
+    formData1.append("description_uz", description);
+    formData1.append("description_ru", descriptionRu);
     if (discount === "" || discount === null) {
       formData1.append("discount", 0);
     } else {
@@ -542,22 +543,29 @@ export default function Products() {
           }))
         );
 
-        setName(res?.name);
+        setName(res?.name_uz);
+        setNameRu(res?.name_ru);
         setOn_sale(res?.on_sale);
         setDiscount(res?.discount);
-        setDescription(res?.description);
+        setDescription(res?.description_uz);
+        setDescriptionRu(res?.description_ru);
         setPrice(JSON.parse(res?.price));
         setBuyCost(JSON.parse(res?.original_price));
         setDiscount(res?.discount);
         setCarbohydrates(res?.product_attribute?.carbohydrates);
-        setingredients(res?.product_attribute?.ingredients);
+        setingredients(res?.product_attribute?.ingredient_uz);
+        setIngredientsRu(res?.product_attribute?.ingredients_ru);
         setFats(res?.product_attribute?.fats);
         setKilocalories(res?.product_attribute?.kilocalories);
-        setManufacturer(res?.product_attribute?.manufacturer);
+        setManufacturer(res?.product_attribute?.manufacture_uz);
+        setManufacturerRu(res?.product_attribute?.manufacturer_ru);
         setProtein(res?.product_attribute?.protein);
-        setStorageConditions(res?.product_attribute?.storageConditions);
-        setSpecification(res?.product_attribute?.specification);
-        setShelf_life(res?.product_attribute?.shelf_life);
+        setStorageConditions(res?.product_attribute?.storageConditions_uz);
+        setStorageConditionsRu(res?.product_attribute?.storageConditions_ru);
+        setSpecification(res?.product_attribute?.specification_uz);
+        setSpecificationRu(res?.product_attribute?.specification_ru);
+        setShelf_life(res?.product_attribute?.shelf_life_uz);
+        setShelf_lifeRu(res?.product_attribute?.shelf_life_ru);
       })
       .catch((err) => {
         console.log(err);
@@ -609,19 +617,41 @@ export default function Products() {
               <div className="colorr p-4">
                 <div className="row">
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                    <span className="label--name font-bold">Nomi</span>
-                    <Input
-                      style={{
-                        height: "35px",
-                      }}
-                      placeholder="Nomi *"
-                      type="text"
-                      className="py-2"
-                      defaultValue={name}
-                      onChange={(e) => {
-                        setName(e.target.value);
-                      }}
-                    />
+                    <div className="row">
+                      <div className="col-6">
+                        <span className="label--name font-bold">Nomi</span>
+                        <Input
+                          style={{
+                            height: "35px",
+                          }}
+                          placeholder="Nomi *"
+                          type="text"
+                          className="py-2"
+                          defaultValue={name}
+                          onChange={(e) => {
+                            setName(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <span className="label--name font-bold">
+                          Nomi(ru) *
+                        </span>
+                        <Input
+                          placeholder="Название *"
+                          type="text"
+                          value={nameRu}
+                          required
+                          className="py-2"
+                          style={{
+                            height: "35px",
+                          }}
+                          onChange={(e) => {
+                            setNameRu(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">
@@ -760,22 +790,48 @@ export default function Products() {
                   </div>
 
                   <div className="col-12 py-2">
-                    <span className="label--name font-bold">Izoh</span>
-                    <Flex vertical gap={32}>
-                      <TextArea
-                        showCount
-                        maxLength={1000}
-                        placeholder="Izoh"
-                        style={{
-                          height: 80,
-                          resize: "true",
-                        }}
-                        defaultValue={editData?.description || description}
-                        onChange={(e) => {
-                          setDescription(e.target.value);
-                        }}
-                      />
-                    </Flex>
+                    <div className="row">
+                      <div className="col-6">
+                        <span className="label--name font-bold">Izoh</span>
+                        <Flex vertical gap={32}>
+                          <TextArea
+                            showCount
+                            maxLength={1000}
+                            placeholder="Izoh"
+                            style={{
+                              height: 80,
+                              resize: "true",
+                            }}
+                            defaultValue={editData?.description_uz || description}
+                            onChange={(e) => {
+                              setDescription(e.target.value);
+                            }}
+                          />
+                        </Flex>
+                      </div>
+                      <div className="col-6">
+                        <span className="label--name font-bold">
+                          Izoh (ru){" "}
+                        </span>
+                        <Flex vertical gap={32}>
+                          <TextArea
+                            showCount
+                            maxLength={1000}
+                            placeholder="Комментарий"
+                            style={{
+                              height: 80,
+                              resize: "true",
+                            }}
+                            defaultValue={
+                              editData?.description_ru || descriptionRu
+                            }
+                            onChange={(e) => {
+                              setDescriptionRu(e.target.value);
+                            }}
+                          />
+                        </Flex>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1022,75 +1078,167 @@ export default function Products() {
                     </div>
 
                     <div className="col-6 p-2">
-                      <TextField
-                        label="Tarkibi"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={
-                          editData?.product_attribute?.ingredients ||
-                          ingredients
-                        }
-                        onChange={(e) => {
-                          setingredients(e.target.value);
-                        }}
-                      />
+                      <div className="row">
+                        <h2 className="text-[18px] py-2 font-bold">Uz</h2>
+                        <div className="col-6">
+                          <TextField
+                            label="Tarkibi"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={
+                              editData?.product_attribute?.ingredients ||
+                              ingredients
+                            }
+                            onChange={(e) => {
+                              setingredients(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Ishlab chiqaruvchi"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={manufacturer}
+                            onChange={(e) => {
+                              setManufacturer(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="col-6 p-2">
-                      <TextField
-                        label="Ishlab chiqaruvchi"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={manufacturer}
-                        onChange={(e) => {
-                          setManufacturer(e.target.value);
-                        }}
-                      />
+                      <div className="row">
+                        <h2 className="text-[18px] py-2 font-bold">Ru</h2>
+                        <div className="col-6">
+                          <TextField
+                            label="Tarkibi (ru) "
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={
+                              editData?.product_attribute?.ingredients_ru ||
+                              ingredientsRu
+                            }
+                            onChange={(e) => {
+                              setIngredientsRu(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Ishlab chiqaruvchi (ru)"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={manufacturerRu}
+                            onChange={(e) => {
+                              setManufacturerRu(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="col-6 p-2">
-                      <TextField
-                        label="Mahsulot soni yoki hajmi"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={specification}
-                        onChange={(e) => {
-                          setSpecification(e.target.value);
-                        }}
-                      />
+                      <div className="row">
+                        <div className="col-6">
+                          <TextField
+                            label="Mahsulot soni yoki hajmi"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={specification}
+                            onChange={(e) => {
+                              setSpecification(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Saqlash muddati"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={shelf_life}
+                            onChange={(e) => {
+                              setShelf_life(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="col-6 p-2">
-                      <TextField
-                        label="Saqlash muddati"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={shelf_life}
-                        onChange={(e) => {
-                          setShelf_life(e.target.value);
-                        }}
-                      />
+                      <div className="row">
+                        <div className="col-6">
+                          <TextField
+                            label="Mahsulot soni yoki hajmi (ru)"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={specificationRu}
+                            onChange={(e) => {
+                              setSpecificationRu(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Saqlash muddati (ru)"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={shelf_lifeRu}
+                            onChange={(e) => {
+                              setShelf_lifeRu(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
 
                     <div className="col-12 p-2">
-                      <TextField
-                        label="Saqlash shartlari"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={storageConditions}
-                        onChange={(e) => {
-                          setStorageConditions(e.target.value);
-                        }}
-                        multiline
-                        rows={4}
-                      />
+                      <div className="row">
+                        <div className="col-6">
+                          <TextField
+                            label="Saqlash shartlari"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={storageConditions}
+                            onChange={(e) => {
+                              setStorageConditions(e.target.value);
+                            }}
+                            multiline
+                            rows={4}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Saqlash shartlari (ru)"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={storageConditionsRu}
+                            onChange={(e) => {
+                              setStorageConditionsRu(e.target.value);
+                            }}
+                            multiline
+                            rows={4}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1476,19 +1624,41 @@ export default function Products() {
               <div className="colorr p-4">
                 <div className="row">
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                    <span className="label--name font-bold">Nomi</span>
-                    <Input
-                      style={{
-                        height: "35px",
-                      }}
-                      placeholder="Nomi *"
-                      type="text"
-                      className="py-2"
-                      defaultValue={name}
-                      onChange={(e) => {
-                        setName(e.target.value);
-                      }}
-                    />
+                    <div className="row">
+                      <div className="col-6">
+                        <span className="label--name font-bold">Nomi</span>
+                        <Input
+                          style={{
+                            height: "35px",
+                          }}
+                          placeholder="Nomi *"
+                          type="text"
+                          className="py-2"
+                          defaultValue={name}
+                          onChange={(e) => {
+                            setName(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <span className="label--name font-bold">
+                          Nomi(ru) *
+                        </span>
+                        <Input
+                          placeholder="Название *"
+                          type="text"
+                          value={nameRu}
+                          required
+                          className="py-2"
+                          style={{
+                            height: "35px",
+                          }}
+                          onChange={(e) => {
+                            setNameRu(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <span className="label--name font-bold">
@@ -1628,22 +1798,48 @@ export default function Products() {
                   </div>
 
                   <div className="col-12 py-2">
-                    <span className="label--name font-bold">Izoh</span>
-                    <Flex vertical gap={32}>
-                      <TextArea
-                        showCount
-                        maxLength={1000}
-                        placeholder="Izoh"
-                        style={{
-                          height: 80,
-                          resize: "true",
-                        }}
-                        defaultValue={editData?.description || description}
-                        onChange={(e) => {
-                          setDescription(e.target.value);
-                        }}
-                      />
-                    </Flex>
+                    <div className="row">
+                      <div className="col-6">
+                        <span className="label--name font-bold">Izoh</span>
+                        <Flex vertical gap={32}>
+                          <TextArea
+                            showCount
+                            maxLength={1000}
+                            placeholder="Izoh"
+                            style={{
+                              height: 80,
+                              resize: "true",
+                            }}
+                            defaultValue={editData?.description_uz || description}
+                            onChange={(e) => {
+                              setDescription(e.target.value);
+                            }}
+                          />
+                        </Flex>
+                      </div>
+                      <div className="col-6">
+                        <span className="label--name font-bold">
+                          Izoh (ru){" "}
+                        </span>
+                        <Flex vertical gap={32}>
+                          <TextArea
+                            showCount
+                            maxLength={1000}
+                            placeholder="Комментарий"
+                            style={{
+                              height: 80,
+                              resize: "true",
+                            }}
+                            defaultValue={
+                              editData?.description_ru || descriptionRu
+                            }
+                            onChange={(e) => {
+                              setDescriptionRu(e.target.value);
+                            }}
+                          />
+                        </Flex>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1890,75 +2086,167 @@ export default function Products() {
                     </div>
 
                     <div className="col-6 p-2">
-                      <TextField
-                        label="Tarkibi"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={
-                          editData?.product_attribute?.ingredients ||
-                          ingredients
-                        }
-                        onChange={(e) => {
-                          setingredients(e.target.value);
-                        }}
-                      />
+                      <div className="row">
+                        <h2 className="text-[18px] py-2 font-bold">Uz</h2>
+                        <div className="col-6">
+                          <TextField
+                            label="Tarkibi"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={
+                              editData?.product_attribute?.ingredients ||
+                              ingredients
+                            }
+                            onChange={(e) => {
+                              setingredients(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Ishlab chiqaruvchi"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={manufacturer}
+                            onChange={(e) => {
+                              setManufacturer(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="col-6 p-2">
-                      <TextField
-                        label="Ishlab chiqaruvchi"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={manufacturer}
-                        onChange={(e) => {
-                          setManufacturer(e.target.value);
-                        }}
-                      />
+                      <div className="row">
+                        <h2 className="text-[18px] py-2 font-bold">Ru</h2>
+                        <div className="col-6">
+                          <TextField
+                            label="Tarkibi (ru) "
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={
+                              editData?.product_attribute?.ingredients_ru ||
+                              ingredientsRu
+                            }
+                            onChange={(e) => {
+                              setIngredientsRu(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Ishlab chiqaruvchi (ru)"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={manufacturerRu}
+                            onChange={(e) => {
+                              setManufacturerRu(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="col-6 p-2">
-                      <TextField
-                        label="Mahsulot soni yoki hajmi"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={specification}
-                        onChange={(e) => {
-                          setSpecification(e.target.value);
-                        }}
-                      />
+                      <div className="row">
+                        <div className="col-6">
+                          <TextField
+                            label="Mahsulot soni yoki hajmi"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={specification}
+                            onChange={(e) => {
+                              setSpecification(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Saqlash muddati"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={shelf_life}
+                            onChange={(e) => {
+                              setShelf_life(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                     <div className="col-6 p-2">
-                      <TextField
-                        label="Saqlash muddati"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={shelf_life}
-                        onChange={(e) => {
-                          setShelf_life(e.target.value);
-                        }}
-                      />
+                      <div className="row">
+                        <div className="col-6">
+                          <TextField
+                            label="Mahsulot soni yoki hajmi (ru)"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={specificationRu}
+                            onChange={(e) => {
+                              setSpecificationRu(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Saqlash muddati (ru)"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={shelf_lifeRu}
+                            onChange={(e) => {
+                              setShelf_lifeRu(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
 
                     <div className="col-12 p-2">
-                      <TextField
-                        label="Saqlash shartlari"
-                        variant="outlined"
-                        size="small"
-                        className="w-full"
-                        type="text"
-                        defaultValue={storageConditions}
-                        onChange={(e) => {
-                          setStorageConditions(e.target.value);
-                        }}
-                        multiline
-                        rows={4}
-                      />
+                      <div className="row">
+                        <div className="col-6">
+                          <TextField
+                            label="Saqlash shartlari"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={storageConditions}
+                            onChange={(e) => {
+                              setStorageConditions(e.target.value);
+                            }}
+                            multiline
+                            rows={4}
+                          />
+                        </div>
+                        <div className="col-6">
+                          <TextField
+                            label="Saqlash shartlari (ru)"
+                            variant="outlined"
+                            size="small"
+                            className="w-full"
+                            type="text"
+                            defaultValue={storageConditionsRu}
+                            onChange={(e) => {
+                              setStorageConditionsRu(e.target.value);
+                            }}
+                            multiline
+                            rows={4}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2330,6 +2618,7 @@ export default function Products() {
       <div className="w-2/3">
         <h1 className="text-[35px] pb-2">Mahsulot qo'shish</h1>
         <Toaster />
+        {/* <Test/> */}
         <div className="w-full">
           <form
             onSubmit={handleSubmitAdd}
@@ -2338,20 +2627,40 @@ export default function Products() {
             <div className="colorr p-4">
               <div className="row">
                 <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                  <span className="label--name font-bold">Nomi</span>
-                  <Input
-                    placeholder="Nomi *"
-                    type="text"
-                    value={name}
-                    required
-                    className="py-2"
-                    style={{
-                      height: "35px",
-                    }}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                  />
+                  <div className="row">
+                    <div className="col-6">
+                      <span className="label--name font-bold">Nomi *</span>
+                      <Input
+                        placeholder="Nomi *"
+                        type="text"
+                        value={name}
+                        required
+                        className="py-2"
+                        style={{
+                          height: "35px",
+                        }}
+                        onChange={(e) => {
+                          setName(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-6">
+                      <span className="label--name font-bold">Nomi(ru) *</span>
+                      <Input
+                        placeholder="Название *"
+                        type="text"
+                        value={nameRu}
+                        required
+                        className="py-2"
+                        style={{
+                          height: "35px",
+                        }}
+                        onChange={(e) => {
+                          setNameRu(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                   <span className="label--name font-bold">
@@ -2498,22 +2807,44 @@ export default function Products() {
                   />
                 </div>
                 <div className="col-12 pt-2">
-                  <span className="label--name font-bold">Izoh</span>
-                  <Flex vertical gap={32}>
-                    <TextArea
-                      showCount
-                      maxLength={1000}
-                      placeholder="Izoh"
-                      style={{
-                        height: 80,
-                        resize: "true",
-                      }}
-                      value={description}
-                      onChange={(e) => {
-                        setDescription(e.target.value);
-                      }}
-                    />
-                  </Flex>
+                  <div className="row">
+                    <div className="col-6">
+                      <span className="label--name font-bold">Izoh</span>
+                      <Flex vertical gap={32}>
+                        <TextArea
+                          showCount
+                          maxLength={1000}
+                          placeholder="Izoh"
+                          style={{
+                            height: 80,
+                            resize: "true",
+                          }}
+                          value={description}
+                          onChange={(e) => {
+                            setDescription(e.target.value);
+                          }}
+                        />
+                      </Flex>
+                    </div>
+                    <div className="col-6">
+                      <span className="label--name font-bold">Izoh (ru)</span>
+                      <Flex vertical gap={32}>
+                        <TextArea
+                          showCount
+                          maxLength={1000}
+                          placeholder="Комментарий"
+                          style={{
+                            height: 80,
+                            resize: "true",
+                          }}
+                          value={descriptionRu}
+                          onChange={(e) => {
+                            setDescriptionRu(e.target.value);
+                          }}
+                        />
+                      </Flex>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2743,75 +3074,168 @@ export default function Products() {
                     />
                   </div>
                   <div className="col-6 p-2">
-                    <TextField
-                      label="Tarkibi"
-                      variant="outlined"
-                      size="small"
-                      className="w-full"
-                      type="number"
-                      value={ingredients}
-                      onChange={(e) => {
-                        setingredients(e.target.value);
-                      }}
-                    />
+                    <h2 className="text-[18px] py-2 font-bold">Uz</h2>
+                    <div className="row">
+                      <div className="col-6">
+                        <TextField
+                          label="Tarkibi"
+                          variant="outlined"
+                          size="small"
+                          className="w-full"
+                          type="text"
+                          value={ingredients}
+                          onChange={(e) => {
+                            setingredients(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <TextField
+                          className="w-full"
+                          label="Ishlab chiqaruvchi"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          required
+                          value={manufacturer}
+                          onChange={(e) => {
+                            setManufacturer(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col-6 p-2">
-                    <TextField
-                      className="w-full"
-                      label="Ishlab chiqaruvchi"
-                      variant="outlined"
-                      size="small"
-                      type="text"
-                      required
-                      value={manufacturer}
-                      onChange={(e) => {
-                        setManufacturer(e.target.value);
-                      }}
-                    />
+                    <div className="row">
+                      <h2 className="text-[18px] pl-3.5 py-2 font-bold">Ru</h2>
+                      <div className="col-6">
+                        <TextField
+                          label="Tarkibi (ru)"
+                          variant="outlined"
+                          size="small"
+                          className="w-full"
+                          type="text"
+                          value={ingredientsRu}
+                          onChange={(e) => {
+                            setIngredientsRu(e.target.value);
+                          }}
+                        />
+                      </div>
+
+                      <div className="col-6">
+                        <TextField
+                          className="w-full"
+                          label="Ishlab chiqaruvchi (ru)"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          required
+                          value={manufacturerRu}
+                          onChange={(e) => {
+                            setManufacturerRu(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="col-6 p-2">
-                    <TextField
-                      className="w-full"
-                      label="Mahsulot soni yoki hajmi"
-                      variant="outlined"
-                      size="small"
-                      type="text"
-                      required
-                      value={specification}
-                      onChange={(e) => {
-                        setSpecification(e.target.value);
-                      }}
-                    />
+                    <div className="row">
+                      <div className="col-6">
+                        <TextField
+                          className="w-full"
+                          label="Mahsulot soni yoki hajmi"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          required
+                          value={specification}
+                          onChange={(e) => {
+                            setSpecification(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <TextField
+                          className="w-full"
+                          label="Saqlash muddati"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          value={shelf_life}
+                          onChange={(e) => {
+                            setShelf_life(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col-6 p-2">
-                    <TextField
-                      className="w-full"
-                      label="Saqlash muddati"
-                      variant="outlined"
-                      size="small"
-                      type="text"
-                      value={shelf_life}
-                      onChange={(e) => {
-                        setShelf_life(e.target.value);
-                      }}
-                    />
+                    <div className="row">
+                      <div className="col-6">
+                        <TextField
+                          className="w-full"
+                          label="Mahsulot soni yoki hajmi (ru)"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          required
+                          value={specificationRu}
+                          onChange={(e) => {
+                            setSpecificationRu(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <TextField
+                          className="w-full"
+                          label="Saqlash muddati (ru)"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          value={shelf_lifeRu}
+                          onChange={(e) => {
+                            setShelf_lifeRu(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="col-12 p-1">
-                    <TextField
-                      className="w-full"
-                      label="Saqlash shartlari"
-                      variant="outlined"
-                      size="small"
-                      type="text"
-                      required
-                      multiline
-                      rows={2}
-                      value={storageConditions}
-                      onChange={(e) => {
-                        setStorageConditions(e.target.value);
-                      }}
-                    />
+                    <div className="row">
+                      <div className="col-6">
+                        <TextField
+                          className="w-full"
+                          label="Saqlash shartlari"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          required
+                          multiline
+                          rows={2}
+                          value={storageConditions}
+                          onChange={(e) => {
+                            setStorageConditions(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <TextField
+                          className="w-full"
+                          label="Saqlash shartlari (ru)"
+                          variant="outlined"
+                          size="small"
+                          type="text"
+                          required
+                          multiline
+                          rows={2}
+                          value={storageConditionsRu}
+                          onChange={(e) => {
+                            setStorageConditionsRu(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
