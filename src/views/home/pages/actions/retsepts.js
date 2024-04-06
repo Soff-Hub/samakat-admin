@@ -45,7 +45,7 @@ export default function Retsepts() {
   const [errorCategory, setErrorCategory] = useState(false);
   const [selectImage, setSelectImage] = useState("");
   const [delID, setDelId] = useState([]);
-  // const [imageApi, setImageApi] = useState(null);
+  const [imgtrue, setImgtrue] = useState(false);
 
   const showModal = (url, id) => {
     setIsModalOpen(true);
@@ -109,6 +109,7 @@ export default function Retsepts() {
   };
 
   const setImageUrlAdd = (url, id) => {
+    setImgtrue(false)
     if (url) {
       setSelectImage(url);
       setAddImageLink({ image: window.URL.createObjectURL(url), id: id });
@@ -129,17 +130,17 @@ export default function Retsepts() {
     setAddHandleImageData(data);
     setIsModalOpenAdd(false);
   };
-
+console.log('addHandleImageData', selectImage, imgtrue);
   const handleSubmitAddRecipe = async (e) => {
     e.preventDefault();
     if (
       category !== ""
-      //  && selectImage !== ""
+       && selectImage !== "" 
     ) {
       if (category !== "") {
         setErrorCategory(false);
-      } else if (selectImage !== "") {
-
+      } else if (selectImage !== '') {
+        setImgtrue(false)
       }
       const formData = new FormData();
       formData.append("title_uz", name);
@@ -176,8 +177,8 @@ export default function Retsepts() {
       if (category === "") {
         setErrorCategory(true);
       }
-      if (selectImage !== "") {
-
+      if (selectImage === "") {
+        setImgtrue(true)
       }
     }
   };
@@ -614,7 +615,7 @@ export default function Retsepts() {
             className="w-2/3 m-auto row colorr p-2 py-3 create-branch-form"
           >
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-              <span className="label--name font-bold">Kategoriya</span>
+              <span className={`label--name font-bold ${errorCategory ? 'text-danger' : ''}`}>Kategoriya</span>
               <Select
                 mode="select"
                 placeholder="Kategoriya *"
@@ -667,7 +668,7 @@ export default function Retsepts() {
             </div>
 
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-              <span className="label--name font-bold">Nomi</span>
+              <span className="label--name font-bold">Nomi *</span>
               <Input
                 placeholder="Nomi"
                 type="text"
@@ -679,7 +680,7 @@ export default function Retsepts() {
               />
             </div>
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-              <span className="label--name font-bold">Nomi (ru)</span>
+              <span className="label--name font-bold">Nomi (ru) *</span>
               <Input
                 placeholder="Название"
                 type="text"
@@ -696,7 +697,6 @@ export default function Retsepts() {
               <TextArea
                 rows={6}
                 placeholder="Izoh"
-                required
                 value={description}
                 type="text"
                 onChange={(e) => {
@@ -709,7 +709,6 @@ export default function Retsepts() {
               <TextArea
                 rows={6}
                 placeholder="Комментарий"
-                required
                 value={descriptionRu}
                 type="text"
                 onChange={(e) => {
@@ -719,7 +718,7 @@ export default function Retsepts() {
             </div>
 
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
-              <span className="label--name font-bold">
+              <span className={`label--name font-bold ${imgtrue ? 'text-danger' : ''} `}>
                 {" "}
                 Galleriya uchun rasmlar *
               </span>
