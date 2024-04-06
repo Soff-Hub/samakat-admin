@@ -12,6 +12,7 @@ import AddInput from "components/shared/addInput";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TextArea from "antd/es/input/TextArea";
 import Test from "./test";
+import AddInputThree from "components/shared/addInputThree";
 
 export default function Products() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,10 +60,13 @@ export default function Products() {
   const [atributInput, setAtributInput] = useState([
     {
       id: 1,
-      content: "",
+      content_uz: "",
+      content_ru: "",
       order: "",
     },
   ]);
+
+ 
   const [nameRu, setNameRu] = useState("");
   const [descriptionRu, setDescriptionRu] = useState("");
   const [ingredientsRu, setIngredientsRu] = useState("");
@@ -136,7 +140,8 @@ export default function Products() {
 
   const addProductHighlightInput = (value, id) => {
     let findItem = atributInput.find((elem) => elem.id === id);
-    findItem.content = value?.content;
+    findItem.content_uz = value?.content_uz;
+    findItem.content_ru = value?.content_ru;
     findItem.order = value?.order;
     setAtributInput([...atributInput]);
   };
@@ -189,8 +194,8 @@ export default function Products() {
     });
 
     const product_highlight = atributInput?.map((item) => {
-      const { content, order } = item;
-      return { content, order };
+      const { content_uz, content_ru, order } = item;
+      return { content_uz, content_ru, order };
     });
 
     const formData = new FormData();
@@ -234,10 +239,10 @@ export default function Products() {
 
     if (
       product_highlight?.every(
-        (el) => el.content !== "" && el.content && el.order
+        (el) => el.content_uz !== "" && el.content_uz && el.order
       ) &&
       product_highlight?.every(
-        (el) => el.order !== "" && el.content && el.order
+        (el) => el.order !== "" && el.content_uz && el.order
       )
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
@@ -277,6 +282,7 @@ export default function Products() {
     document.querySelector(".create-branch-form").reset();
   };
 
+
   const handleSubmitAddVariant = async (e) => {
     e.preventDefault();
     setSubmiting(true);
@@ -287,8 +293,8 @@ export default function Products() {
     });
 
     const product_highlight = atributInput?.map((item) => {
-      const { content, order } = item;
-      return { content, order };
+      const { content_uz, content_ru, order } = item;
+      return { content_uz, content_ru, order };
     });
 
     const formData1 = new FormData();
@@ -317,6 +323,7 @@ export default function Products() {
     }
     formData1.append("name", name);
     formData1.append("price", price);
+    formData1.append("original_price", buyCost);
     formData1.append("description", description);
     if (discount === "" || discount === null) {
       formData1.append("discount", 0);
@@ -336,10 +343,10 @@ export default function Products() {
 
     if (
       product_highlight?.every(
-        (el) => el.content !== "" && el.content && el.order
+        (el) => el.content_uz !== "" && el.content_uz && el.order
       ) &&
       product_highlight?.every(
-        (el) => el.order !== "" && el.content && el.order
+        (el) => el.order !== "" && el.content_uz && el.order
       )
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
@@ -388,8 +395,8 @@ export default function Products() {
       return { branch, quantity };
     });
     const product_highlight = atributInput?.map((item) => {
-      const { content, order } = item;
-      return { content, order };
+      const { content_uz, content_ru, order } = item;
+      return { content_uz, content_ru , order };
     });
 
     const formData1 = new FormData();
@@ -397,17 +404,23 @@ export default function Products() {
       "product_attribute",
       JSON.stringify({
         carbohydrates: carbohydrates,
-        ingredients: ingredients,
+        ingredients_uz: ingredients,
+        ingredients_ru: ingredientsRu,
         fats: fats,
         kilocalories: kilocalories,
-        manufacturer: manufacturer,
+        manufacturer_uz: manufacturer,
+        manufacturer_ru: manufacturerRu,
         protein: protein,
-        storageConditions: storageConditions,
-        specification: specification,
-        shelf_life: shelf_life,
+        storageConditions_uz: storageConditions,
+        storageConditions_ru: storageConditionsRu,
+        specification_uz: specification,
+        specification_ru: specificationRu,
+        shelf_life_uz: shelf_life,
+        shelf_life_ru: shelf_lifeRu,
       })
     );
-    formData1.append("name", name);
+    formData1.append("name_uz", name);
+    formData1.append("name_ru", nameRu);
     formData1.append("price", price);
     formData1.append("original_price", buyCost);
     formData1.append("description", description);
@@ -426,10 +439,13 @@ export default function Products() {
 
     if (
       product_highlight?.every(
-        (el) => el.content !== "" && el.content && el.order
+        (el) => el.content_uz !== "" && el.content_uz && el.order && el.content_ru
       ) &&
       product_highlight?.every(
-        (el) => el.order !== "" && el.content && el.order
+        (el) => el.order !== "" && el.content_uz && el.order && el.content_ru
+      ) &&
+      product_highlight?.every(
+        (el) => el.content_ru !== "" && el.content_uz && el.order && el.content_uz
       )
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
@@ -519,7 +535,8 @@ export default function Products() {
         setAtributInput(
           res?.product_highlight
             ? res?.product_highlight?.map((el, i) => ({
-                content: el?.content,
+                content_uz: el?.content_uz,
+                content_ru: el?.content_ru,
                 order: el?.order,
                 id: i + 1,
               }))
@@ -557,7 +574,7 @@ export default function Products() {
         setIngredientsRu(res?.product_attribute?.ingredients_ru);
         setFats(res?.product_attribute?.fats);
         setKilocalories(res?.product_attribute?.kilocalories);
-        setManufacturer(res?.product_attribute?.manufacture_uz);
+        setManufacturer(res?.product_attribute?.manufacturer_uz);
         setManufacturerRu(res?.product_attribute?.manufacturer_ru);
         setProtein(res?.product_attribute?.protein);
         setStorageConditions(res?.product_attribute?.storageConditions_uz);
@@ -624,7 +641,7 @@ export default function Products() {
                           style={{
                             height: "35px",
                           }}
-                          placeholder="Nomi *"
+                          placeholder="Nomi"
                           type="text"
                           className="py-2"
                           defaultValue={name}
@@ -635,13 +652,12 @@ export default function Products() {
                       </div>
                       <div className="col-6">
                         <span className="label--name font-bold">
-                          Nomi(ru) *
+                          Nomi(ru)
                         </span>
                         <Input
-                          placeholder="Название *"
+                          placeholder="Название "
                           type="text"
                           value={nameRu}
-                          required
                           className="py-2"
                           style={{
                             height: "35px",
@@ -1088,7 +1104,7 @@ export default function Products() {
                             className="w-full"
                             type="text"
                             defaultValue={
-                              editData?.product_attribute?.ingredients ||
+                              editData?.product_attribute?.ingredients_uz ||
                               ingredients
                             }
                             onChange={(e) => {
@@ -1250,7 +1266,7 @@ export default function Products() {
                   <div className="flex justify-content-between">
                     <div className="flex flex-col">
                       {atributInput?.map((item, i) => (
-                        <AddInput
+                        <AddInputThree
                           dataH={item}
                           key={i}
                           addFilialInput={addProductHighlightInput}
@@ -1607,10 +1623,10 @@ export default function Products() {
           <h1 className="text-[28px] pb-4">
             {" "}
             <u>
-              {editData.name +
+              {editData.name_uz +
                 " " +
-                (editData?.product_attribute?.specification
-                  ? editData?.product_attribute?.specification
+                (editData?.product_attribute?.specification_uz
+                  ? editData?.product_attribute?.specification_uz
                   : "")}
             </u>{" "}
             uchun variant yaratish
@@ -2096,7 +2112,7 @@ export default function Products() {
                             className="w-full"
                             type="text"
                             defaultValue={
-                              editData?.product_attribute?.ingredients ||
+                              editData?.product_attribute?.ingredients_uz ||
                               ingredients
                             }
                             onChange={(e) => {
@@ -2258,7 +2274,7 @@ export default function Products() {
                   <div className="flex justify-content-between">
                     <div className="flex flex-col">
                       {atributInput?.map((item, i) => (
-                        <AddInput
+                        <AddInputThree
                           dataH={item}
                           key={i}
                           addFilialInput={addProductHighlightInput}
@@ -3247,8 +3263,18 @@ export default function Products() {
                 {/* qoshish */}
                 <div className="flex justify-content-between">
                   <div className="flex flex-col">
-                    {atributInput?.map((item, i) => (
+                    {/* {atributInput?.map((item, i) => (
                       <AddInput
+                        dataH={item}
+                        key={i}
+                        addFilialInput={addProductHighlightInput}
+                        id={item.id ? item.id : atributInput[i - 1]?.id + 1}
+                        deleteIDHighlight={deleteIDHighlight}
+                        change={change}
+                      />
+                    ))} */}
+                    {atributInput?.map((item, i) => (
+                      <AddInputThree
                         dataH={item}
                         key={i}
                         addFilialInput={addProductHighlightInput}

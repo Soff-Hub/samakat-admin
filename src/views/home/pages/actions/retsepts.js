@@ -139,6 +139,7 @@ export default function Retsepts() {
       if (category !== "") {
         setErrorCategory(false);
       } else if (selectImage !== "") {
+
       }
       const formData = new FormData();
       formData.append("title_uz", name);
@@ -176,6 +177,7 @@ export default function Retsepts() {
         setErrorCategory(true);
       }
       if (selectImage !== "") {
+
       }
     }
   };
@@ -618,7 +620,7 @@ export default function Retsepts() {
                 placeholder="Kategoriya *"
                 showSearch
                 allowClear
-                required
+                required={true}
                 style={{
                   width: "100%",
                 }}
@@ -684,7 +686,7 @@ export default function Retsepts() {
                 required
                 value={nameRu}
                 onChange={(e) => {
-                  setName(e.target.value);
+                  setNameRu(e.target.value);
                 }}
               />
             </div>
@@ -711,7 +713,7 @@ export default function Retsepts() {
                 value={descriptionRu}
                 type="text"
                 onChange={(e) => {
-                  setDescription(e.target.value);
+                  setDescriptionRu(e.target.value);
                 }}
               />
             </div>
