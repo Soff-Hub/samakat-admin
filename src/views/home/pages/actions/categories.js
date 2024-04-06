@@ -236,7 +236,7 @@ function Categories() {
                     size="large"
                     type="text"
                     required
-                    className="w-100"
+                    className="w-100 w-100 mt-2 m-xxl-0 m-xl-0 m-lg-0 m-md-0 m-sm-0"
                     defaultValue={itemData.name_ru}
                     onChange={(e) => {
                       setFormVal((c) => ({ ...c, name_ru: e.target.value }));
@@ -398,7 +398,7 @@ function Categories() {
                 size="large"
                 type="text"
                 required
-                className="w-100"
+                className="w-100 w-100 mt-2 m-xxl-0 m-xl-0 m-lg-0 m-md-0 m-sm-0"
                 value={formVal.name_ru}
                 onChange={(e) => {
                   setFormVal((c) => ({ ...c, name_ru: e.target.value }));
