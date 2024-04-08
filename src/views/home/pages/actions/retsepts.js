@@ -323,7 +323,7 @@ console.log('addHandleImageData', selectImage, imgtrue);
                 />
               </div>
 
-              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
+              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
                 <span className="label--name font-bold">
                   Bog'liq kategoriyalar
                 </span>
@@ -637,7 +637,7 @@ console.log('addHandleImageData', selectImage, imgtrue);
               />
             </div>
 
-            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
               <span className="label--name font-bold">
                 Bog'liq kategoriyalar
               </span>

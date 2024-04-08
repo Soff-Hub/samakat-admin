@@ -93,7 +93,7 @@ export default function Aksiya() {
           }, 300);
         })
         .catch((err) => {
-          toast.error(err.response.data.map((el, i) => i + 1 + "." + el.msg));
+          toast.error(err?.response?.data?.map((el, i) => i + 1 + "." + el.msg));
         });
 
       setSubmiting(false);
