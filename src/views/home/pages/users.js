@@ -23,6 +23,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { useTheme } from "contexts/themeContex";
 
 const headCells = [
   {
@@ -110,6 +111,7 @@ export default function Users() {
   const navigate = useNavigate();
   const [allUserCount, setAllUserCount] = useState();
   const [UsersCount, setUsersCount] = useState({ active: "", no_active: "" });
+  const { theme } = useTheme();
 
   const getUsers = async () => {
     await Client.get(API_ENDPOINTS.USERS)
@@ -219,7 +221,7 @@ export default function Users() {
         </h1>
       </div>
       {data?.length >= 0 ? (
-        <Box sx={{ width: "100%" }} className="colorr p-2 pt-3">
+        <Box sx={{ width: "100%" }} className={`${theme.palette.mode === 'light' ? 'colorr' : 'colorr-b' } p-2 pt-3`}>
           <div className="flex items-center gap-1">
             <input
               type="text"

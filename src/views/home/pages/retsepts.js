@@ -27,6 +27,7 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { CircularProgress } from "@mui/material";
 import { Select } from "antd";
+import { useTheme } from "contexts/themeContex";
 
 const headCells = [
   {
@@ -137,6 +138,7 @@ export default function EnhancedTable() {
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [active, setActive] = useState("");
+  const { theme } = useTheme();
 
   const getRetsipeData = async () => {
     setPage(1);
@@ -201,7 +203,7 @@ export default function EnhancedTable() {
       </div>
 
       {data?.length >= 0 ? (
-        <Box sx={{ width: "100%" }} className="colorr p-2 pt-3">
+        <Box sx={{ width: "100%" }} className={` ${theme.palette.mode === 'light' ? 'colorr' : 'colorr-b' } p-2 pt-3`}>
           <input
             type="text"
             placeholder="Izlash"
@@ -269,7 +271,7 @@ export default function EnhancedTable() {
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link to={`actions/?edit?${row.slug}`}>
-                            <IconButton color="primary">
+                            <IconButton color="info">
                               <DriveFileRenameOutlineOutlinedIcon />
                             </IconButton>
                           </Link>

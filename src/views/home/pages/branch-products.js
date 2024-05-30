@@ -21,6 +21,7 @@ import { CircularProgress } from "@mui/material";
 import { Select } from "antd";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import { useTheme } from "contexts/themeContex";
 
 const headCells = [
   {
@@ -85,6 +86,7 @@ export default function EnhancedTable() {
   const [deleteId, setDeleteId] = useState(null);
   const [branch, setBranch] = useState("");
   const [filialData, setFilialData] = useState([]);
+  const { theme } = useTheme();
 
   const Search = async (e) => {
     await Client.get(
@@ -172,7 +174,7 @@ export default function EnhancedTable() {
         <Box sx={{ minWidth: 300 }}>
           <Paper sx={{ mb: 2, p: 2 }}>
             <TableContainer>
-              <div className="flex items-center gap-1 colorr">
+              <div className={`flex items-center gap-1 ${theme.palette.mode === 'light' ? 'colorr' : 'colorr-b' } `}>
                 <input
                   type="text"
                   placeholder="Izlash"
@@ -223,7 +225,7 @@ export default function EnhancedTable() {
                         </TableCell>
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link to={`actions/?edit?${row.id}`}>
-                            <IconButton color="primary">
+                            <IconButton color="info">
                               <DriveFileRenameOutlineOutlinedIcon />
                             </IconButton>
                           </Link>

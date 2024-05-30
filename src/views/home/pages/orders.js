@@ -14,11 +14,13 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import { useTheme } from "contexts/themeContex";
 
 export default function Branches() {
   const [data, setData] = useState(null);
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
+  const { theme} = useTheme();
 
   async function getOrders() {
     await Client.get(API_ENDPOINTS.ORDER)
@@ -61,7 +63,7 @@ export default function Branches() {
         <h1 className="text-2xl"  >Buyurtmalar</h1>
       </div>
       {data ? (
-        <div className="block w-full border shadow-lg p-2 colorr">
+        <div className={`block w-full border shadow-lg p-2 ${theme.palette.mode === 'light' ? 'colorr' : 'colorr-b' } `}>
           <div className="flex items-center gap-1">
             <input
               type="text"

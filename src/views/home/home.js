@@ -37,6 +37,7 @@ import { Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "store/slice";
 import Logo from "../../assets/images/logo-white.png";
+import { useTheme } from "contexts/themeContex";
 
 const drawerWidth = 300;
 
@@ -111,6 +112,7 @@ export default function MiniDrawer() {
   const location = useLocation();
   const dispatch = useDispatch();
   const { currentPage, role, isLoginning } = useSelector((state) => state.admin);
+  const { theme, toggleTheme } = useTheme();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -155,8 +157,8 @@ export default function MiniDrawer() {
   return (
     <Box sx={{ display: "flex", minWidth: 650 }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar className="bg-blue-500">
+      <AppBar   position="fixed" open={open}>
+        <Toolbar >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -172,6 +174,9 @@ export default function MiniDrawer() {
           <Typography variant="h6" noWrap component="div">
             {currentPage}
           </Typography>
+          <IconButton color="inherit" onClick={toggleTheme}>
+            {theme.palette.mode === 'light' ? '🌞' : '🌜'}
+          </IconButton>
           <UserDropdown />
         </Toolbar>
       </AppBar>
@@ -227,7 +232,7 @@ export default function MiniDrawer() {
                   disablePadding
                   sx={{ display: "block" }}
                   className={
-                    item.name === currentPage ? "bg-blue-500 text-white" : ""
+                    item.name === currentPage ? "bg-black text-white" : ""
                   }
                 >
                   <Link to={item.path}>
@@ -262,7 +267,7 @@ export default function MiniDrawer() {
       <Box
         component="main"
         sx={{ flexGrow: 2, p: 0 }}
-        style={{ backgroundColor: "#F2F5FB", height: "100%" }}
+        style={{ backgroundColor: "#EEF1F7", height: "100%", color:'#000000' }}
       >
         <DrawerHeader />
         <div>

@@ -19,6 +19,7 @@ import ResponsiveDialog from "components/shared/modal";
 import IconButton from "@mui/material/IconButton";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import { useTheme } from "contexts/themeContex";
 
 export default function Branches() {
   const [data, setData] = useState(null);
@@ -26,6 +27,7 @@ export default function Branches() {
   const [deleteId, setDeleteId] = useState(null);
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
+  const { theme } = useTheme();
 
   async function getBranches() {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
@@ -67,7 +69,7 @@ export default function Branches() {
     <div className="px-2 py-3">
       <NavHeader title="Filiallar" />
       {data ? (
-        <div className="block w-full border shadow-lg p-2 mt-5 colorr">
+        <div className={`block w-full border shadow-lg p-2 mt-5 ${theme.palette.mode === 'light' ? 'colorr' : 'colorr-b' } `}>
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -107,7 +109,7 @@ export default function Branches() {
                     </TableCell>
                     <TableCell align="right">
                       <Link to={"actions/" + row.uuid}>
-                        <IconButton color="primary">
+                        <IconButton color="info">
                           <DriveFileRenameOutlineOutlinedIcon />
                         </IconButton>
                       </Link>

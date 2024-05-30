@@ -8,6 +8,7 @@ import Client from "service/Client";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import ReactModal from "react-modal";
+import { useTheme } from "contexts/themeContex";
 const customStyles = {
   content: {
     top: "50%",
@@ -36,6 +37,7 @@ export default function Delivery() {
   const [detail, setDetail] = useState(null);
   const [commit, setCommit] = useState("");
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const showModal = (id) => {
     setIsModalOpen(true);
@@ -187,8 +189,8 @@ export default function Delivery() {
       </div>
       {data ? (
         <div className="delivery-container">
-          <div className="delivery-item-container">
-            <div className="delivery-item-container_header">
+          <div className="delivery-item-container" style={{backgroundColor: `${theme.palette.mode === 'light' ? '#3B82F6' : '#000' }`}} >
+            <div className="delivery-item-container_header ">
               <h3>Yangi</h3>
             </div>
 
@@ -240,7 +242,7 @@ export default function Delivery() {
               ))}
             </div>
           </div>
-          <div className="delivery-item-container">
+          <div className="delivery-item-container" style={{backgroundColor: `${theme.palette.mode === 'light' ? '#3B82F6' : '#000' }`}}>
             <div className="delivery-item-container_header">
               <h3>Yig'ilmoqda</h3>
             </div>
@@ -292,7 +294,7 @@ export default function Delivery() {
               ))}
             </div>
           </div>
-          <div className="delivery-item-container">
+          <div className="delivery-item-container" style={{backgroundColor: `${theme.palette.mode === 'light' ? '#3B82F6' : '#000' }`}}>
             <div className="delivery-item-container_header">
               <h3>Yo'lda</h3>
             </div>
@@ -344,7 +346,7 @@ export default function Delivery() {
               ))}
             </div>
           </div>
-          <div className="delivery-item-container">
+          <div className="delivery-item-container" style={{backgroundColor: `${theme.palette.mode === 'light' ? '#3B82F6' : '#000' }`}}>
             <div className="delivery-item-container_header">
               <h3>Yetkazildi</h3>
             </div>

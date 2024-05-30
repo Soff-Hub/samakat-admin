@@ -30,7 +30,7 @@ function Employee() {
       render: (id) => (
         <>
           <Link to={`actions/${id}`}>
-            <IconButton color="primary">
+            <IconButton color="info">
               <DriveFileRenameOutlineOutlinedIcon />
             </IconButton>
           </Link>

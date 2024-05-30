@@ -28,6 +28,7 @@ import {
   Select,
 } from "@mui/material";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
+import { useTheme } from "contexts/themeContex";
 
 const headCells = [
   {
@@ -121,6 +122,7 @@ export default function EnhancedTable() {
   const [errorData, setErrorData] = useState("");
   const [branchList, setBranchList] = useState(null);
   const [quantity, setQuantity] = useState("");
+  const { theme } = useTheme();
   const [sale_product, setSale_product] = useState([
     {
       id: 1,
@@ -261,7 +263,7 @@ export default function EnhancedTable() {
         </h1>
       </div>
 
-      <Box sx={{ width: "100%" }} className="colorr p-2 pt-3">
+      <Box sx={{ width: "100%" }} className={` ${theme.palette.mode === 'light' ? 'colorr' : 'colorr-b' } p-2 pt-3`}>
         <div
           style={{
             display: "flex",
@@ -450,7 +452,7 @@ export default function EnhancedTable() {
                             ""
                           )}
                           <Link to={`actions/?${row.type}?edit?${row.slug}`}>
-                            <IconButton color="primary">
+                            <IconButton color="info">
                               <DriveFileRenameOutlineOutlinedIcon />
                             </IconButton>
                           </Link>

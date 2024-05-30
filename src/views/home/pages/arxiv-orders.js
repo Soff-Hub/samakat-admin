@@ -17,12 +17,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
 import { Tooltip } from "antd";
+import { useTheme } from "contexts/themeContex";
 
 export default function ArxivOrders() {
   const [data, setData] = useState(null);
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
   const [status, setStatus] = React.useState("approved");
+  const { theme } = useTheme();
 
   async function getOrders() {
     await Client.get(`${API_ENDPOINTS.ARCHIVE}?status=approved`)
@@ -79,9 +81,9 @@ export default function ArxivOrders() {
       </div>
 
       {data ? (
-        <div className="block w-full border shadow-lg p-2 colorr">
+        <div className={`block w-full border shadow-lg p-2 ${theme.palette.mode === 'light' ? 'colorr' : 'colorr-b' } `}>
           <ToggleButtonGroup
-            color="primary"
+            color="info"
             value={status}
             exclusive
             onChange={handleChange}

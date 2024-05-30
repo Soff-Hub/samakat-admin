@@ -1,3 +1,21 @@
+/* src/index.css or src/App.css */
+
+body {
+    background-color: var(--background-color);
+    transition: background-color 0.3s;
+  }
+  
+  /* Add the following CSS variables in your global styles */
+  :root {
+    --background-color: #ccc; /* Default light theme background */
+  }
+  
+  [data-theme='dark'] {
+    --background-color: #121212; /* Dark theme background */
+  }
+  
+
+
 .login-page {
     height: 100vh;
     margin-top: 0;
@@ -183,7 +201,7 @@
 .delivery-item-container {
     max-width: 300px;
     width: 100%;
-    background-color: #3B82F6;
+    /* background-color: #3B82F6; */
     border-radius: 5px;
     padding: 7px;
 }
@@ -338,6 +356,14 @@
     font-family: "Poppins", sans-serif;
 }
 
+.card-title-b {
+    padding: 20px 0 15px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+}
+
 .card-title span {
     color: #899bbd;
     font-size: 14px;
@@ -439,6 +465,10 @@
 
 .colorr {
     background-color: #fff !important;
+}
+
+.colorr-b {
+    background-color: #000 !important;
 }
 
 .bg--color{

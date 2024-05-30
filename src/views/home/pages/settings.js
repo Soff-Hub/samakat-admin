@@ -1,5 +1,6 @@
 import { TextField } from "@mui/material";
 import { Button, Modal, message } from "antd";
+import { useTheme } from "contexts/themeContex";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -11,6 +12,7 @@ export default function Settings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [radius, setRadius] = useState("");
   const [amout, setAmout] = useState("");
+  const { theme } = useTheme();
 
   async function getData() {
     await Client.get(API_ENDPOINTS.SETTINGS)
@@ -68,7 +70,7 @@ export default function Settings() {
         <h1 className="text-2xl">Sozlamalar</h1>
       </div>
       <div
-        className="colorr"
+        className={`${theme.palette.mode === 'light' ? 'colorr' : 'colorr-b text-[#fff]' }`}
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -95,8 +97,8 @@ export default function Settings() {
           </div>
         </div>
         <div className="d-flex align-items-center" >
-          <Button onClick={showModal}>
-            <i class="fa-solid fa-pen-to-square"></i>
+          <Button  onClick={showModal}>
+            <i  class={`fa-solid fa-pen-to-square ${theme.palette.mode === 'light' ? 'text-[#000]' : 'text-[#fff]' }`}></i>
           </Button>
         </div>
         <Modal
@@ -108,7 +110,7 @@ export default function Settings() {
           cancelText="Ortga"
           okButtonProps={{
             style: {
-              backgroundColor: "#3B82F6",
+              backgroundColor: `${theme.palette.mode === 'light' ? '#3B82F6' : '#000' }`,
               color: "white",
             },
           }}
@@ -116,7 +118,7 @@ export default function Settings() {
           <TextField
             inputMode="numeric"
             label="Vaqt"
-            variant="outlined"
+            // variant="outlined"
             size="small"
             type="number"
             value={radius}
@@ -130,6 +132,7 @@ export default function Settings() {
             size="small"
             type="number"
             value={amout}
+            color="info"
             style={{ width: "100%", marginTop: '10px' }}
             onChange={(e) => setAmout(e.target.value)}
           />

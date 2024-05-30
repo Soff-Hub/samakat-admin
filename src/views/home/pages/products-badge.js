@@ -52,7 +52,7 @@ function Row(props) {
         </TableCell>
         <TableCell align="right" sx={{ position: "relative" }}>
           <Link to={`actions/?edit?${row.id}`}>
-            <IconButton color="primary">
+            <IconButton color="info">
               <DriveFileRenameOutlineOutlinedIcon />
             </IconButton>
           </Link>

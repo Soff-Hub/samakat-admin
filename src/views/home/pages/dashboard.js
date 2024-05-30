@@ -5,9 +5,11 @@ import ChartComponent from "components/shared/chart";
 import { Box, CircularProgress } from "@mui/material";
 import DashboardRight from "components/shared/dashboard-right";
 import DashboardProdctTable from "components/shared/dashboard-prodct-table";
+import { useTheme } from "contexts/themeContex";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
+  const { theme } = useTheme();
 
   const getData = async () => {
     await Client.get(API_ENDPOINTS.DASHBOARD)
@@ -31,10 +33,10 @@ export default function Dashboard() {
       }}
     >
       <div className="row px-3">
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-          <div class="card info-card sales-card">
-            <div class="card-body">
-              <h5 class="card-title">
+        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 ">
+          <div class={`card info-card sales-card `}>
+            <div class={`card-body ${theme.palette.mode === 'light' ? 'bg-[#fff]' : 'bg-[#000] text-[#fff]' } `}>
+              <h5 class={` ${theme.palette.mode === 'light' ? 'card-title' : 'card-title-b' }`}>
                 Daromad <span>| Bugun</span>
               </h5>
 

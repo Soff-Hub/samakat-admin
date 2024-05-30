@@ -58,7 +58,7 @@ export function ChaildRow2({ row, Detele, type }) {
           id="panel2a-header"
           onClick={() => (rowData?.is_add_childe ? getCatgeoryChaild(rowData.id) : '')}
           className="acc-parent"
-          style={{ backgroundColor: "#fff", boxShadow: "none" }}
+          style={{boxShadow: "none" }}
         >
           <div className="flex justify-between w-full">
             <div>{rowData.name}</div>
@@ -71,7 +71,7 @@ export function ChaildRow2({ row, Detele, type }) {
                     <Link
                       to={`actions/?${rowData.type}?${rowData.id}?chaild?${rowData.slug}`}
                     >
-                      <IconButton color="primary" aria-label="delete">
+                      <IconButton  aria-label="delete">
                         <AddCircleOutlinedIcon />
                       </IconButton>
                     </Link>
@@ -79,7 +79,7 @@ export function ChaildRow2({ row, Detele, type }) {
                     ""
                   )}
                   <Link to={`actions/?edit?${rowData.type}?${rowData.slug}`}>
-                    <IconButton color="primary">
+                    <IconButton color="info" >
                       <DriveFileRenameOutlineOutlinedIcon />
                     </IconButton>
                   </Link>

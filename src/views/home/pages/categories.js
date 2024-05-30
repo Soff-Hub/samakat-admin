@@ -3,10 +3,12 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 import NavHeaderSelect from "components/shared/NavHeaderSelect";
 import { Row2 } from "components/shared/Row2";
+import { useTheme } from "contexts/themeContex";
 
 export default function Categories2() {
   const [data, setData] = useState(null);
   const [page, setPage] = React.useState(1);
+  const { theme } = useTheme();
 
   async function getCategories() {
     await Client.get(
@@ -35,7 +37,7 @@ export default function Categories2() {
   return (
     <div className="px-2 py-3 bg--color">
       <NavHeaderSelect title="Kategoriyalar" />
-      <div className="colorr my-2 px-2">
+      <div className={` ${theme.palette.mode === 'light' ? 'colorr' : 'colorr-b' } my-2 px-2`}>
       <input
         type="text"
         placeholder="Izlash"
@@ -43,9 +45,9 @@ export default function Categories2() {
         style={{ width: "100%" }}
         onChange={(e) => Search(e.target.value)}
       />
-      <div className="flex justify-between bg-[#fff] p-2 px-4 mb-1">
-        <div className="font-bold text-[16px]">Nomi</div>
-        <div className="font-bold text-[16px]">Amallar</div>
+      <div className={`flex justify-between ${theme.palette.mode === 'light' ? 'bg-[#fff]' : 'bg-[#000]' }  p-2 px-4 mb-1`}>
+        <div className={`font-bold text-[16px] ${theme.palette.mode === 'light' ? 'text-[#000]' : 'text-[#fff]' } `}>Nomi</div>
+        <div className={`font-bold text-[16px] ${theme.palette.mode === 'light' ? 'text-[#000]' : 'text-[#fff]' } `}>Amallar</div>
       </div>
       <hr />
       <div>
