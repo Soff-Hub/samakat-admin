@@ -168,7 +168,12 @@ export default function Aksiya() {
             <Link to="/product-badge">
               <Button
                 variant="contained"
-                color="info"
+                sx={{ 
+                  background: "#000",
+                  '&:hover': {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  }
+                }}
                 size="large"
                 startIcon={<ArrowBackIcon />}
               >
@@ -263,8 +268,14 @@ export default function Aksiya() {
               </div>
 
               <Button
-                variant="outlined"
+                variant="contained"
                 size="large"
+                sx={{ 
+                  background: "#000",
+                  '&:hover': {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  }
+                }}
                 type="submit"
                 disabled={submiting}
               >
@@ -375,7 +386,13 @@ export default function Aksiya() {
             </div>
 
             <Button
-              variant="outlined"
+              variant="contained"
+              sx={{ 
+                background: "#000",
+                '&:hover': {
+                  backgroundColor: "#333", // Change this to the desired hover color
+                }
+              }}
               size="large"
               type="submit"
               disabled={submiting}
