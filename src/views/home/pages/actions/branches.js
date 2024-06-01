@@ -174,7 +174,12 @@ function Login() {
         <Link to="/branches">
           <Button
             variant="contained"
-            color="info"
+            sx={{ 
+              background: "#000",
+              '&:hover': {
+                backgroundColor: "#333", // Change this to the desired hover color
+              }
+            }}
             size="large"
             startIcon={<ArrowBackIcon />}
           >
@@ -279,7 +284,12 @@ function Login() {
             />
             <Button
               variant="contained"
-              color="primary"
+              sx={{ 
+                background: "#000",
+                '&:hover': {
+                  backgroundColor: "#333", // Change this to the desired hover color
+                }
+              }}
               size="large"
               startIcon={<SaveIcon />}
               type="submit"
@@ -404,6 +414,12 @@ function Login() {
             size="large"
             type="submit"
             disabled={submiting}
+            sx={{ 
+              background: "#000",
+              '&:hover': {
+                backgroundColor: "#333", // Change this to the desired hover color
+              }
+            }}
           >
             {submiting ? "Qo'shilmoqda" : "Qo'shish"}
           </Button>

@@ -86,7 +86,12 @@ function Employee() {
         <Link to="/employee">
           <Button
             variant="contained"
-            color="info"
+            sx={{ 
+              background: "#000",
+              '&:hover': {
+                backgroundColor: "#333", // Change this to the desired hover color
+              }
+            }}
             size="large"
             startIcon={<ArrowBackIcon />}
           >
@@ -131,7 +136,12 @@ function Employee() {
             <Button
               type="submit"
               variant="contained"
-              color="primary"
+              sx={{ 
+                background: "#000",
+                '&:hover': {
+                  backgroundColor: "#333", // Change this to the desired hover color
+                }
+              }}
               size="large"
               style={{ width: "100%", marginTop: "10px" }}
               startIcon={<SaveIcon />}
@@ -176,7 +186,12 @@ function Employee() {
             <Button
               type="submit"
               variant="contained"
-              color="primary"
+              sx={{ 
+                background: "#000",
+                '&:hover': {
+                  backgroundColor: "#333", // Change this to the desired hover color
+                }
+              }}
               size="large"
               style={{ width: "100%", marginTop: "10px" }}
               startIcon={<SaveIcon />}

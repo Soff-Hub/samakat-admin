@@ -51,9 +51,14 @@ export default function Orders() {
         <Link to="/orders">
           <Button
             variant="contained"
-            color="info"
             size="large"
             startIcon={<ArrowBackIcon />}
+            sx={{ 
+              background: "#000",
+              '&:hover': {
+                backgroundColor: "#333", // Change this to the desired hover color
+              }
+            }}
           >
             Orqaga
           </Button>
