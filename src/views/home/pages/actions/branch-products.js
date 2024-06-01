@@ -174,7 +174,12 @@ export default function Retsepts() {
           <Link to="/branch-products">
             <Button
               variant="contained"
-              color="info"
+              sx={{ 
+                background: "#000",
+                '&:hover': {
+                  backgroundColor: "#333", // Change this to the desired hover color
+                }
+              }}
               size="large"
               startIcon={<ArrowBackIcon />}
             >
@@ -246,10 +251,16 @@ export default function Retsepts() {
                 />
 
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   size="large"
                   type="submit"
                   disabled={submiting}
+                  sx={{ 
+                    background: "#000",
+                    '&:hover': {
+                      backgroundColor: "#333", // Change this to the desired hover color
+                    }
+                  }}
                 >
                   {submiting ? "Saqlanmoqda" : "Saqlash"}
                 </Button>
@@ -331,10 +342,16 @@ export default function Retsepts() {
               }}
             />
             <Button
-              variant="outlined"
+              variant="contained"
               size="large"
               type="submit"
               disabled={submiting}
+              sx={{ 
+                background: "#000",
+                '&:hover': {
+                  backgroundColor: "#333", // Change this to the desired hover color
+                }
+              }}
             >
               {submiting ? "Qo'shilmoqda" : "Qo'shish"}
             </Button>
