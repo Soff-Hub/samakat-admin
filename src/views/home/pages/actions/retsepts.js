@@ -22,8 +22,10 @@ export default function Retsepts() {
   const [checked, setChecked] = React.useState(true);
   const [relatedCategory, setRelatedCategory] = React.useState([]);
   const [name, setName] = useState("");
+  const [nameRu, setNameRu] = useState("");
   const navigate = useNavigate();
   const [description, setDescription] = useState("");
+  const [descriptionRu, setDescriptionRu] = useState("");
   const [editData, setEditData] = useState(null);
   const location = useLocation();
   const [categoryData, setCategoryData] = useState([]);
@@ -43,7 +45,7 @@ export default function Retsepts() {
   const [errorCategory, setErrorCategory] = useState(false);
   const [selectImage, setSelectImage] = useState("");
   const [delID, setDelId] = useState([]);
-  // const [imageApi, setImageApi] = useState(null);
+  const [imgtrue, setImgtrue] = useState(false);
 
   const showModal = (url, id) => {
     setIsModalOpen(true);
@@ -107,6 +109,7 @@ export default function Retsepts() {
   };
 
   const setImageUrlAdd = (url, id) => {
+    setImgtrue(false)
     if (url) {
       setSelectImage(url);
       setAddImageLink({ image: window.URL.createObjectURL(url), id: id });
@@ -127,20 +130,23 @@ export default function Retsepts() {
     setAddHandleImageData(data);
     setIsModalOpenAdd(false);
   };
-
+console.log('addHandleImageData', selectImage, imgtrue);
   const handleSubmitAddRecipe = async (e) => {
     e.preventDefault();
     if (
       category !== ""
-      //  && selectImage !== ""
+       && selectImage !== "" 
     ) {
       if (category !== "") {
         setErrorCategory(false);
-      } else if (selectImage !== "") {
+      } else if (selectImage !== '') {
+        setImgtrue(false)
       }
       const formData = new FormData();
-      formData.append("title", name);
-      formData.append("description", description);
+      formData.append("title_uz", name);
+      formData.append("title_ru", nameRu);
+      formData.append("description_uz", description);
+      formData.append("description_ru", descriptionRu);
       formData.append("category", category);
       formData.append("is_active", checked);
       formData.append("type", location.search.split("?")[1]);
@@ -171,7 +177,8 @@ export default function Retsepts() {
       if (category === "") {
         setErrorCategory(true);
       }
-      if (selectImage !== "") {
+      if (selectImage === "") {
+        setImgtrue(true)
       }
     }
   };
@@ -180,8 +187,10 @@ export default function Retsepts() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("title", name);
-    formData.append("description", description);
+    formData.append("title_uz", name);
+    formData.append("title_ru", nameRu);
+    formData.append("description_uz", description);
+    formData.append("description_ru", descriptionRu);
     formData.append("category", category);
     formData.append("is_active", checked);
     if (relatedCategory?.length > 0) {
@@ -239,8 +248,10 @@ export default function Retsepts() {
           getCategory("byuti");
         }
         setEditData(res);
-        setName(res?.title);
-        setDescription(res?.description);
+        setName(res?.title_uz);
+        setNameRu(res?.title_ru);
+        setDescription(res?.description_uz);
+        setDescriptionRu(res?.description_ru);
         setCategory(res?.category);
         setChecked(res?.is_active);
         setImageData(res?.recipe_gallery);
@@ -289,18 +300,6 @@ export default function Retsepts() {
               className="w-2/3 m-auto row colorr p-3 create-branch-form"
             >
               <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                <span className="label--name font-bold">Nomi</span>
-                <Input
-                  placeholder="Nomi"
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                />
-              </div>
-              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                 <span className="label--name font-bold">Kategoriyalar</span>
                 <Select
                   mode="select"
@@ -324,21 +323,7 @@ export default function Retsepts() {
                 />
               </div>
 
-              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
-                <span className="label--name font-bold">Izoh</span>
-                <TextArea
-                  rows={4}
-                  placeholder="Izoh"
-                  required
-                  value={description}
-                  type="text"
-                  onChange={(e) => {
-                    setDescription(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
+              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
                 <span className="label--name font-bold">
                   Bog'liq kategoriyalar
                 </span>
@@ -366,6 +351,66 @@ export default function Retsepts() {
                     defaultValue={relatedCategory}
                   />
                 </Space>
+              </div>
+
+              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <div className="row">
+                  <div className="col-12">
+                    <span className="label--name font-bold">Nomi</span>
+                    <Input
+                      placeholder="Nomi"
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col-12">
+                    <span className="label--name font-bold">Izoh</span>
+                    <TextArea
+                      rows={12}
+                      placeholder="Izoh"
+                      required
+                      value={description}
+                      type="text"
+                      onChange={(e) => {
+                        setDescription(e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <div className="row">
+                  <div className="col-12">
+                    <span className="label--name font-bold">Nomi (ru) </span>
+                    <Input
+                      placeholder="Название"
+                      type="text"
+                      required
+                      value={nameRu}
+                      onChange={(e) => {
+                        setNameRu(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col-12">
+                    <span className="label--name font-bold">Izoh (ru)</span>
+                    <TextArea
+                      rows={12}
+                      placeholder="Комментарий"
+                      required
+                      value={descriptionRu}
+                      type="text"
+                      onChange={(e) => {
+                        setDescriptionRu(e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="col-12">
@@ -570,26 +615,13 @@ export default function Retsepts() {
             className="w-2/3 m-auto row colorr p-2 py-3 create-branch-form"
           >
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-              <span className="label--name font-bold">Nomi</span>
-              <Input
-                placeholder="Nomi"
-                type="text"
-                required
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
-            </div>
-
-            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-              <span className="label--name font-bold">Kategoriya</span>
+              <span className={`label--name font-bold ${errorCategory ? 'text-danger' : ''}`}>Kategoriya</span>
               <Select
                 mode="select"
                 placeholder="Kategoriya *"
                 showSearch
                 allowClear
-                required
+                required={true}
                 style={{
                   width: "100%",
                 }}
@@ -605,21 +637,7 @@ export default function Retsepts() {
               />
             </div>
 
-            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
-              <span className="label--name font-bold">Izoh</span>
-              <TextArea
-                rows={4}
-                placeholder="Izoh"
-                required
-                value={description}
-                type="text"
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-              />
-            </div>
-
-            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
               <span className="label--name font-bold">
                 Bog'liq kategoriyalar
               </span>
@@ -649,8 +667,58 @@ export default function Retsepts() {
               </Space>
             </div>
 
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+              <span className="label--name font-bold">Nomi *</span>
+              <Input
+                placeholder="Nomi"
+                type="text"
+                required
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+            </div>
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+              <span className="label--name font-bold">Nomi (ru) *</span>
+              <Input
+                placeholder="Название"
+                type="text"
+                required
+                value={nameRu}
+                onChange={(e) => {
+                  setNameRu(e.target.value);
+                }}
+              />
+            </div>
+
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
-              <span className="label--name font-bold">
+              <span className="label--name font-bold">Izoh</span>
+              <TextArea
+                rows={6}
+                placeholder="Izoh"
+                value={description}
+                type="text"
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                }}
+              />
+            </div>
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
+              <span className="label--name font-bold">Izoh (ru) </span>
+              <TextArea
+                rows={6}
+                placeholder="Комментарий"
+                value={descriptionRu}
+                type="text"
+                onChange={(e) => {
+                  setDescriptionRu(e.target.value);
+                }}
+              />
+            </div>
+
+            <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 my-3">
+              <span className={`label--name font-bold ${imgtrue ? 'text-danger' : ''} `}>
                 {" "}
                 Galleriya uchun rasmlar *
               </span>

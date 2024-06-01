@@ -11,6 +11,7 @@ export default function Aksiya() {
   const [submiting, setSubmiting] = useState(false);
   const [badge, setBadge] = useState("#000");
   const [text, setText] = useState("");
+  const [textRu, setTextRu] = useState("");
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,7 +37,8 @@ export default function Aksiya() {
     e.preventDefault();
     if (discount >= 1) {
       const formData = new FormData();
-      formData.append("text", text);
+      formData.append("text_uz", text);
+      formData.append("text_ru", textRu);
       formData.append("textColor", badge);
       formData.append("discount", discount);
       if (!relatedCategory?.[0]?.label) {
@@ -70,7 +72,8 @@ export default function Aksiya() {
   const handleSubmitAdd = async () => {
     if (discount >= 1) {
       const formData = new FormData();
-      formData.append("text", text);
+      formData.append("text_uz", text);
+      formData.append("text_ru", textRu);
       formData.append("textColor", badge);
       formData.append("discount", discount);
       formData.append("type", location.search.split("?")[1]);
@@ -90,7 +93,7 @@ export default function Aksiya() {
           }, 300);
         })
         .catch((err) => {
-          toast.error(err.response.data.map((el, i) => i + 1 + "." + el.msg));
+          toast.error(err?.response?.data?.map((el, i) => i + 1 + "." + el.msg));
         });
 
       setSubmiting(false);
@@ -130,7 +133,8 @@ export default function Aksiya() {
     )
       .then((res) => {
         setData(res);
-        setText(res.text);
+        setText(res.text_uz);
+        setTextRu(res.text_ru);
         setBadge(res.textColor);
         setDiscount(res.discount);
         // setImage(res.image);
@@ -178,17 +182,36 @@ export default function Aksiya() {
               onSubmit={handleSubmitEdit}
               className="w-1/2 m-auto flex mt-4 flex-col gap-4 colorr p-3 create-branch-form"
             >
-              <TextField
-                label="Aksiya matni"
-                variant="outlined"
-                size="large"
-                type="text"
-                required
-                value={text}
-                onChange={(e) => {
-                  setText(e.target.value);
-                }}
-              />
+              <div className="row">
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <TextField
+                    label="Aksiya matni"
+                    variant="outlined"
+                    size="large"
+                    type="text"
+                    required
+                    className="w-100"
+                    value={text}
+                    onChange={(e) => {
+                      setText(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <TextField
+                    label="Aksiya matni (ru) "
+                    variant="outlined"
+                    size="large"
+                    type="text"
+                    required
+                    className="w-100"
+                    value={textRu}
+                    onChange={(e) => {
+                      setTextRu(e.target.value);
+                    }}
+                  />
+                </div>
+              </div>
               <TextField
                 label="Aksiya rangi"
                 variant="outlined"
@@ -273,17 +296,36 @@ export default function Aksiya() {
             onFinish={(e) => handleSubmitAdd(e)}
             className="w-1/2 m-auto  flex flex-col gap-4 colorr p-3 create-branch-form"
           >
-            <TextField
-              label="Aksiya nomi"
-              variant="outlined"
-              size="large"
-              type="text"
-              required
-              value={text}
-              onChange={(e) => {
-                setText(e.target.value);
-              }}
-            />
+            <div className="row">
+              <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                <TextField
+                  label="Aksiya nomi"
+                  variant="outlined"
+                  size="large"
+                  type="text"
+                  required
+                  className="w-100"
+                  value={text}
+                  onChange={(e) => {
+                    setText(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                <TextField
+                  label="Aksiya nomi (ru)"
+                  variant="outlined"
+                  size="large"
+                  type="text"
+                  required
+                  className="w-100 mt-2 m-xxl-0 m-xl-0 m-lg-0 m-md-0 m-sm-0 "
+                  value={textRu}
+                  onChange={(e) => {
+                    setTextRu(e.target.value);
+                  }}
+                />
+              </div>
+            </div>
             <TextField
               label="Aksiya rangi"
               variant="outlined"

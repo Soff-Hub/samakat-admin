@@ -43,7 +43,7 @@ export default function Dashboard() {
                   <i class="fa-solid fa-chart-line"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>{data?.todays_amount}</h6>
+                  <h6>{data?.total_today_amount}</h6>
                   <span class="text-success small pt-1 fw-bold">so'm</span>{" "}
                   {/* <span class="text-muted small pt-2 ps-1">increase</span> */}
                 </div>
@@ -64,7 +64,7 @@ export default function Dashboard() {
                   <i class="bi bi-currency-dollar"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>{data?.total_amount}</h6>
+                  <h6>{data?.total_today_profit}</h6>
                   <span class="text-success small pt-1 fw-bold">so'm</span>{" "}
                   {/* <span class="text-muted small pt-2 ps-1">increase</span> */}
                 </div>
@@ -85,7 +85,7 @@ export default function Dashboard() {
                   <i class="bi bi-cash-coin"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>{data?.total_for_last_month}</h6>
+                  <h6>{data?.total_last_thirty_days_amount}</h6>
                   <span class="text-danger small pt-1 fw-bold">so'm</span>{" "}
                 </div>
               </div>
@@ -105,7 +105,7 @@ export default function Dashboard() {
                   <i class="fa-solid fa-money-bill-trend-up"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>{data?.total_sold_products}</h6>
+                  <h6>{data?.total_last_thirty_days_profit}</h6>
                   <span class="text-danger small pt-1 fw-bold">so'm</span>{" "}
                 </div>
               </div>
