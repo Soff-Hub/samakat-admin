@@ -108,7 +108,7 @@ export default function Settings() {
           cancelText="Ortga"
           okButtonProps={{
             style: {
-              backgroundColor: "#3B82F6",
+              backgroundColor: "#000",
               color: "white",
             },
           }}
