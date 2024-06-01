@@ -285,7 +285,12 @@ console.log('addHandleImageData', selectImage, imgtrue);
             <Link to="/retsepts">
               <Button
                 variant="contained"
-                color="info"
+                sx={{ 
+                  background: "#000",
+                  '&:hover': {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  }
+                }}
                 size="large"
                 startIcon={<ArrowBackIcon />}
               >
@@ -562,7 +567,13 @@ console.log('addHandleImageData', selectImage, imgtrue);
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <Fab
                       onClick={() => addImageInput(imageData2.length + 1)}
-                      color="primary"
+                      sx={{ 
+                        background: "#000",
+                        color: "#fff",
+                        '&:hover': {
+                          backgroundColor: "#333", // Change this to the desired hover color
+                        }
+                      }}
                       aria-label="add"
                     >
                       <AddIcon />
@@ -577,11 +588,31 @@ console.log('addHandleImageData', selectImage, imgtrue);
                   checked={checked}
                   onChange={handleChangeActive}
                   inputProps={{ "aria-label": "controlled" }}
+                  sx={{
+                    '& .MuiSwitch-switchBase': {
+                      color: '#000', // Color of the thumb when the switch is unchecked
+                      '&.Mui-checked': {
+                        color: '#000', // Color of the thumb when the switch is checked
+                      },
+                      '&.Mui-checked + .MuiSwitch-track': {
+                        backgroundColor: '#000', // Color of the track when the switch is checked
+                      },
+                    },
+                    '& .MuiSwitch-track': {
+                      backgroundColor: '#000', // Color of the track when the switch is unchecked
+                    },
+                  }}
                 />
               </div>
 
               <Button
-                variant="outlined"
+                variant="contained"
+                sx={{ 
+                  background: "#000",
+                  '&:hover': {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  }
+                }}
                 size="large"
                 type="submit"
                 disabled={submiting}
@@ -848,7 +879,13 @@ console.log('addHandleImageData', selectImage, imgtrue);
                     onClick={() =>
                       addImageInputPost(addHandleImageData.length + 1)
                     }
-                    color="primary"
+                    sx={{ 
+                      background: "#000",
+                      color: "#fff",
+                      '&:hover': {
+                        backgroundColor: "#333", // Change this to the desired hover color
+                      }
+                    }}
                     aria-label="add"
                   >
                     <AddIcon />
@@ -863,14 +900,34 @@ console.log('addHandleImageData', selectImage, imgtrue);
                 checked={checked}
                 onChange={handleChangeActive}
                 inputProps={{ "aria-label": "controlled" }}
+                sx={{
+                  '& .MuiSwitch-switchBase': {
+                    color: '#000', // Color of the thumb when the switch is unchecked
+                    '&.Mui-checked': {
+                      color: '#000', // Color of the thumb when the switch is checked
+                    },
+                    '&.Mui-checked + .MuiSwitch-track': {
+                      backgroundColor: '#000', // Color of the track when the switch is checked
+                    },
+                  },
+                  '& .MuiSwitch-track': {
+                    backgroundColor: '#000', // Color of the track when the switch is unchecked
+                  },
+                }}
               />
             </div>
 
             <Button
-              variant="outlined"
+              variant="contained"
               size="large"
               type="submit"
               disabled={submiting}
+              sx={{ 
+                background: "#000",
+                '&:hover': {
+                  backgroundColor: "#333", // Change this to the desired hover color
+                }
+              }}
             >
               {submiting ? "Qo'shilmoqda" : "Qo'shish"}
             </Button>
