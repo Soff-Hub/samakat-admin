@@ -11,7 +11,6 @@ import toast, { Toaster } from "react-hot-toast";
 import AddInput from "components/shared/addInput";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TextArea from "antd/es/input/TextArea";
-import Test from "./test";
 import AddInputThree from "components/shared/addInputThree";
 
 export default function Products() {
@@ -1024,7 +1023,13 @@ export default function Products() {
                             onClick={() =>
                               addImageInputUpdate(imageData2.length + 1)
                             }
-                            color="primary"
+                            sx={{ 
+                              background: "#000",
+                              color:'#fff',
+                              '&:hover': {
+                                backgroundColor: "#333", // Change this to the desired hover color
+                              }
+                            }}
                             aria-label="add"
                           >
                             <AddIcon />
@@ -1350,11 +1355,31 @@ export default function Products() {
                   defaultChecked={editData?.on_sale || on_sale}
                   onChange={handleChangeActiveShop}
                   inputProps={{ "aria-label": "controlled" }}
+                  sx={{
+                    '& .MuiSwitch-switchBase': {
+                      color: '#000', // Color of the thumb when the switch is unchecked
+                      '&.Mui-checked': {
+                        color: '#000', // Color of the thumb when the switch is checked
+                      },
+                      '&.Mui-checked + .MuiSwitch-track': {
+                        backgroundColor: '#000', // Color of the track when the switch is checked
+                      },
+                    },
+                    '& .MuiSwitch-track': {
+                      backgroundColor: '#000', // Color of the track when the switch is unchecked
+                    },
+                  }}
                 />
               </div>
 
               <Button
-                variant="outlined"
+                variant="contained"
+                sx={{ 
+                  background: "#000",
+                  '&:hover': {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  }
+                }}
                 size="large"
                 type="submit"
                 disabled={submiting}
@@ -1370,7 +1395,12 @@ export default function Products() {
             <Link to="/products">
               <Button
                 variant="contained"
-                color="info"
+                sx={{ 
+                  background: "#000",
+                  '&:hover': {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  }
+                }}
                 size="large"
                 startIcon={<ArrowBackIcon />}
               >
@@ -1596,7 +1626,7 @@ export default function Products() {
               ""
             )}
             {discount || price ? (
-              <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
+              <div className="bg-[#000] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
                   <p>
                     {Math.round(price - prosent(discount))} <del>{price}</del>{" "}
@@ -2362,7 +2392,13 @@ export default function Products() {
               </div>
 
               <Button
-                variant="outlined"
+                variant="contained"
+                sx={{ 
+                  background: "#000",
+                  '&:hover': {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  }
+                }}
                 size="large"
                 type="submit"
                 disabled={submiting}
@@ -2379,6 +2415,12 @@ export default function Products() {
             <Link to="/products">
               <Button
                 variant="contained"
+                sx={{ 
+                  background: "#000",
+                  '&:hover': {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  }
+                }}
                 color="info"
                 size="large"
                 startIcon={<ArrowBackIcon />}
@@ -2609,7 +2651,7 @@ export default function Products() {
               ""
             )}
             {discount || price ? (
-              <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
+              <div className="bg-[#000] my-2 rounded p-2 text-center text-white ">
                 {discount ? (
                   <p>
                     {Math.round(price - prosent(discount))}{" "}
@@ -3018,7 +3060,13 @@ export default function Products() {
                           onClick={() =>
                             addImageInput(addHandleImageData.length + 1)
                           }
-                          color="primary"
+                          sx={{ 
+                            background: "#000",
+                            color: "#fff",
+                            '&:hover': {
+                              backgroundColor: "#333", // Change this to the desired hover color
+                            }
+                          }}
                           aria-label="add"
                         >
                           <AddIcon />
@@ -3360,7 +3408,13 @@ export default function Products() {
             </div>
 
             <Button
-              variant="outlined"
+              variant="contained"
+              sx={{ 
+                background: "#000",
+                '&:hover': {
+                  backgroundColor: "#333", // Change this to the desired hover color
+                }
+              }}
               size="large"
               type="submit"
               disabled={submiting}
@@ -3568,7 +3622,7 @@ export default function Products() {
           )}
 
           {price ? (
-            <div className="bg-[#3B82F6] my-2 rounded p-2 text-center text-white ">
+            <div className="bg-[#000] my-2 rounded p-2 text-center text-white ">
               {discount ? (
                 <p>
                   {Math.round(price - prosent(discount))} <del>{price}</del>{" "}
