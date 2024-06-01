@@ -15,6 +15,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { useTheme } from "contexts/themeContex";
+import { Input } from "antd";
 
 function Login() {
   const [submiting, setSubmiting] = useState(false);
@@ -175,7 +176,7 @@ function Login() {
         <h1 className="text-[35px] pb-3">Filial tahrirlash</h1>
         <Link to="/branches">
           <Button
-            variant="contained"       
+            variant="contained"
             size="large"
             startIcon={<ArrowBackIcon />}
           >
@@ -215,73 +216,80 @@ function Login() {
           </div>
           <form
             onSubmit={handleSubmitEdit}
-            className={`w-1/3 flex flex-col gap-5 create-branch-form  p-3 ${theme.palette.mode === "light" ? "colorr" : "colorr-b"} `}
+            className={`w-1/3 flex flex-col gap-3 create-branch-form  p-3 ${
+              theme.palette.mode === "light" ? "colorr" : "colorr-b text-[#fff]"
+            } `}
           >
-            <TextField
-              label="Filial nomi"
-              variant="filled"
-              size="large"
-              type="text"
-              required
-              value={formVal.name}
-              onChange={(e) => {
-                setFormVal((c) => ({ ...c, name: e.target.value }));
-              }}
-              helperText="Filial nomi"
-            />
-            <TextField
-              label="Aniq manzil"
-              variant="filled"
-              size="large"
-              required
-              value={formVal.address}
-              onChange={(e) => {
-                setFormVal((c) => ({ ...c, address: e.target.value }));
-              }}
-              helperText="Aniq manzil"
-              type="text"
-            />
-            <TextField
-              label="Kenglik"
-              variant="filled"
-              size="large"
-              name="latitude"
-              required
-              value={formVal.latitude}
-              onChange={(e) => {
-                setPosition((c) => ({
-                  ...c,
-                  lat: Number(e.target.value),
-                }));
-                setdefaultCenter((c) => ({
-                  ...c,
-                  lat: Number(e.target.value),
-                }));
-                setFormVal((c) => ({ ...c, latitude: e.target.value }));
-              }}
-              helperText="Kenglik"
-              type="number"
-            />
-            <TextField
-              label="Uzunlik"
-              variant="filled"
-              size="large"
-              required
-              value={formVal.longitude}
-              onChange={(e) => {
-                setPosition((c) => ({
-                  ...c,
-                  lng: Number(e.target.value),
-                }));
-                setdefaultCenter((c) => ({
-                  ...c,
-                  lng: Number(e.target.value),
-                }));
-                setFormVal((c) => ({ ...c, longitude: e.target.value }));
-              }}
-              helperText="Uzunlik"
-              type="number"
-            />
+            <div>
+              <span className="p-1 font-medium text-sm">Filial nomi *</span>
+              <Input
+                size="large"
+                type="text"
+                placeholder="Filial nomi"
+                required
+                value={formVal.name}
+                onChange={(e) => {
+                  setFormVal((c) => ({ ...c, name: e.target.value }));
+                }}
+              />
+            </div>
+            <div>
+              <span className="p-1 font-medium text-sm">Aniq manzil *</span>
+              <Input
+                size="large"
+                type="text"
+                placeholder="Aniq manzil"
+                required
+                value={formVal.address}
+                onChange={(e) => {
+                  setFormVal((c) => ({ ...c, address: e.target.value }));
+                }}
+              />
+            </div>
+            <div>
+              <span className="p-1 font-medium text-sm">Kenglik *</span>
+              <Input
+                size="large"
+                type="number"
+                placeholder="Kenglik"
+                name="latitude"
+                required
+                value={formVal.latitude}
+                onChange={(e) => {
+                  setPosition((c) => ({
+                    ...c,
+                    lat: Number(e.target.value),
+                  }));
+                  setdefaultCenter((c) => ({
+                    ...c,
+                    lat: Number(e.target.value),
+                  }));
+                  setFormVal((c) => ({ ...c, latitude: e.target.value }));
+                }}
+              />
+            </div>
+            <div>
+              <span className="p-1 font-medium text-sm">Uzunlik *</span>
+              <Input
+                size="large"
+                type="number"
+                placeholder="Uzunlik"
+                name="latitude"
+                required
+                value={formVal.longitude}
+                onChange={(e) => {
+                  setPosition((c) => ({
+                    ...c,
+                    lng: Number(e.target.value),
+                  }));
+                  setdefaultCenter((c) => ({
+                    ...c,
+                    lng: Number(e.target.value),
+                  }));
+                  setFormVal((c) => ({ ...c, longitude: e.target.value }));
+                }}
+              />
+            </div>
             <Button
               variant="contained"
               color="primary"
@@ -308,7 +316,7 @@ function Login() {
       )}
     </div>
   ) : (
-    <div className="py-3 px-2"  >
+    <div className="py-3 px-2">
       <h1 className="text-[35px] pb-3">Filial qo'shish</h1>
       <Toaster />
       <div className="flex gap-5">
@@ -341,73 +349,80 @@ function Login() {
         </div>
         <form
           onSubmit={handleSubmit}
-          className={`w-1/3 flex flex-col gap-5 create-branch-form p-2 ${theme.palette.mode === "light" ? "colorr" : "colorr-b"} `}
+          className={`w-1/3 flex flex-col gap-3 create-branch-form p-2 ${
+            theme.palette.mode === "light" ? "colorr" : "colorr-b text-[#fff]"
+          } `}
         >
-          <TextField
-            label="Filial nomi"
-            variant="filled"
-            size="large"
-            type="text"
-            required
-            value={formVal.name}
-            onChange={(e) => {
-              setFormVal((c) => ({ ...c, name: e.target.value }));
-            }}
-            helperText="Filial nomi"
-          />
-          <TextField
-            label="Aniq manzil"
-            variant="filled"
-            size="large"
-            required
-            value={formVal.address}
-            onChange={(e) => {
-              setFormVal((c) => ({ ...c, address: e.target.value }));
-            }}
-            type="text"
-            helperText="Aniq manzil"
-          />
-          <TextField
-            label="Kenglik"
-            variant="filled"
-            size="large"
-            name="latitude"
-            required
-            value={formVal.latitude}
-            onChange={(e) => {
-              setPosition((c) => ({
-                ...c,
-                lat: Number(e.target.value),
-              }));
-              setdefaultCenter((c) => ({
-                ...c,
-                lat: Number(e.target.value),
-              }));
-              setFormVal((c) => ({ ...c, latitude: e.target.value }));
-            }}
-            type="number"
-            helperText="Kenglik"
-          />
-          <TextField
-            label="Uzunlik"
-            variant="filled"
-            size="large"
-            required
-            value={formVal.longitude}
-            onChange={(e) => {
-              setPosition((c) => ({
-                ...c,
-                lng: Number(e.target.value),
-              }));
-              setdefaultCenter((c) => ({
-                ...c,
-                lng: Number(e.target.value),
-              }));
-              setFormVal((c) => ({ ...c, longitude: e.target.value }));
-            }}
-            type="number"
-            helperText="Uzunlik"
-          />
+          <div>
+            <span className="p-1 font-medium text-sm">Filial nomi *</span>
+            <Input
+              size="large"
+              type="text"
+              placeholder="Filial nomi"
+              required
+              value={formVal.name}
+              onChange={(e) => {
+                setFormVal((c) => ({ ...c, name: e.target.value }));
+              }}
+            />
+          </div>
+          <div>
+            <span className="p-1 font-medium text-sm">Aniq manzil *</span>
+            <Input
+              size="large"
+              type="text"
+              placeholder="Aniq manzil"
+              required
+              value={formVal.address}
+              onChange={(e) => {
+                setFormVal((c) => ({ ...c, address: e.target.value }));
+              }}
+            />
+          </div>
+          <div>
+            <span className="p-1 font-medium text-sm">Kenglik *</span>
+            <Input
+              size="large"
+              type="number"
+              placeholder="Kenglik"
+              name="latitude"
+              required
+              value={formVal.latitude}
+              onChange={(e) => {
+                setPosition((c) => ({
+                  ...c,
+                  lat: Number(e.target.value),
+                }));
+                setdefaultCenter((c) => ({
+                  ...c,
+                  lat: Number(e.target.value),
+                }));
+                setFormVal((c) => ({ ...c, latitude: e.target.value }));
+              }}
+            />
+          </div>
+          <div>
+            <span className="p-1 font-medium text-sm">Uzunlik *</span>
+            <Input
+              size="large"
+              type="number"
+              placeholder="Uzunlik"
+              name="latitude"
+              required
+              value={formVal.longitude}
+              onChange={(e) => {
+                setPosition((c) => ({
+                  ...c,
+                  lng: Number(e.target.value),
+                }));
+                setdefaultCenter((c) => ({
+                  ...c,
+                  lng: Number(e.target.value),
+                }));
+                setFormVal((c) => ({ ...c, longitude: e.target.value }));
+              }}
+            />
+          </div>
           <Button
             variant="contained"
             color="primary"
