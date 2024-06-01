@@ -11,9 +11,14 @@ export default function NavHeader({ title }) {
         <Link to={"actions/?bistro"}>
           <Button
             variant="contained"
-            color="primary"
             startIcon={<AddIcon />}
             size="large"
+            sx={{ 
+              background: "#000",
+              '&:hover': {
+                backgroundColor: "#333", // Change this to the desired hover color
+              }
+            }}
           >
             Qo'shish
           </Button>

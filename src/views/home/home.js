@@ -156,7 +156,7 @@ export default function MiniDrawer() {
     <Box sx={{ display: "flex", minWidth: 650 }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar className="bg-blue-500">
+        <Toolbar className="bg-black">
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -191,7 +191,7 @@ export default function MiniDrawer() {
                   disablePadding
                   sx={{ display: "block" }}
                   className={
-                    item.name === currentPage ? "bg-blue-500 text-white" : ""
+                    item.name === currentPage ? "bg-black text-white" : ""
                   }
                 >
                   <Link to={item.path}>
@@ -213,8 +213,14 @@ export default function MiniDrawer() {
                         {item.icon}
                       </ListItemIcon>
                       <ListItemText
+                       sx={{
+                        minWidth: 0,
+                        mr: open ? 1 : "auto",
+                        justifyContent: "center",
+                        color: item.name === currentPage ? "#fff" : "",
+                        opacity: open ? 1 : 0
+                      }}
                         primary={item.name}
-                        sx={{ opacity: open ? 1 : 0 }}
                       />
                     </ListItemButton>
                   </Link>
