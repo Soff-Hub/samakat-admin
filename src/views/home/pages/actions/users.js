@@ -47,7 +47,12 @@ export default function Users() {
         <Link to="/users">
           <Button
             variant="contained"
-            color="info"
+            sx={{ 
+              background: "#000",
+              '&:hover': {
+                backgroundColor: "#333", // Change this to the desired hover color
+              }
+            }}
             size="large"
             startIcon={<ArrowBackIcon />}
           >
