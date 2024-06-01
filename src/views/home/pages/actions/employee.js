@@ -146,7 +146,7 @@ function Employee() {
       ) : (
         <form
           id="create-form"
-          className="employee_form"
+          className={` ${theme.palette.mode === "light" ? "employee_form" : "employee_form-b"} `}
           onSubmit={handleSubmit(onUpdate)}
         >
           <div>
