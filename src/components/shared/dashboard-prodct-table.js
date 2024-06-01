@@ -1,3 +1,4 @@
+import { useTheme } from "contexts/themeContex";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import Client from "service/Client";
 
 export default function DashboardProdctTable() {
   const [data, setData] = useState([]);
+  const { theme } = useTheme();
 
   const DashboardProduct = async () => {
     await Client.get(API_ENDPOINTS.DASHBOARD_ORDER)
@@ -21,16 +23,28 @@ export default function DashboardProdctTable() {
     DashboardProduct();
   }, []);
   return (
-    <div className="ro my-3 px-3">
-      <div class="co-12">
-        <div class="card recent-sales overflow-auto">
+    <div className="ro my-3 px-3 ">
+      <div class="co-12 ">
+        <div
+          class={`card recent-sales overflow-auto   ${
+            theme.palette.mode === "light" ? "" : "text-white bg-black"
+          } `}
+        >
           <div class="card-body">
-            <h5 class="card-title">
+            <h5
+              class={` ${
+                theme.palette.mode === "light" ? "card-title" : "card-title-b"
+              }`}
+            >
               {" "}
               Buyurtmalar <span>| Bugun</span>
             </h5>
 
-            <table class="table table-borderless datatable">
+            <table
+              class={`table table-borderless datatable  ${
+                theme.palette.mode === "light" ? "" : "table-mod"
+              } `}
+            >
               <thead>
                 <tr
                   style={{
@@ -56,14 +70,14 @@ export default function DashboardProdctTable() {
                       <a href="#">{el?.id}</a>
                     </th>
                     <td>{el?.branch?.name}</td>
-                    
+
                     <td>
                       <span class="text-primary">
                         {el?.is_paid ? "To'langan" : "To'lanmagan"}
                       </span>
                     </td>
                     <td>{el?.total_amount} so'm</td>
-                    <td>{el?.created_at?.substring(0,10)}</td>
+                    <td>{el?.created_at?.substring(0, 10)}</td>
                     <td>
                       {el?.status === "cancelled" ? (
                         <span class="badge bg-danger">Bekor qilingan</span>

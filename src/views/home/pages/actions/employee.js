@@ -9,11 +9,13 @@ import Client from "service/Client";
 import toast, { Toaster } from "react-hot-toast";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { useEffect } from "react";
+import { useTheme } from "contexts/themeContex";
 
 function Employee() {
   const [submit, setSubmit] = useState(false);
   const query = useParams();
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const { reset, control, handleSubmit, setValue } = useForm({
     defaultValues: {
       first_name: "",
@@ -86,7 +88,7 @@ function Employee() {
         <Link to="/employee">
           <Button
             variant="contained"
-            color="info"
+            color="primary"
             size="large"
             startIcon={<ArrowBackIcon />}
           >
@@ -95,7 +97,7 @@ function Employee() {
         </Link>
       </div>
       {!query["*"] ? (
-        <form className="employee_form" onSubmit={handleSubmit(onSubmit)}>
+        <form className={` ${theme.palette.mode === "light" ? "employee_form" : "employee_form-b"} `} onSubmit={handleSubmit(onSubmit)}>
           <div>
             <p>Ism</p>
             <Controller

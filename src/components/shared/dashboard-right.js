@@ -1,3 +1,4 @@
+import { useTheme } from "contexts/themeContex";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import Client from "service/Client";
 
 function DashboarRight() {
   const [data, setData] = useState([]);
+  const { theme } = useTheme();
 
   const DashboardProduct = async () => {
     await Client.get(API_ENDPOINTS.DASHBOARD_PRODUCT)
@@ -22,22 +24,13 @@ function DashboarRight() {
   }, []);
 
   return (
-    <div class="card">
-      {/* <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div> */}
-
+    <div class={`card  ${ theme.palette.mode === "light"
+    ? " "
+    : "bg-black text-white"} `}>
       <div class="card-body">
-        <h5 class="card-title">
+        <h5  class={` ${
+                  theme.palette.mode === "light" ? "card-title" : "card-title-b"
+                }`} >
           Ommabop mahsulotlar <span>| Bugun</span>
         </h5>
         <div class="activity">

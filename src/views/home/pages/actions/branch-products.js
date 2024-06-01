@@ -5,12 +5,14 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Select } from "antd";
+import { Input, Select } from "antd";
+import { useTheme } from "contexts/themeContex";
 
 export default function Retsepts() {
   const [submiting, setSubmiting] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme } = useTheme();
 
   const [editData, setEditData] = useState(null);
   const [branchData, setBranchData] = useState([]);
@@ -174,7 +176,7 @@ export default function Retsepts() {
           <Link to="/branch-products">
             <Button
               variant="contained"
-              color="info"
+              color="primary"
               size="large"
               startIcon={<ArrowBackIcon />}
             >
@@ -188,7 +190,9 @@ export default function Retsepts() {
             <div className="flex gap-5">
               <form
                 onSubmit={handleSubmitEdit}
-                className="w-full flex flex-col gap-4 colorr p-3 create-branch-form"
+                className={`w-full flex flex-col gap-4 colorr p-3 create-branch-form ${
+                  theme.palette.mode === "light" ? "colorr" : "colorr-b"
+                } `}
               >
                 <div>
                   <label className="text-slate-400">Filial :</label>
@@ -232,21 +236,21 @@ export default function Retsepts() {
                     options={productOption}
                   ></Select>
                 </div>
-
-                <TextField
-                  label="Soni"
-                  variant="outlined"
-                  size="small"
-                  type="number"
-                  defaultValue={editData?.quantity}
-                  sx={{ minWidth: 120 }}
-                  onChange={(e) => {
-                    setQuantity(e.target.value);
-                  }}
-                />
+                <div>
+                  <label className="text-slate-400">Soni :</label>
+                  <Input
+                    size="large"
+                    type="number"
+                    defaultValue={editData?.quantity}
+                    onChange={(e) => {
+                      setQuantity(e.target.value);
+                    }}
+                    placeholder="Soni"
+                  />
+                </div>
 
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   size="large"
                   type="submit"
                   disabled={submiting}
@@ -286,7 +290,9 @@ export default function Retsepts() {
         <div className="flex gap-5">
           <form
             onSubmit={handleSubmitAdd}
-            className="w-full flex flex-col gap-4 create-branch-form colorr p-3"
+            className={`w-full flex flex-col gap-4 create-branch-form p-3 ${
+              theme.palette.mode === "light" ? "colorr" : "colorr-b"
+            } `}
           >
             <Select
               mode="select"
@@ -319,19 +325,18 @@ export default function Retsepts() {
               }`}
               options={productOption}
             ></Select>
-            <TextField
-              label="Soni"
-              variant="outlined"
-              size="small"
-              type="number"
+            <Input
               value={quantity}
-              sx={{ minWidth: 120 }}
+              size="large"
+              type="number"
               onChange={(e) => {
                 setQuantity(e.target.value);
               }}
+              placeholder="Soni"
             />
             <Button
-              variant="outlined"
+              variant="contained"
+              color="primary"
               size="large"
               type="submit"
               disabled={submiting}

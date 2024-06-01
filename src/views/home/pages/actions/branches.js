@@ -14,6 +14,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import { useTheme } from "contexts/themeContex";
 
 function Login() {
   const [submiting, setSubmiting] = useState(false);
@@ -26,6 +27,7 @@ function Login() {
   const [itemData, setItemData] = useState(null);
   const query = useParams();
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const [defaultCenter, setdefaultCenter] = useState({
     lat: 41.39117141852333442,
@@ -173,8 +175,7 @@ function Login() {
         <h1 className="text-[35px] pb-3">Filial tahrirlash</h1>
         <Link to="/branches">
           <Button
-            variant="contained"
-            color="info"
+            variant="contained"       
             size="large"
             startIcon={<ArrowBackIcon />}
           >
@@ -214,11 +215,11 @@ function Login() {
           </div>
           <form
             onSubmit={handleSubmitEdit}
-            className="w-1/3 flex flex-col gap-5 create-branch-form colorr p-3 "
+            className={`w-1/3 flex flex-col gap-5 create-branch-form  p-3 ${theme.palette.mode === "light" ? "colorr" : "colorr-b"} `}
           >
             <TextField
               label="Filial nomi"
-              variant="outlined"
+              variant="filled"
               size="large"
               type="text"
               required
@@ -226,21 +227,23 @@ function Login() {
               onChange={(e) => {
                 setFormVal((c) => ({ ...c, name: e.target.value }));
               }}
+              helperText="Filial nomi"
             />
             <TextField
               label="Aniq manzil"
-              variant="outlined"
+              variant="filled"
               size="large"
               required
               value={formVal.address}
               onChange={(e) => {
                 setFormVal((c) => ({ ...c, address: e.target.value }));
               }}
+              helperText="Aniq manzil"
               type="text"
             />
             <TextField
               label="Kenglik"
-              variant="outlined"
+              variant="filled"
               size="large"
               name="latitude"
               required
@@ -256,11 +259,12 @@ function Login() {
                 }));
                 setFormVal((c) => ({ ...c, latitude: e.target.value }));
               }}
+              helperText="Kenglik"
               type="number"
             />
             <TextField
               label="Uzunlik"
-              variant="outlined"
+              variant="filled"
               size="large"
               required
               value={formVal.longitude}
@@ -275,14 +279,15 @@ function Login() {
                 }));
                 setFormVal((c) => ({ ...c, longitude: e.target.value }));
               }}
+              helperText="Uzunlik"
               type="number"
             />
             <Button
               variant="contained"
               color="primary"
               size="large"
-              startIcon={<SaveIcon />}
               type="submit"
+              startIcon={<SaveIcon />}
               disabled={submiting}
             >
               {submiting ? "Saqlanmoqda..." : "Saqlash"}
@@ -336,11 +341,11 @@ function Login() {
         </div>
         <form
           onSubmit={handleSubmit}
-          className="w-1/3 flex flex-col gap-5 create-branch-form colorr p-2"
+          className={`w-1/3 flex flex-col gap-5 create-branch-form p-2 ${theme.palette.mode === "light" ? "colorr" : "colorr-b"} `}
         >
           <TextField
             label="Filial nomi"
-            variant="outlined"
+            variant="filled"
             size="large"
             type="text"
             required
@@ -348,10 +353,11 @@ function Login() {
             onChange={(e) => {
               setFormVal((c) => ({ ...c, name: e.target.value }));
             }}
+            helperText="Filial nomi"
           />
           <TextField
             label="Aniq manzil"
-            variant="outlined"
+            variant="filled"
             size="large"
             required
             value={formVal.address}
@@ -359,10 +365,11 @@ function Login() {
               setFormVal((c) => ({ ...c, address: e.target.value }));
             }}
             type="text"
+            helperText="Aniq manzil"
           />
           <TextField
             label="Kenglik"
-            variant="outlined"
+            variant="filled"
             size="large"
             name="latitude"
             required
@@ -379,10 +386,11 @@ function Login() {
               setFormVal((c) => ({ ...c, latitude: e.target.value }));
             }}
             type="number"
+            helperText="Kenglik"
           />
           <TextField
             label="Uzunlik"
-            variant="outlined"
+            variant="filled"
             size="large"
             required
             value={formVal.longitude}
@@ -398,9 +406,11 @@ function Login() {
               setFormVal((c) => ({ ...c, longitude: e.target.value }));
             }}
             type="number"
+            helperText="Uzunlik"
           />
           <Button
-            variant="outlined"
+            variant="contained"
+            color="primary"
             size="large"
             type="submit"
             disabled={submiting}

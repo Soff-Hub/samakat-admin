@@ -14,7 +14,13 @@ body {
     --background-color: #121212; /* Dark theme background */
   }
   
-
+.table-mod thead tr{
+    color: #fff;
+}
+  
+.table-mod tbody tr{
+    color: #fff;
+}
 
 .login-page {
     height: 100vh;
@@ -370,6 +376,12 @@ body {
     font-weight: 400;
 }
 
+.card-title-b span {
+    color: #899bbd;
+    font-size: 14px;
+    font-weight: 400;
+}
+
 .card-body {
     padding: 0 20px 20px 20px;
 }
@@ -426,7 +438,7 @@ body {
     padding-bottom: 10px;
 }
 
-.dashboard .info-card h6 {
+.dashboard .in  fo-card h6 {
     font-size: 28px;
     color: #012970;
     font-weight: 700;
@@ -524,6 +536,24 @@ html body #root .App{
     font-weight: 400;
     font-size: 15px;
     color: #000;
+}
+
+.employee_form-b{
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #000;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.employee_form-b div p{
+    font-weight: 400;
+    font-size: 15px;
+    color: #fff;
 }
 
 

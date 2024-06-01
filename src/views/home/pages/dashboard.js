@@ -34,9 +34,25 @@ export default function Dashboard() {
     >
       <div className="row px-3">
         <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 ">
-          <div class={`card info-card sales-card `}>
-            <div class={`card-body ${theme.palette.mode === 'light' ? 'bg-[#fff]' : 'bg-[#000] text-[#fff]' } `}>
-              <h5 class={` ${theme.palette.mode === 'light' ? 'card-title' : 'card-title-b' }`}>
+          <div
+            class={`card  sales-card  ${
+              theme.palette.mode === "light"
+                ? "bg-[#fff] info-card"
+                : "bg-black text-[#fff] info-card-b "
+            } `}
+          >
+            <div
+              class={`card-body ${
+                theme.palette.mode === "light"
+                  ? "bg-[#fff]"
+                  : "bg-[#000] text-[#fff]"
+              } `}
+            >
+              <h5
+                class={` ${
+                  theme.palette.mode === "light" ? "card-title" : "card-title-b"
+                }`}
+              >
                 Daromad <span>| Bugun</span>
               </h5>
 
@@ -55,9 +71,25 @@ export default function Dashboard() {
         </div>
 
         <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-          <div class="card info-card revenue-card">
-            <div class="card-body">
-              <h5 class="card-title">
+          <div
+            class={`card  revenue-card ${
+              theme.palette.mode === "light"
+                ? "bg-[#fff] info-card"
+                : "bg-black text-[#fff] info-card-b"
+            } `}
+          >
+            <div
+              class={`card-body ${
+                theme.palette.mode === "light"
+                  ? "bg-[#fff]"
+                  : "bg-[#000] text-[#fff]"
+              } `}
+            >
+              <h5
+                className={` ${
+                  theme.palette.mode === "light" ? "card-title" : "card-title-b"
+                }`}
+              >
                 Soff foyda <span>| Bugungi</span>
               </h5>
 
@@ -76,9 +108,25 @@ export default function Dashboard() {
         </div>
 
         <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-          <div class="card info-card customers-card">
-            <div class="card-body">
-              <h5 class="card-title">
+          <div
+            class={`card customers-card ${
+              theme.palette.mode === "light"
+                ? "bg-[#fff] info-card"
+                : "bg-black text-[#fff] info-card-b"
+            } `}
+          >
+            <div
+              class={`card-body  ${
+                theme.palette.mode === "light"
+                  ? "bg-[#fff]"
+                  : "bg-[#000] text-[#fff]"
+              } `}
+            >
+              <h5
+                class={` ${
+                  theme.palette.mode === "light" ? "card-title" : "card-title-b"
+                }`}
+              >
                 Daromad <span>| Oxirgi 30 kunlik</span>
               </h5>
 
@@ -96,9 +144,25 @@ export default function Dashboard() {
         </div>
 
         <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
-          <div class="card info-card customers-card2">
-            <div class="card-body">
-              <h5 class="card-title">
+          <div
+            class={`card customers-card2 ${
+              theme.palette.mode === "light"
+                ? "bg-[#fff] info-card"
+                : "bg-black text-[#fff] info-card-b"
+            } `}
+          >
+            <div
+              class={`card-body  ${
+                theme.palette.mode === "light"
+                  ? "bg-[#fff]"
+                  : "bg-[#000] text-[#fff]"
+              } `}
+            >
+              <h5
+                class={` ${
+                  theme.palette.mode === "light" ? "card-title" : "card-title-b"
+                }`}
+              >
                 Soff foyda <span>| Oxirgi 30 kunlik</span>
               </h5>
 

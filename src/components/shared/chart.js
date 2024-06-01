@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { Select } from "antd";
+import { useTheme } from "contexts/themeContex";
 
 const ChartComponent = () => {
   const [options, setOptions] = useState({});
   const [series, setSeries] = useState([]);
   const [year, setYear] = useState(null);
   const [value, setValue] = useState("daromad");
-
-
+  const { theme } = useTheme();
 
   const getYear = async () => {
     await Client.get(API_ENDPOINTS.YEAR)
@@ -44,9 +44,9 @@ const ChartComponent = () => {
 
         setOptions({
           chart: {
-            type: 'area',
+            type: "area",
             toolbar: {
-              show: false
+              show: false,
             },
           },
           xaxis: {
@@ -67,13 +67,12 @@ const ChartComponent = () => {
               shadeIntensity: 1,
               opacityFrom: 0.3,
               opacityTo: 0.4,
-              stops: [0, 90, 100]
-            }
+              stops: [0, 90, 100],
+            },
           },
           dataLabels: {
-            enabled: false
+            enabled: false,
           },
-          
         });
       })
       .catch((err) => {
@@ -96,9 +95,9 @@ const ChartComponent = () => {
         ]);
         setOptions({
           chart: {
-            type: 'area',
+            type: "area",
             toolbar: {
-              show: false
+              show: false,
             },
           },
           xaxis: {
@@ -119,13 +118,12 @@ const ChartComponent = () => {
               shadeIntensity: 1,
               opacityFrom: 0.3,
               opacityTo: 0.4,
-              stops: [0, 90, 100]
-            }
+              stops: [0, 90, 100],
+            },
           },
           dataLabels: {
-            enabled: false
+            enabled: false,
           },
-          
         });
       })
       .catch((err) => {
@@ -139,15 +137,14 @@ const ChartComponent = () => {
         const daromadData = res?.map((el) => el.monthly_amount);
         const mahsulotData = res?.map((el) => JSON.parse(el.products_count));
 
-        if (selectedYear && value === 'daromad') {
+        if (selectedYear && value === "daromad") {
           setSeries([
             {
               name: "Daromad",
               data: daromadData,
             },
           ]);
-
-        } else if ( selectedYear && value === 'soni') {
+        } else if (selectedYear && value === "soni") {
           setSeries([
             {
               name: "Sotilgan mahsulot",
@@ -180,11 +177,12 @@ const ChartComponent = () => {
   }, []);
 
   return (
-    <div className=""
-    style={{
-      maxWidth:'700px',
-      width:'100%',
-      height:'500px',
+    <div
+      className=""
+      style={{
+        maxWidth: "700px",
+        width: "100%",
+        height: "500px",
       }}
     >
       <Select
@@ -198,28 +196,21 @@ const ChartComponent = () => {
         onChange={handleChangeSelect}
         options={year}
       />
-      {/* <Radio.Group onChange={onChange} value={value}>
-        <Radio value="daromad">Daromad</Radio>
-        <Radio value="soni">Soni</Radio>
-      </Radio.Group> */}
 
       <div className="row">
-        <div
-         
-        >
-          {1 ? (
-            <Chart
-              options={options}
-              series={series}
-              type="area"
-              style={{
-                backgroundColor:'#fff'
-              }}
-              // className=" chart-height-control"
-            />
-          ) : (
-            <>load</>
-          )}
+        <div>
+          <Chart
+            options={options}
+            series={series}
+            type="area"
+            style={{
+              backgroundColor: `${
+                theme.palette.mode === "light" ? "#fff" : "#000"
+              }`,
+              color: "#fff",
+            }}
+            // className=" chart-height-control"
+          />
         </div>
       </div>
     </div>

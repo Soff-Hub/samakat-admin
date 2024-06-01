@@ -13,6 +13,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TextArea from "antd/es/input/TextArea";
 import Test from "./test";
 import AddInputThree from "components/shared/addInputThree";
+import { useTheme } from "contexts/themeContex";
 
 export default function Products() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,7 +67,6 @@ export default function Products() {
     },
   ]);
 
- 
   const [nameRu, setNameRu] = useState("");
   const [descriptionRu, setDescriptionRu] = useState("");
   const [ingredientsRu, setIngredientsRu] = useState("");
@@ -75,6 +75,7 @@ export default function Products() {
   const [shelf_lifeRu, setShelf_lifeRu] = useState("");
   const [storageConditionsRu, setStorageConditionsRu] = useState("");
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const showModalAdd = (url, id) => {
     setIsModalOpenAdd(true);
@@ -229,6 +230,7 @@ export default function Products() {
     formData1.append("original_price", buyCost);
     formData1.append("description_uz", description);
     formData1.append("description_ru", descriptionRu);
+
     if (discount === "" || discount === null) {
       formData1.append("discount", 0);
     } else {
@@ -281,7 +283,6 @@ export default function Products() {
     setSubmiting(false);
     document.querySelector(".create-branch-form").reset();
   };
-
 
   const handleSubmitAddVariant = async (e) => {
     e.preventDefault();
@@ -396,7 +397,7 @@ export default function Products() {
     });
     const product_highlight = atributInput?.map((item) => {
       const { content_uz, content_ru, order } = item;
-      return { content_uz, content_ru , order };
+      return { content_uz, content_ru, order };
     });
 
     const formData1 = new FormData();
@@ -439,13 +440,15 @@ export default function Products() {
 
     if (
       product_highlight?.every(
-        (el) => el.content_uz !== "" && el.content_uz && el.order && el.content_ru
+        (el) =>
+          el.content_uz !== "" && el.content_uz && el.order && el.content_ru
       ) &&
       product_highlight?.every(
         (el) => el.order !== "" && el.content_uz && el.order && el.content_ru
       ) &&
       product_highlight?.every(
-        (el) => el.content_ru !== "" && el.content_uz && el.order && el.content_uz
+        (el) =>
+          el.content_ru !== "" && el.content_uz && el.order && el.content_uz
       )
     ) {
       formData1.append("product_highlight", JSON.stringify(product_highlight));
@@ -631,7 +634,13 @@ export default function Products() {
               onSubmit={handleSubmitEdit}
               className=" flex flex-col gap-4 create-branch-form"
             >
-              <div className="colorr p-4">
+              <div
+                className={`p-4 ${
+                  theme.palette.mode === "light"
+                    ? "colorr"
+                    : "colorr-b text-[#fff]"
+                } `}
+              >
                 <div className="row">
                   <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <div className="row">
@@ -651,9 +660,7 @@ export default function Products() {
                         />
                       </div>
                       <div className="col-6">
-                        <span className="label--name font-bold">
-                          Nomi(ru)
-                        </span>
+                        <span className="label--name font-bold">Nomi(ru)</span>
                         <Input
                           placeholder="Название "
                           type="text"
@@ -818,7 +825,9 @@ export default function Products() {
                               height: 80,
                               resize: "true",
                             }}
-                            defaultValue={editData?.description_uz || description}
+                            defaultValue={
+                              editData?.description_uz || description
+                            }
                             onChange={(e) => {
                               setDescription(e.target.value);
                             }}
@@ -853,7 +862,13 @@ export default function Products() {
               </div>
 
               <div>
-                <div className="colorr p-2">
+                <div
+                  className={`p-2  ${
+                    theme.palette.mode === "light"
+                      ? "colorr"
+                      : "colorr-b text-[#fff]"
+                  } `}
+                >
                   <div className="row">
                     <div className="col-12">
                       <h2 className="text-[18px] pl-3.5 py-3 font-bold">
@@ -1035,7 +1050,13 @@ export default function Products() {
                   </div>
                 </div>
 
-                <div className="p-2 my-6 colorr">
+                <div
+                  className={`p-2 my-6 ${
+                    theme.palette.mode === "light"
+                      ? "colorr"
+                      : "colorr-b text-[#fff]"
+                  } `}
+                >
                   <h2 className="text-[18px] pl-3.5 py-3 font-bold">
                     Mahsulot atributi{" "}
                   </h2>
@@ -1047,6 +1068,7 @@ export default function Products() {
                         size="small"
                         className="w-full"
                         type="number"
+                        helperText="Uglevod"
                         defaultValue={carbohydrates}
                         onChange={(e) => {
                           setCarbohydrates(e.target.value);
@@ -1060,6 +1082,7 @@ export default function Products() {
                         size="small"
                         className="w-full"
                         type="number"
+                        helperText="Kaloriya"
                         defaultValue={kilocalories}
                         onChange={(e) => {
                           setKilocalories(e.target.value);
@@ -1073,6 +1096,7 @@ export default function Products() {
                         size="small"
                         className="w-full"
                         type="number"
+                        helperText="Yog' miqdori"
                         defaultValue={fats}
                         onChange={(e) => {
                           setFats(e.target.value);
@@ -1086,6 +1110,7 @@ export default function Products() {
                         size="small"
                         className="w-full"
                         type="number"
+                        helperText="Protien"
                         defaultValue={protein}
                         onChange={(e) => {
                           setProtein(e.target.value);
@@ -1103,6 +1128,7 @@ export default function Products() {
                             size="small"
                             className="w-full"
                             type="text"
+                            helperText="Tarkibi"
                             defaultValue={
                               editData?.product_attribute?.ingredients_uz ||
                               ingredients
@@ -1119,6 +1145,7 @@ export default function Products() {
                             size="small"
                             className="w-full"
                             type="text"
+                            helperText="Ishlab chiqaruvchi"
                             defaultValue={manufacturer}
                             onChange={(e) => {
                               setManufacturer(e.target.value);
@@ -1137,6 +1164,7 @@ export default function Products() {
                             size="small"
                             className="w-full"
                             type="text"
+                            helperText="Tarkibi (ru)"
                             defaultValue={
                               editData?.product_attribute?.ingredients_ru ||
                               ingredientsRu
@@ -1153,6 +1181,7 @@ export default function Products() {
                             size="small"
                             className="w-full"
                             type="text"
+                            helperText="Ishlab chiqaruvchi (ru)"
                             defaultValue={manufacturerRu}
                             onChange={(e) => {
                               setManufacturerRu(e.target.value);
@@ -1170,6 +1199,7 @@ export default function Products() {
                             size="small"
                             className="w-full"
                             type="text"
+                            helperText="Mahsulot soni yoki hajmi"
                             defaultValue={specification}
                             onChange={(e) => {
                               setSpecification(e.target.value);
@@ -1183,6 +1213,7 @@ export default function Products() {
                             size="small"
                             className="w-full"
                             type="text"
+                            helperText="Saqlash muddati"
                             defaultValue={shelf_life}
                             onChange={(e) => {
                               setShelf_life(e.target.value);
@@ -1200,6 +1231,7 @@ export default function Products() {
                             size="small"
                             className="w-full"
                             type="text"
+                            helperText="Mahsulot soni yoki hajmi (ru)"
                             defaultValue={specificationRu}
                             onChange={(e) => {
                               setSpecificationRu(e.target.value);
@@ -1213,6 +1245,7 @@ export default function Products() {
                             size="small"
                             className="w-full"
                             type="text"
+                            helperText="Saqlash muddati (ru)"
                             defaultValue={shelf_lifeRu}
                             onChange={(e) => {
                               setShelf_lifeRu(e.target.value);
@@ -1231,6 +1264,7 @@ export default function Products() {
                             size="small"
                             className="w-full"
                             type="text"
+                            helperText="Saqlash shartlari"
                             defaultValue={storageConditions}
                             onChange={(e) => {
                               setStorageConditions(e.target.value);
@@ -1242,16 +1276,27 @@ export default function Products() {
                         <div className="col-6">
                           <TextField
                             label="Saqlash shartlari (ru)"
+                            id="Saqlash shartlari (ru)"
                             variant="outlined"
-                            size="small"
+                            // size="small"
                             className="w-full"
                             type="text"
+                            helperText="Saqlash shartlari (ru)"
                             defaultValue={storageConditionsRu}
                             onChange={(e) => {
                               setStorageConditionsRu(e.target.value);
                             }}
                             multiline
                             rows={4}
+                          />
+                          <TextArea
+                            rows={4}
+                            placeholder="Saqlash shartlari (ru)"
+                            defaultValue={storageConditionsRu}
+                            onChange={(e) => {
+                              setStorageConditionsRu(e.target.value);
+                            }}
+                            multiline
                           />
                         </div>
                       </div>
@@ -1826,7 +1871,9 @@ export default function Products() {
                               height: 80,
                               resize: "true",
                             }}
-                            defaultValue={editData?.description_uz || description}
+                            defaultValue={
+                              editData?.description_uz || description
+                            }
                             onChange={(e) => {
                               setDescription(e.target.value);
                             }}

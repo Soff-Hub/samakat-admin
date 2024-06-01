@@ -433,7 +433,7 @@ export default function EnhancedTable() {
                           <Link
                             to={`actions/?${row.type}?addVariant?${row.slug}?${row.variant_id}`}
                           >
-                            <IconButton color="primary" aria-label="delete">
+                            <IconButton >
                               <AddCircleOutlinedIcon />
                             </IconButton>
                           </Link>
