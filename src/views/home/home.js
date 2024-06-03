@@ -145,10 +145,8 @@ export default function MiniDrawer() {
         navigate("/orders");
       }
     }
-
     currentPageConverter(location.pathname);
     
-
     // eslint-disable-next-line
   }, [location.pathname, navigationConfig, role, isLoginning]);
 
@@ -233,7 +231,7 @@ export default function MiniDrawer() {
                   disablePadding
                   sx={{ display: "block" }}
                   className={
-                    item.name === currentPage ? "bg-blue-500 text-white" : ""
+                    item.name === currentPage ? "bg-black text-white" : ""
                   }
                 >
                   <Link to={item.path}>

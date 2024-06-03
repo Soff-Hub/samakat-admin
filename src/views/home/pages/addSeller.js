@@ -1,20 +1,20 @@
-import NavHeader from "components/shared/NavHeader";
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import IconButton from "@mui/material/IconButton";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import { Link } from "react-router-dom";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
+import NavHeader from "components/shared/NavHeader";
+import { Table } from "antd";
 import ResponsiveDialog from "components/shared/modal";
 
-function Employee() {
+function AddSeller() {
   const [data, setData] = useState(null);
   // const [count, setCount] = useState(null)
+  
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  
   const columns = [
     {
       title: "Ism",
@@ -62,15 +62,17 @@ function Employee() {
     },
   ];
 
-  async function handleDelete() {
-    await Client.delete(`${API_ENDPOINTS.DETAIL_EMPLOYEE}${deleteId}/`)
-      .then((resp) => {
-        setOpen(false);
-        getOrders();
-        setData(resp.results);
-      })
-      .catch((err) => console.log(err));
-  }
+
+    async function handleDelete() {
+        await Client.delete(`${API_ENDPOINTS.DETAIL_EMPLOYEE}${deleteId}/`)
+          .then((resp) => {
+            setOpen(false);
+            getOrders();
+            setData(resp.results);
+          })
+          .catch((err) => console.log(err));
+      }
+    
 
   async function getOrders() {
     await Client.get(API_ENDPOINTS.EMPLOYEE)
@@ -87,7 +89,7 @@ function Employee() {
 
   return (
     <div className="px-2 py-3">
-      <NavHeader title="Xodimlar" />
+      <NavHeader title="Sotuvchilar" />
       <div className="py-3 px-2">
         <Table columns={columns} dataSource={data} pagination={false} />
       </div>
@@ -100,4 +102,4 @@ function Employee() {
   );
 }
 
-export default Employee;
+export default AddSeller;

@@ -77,4 +77,6 @@ export const API_ENDPOINTS = {
     CREATE_EMPLOYEE: 'admin/employees/create/',
     DETAIL_EMPLOYEE: 'admin/employees/',
 
+    CREATE_SELLER: 'admin/create-seller/'
+
 }
