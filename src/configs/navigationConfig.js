@@ -164,3 +164,46 @@ export const navigationConfigEmployee = [
         icon: <SendAndArchiveIcon />,
     }
 ]
+
+export const navigationConfigSeller = [
+    {
+        name: 'Dashboard',
+        path: '/dashboard',
+        icon: <DashboardIcon />,
+    },
+    {
+        name: 'Buyurtmalar',
+        path: '/orders',
+        icon: <LocalShippingIcon />,
+    },
+    {
+        name: 'Filiallar',
+        path: '/branches',
+        icon: <LocationOnIcon />,
+    },
+    {
+        name: 'Filiallardagi mahsulotlar',
+        path: '/branch-products',
+        icon: <ProductionQuantityLimitsIcon />,
+    },
+    {
+        name: 'Mahsulotlar',
+        path: '/products',
+        icon: <CategoryIcon />,
+    },
+    {
+        name: 'Manzillar',
+        path: '/adresses',
+        icon: <MapIcon />,
+    },
+    {
+        name: 'Retseptlar',
+        path: '/retsepts',
+        icon: <RestaurantIcon />,
+    },
+    {
+        name: 'Buyurtmalar arxivi',
+        path: '/arxiv-orders',
+        icon: <SendAndArchiveIcon />,
+    }
+]

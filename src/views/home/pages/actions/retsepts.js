@@ -758,7 +758,7 @@ console.log('addHandleImageData', selectImage, imgtrue);
                   className="flex gap-3 flex-wrap"
                   style={{ minWidth: "520px" }}
                 >
-                  {addHandleImageData.map((item, i) => {
+                  {addHandleImageData?.map((item, i) => {
                     return (
                       <>
                         <div

@@ -18,6 +18,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import {
   navigationConfig,
   navigationConfigEmployee,
+  navigationConfigSeller,
 } from "configs/navigationConfig";
 import {
   Link,
@@ -30,6 +31,7 @@ import { useEffect } from "react";
 import {
   adminActionRoutes,
   employeActionRoutes,
+  sellerActionRoutes,
 } from "configs/routes.config/routes";
 import AppRoute from "components/route/AppRoute";
 import UserDropdown from "components/shared/UserDropdown";
@@ -110,7 +112,9 @@ export default function MiniDrawer() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { currentPage, role, isLoginning } = useSelector((state) => state.admin);
+  const { currentPage, role, isLoginning } = useSelector(
+    (state) => state.admin
+  );
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -121,12 +125,12 @@ export default function MiniDrawer() {
   };
 
   const currentPageConverter = (page) => {
-    if (role === 'superadmin') {
+    if (role === "superadmin" || role === "seller") {
       const current = navigationConfig.find(
         (el) => el.path.split("/")[1] === page.split("/")[1]
       );
       dispatch(setCurrentPage(current?.name || "Dashboard"));
-    }else{
+    } else {
       const current = navigationConfigEmployee.find(
         (el) => el.path.split("/")[1] === page.split("/")[1]
       );
@@ -134,19 +138,18 @@ export default function MiniDrawer() {
     }
   };
 
-
   useEffect(() => {
-    if (role === "superadmin") {
+    if (role === "superadmin" || role === "seller") {
       if (location.pathname === "/") {
         navigate("/dashboard");
       }
-    }else if (role === "employee"){
+    } else if (role === "employee") {
       if (location.pathname === "/") {
         navigate("/orders");
       }
     }
     currentPageConverter(location.pathname);
-    
+
     // eslint-disable-next-line
   }, [location.pathname, navigationConfig, role, isLoginning]);
 
@@ -211,14 +214,51 @@ export default function MiniDrawer() {
                         {item.icon}
                       </ListItemIcon>
                       <ListItemText
-                       sx={{
-                        minWidth: 0,
-                        mr: open ? 1 : "auto",
-                        justifyContent: "center",
-                        color: item.name === currentPage ? "#fff" : "",
-                        opacity: open ? 1 : 0
-                      }}
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 1 : "auto",
+                          justifyContent: "center",
+                          color: item.name === currentPage ? "#fff" : "",
+                          opacity: open ? 1 : 0,
+                        }}
                         primary={item.name}
+                      />
+                    </ListItemButton>
+                  </Link>
+                  <Divider />
+                </ListItem>
+              ))
+            : role === "seller"
+            ? navigationConfigSeller?.map((item, index) => (
+                <ListItem
+                  key={index}
+                  disablePadding
+                  sx={{ display: "block" }}
+                  className={
+                    item.name === currentPage ? "bg-black text-white" : ""
+                  }
+                >
+                  <Link to={item.path}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                        px: 2.5,
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: open ? 1 : "auto",
+                          justifyContent: "center",
+                          color: item.name === currentPage ? "#fff" : "",
+                        }}
+                      >
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={item.name}
+                        sx={{ opacity: open ? 1 : 0 }}
                       />
                     </ListItemButton>
                   </Link>
@@ -274,6 +314,16 @@ export default function MiniDrawer() {
             <Routes>
               {role === "superadmin"
                 ? adminActionRoutes.map((route, index) => {
+                    return (
+                      <Route
+                        key={index}
+                        path={route.path}
+                        element={<AppRoute component={route.component} />}
+                      />
+                    );
+                  })
+                : role === "seller"
+                ? sellerActionRoutes.map((route, index) => {
                     return (
                       <Route
                         key={index}

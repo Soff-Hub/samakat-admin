@@ -83,7 +83,7 @@ export default function Branches() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((row) => {
+              {data?.map((row) => {
                 return (
                   <TableRow
                     key={row.uuid}
