@@ -9,54 +9,31 @@ import Client from "service/Client";
 import toast, { Toaster } from "react-hot-toast";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import { useEffect } from "react";
-import { Upload } from 'antd';
-import ImgCrop from 'antd-img-crop';
 
 function AddSller() {
   const [submit, setSubmit] = useState(false);
   const query = useParams();
   const navigate = useNavigate();
-  const [fileList, setFileList] = useState([]);
-  const { reset, control, handleSubmit, setValue,  formState: { errors } } = useForm({
+  const { reset, control, handleSubmit, setValue } = useForm({
     defaultValues: {
       first_name: "",
       phone: "",
-      password_info: "",
+      password: "",
       store_name: "",
     },
   });
-  const [logoImage, setLogoImage] = useState('')
-
-  const onChange = ({ fileList: newFileList }) => {
-    console.log('newFileList', newFileList);
-    setLogoImage(newFileList)
-    setFileList(newFileList);
-  };
-  const onPreview = async (file) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
-  };
+  const [logoImage, setLogoImage] = useState("");
+  const [logoImageReal, setLogoImageReal] = useState("");
 
   const onSubmit = async (data) => {
     setSubmit(true);
 
-    const formData = new FormData()
-    formData.append("first_name", data?.first_name)
-    formData.append("phone", data?.phone)
-    formData.append("password_info", data?.password_info)
-    formData.append("store_name", data?.store_name)
-    formData.append("logo", logoImage)
-
+    const formData = new FormData();
+    formData.append("first_name", data?.first_name);
+    formData.append("phone", data?.phone);
+    formData.append("password", data?.password);
+    formData.append("store_name", data?.store_name);
+    formData.append("logo", logoImage);
 
     await Client.post(API_ENDPOINTS.CREATE_SELLER, formData)
       .then((data) => {
@@ -77,10 +54,12 @@ function AddSller() {
       });
   };
 
-  const employeeDetail = async (id) => {
-    await Client.get(API_ENDPOINTS.DETAIL_EMPLOYEE + `${id}/`)
+  const sellerDetail = async (id) => {
+    await Client.get(API_ENDPOINTS.DETAIL_SELLER + `${id}/`)
       .then((data) => {
+        console.log('data', data);
         Object.keys(data).map((key) => setValue(key, data[key]));
+        setLogoImageReal(data?.logo)
       })
       .catch((err) => {
         console.log(err);
@@ -89,13 +68,21 @@ function AddSller() {
 
   const onUpdate = async (data) => {
     setSubmit(true);
-    await Client.patch(API_ENDPOINTS.DETAIL_EMPLOYEE + `${query["*"]}/`, data)
+
+    const formData = new FormData();
+    formData.append("first_name", data?.first_name);
+    formData.append("phone", data?.phone);
+    formData.append("password", data?.password);
+    formData.append("store_name", data?.store_name);
+    formData.append("logo", logoImage);
+
+    await Client.patch(API_ENDPOINTS.DETAIL_SELLER + `${query["*"]}/`, formData)
       .then((data) => {
         toast.success("Xodim muvaffaqiyatli yangilandi");
         reset(data);
         setSubmit(false);
         setTimeout(() => {
-          navigate("/employee");
+          navigate("/addSeller");
         }, 300);
       })
       .catch((err) => {
@@ -109,7 +96,7 @@ function AddSller() {
   };
 
   useEffect(() => {
-    employeeDetail(query["*"]);
+    sellerDetail(query["*"]);
   }, [query["*"]]);
 
   return (
@@ -120,11 +107,11 @@ function AddSller() {
         <Link to="/addSeller">
           <Button
             variant="contained"
-            sx={{ 
+            sx={{
               background: "#000",
-              '&:hover': {
+              "&:hover": {
                 backgroundColor: "#333", // Change this to the desired hover color
-              }
+              },
             }}
             size="large"
             startIcon={<ArrowBackIcon />}
@@ -161,7 +148,7 @@ function AddSller() {
           <div>
             <p>Parol</p>
             <Controller
-              name="password_info"
+              name="password"
               control={control}
               render={({ field }) => (
                 <Input {...field} placeholder="Parol" required />
@@ -169,7 +156,6 @@ function AddSller() {
             />
           </div>
 
-          
           <div>
             <p>Do'kon nomi</p>
             <Controller
@@ -179,28 +165,51 @@ function AddSller() {
             />
           </div>
 
-          <ImgCrop rotationSlider>
-      <Upload
-        action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-        listType="picture-card"
-        fileList={fileList}
-        onChange={onChange}
-        onPreview={onPreview}
-      >
-        {fileList.length < 5 && '+ Upload'}
-      </Upload>
-
-    </ImgCrop>
+          <div>
+            <p>Logo</p>
+            <div className="d-flex gap-3">
+              <div
+                className="w-25 border border-3 rounded rounded-3  relative"
+                style={{ backgroundColor: "#ccc" }}
+                width={80}
+                height={100}
+              >
+                <i class="fa-solid fa-download absolute	left-1/3 bottom-2	"></i>
+                <input
+                  type="file"
+                  className="d-block opacity-0 "
+                  onChange={(e) => (
+                    setLogoImage(e.target.files[0]),
+                    setLogoImageReal(
+                      window.URL.createObjectURL(e.target.files[0])
+                    )
+                  )}
+                />
+              </div>
+              {logoImageReal && (
+                <div className="d-flex align-items-end gap-2">
+                  <img
+                    width={80}
+                    height={80}
+                    src={`${logoImageReal}`}
+                    className="rounded rounded-3"
+                    alt="seller's logo"
+                  />
+                  <i class="fa-solid fa-trash" onClick={() => (setLogoImage(""), setLogoImageReal(""))} ></i>
+                </div>
+              )}
+            </div>
+          </div>
 
           <div className="text-center">
             <Button
               type="submit"
               variant="contained"
-              sx={{ 
+              sx={{
                 background: "#000",
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#333", // Change this to the desired hover color
-                }
+                },
               }}
               size="large"
               style={{ width: "100%", marginTop: "10px" }}
@@ -236,21 +245,66 @@ function AddSller() {
           <div>
             <p>Parol</p>
             <Controller
-              name="password_info"
+              name="password"
               control={control}
               render={({ field }) => <Input {...field} placeholder="Parol" />}
             />
+          </div>
+
+          <div>
+            <p>Do'kon nomi</p>
+            <Controller
+              name="store_name"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Parol" />}
+            />
+          </div>
+
+          <div>
+            <p>Logo</p>
+            <div className="d-flex gap-3">
+              <div
+                className="w-25 border border-3 rounded rounded-3  relative"
+                style={{ backgroundColor: "#ccc" }}
+                width={80}
+                height={100}
+              >
+                <i class="fa-solid fa-download absolute	left-1/3 bottom-1/3	"></i>
+                <input
+                  type="file"
+                  className="d-block opacity-0"
+                  onChange={(e) => (
+                    setLogoImage(e.target.files[0]),
+                    setLogoImageReal(
+                      window.URL.createObjectURL(e.target.files[0])
+                    )
+                  )}
+                />
+              </div>
+              {logoImageReal && (
+                <div className="d-flex align-items-end gap-2">
+                  <img
+                    width={80}
+                    height={80}
+                    src={`${logoImageReal}`}
+                    className="rounded rounded-3"
+                    alt="seller's logo"
+                  />
+                  <i class="fa-solid fa-trash" onClick={() => (setLogoImage(""), setLogoImageReal(""))} ></i>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="text-center">
             <Button
               type="submit"
               variant="contained"
-              sx={{ 
+              sx={{
                 background: "#000",
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#333", // Change this to the desired hover color
-                }
+                },
               }}
               size="large"
               style={{ width: "100%", marginTop: "10px" }}

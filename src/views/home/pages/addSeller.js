@@ -20,12 +20,13 @@ function AddSeller() {
       title: "Ism",
       dataIndex: "first_name",
       key: "name",
-      render: (first_name) => <a>{first_name}</a>,
+      render: (first_name) => <a>{first_name ? first_name : <i class="fa-solid fa-minus"></i>}</a>,
     },
     {
       title: "Nomer",
       dataIndex: "phone",
       key: "phone",
+      render: (phone) => <a>{phone}</a>,
     },
     {
       title: "Tahrirlash",
@@ -64,18 +65,18 @@ function AddSeller() {
 
 
     async function handleDelete() {
-        await Client.delete(`${API_ENDPOINTS.DETAIL_EMPLOYEE}${deleteId}/`)
+        await Client.delete(`${API_ENDPOINTS.DETAIL_SELLER}${deleteId}/`)
           .then((resp) => {
             setOpen(false);
-            getOrders();
+            getSellerList();
             setData(resp.results);
           })
           .catch((err) => console.log(err));
       }
     
 
-  async function getOrders() {
-    await Client.get(API_ENDPOINTS.EMPLOYEE)
+  async function getSellerList() {
+    await Client.get(API_ENDPOINTS.SELLER)
       .then((resp) => {
         setData(resp.results);
         // setCount(resp.count);
@@ -84,7 +85,7 @@ function AddSeller() {
   }
 
   useEffect(() => {
-    getOrders();
+    getSellerList();
   }, []);
 
   return (

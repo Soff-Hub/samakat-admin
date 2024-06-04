@@ -28,6 +28,7 @@ import {
   Select,
 } from "@mui/material";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
+import { useSelector } from "react-redux";
 
 const headCells = [
   {
@@ -121,6 +122,9 @@ export default function EnhancedTable() {
   const [errorData, setErrorData] = useState("");
   const [branchList, setBranchList] = useState(null);
   const [quantity, setQuantity] = useState("");
+  const { role } = useSelector(
+    (state) => state.admin
+  );
   const [sale_product, setSale_product] = useState([
     {
       id: 1,
@@ -245,11 +249,11 @@ export default function EnhancedTable() {
     getBranchList();
     // eslint-disable-next-line
   }, []);
-
   return (
     <div className="px-2 py-3">
       <div>
-        <NavHeaderSelect title="Mahsulotlar" />
+        <NavHeaderSelect admin={ role === "superadmin" ? true : false} title="Mahsulotlar" />
+      
       </div>
       <div className="mb-5">
         <h1 className="text-2xl font-sans">
