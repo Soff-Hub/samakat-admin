@@ -44,7 +44,7 @@ export default function UserDropdown() {
     return (
         <div className='ms-auto'>
             <Button style={{ color: '#fff' }} aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick}>
-                <p className='me-3'>{user?.role === 'superadmin' ? 'Admin' : user?.role === 'employee' ? "Xodim" : '' }</p>
+                <p className='me-3'>{user?.role === 'superadmin' ? 'Admin' : user?.role === 'seller' ? "Sotuvchi" : user?.role === 'employee' ? "Xodim" : '' }</p>
                 <p className='me-3'>{user?.phone}</p>
                 <AccountCircleIcon />
             </Button>

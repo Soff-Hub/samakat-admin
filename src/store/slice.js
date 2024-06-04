@@ -5,7 +5,7 @@ const initialState = {
   token: localStorage.getItem("admin") || "",
   user: null,
   currentPage:
-    localStorage.getItem("role") === "superadmin" ? "Dashboard" : "Buyurtmalar",
+    localStorage.getItem("role") === "superadmin"  ?  "Dashboard" : localStorage.getItem("role") === "seller" ? "Dashboard" : "Buyurtmalar",
   role: localStorage.getItem("role") || "",
 };
 
@@ -27,6 +27,9 @@ const slice = createSlice({
       } else if (action.payload?.role === "superadmin") {
          // eslint-disable-next-line
         location.replace("dashboard");
+      }else{
+         // eslint-disable-next-line
+         location.replace("dashboard");
       }
     },
     logoutSuccess: (state, action) => {

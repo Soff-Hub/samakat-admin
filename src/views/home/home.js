@@ -123,10 +123,16 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  console.log('role', role);
+  
   const currentPageConverter = (page) => {
-    if (role === "superadmin" || role === "seller") {
+    if (role === "superadmin") {
       const current = navigationConfig.find(
+        (el) => el.path.split("/")[1] === page.split("/")[1]
+      );
+      dispatch(setCurrentPage(current?.name || "Dashboard"));
+    }else if (role === "seller") {
+      const current = navigationConfigSeller.find(
         (el) => el.path.split("/")[1] === page.split("/")[1]
       );
       dispatch(setCurrentPage(current?.name || "Dashboard"));
@@ -139,13 +145,17 @@ export default function MiniDrawer() {
   };
 
   useEffect(() => {
-    if (role === "superadmin" || role === "seller") {
+    if (role === "superadmin") {
       if (location.pathname === "/") {
         navigate("/dashboard");
       }
     } else if (role === "employee") {
       if (location.pathname === "/") {
         navigate("/orders");
+      }
+    }else{
+      if (location.pathname === "/") {
+        navigate("/dashboard");
       }
     }
     currentPageConverter(location.pathname);

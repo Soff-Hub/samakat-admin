@@ -31,12 +31,13 @@ function Login() {
       .then((data) => {
         dispatch(loginSuccess(data));
         console.clear();
+        console.log('data', data);
         navigate("/");
         setSubmiting(false);
+        window.location()
       })
       .catch((err) => {
         openNotification(err?.response?.data?.msg?.[0]);
-
         setErrPhone(err?.response?.data?.msg?.[0]);
         setErrPass(err?.response?.data?.msg?.[0]);
         setSubmiting(false);
@@ -46,99 +47,6 @@ function Login() {
   return (
     <>
       {contextHolder}
-      {/* <div className="login-page">
-        <Formik
-          initialValues={{ phone: "", password: "" }}
-          validate={(values) => {
-            const errors = {};
-            if (!values.phone || errPhone) {
-              errors.phone = errPhone || "Telefon majburiy";
-            }
-
-            if (!values.password || errPass) {
-              errors.password = "Parol majburiy";
-            }
-            return errors;
-          }}
-          onSubmit={(values, { setSubmitting }) => {
-            handleSubmit(values);
-            setSubmitting(true);
-            setSubmiting(true);
-          }}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }) => (
-            <div className="login-form">
-              <form
-                onSubmit={handleSubmit}
-                className="login-form-inner flex flex-col mx-auto xl:1/4 lg:w-1/3 sm:w-1/2 w-full px-5 gap-5"
-              >
-                <div className="login-title">
-                  <img style={{ width: "65%" }} src={Logo} alt="aloqand logo" />
-                </div>
-
-                <TextField
-                  label="Telefon raqam"
-                  // eslint-disable-next-line
-                  error={
-                    (values.phone && errors.phone) ||
-                    (values.phone === "" && errors.phone) ||
-                    errPhone
-                  }
-                  helperText={errors.phone || errPhone}
-                  variant="filled"
-                  size="small"
-                  name="phone"
-                  type="phone"
-                  onChange={(e) => {
-                    handleChange(e);
-                    setErrPhone(false);
-                    setErrPass(false);
-                  }}
-                  onBlur={handleBlur}
-                  value={values.phone}
-                />
-                <TextField
-                  // eslint-disable-next-line
-                  error={
-                    (values.password && errors.password) ||
-                    errors.password ||
-                    errPass
-                  }
-                  helperText={errors.password || errPass}
-                  label="Parol"
-                  variant="filled"
-                  size="small"
-                  name="password"
-                  onChange={(e) => {
-                    handleChange(e);
-                    setErrPhone(false);
-                    setErrPass(false);
-                  }}
-                  onBlur={handleBlur}
-                  value={values.password}
-                  type="password"
-                />
-                <Button
-                  variant="outlined"
-                  size="large"
-                  type="submit"
-                  disabled={submiting}
-                >
-                  {submiting ? "Kutilmoqda..." : "Kirish"}
-                </Button>
-              </form>
-            </div>
-          )}
-        </Formik>
-      </div> */}
       <div className="d-flex">
         <div className="login-page xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-1/2 w-full     ">
            <div className=" lg:w-2/4 flex xl:items-start lg:items-start md:items-start sm:items-start items-center	xl:justify-start lg:justify-start md:justify-start sm:justify-start justify-center	 p-16 ">
