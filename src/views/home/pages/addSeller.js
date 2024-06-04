@@ -17,6 +17,12 @@ function AddSeller() {
   const [deleteId, setDeleteId] = useState(null);
   const columns = [
     {
+      title: "Logo",
+      dataIndex: "logo",
+      key: "logo",
+      render: (logo) => <a>{logo ? <img src={logo} alt="seller's logo" width={40} /> : <i class="fa-solid fa-minus"></i>}</a>,
+    },
+    {
       title: "Ism",
       dataIndex: "first_name",
       key: "name",
@@ -27,6 +33,12 @@ function AddSeller() {
       dataIndex: "phone",
       key: "phone",
       render: (phone) => <a>{phone}</a>,
+    },
+    {
+      title: "Do'kon nomi",
+      dataIndex: "store_name",
+      key: "store_name",
+      render: (store_name) => <a>{store_name ? store_name : <i class="fa-solid fa-minus"></i>}</a>,
     },
     {
       title: "Tahrirlash",
