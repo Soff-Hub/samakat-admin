@@ -21,11 +21,8 @@ function Row(props) {
         <TableCell component="th" scope="row" align="left">
           <Link to={`actions/?${row.id}`}> {row.user?.first_name ? row.user?.first_name : ""} {row.user?.phone} {row.user?.last_name} </Link>
         </TableCell>
-        <TableCell scope="row" align="center">
+        <TableCell scope="row" align="left">
           <Link to={`actions/?${row.id}`}> {row.address}</Link>
-        </TableCell>
-        <TableCell scope="row" align="right">
-          <Link to={`actions/?${row.id}`}> {row.branch}</Link>
         </TableCell>
       </TableRow>
     </React.Fragment>
@@ -91,8 +88,7 @@ export default function CollapsibleTable() {
             <TableHead>
               <TableRow>
                 <TableCell align="left"><span className="font-bold text-[16px]" >Foydalanuvchi</span></TableCell>
-                <TableCell align="center"><span className="font-bold text-[16px]" >Address</span></TableCell>
-                <TableCell align="right"><span className="font-bold text-[16px]" >Filial</span></TableCell>
+                <TableCell align="left"><span className="font-bold text-[16px]" >Address</span></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

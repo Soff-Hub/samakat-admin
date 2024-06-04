@@ -122,9 +122,7 @@ export default function EnhancedTable() {
   const [errorData, setErrorData] = useState("");
   const [branchList, setBranchList] = useState(null);
   const [quantity, setQuantity] = useState("");
-  const { role } = useSelector(
-    (state) => state.admin
-  );
+  const { role } = useSelector((state) => state.admin);
   const [sale_product, setSale_product] = useState([
     {
       id: 1,
@@ -252,8 +250,10 @@ export default function EnhancedTable() {
   return (
     <div className="px-2 py-3">
       <div>
-        <NavHeaderSelect admin={ role === "superadmin" ? true : false} title="Mahsulotlar" />
-      
+        <NavHeaderSelect
+          admin={role === "superadmin" ? true : false}
+          title="Mahsulotlar"
+        />
       </div>
       <div className="mb-5">
         <h1 className="text-2xl font-sans">
