@@ -1,4 +1,3 @@
-import NavHeaderSelect from "components/shared/NavHeaderSelect";
 import React, { useEffect, useState } from "react";
 
 import PropTypes from "prop-types";
@@ -29,6 +28,7 @@ import {
 } from "@mui/material";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { useSelector } from "react-redux";
+import NavHeaderProduct from "components/shared/NavHeaderProduct";
 
 const headCells = [
   {
@@ -250,7 +250,7 @@ export default function EnhancedTable() {
   return (
     <div className="px-2 py-3">
       <div>
-        <NavHeaderSelect
+        <NavHeaderProduct
           admin={role === "superadmin" ? true : false}
           title="Mahsulotlar"
         />
@@ -386,11 +386,6 @@ export default function EnhancedTable() {
                         <TableCell align="left">
                           <Link to={`actions/?${row.type}?edit?${row.slug}`}>
                             {row.specification}
-                          </Link>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
-                            {JSON.parse(row.price)} so'm
                           </Link>
                         </TableCell>
                         <TableCell align="right">

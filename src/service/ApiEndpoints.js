@@ -80,6 +80,13 @@ export const API_ENDPOINTS = {
     SELLER: 'admin/sellers/',
     CREATE_SELLER: 'admin/create-seller/',
     DETAIL_SELLER: 'admin/sellers/',
-    // DELETE_SELLER: 'admin/create-seller/'
+    // DELETE_SELLER: 'admin/create-seller/',
+
+    COLOR: 'admin/colors/',
+
+    SIZE : 'admin/features/',
+    SIZE_CHAILD : 'admin/feature-items/',
+
+    PPRODUCT_CATEGORY_CREATE : 'admin/parent-categories/',
 
 }

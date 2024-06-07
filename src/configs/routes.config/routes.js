@@ -508,6 +508,11 @@ export const sellerActionRoutes = [
     },
     {
         key: 'products',
+        path: '/products/actions/product',
+        component: React.lazy(() => import('views/home/pages/actions/product'))
+    },
+    {
+        key: 'product',
         path: '/products/actions/*',
         component: React.lazy(() => import('views/home/pages/actions/products'))
     },
