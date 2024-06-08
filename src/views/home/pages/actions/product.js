@@ -292,11 +292,11 @@ export default function Product() {
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, formData1)
       .then((data) => {
         toast.success("Retsep muvaffaqiyatli qo'shildi");
-        // navigate("/products");
+        navigate(`/products/actions/productPrice?id=${data?.id}`);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
-        setSubmiting(false);
+        setSubmiting(false);rtg
       });
 
     setSubmiting(false);
