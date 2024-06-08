@@ -38,6 +38,8 @@ export default function Product() {
   const navigate = useNavigate();
   const [colorImageList, setColorImageList] = useState([]);
   const [colorImageListReal, setColorImageListReal] = useState([]);
+  const [imageList, setImageList] = useState([]);
+  const [imageListReal, setImageListReal] = useState([]);
   const [sizetype, setsizeType] = useState([]);
   const [sizetypeChaild, setsizeTypeChaild] = useState([]);
   const [sizechaild, setsizeChaild] = useState([]);
@@ -56,25 +58,26 @@ export default function Product() {
 
   const [checkCategory, setCheckCategory] = useState(false);
   const [treeData, setTreeData] = useState([]);
-  const [feature, setFeature] = useState('')
+  const [feature, setFeature] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenSizeParent, setIsModalOpenSizeParent] = useState(false);
 
-  const [getId, setGetId] = useState('')
+  const [mainImage, setMainImage] = useState("");
+  const [mainImageReal, setMainImageReal] = useState("");
 
   const showModal = () => {
     setIsModalOpen(true);
   };
-  
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  
+
   const handleCancelSizeParent = () => {
     setIsModalOpenSizeParent(false);
   };
-  
+
   const handleOkSizeParent = () => {
     setIsModalOpenSizeParent(false);
   };
@@ -83,23 +86,21 @@ export default function Product() {
     setColorList(value);
   };
 
-
   const handleChangeSizeType = async (value) => {
     for (let i = 0; i < sizetype.length; i++) {
       if (sizetype[i].value == value) {
-        console.log('jh', sizetype[i].label);
-        setFeature(sizetype[i]?.label)
-      }            
-  }
+        console.log("jh", sizetype[i].label);
+        setFeature(sizetype[i]?.label);
+      }
+    }
     if (value === 0) {
       setChangeSize(false);
-      setIsModalOpenSizeParent(true)
+      setIsModalOpenSizeParent(true);
     } else {
       await Client.get(`${API_ENDPOINTS.SIZE_CHAILD + value}/`)
         .then((resp) => {
           setCheckChaild(false);
-         
-         
+
           setTreeData(
             resp?.map((el) => ({
               title: el?.value,
@@ -224,9 +225,12 @@ export default function Product() {
     colorImageListReal.push({
       ["images_" + id]: window.URL.createObjectURL(e.target.files[0]),
     });
-    console.log(e, id);
     setImageColor(e.target.files[0]),
       setImageColorReal(window.URL.createObjectURL(e.target.files[0]));
+  };
+  const ImageChangeAll = (e) => {
+    setMainImage(e.target.files[0]);
+    setMainImageReal(window.URL.createObjectURL(e.target.files[0]));
   };
 
   const addHandleChangeSizeInput = (index, event) => {
@@ -242,10 +246,11 @@ export default function Product() {
       setInputValues([...inputValues, ""]);
     }
   };
+  console.log("imageList", imageList);
 
   // biror razmer turini tanlagandan so'ng modal ichidagi razmerlarni check qilish funksiyasi
   const onCheck = (checkedKeys, info) => {
-    setInputValues(checkedKeys)
+    setInputValues(checkedKeys);
   };
 
   const handleSubmitAdd = async (e) => {
@@ -270,9 +275,15 @@ export default function Product() {
     formData1.append("on_sale", on_sale);
     formData1.append("category", lastCategory);
     formData1.append("colors", JSON.stringify(colorList));
-    formData1.append("feature", changeSize ? "null" : feature  );
+    formData1.append("feature", changeSize ? "null" : feature);
     formData1.append("feature_items", JSON.stringify(inputValues));
+    formData1.append("images", mainImage);
     colorImageList.forEach((obj) => {
+      Object.entries(obj).forEach(([key, value]) => {
+        formData1.append(key, value);
+      });
+    });
+    imageList.forEach((obj) => {
       Object.entries(obj).forEach(([key, value]) => {
         formData1.append(key, value);
       });
@@ -296,7 +307,8 @@ export default function Product() {
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
-        setSubmiting(false);rtg
+        setSubmiting(false);
+        rtg;
       });
 
     setSubmiting(false);
@@ -360,7 +372,8 @@ export default function Product() {
 
                 <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                   <span className="label--name font-bold">Kategoriyalar</span>
-                  <Space
+                <div className="d-flex gap-3 " >
+                <Space
                     style={{
                       width: "100%",
                       textAlign: "left",
@@ -440,10 +453,54 @@ export default function Product() {
                   </Space>
                   <div
                     size="small"
-                    className="btn btn-success my-2"
+                    className="btn btn-success"
                     onClick={() => setCheckCategory(!checkCategory)}
                   >
                     Qo'shish
+                  </div>
+                </div>
+                </div>
+
+
+                {/* umumiy rasm */}
+
+                <div className="col-md-6">
+                  <div className="d-flex gap-3">
+                    <div
+                      style={{
+                        maxWidth: "100px",
+                        width: "80px",
+                        backgroundImage: `url(${""})`,
+                        backgroundSize: "cover",
+                        height: "80px",
+                        borderRadius: "5px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        border: "1px solid #ccc",
+                        position: "relative",
+                      }}
+                    >
+                      <i class="fa-solid fa-file-arrow-down"></i>
+                      <input
+                        type="file"
+                        style={{
+                          opacity: "0",
+                          position: "absolute",
+                          top: "0",
+                          left: "0",
+                          bottom: "0",
+                          right: "0",
+                        }}
+                        onChange={(e) => ImageChangeAll(e)}
+                      />
+                    </div>
+                    {mainImageReal && (
+                      <div className="d-flex gap-2 align-items-en">
+                        <img width={80} src={mainImageReal} alt="photo" />
+                        <i onClick={() => (setMainImage(""), setMainImageReal(""))} class="fa-solid fa-trash"></i>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -496,7 +553,6 @@ export default function Product() {
                     </span>
                     <div className="d-flex gap-3">
                       {colorImageListReal?.map((e) => {
-                        console.log("nbvnbn", e?.["images_" + el]);
                         return (
                           <div className="d-flex gap-2">
                             <img
@@ -569,37 +625,37 @@ export default function Product() {
                       />
                     </Space>
                   ) : (
-                   <>
-                   <br/>
-                    <Button
-                      className="block"
-                      type="primary"
-                      onClick={showModal}
-                    >
-                      {feature}
-                    </Button>
-                   </>
+                    <>
+                      <br />
+                      <Button
+                        className="block"
+                        type="primary"
+                        onClick={showModal}
+                      >
+                        {feature}
+                      </Button>
+                    </>
                   )}
                 </>
               ) : (
-               <>
-               {
-                feature !== '' ?
-                 <div className="d-flex flex-column gap-3">
-                  {feature}
-                 {sizeInputArray?.map((input, index) => (
-                   <Input
-                     key={input.item}
-                     placeholder="O'lcham kiriting"
-                     className="col-md-7"
-                     value={inputValues[index] || ""}
-                     onChange={(e) => addHandleChangeSizeInput(index, e)}
-                   />
-                 ))}
-               </div>
-               :" "
-               }
-               </>
+                <>
+                  {feature !== "" ? (
+                    <div className="d-flex flex-column gap-3">
+                      {feature}
+                      {sizeInputArray?.map((input, index) => (
+                        <Input
+                          key={input.item}
+                          placeholder="O'lcham kiriting"
+                          className="col-md-7"
+                          value={inputValues[index] || ""}
+                          onChange={(e) => addHandleChangeSizeInput(index, e)}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    " "
+                  )}
+                </>
               )}
             </div>
 
@@ -673,14 +729,14 @@ export default function Product() {
           </form>
 
           <Modal
-          width={250}
+            width={250}
             title="Basic Modal"
             open={isModalOpen}
             onCancel={handleCancel}
             okButtonProps={{
               style: {
-                display: 'none'
-              }
+                display: "none",
+              },
             }}
             cancelText="✔️"
           >
@@ -695,24 +751,27 @@ export default function Product() {
             />
           </Modal>
           <Modal
-          width={300}
+            width={300}
             title="Xususiyat nomini qo'shing"
             open={isModalOpenSizeParent}
             onCancel={handleCancelSizeParent}
             onOk={handleOkSizeParent}
             cancelButtonProps={{
               style: {
-                display: 'none'
-              }
+                display: "none",
+              },
             }}
             okButtonProps={{
               style: {
-                backgroundColor:'green'
-              }
+                backgroundColor: "green",
+              },
             }}
             okText="Qo'shish"
           >
-            <Input placeholder="Nomini kiriting" onChange={(e) => setFeature(e.target.value)}  />
+            <Input
+              placeholder="Nomini kiriting"
+              onChange={(e) => setFeature(e.target.value)}
+            />
           </Modal>
         </div>
       </div>

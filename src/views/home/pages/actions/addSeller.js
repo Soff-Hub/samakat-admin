@@ -33,7 +33,7 @@ function AddSller() {
     formData.append("phone", data?.phone);
     formData.append("password", data?.password);
     formData.append("store_name", data?.store_name);
-    formData.append("logo", logoImage);
+    formData.append("image", logoImage);
 
     await Client.post(API_ENDPOINTS.CREATE_SELLER, formData)
       .then((data) => {
@@ -74,7 +74,7 @@ function AddSller() {
     formData.append("phone", data?.phone);
     formData.append("password", data?.password);
     formData.append("store_name", data?.store_name);
-    formData.append("logo", logoImage);
+    formData.append("image", logoImage);
 
     await Client.patch(API_ENDPOINTS.DETAIL_SELLER + `${query["*"]}/`, formData)
       .then((data) => {
