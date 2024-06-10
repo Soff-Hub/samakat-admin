@@ -38,10 +38,8 @@ export default function Product() {
   const navigate = useNavigate();
   const [colorImageList, setColorImageList] = useState([]);
   const [colorImageListReal, setColorImageListReal] = useState([]);
-  const [imageList, setImageList] = useState([]);
-  const [imageListReal, setImageListReal] = useState([]);
   const [sizetype, setsizeType] = useState([]);
-  const [sizetypeChaild, setsizeTypeChaild] = useState([]);
+  const [colorData, setColorData] = useState([]);
   const [sizechaild, setsizeChaild] = useState([]);
   const [changeSize, setChangeSize] = useState(true);
   const [checkChaild, setCheckChaild] = useState(true);
@@ -59,6 +57,7 @@ export default function Product() {
   const [checkCategory, setCheckCategory] = useState(false);
   const [treeData, setTreeData] = useState([]);
   const [feature, setFeature] = useState("");
+  const [featureSelectName, setFeatureSelectName] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenSizeParent, setIsModalOpenSizeParent] = useState(false);
@@ -87,10 +86,12 @@ export default function Product() {
   };
 
   const handleChangeSizeType = async (value) => {
+    console.log("value", value);
+
+    setFeature(value);
     for (let i = 0; i < sizetype.length; i++) {
       if (sizetype[i].value == value) {
-        console.log("jh", sizetype[i].label);
-        setFeature(sizetype[i]?.label);
+        setFeatureSelectName(sizetype[i]?.label);
       }
     }
     if (value === 0) {
@@ -176,6 +177,7 @@ export default function Product() {
   const getColor = async () => {
     await Client.get(`${API_ENDPOINTS.COLOR}`)
       .then((resp) => {
+        setColorData(resp);
         setColorListOption(
           resp?.map((el) => ({
             label: (
@@ -246,7 +248,6 @@ export default function Product() {
       setInputValues([...inputValues, ""]);
     }
   };
-  console.log("imageList", imageList);
 
   // biror razmer turini tanlagandan so'ng modal ichidagi razmerlarni check qilish funksiyasi
   const onCheck = (checkedKeys, info) => {
@@ -262,11 +263,6 @@ export default function Product() {
       return { content_uz, content_ru, order };
     });
 
-    const formData = new FormData();
-    for (let i = 0; i < image.length; i++) {
-      formData.append("product_galereya", image[i]);
-    }
-
     const formData1 = new FormData();
     formData1.append("name_uz", name);
     formData1.append("name_ru", nameRu);
@@ -274,8 +270,8 @@ export default function Product() {
     formData1.append("description_ru", descriptionRu);
     formData1.append("on_sale", on_sale);
     formData1.append("category", lastCategory);
-    formData1.append("colors", JSON.stringify(colorList));
-    formData1.append("feature", changeSize ? "null" : feature);
+    formData1.append("colors", JSON.stringify(selectedColors));
+    formData1.append("feature", feature);
     formData1.append("feature_items", JSON.stringify(inputValues));
     formData1.append("images", mainImage);
     colorImageList.forEach((obj) => {
@@ -283,11 +279,11 @@ export default function Product() {
         formData1.append(key, value);
       });
     });
-    imageList.forEach((obj) => {
-      Object.entries(obj).forEach(([key, value]) => {
-        formData1.append(key, value);
-      });
-    });
+    // imageList.forEach((obj) => {
+    //   Object.entries(obj).forEach(([key, value]) => {
+    //     formData1.append(key, value);
+    //   });
+    // });
 
     if (
       product_highlight?.every(
@@ -302,13 +298,12 @@ export default function Product() {
 
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, formData1)
       .then((data) => {
-        toast.success("Retsep muvaffaqiyatli qo'shildi");
+        toast.success("Mahsulot muvaffaqiyatli qo'shildi");
         navigate(`/products/actions/productPrice?id=${data?.id}`);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
         setSubmiting(false);
-        rtg;
       });
 
     setSubmiting(false);
@@ -321,6 +316,41 @@ export default function Product() {
     getCategory();
     // eslint-disable-next-line
   }, []);
+
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [colorImages, setColorImages] = useState({});
+  const [allImages, setAllImages] = useState([]);
+
+  const handleChangee = (value) => {
+    setSelectedColors(value);
+  };
+
+  const handleImageChange = (e, color) => {
+    const file = e.target.files[0];
+    if (file) {
+      colorImageList.push({
+        ["images_" + color]: file,
+      });
+      const reader = new FileReader();
+      reader.onload = () => {
+        const newImage = reader.result;
+        const updatedColorImages = {
+          ...colorImages,
+          [color]: colorImages[color]
+            ? [...colorImages[color], newImage]
+            : [newImage],
+        };
+        setColorImages(updatedColorImages);
+        setAllImages([...allImages, { color, image: newImage }]);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const getColorNameById = (id) => {
+    const color = colorData.find((color) => color.id === id);
+    return color ? color.name : null;
+  };
 
   return (
     <div className="flex  gap-1 bg--color px-2 py-3">
@@ -372,31 +402,14 @@ export default function Product() {
 
                 <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                   <span className="label--name font-bold">Kategoriyalar</span>
-                <div className="d-flex gap-3 " >
-                <Space
-                    style={{
-                      width: "100%",
-                      textAlign: "left",
-                    }}
-                    direction="vertical"
-                  >
-                    <Select
-                      disabled={checkCategory}
-                      mode="single"
-                      allowClear
+                  <div className="d-flex gap-3  align-items-start">
+                    <Space
                       style={{
                         width: "100%",
+                        textAlign: "left",
                       }}
-                      showSearch
-                      optionFilterProp="children"
-                      filterOption={(input, option) =>
-                        (option?.label ?? "").includes(input)
-                      }
-                      placeholder="Kategoriyalar"
-                      onChange={(e) => handleChaildCategory(e, 1)}
-                      options={categoryList}
-                    />
-                    {category1?.length > 0 && (
+                      direction="vertical"
+                    >
                       <Select
                         disabled={checkCategory}
                         mode="single"
@@ -410,61 +423,80 @@ export default function Product() {
                           (option?.label ?? "").includes(input)
                         }
                         placeholder="Kategoriyalar"
-                        onChange={(e) => handleChaildCategory(e, 2)}
-                        options={category1}
+                        onChange={(e) => handleChaildCategory(e, 1)}
+                        options={categoryList}
                       />
-                    )}
-                    {category2?.length > 0 && (
-                      <Select
-                        disabled={checkCategory}
-                        mode="single"
-                        allowClear
-                        style={{
-                          width: "100%",
-                        }}
-                        showSearch
-                        optionFilterProp="children"
-                        filterOption={(input, option) =>
-                          (option?.label ?? "").includes(input)
-                        }
-                        placeholder="Kategoriyalar"
-                        onChange={(e) => handleChaildCategory(e, 3)}
-                        options={category2}
-                      />
-                    )}
-                    {category3?.length > 0 && (
-                      <Select
-                        disabled={checkCategory}
-                        mode="single"
-                        allowClear
-                        style={{
-                          width: "100%",
-                        }}
-                        showSearch
-                        optionFilterProp="children"
-                        filterOption={(input, option) =>
-                          (option?.label ?? "").includes(input)
-                        }
-                        placeholder="Kategoriyalar"
-                        onChange={(e) => setLastCategory(e)}
-                        options={category3}
-                      />
-                    )}
-                  </Space>
-                  <div
-                    size="small"
-                    className="btn btn-success"
-                    onClick={() => setCheckCategory(!checkCategory)}
-                  >
-                    Qo'shish
+                      {category1?.length > 0 && (
+                        <Select
+                          disabled={checkCategory}
+                          mode="single"
+                          allowClear
+                          style={{
+                            width: "100%",
+                          }}
+                          showSearch
+                          optionFilterProp="children"
+                          filterOption={(input, option) =>
+                            (option?.label ?? "").includes(input)
+                          }
+                          placeholder="Kategoriyalar"
+                          onChange={(e) => handleChaildCategory(e, 2)}
+                          options={category1}
+                        />
+                      )}
+                      {category2?.length > 0 && (
+                        <Select
+                          disabled={checkCategory}
+                          mode="single"
+                          allowClear
+                          style={{
+                            width: "100%",
+                          }}
+                          showSearch
+                          optionFilterProp="children"
+                          filterOption={(input, option) =>
+                            (option?.label ?? "").includes(input)
+                          }
+                          placeholder="Kategoriyalar"
+                          onChange={(e) => handleChaildCategory(e, 3)}
+                          options={category2}
+                        />
+                      )}
+                      {category3?.length > 0 && (
+                        <Select
+                          disabled={checkCategory}
+                          mode="single"
+                          allowClear
+                          style={{
+                            width: "100%",
+                          }}
+                          showSearch
+                          optionFilterProp="children"
+                          filterOption={(input, option) =>
+                            (option?.label ?? "").includes(input)
+                          }
+                          placeholder="Kategoriyalar"
+                          onChange={(e) => setLastCategory(e)}
+                          options={category3}
+                        />
+                      )}
+                    </Space>
+                    <div
+                      size="small"
+                      className="btn btn-success"
+                      onClick={() => setCheckCategory(!checkCategory)}
+                    >
+                      Qo'shish
+                    </div>
                   </div>
                 </div>
-                </div>
-
 
                 {/* umumiy rasm */}
 
                 <div className="col-md-6">
+                  <span className="label--name font-bold">
+                    Asosiy rasm qo'shish
+                  </span>
                   <div className="d-flex gap-3">
                     <div
                       style={{
@@ -498,7 +530,12 @@ export default function Product() {
                     {mainImageReal && (
                       <div className="d-flex gap-2 align-items-en">
                         <img width={80} src={mainImageReal} alt="photo" />
-                        <i onClick={() => (setMainImage(""), setMainImageReal(""))} class="fa-solid fa-trash"></i>
+                        <i
+                          onClick={() => (
+                            setMainImage(""), setMainImageReal("")
+                          )}
+                          class="fa-solid fa-trash"
+                        ></i>
                       </div>
                     )}
                   </div>
@@ -524,81 +561,67 @@ export default function Product() {
               </div>
             </div>
 
-            <div className=" p-4 colorr">
+            <div className="p-4 colorr">
               <span className="label--name font-bold">Mahsulot ranglari</span>
               <Space
-                style={{
-                  width: "100%",
-                }}
+                style={{ width: "100%" }}
                 direction="vertical"
                 className="mb-4"
               >
                 <Select
                   mode="tags"
                   allowClear
-                  style={{
-                    width: "100%",
-                  }}
+                  style={{ width: "100%" }}
                   placeholder="Ranglarni tanlang"
-                  onChange={handleChange}
+                  onChange={handleChangee}
                   options={colorListOption}
                 />
               </Space>
 
-              {colorList?.map((el) => {
-                return (
-                  <div>
-                    <span className="label--name font-bold d-block mb-3">
-                      {el}
-                    </span>
-                    <div className="d-flex gap-3">
-                      {colorImageListReal?.map((e) => {
-                        return (
-                          <div className="d-flex gap-2">
-                            <img
-                              width={80}
-                              src={e?.["images_" + el]}
-                              alt="photo"
-                            />
-                          </div>
-                        );
-                      })}
+              {selectedColors.map((color) => (
+                <div key={color}>
+                  <span className="label--name font-bold d-block mb-3">
+                    {getColorNameById(color)}
+                    {color}
+                  </span>
+                  <div className="d-flex flex-wrap gap-3 my-2">
+                    {colorImages[color]?.map((image, index) => (
+                      <div key={index} className="d-flex gap-2">
+                        <img width={80} src={image} alt="photo" />
+                      </div>
+                    ))}
 
-                      {colorImageList && (
-                        <div
-                          style={{
-                            maxWidth: "100px",
-                            width: "80px",
-                            backgroundImage: `url(${""})`,
-                            backgroundSize: "cover",
-                            height: "80px",
-                            borderRadius: "5px",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            border: "1px solid #ccc",
-                            position: "relative",
-                          }}
-                        >
-                          <i className="fa-regular fa-plus"></i> yuklash
-                          <input
-                            type="file"
-                            style={{
-                              opacity: "0",
-                              position: "absolute",
-                              top: "0",
-                              left: "0",
-                              bottom: "0",
-                              right: "0",
-                            }}
-                            onChange={(e) => ImageChange(e, el)}
-                          />
-                        </div>
-                      )}
+                    <div
+                      style={{
+                        maxWidth: "100px",
+                        width: "80px",
+                        backgroundSize: "cover",
+                        height: "80px",
+                        borderRadius: "5px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        border: "1px solid #ccc",
+                        position: "relative",
+                      }}
+                    >
+                      <i className="fa-regular fa-plus"></i> yuklash
+                      <input
+                        type="file"
+                        style={{
+                          opacity: "0",
+                          position: "absolute",
+                          top: "0",
+                          left: "0",
+                          bottom: "0",
+                          right: "0",
+                        }}
+                        onChange={(e) => handleImageChange(e, color)}
+                      />
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
 
             <div className="p-4 colorr">
@@ -627,13 +650,13 @@ export default function Product() {
                   ) : (
                     <>
                       <br />
-                      <Button
-                        className="block"
+                      <div
+                        className="block fw-medium"
                         type="primary"
                         onClick={showModal}
                       >
-                        {feature}
-                      </Button>
+                        {featureSelectName}
+                      </div>
                     </>
                   )}
                 </>
@@ -770,7 +793,9 @@ export default function Product() {
           >
             <Input
               placeholder="Nomini kiriting"
-              onChange={(e) => setFeature(e.target.value)}
+              onChange={(e) => (
+                setFeature(e.target.value), setFeatureSelectName(e.target.value)
+              )}
             />
           </Modal>
         </div>

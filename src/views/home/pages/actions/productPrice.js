@@ -1,40 +1,43 @@
 import { Input, Select, Space } from "antd";
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import toast, { Toaster } from "react-hot-toast";
+import { API_ENDPOINTS } from "service/ApiEndpoints";
+import Client from "service/Client";
 
-const option = [
-  {
-    label: "rang",
-    value: 1,
-  },
-];
 
 export default function ProductPrice() {
+  const [submiting, setSubmiting] = useState(false);
   const [page, setPage] = useState(true);
+  const [colorList, setColorList] = useState([]);
+  const [featureList, setFeatureList] = useState([]);
+  const [branch, setBranch] = useState([]);
+  const [product, setProduct] = useState([]);
   const [dataArray, setDataArray] = useState([
     {
-      colour: "",
-      size: "",
+      color: "",
+      feature: "",
       price: "",
     },
   ]);
   const [dataArrayFilial, setDataArrayFilial] = useState([
     {
-      filial: "",
-      product: "",
-      count: "",
+      branch: "",
+      product_variant: "",
+      quantity: "",
     },
   ]);
+  const { search } = useLocation();
+  const params = search.split("=")?.[1];
 
   const handleAddRow = () => {
     setDataArray([
       ...dataArray,
       {
-        colour: "",
-        size: "",
+        color: "",
+        feature: "",
         price: "",
       },
     ]);
@@ -43,9 +46,9 @@ export default function ProductPrice() {
     setDataArrayFilial([
       ...dataArrayFilial,
       {
-        filial: "",
-        product: "",
-        count: "",
+        branch: "",
+        product_variant: "",
+        quantity: ""
       },
     ]);
   };
@@ -61,27 +64,112 @@ export default function ProductPrice() {
     setDataArrayFilial(newArray);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitted Data:", dataArray);
-    // Add your submit logic here, such as an API call
-  };
-  const handleSubmitBranch = (e) => {
-    e.preventDefault();
-    console.log("Submitted Data:", dataArrayFilial);
-    setPage(false)
-    // Add your submit logic here, such as an API call
+    setSubmiting(true);
+
+    const data = {
+      product_variants : dataArray
+    } 
+
+    await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT_PRICE_POST + params}/`, data)
+      .then((data) => {
+        toast.success("Mahsulot muvaffaqiyatli qo'shildi");
+        // navigate(`/products/actions/productPrice?id=${data?.id}`);
+        setPage(false);
+        getProductBranchs()
+      })
+      .catch((err) => {
+        toast.error("Xatolik! Qayta urinib ko'ring");
+        setSubmiting(false);
+      });
+
+    setSubmiting(false);
+    document.querySelector(".create-branch-form").reset();
   };
 
-//   console.log("dataArrayFilial", dataArrayFilial);
+  const handleSubmitBranch = async (e) => {
+    e.preventDefault();
+    console.log("Submitted Data:", dataArrayFilial);
+    setPage(false);
+
+    setSubmiting(true);
+
+    const data = {
+      product_quantities : dataArrayFilial
+    } 
+
+    await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT_BRANCH_POST + params}/`, data)
+      .then((data) => {
+        toast.success("Mahsulot muvaffaqiyatli qo'shildi");
+        navigate(`/products`);
+        setPage(false);
+      })
+      .catch((err) => {
+        toast.error("Xatolik! Qayta urinib ko'ring");
+        setSubmiting(false);
+      });
+
+    setSubmiting(false);
+    // document.querySelector(".create-branch-form").reset();
+  };
+
+  const getProductFeature = async () => {
+    await Client.get(`${API_ENDPOINTS.CREATE_PRODUCT_PRICE + params}/`)
+      .then((resp) => {
+        console.log("date", resp);
+        setColorList(
+          resp?.colors?.map((e) => ({
+            label: e?.name,
+            value: e?.id,
+          }))
+        );
+        setFeatureList(
+          resp?.feature_items?.map((e) => ({
+            label: e?.value,
+            value: e?.id,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+  const getProductBranchs = async () => {
+    await Client.get(`${API_ENDPOINTS.CREATE_PRODUCT_BRANCH + params}/`)
+      .then((resp) => {
+        console.log("date", resp);
+        setBranch(
+          resp?.branches?.map((e) => ({
+            label: e?.name,
+            value: e?.id,
+          }))
+        );
+        setProduct(
+          resp?.product_variants?.map((e) => ({
+            label: <div>
+              <span>{e.color}</span> <span>{e.feature}</span>
+            </div> ,
+            value: e?.id,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getProductFeature();
+    getProductBranchs()
+  }, []);
+
+  // console.log("dataArrayFilial", colorList, featureList);
 
   return (
     <>
       {page ? (
         <div className="bg--color px-2 py-3">
           <h3 className="font-semibold	">Mahsulot narxini qo'shish</h3>
-          <form onSubmit={handleSubmit} className="mt-3">
-            {dataArray.map((item, index) => (
+          <form onSubmit={handleSubmit} className="mt-3 create-branch-form ">
+            {dataArray?.map((item, index) => (
               <div className="row" key={index} style={{ marginBottom: "10px" }}>
                 <div className="col-md-3">
                   <Space
@@ -100,9 +188,9 @@ export default function ProductPrice() {
                       }}
                       placeholder="Ranglar"
                       onChange={(value) =>
-                        handleInputChange(index, "colour", value)
+                        handleInputChange(index, "color", value)
                       }
-                      options={option}
+                      options={colorList}
                     />
                   </Space>
                 </div>
@@ -122,11 +210,11 @@ export default function ProductPrice() {
                       style={{
                         width: "100%",
                       }}
-                      placeholder="Narxlar"
+                      placeholder="O'lchamlarni kiriting"
                       onChange={(value) =>
-                        handleInputChange(index, "size", value)
+                        handleInputChange(index, "feature", value)
                       }
-                      options={option}
+                      options={featureList}
                     />
                   </Space>
                 </div>
@@ -170,7 +258,7 @@ export default function ProductPrice() {
                 }}
                 style={{ width: "100%", marginTop: "10px" }}
               >
-                Submit
+                {submiting ? "Qo'shilmoqda" : "Qo'shish"}
               </Button>
             </div>
           </form>
@@ -178,7 +266,7 @@ export default function ProductPrice() {
         </div>
       ) : (
         <div className="bg--color px-2 py-3">
-          <h3 className="font-semibold	">Mahsulot filialini qo'shish</h3>
+          <h3 className="font-semibold create-branch-form	">Mahsulot filialini qo'shish</h3>
           <form onSubmit={handleSubmitBranch} className="mt-3">
             {dataArrayFilial.map((item, index) => (
               <div className="row" key={index} style={{ marginBottom: "10px" }}>
@@ -199,9 +287,9 @@ export default function ProductPrice() {
                       }}
                       placeholder="Filial"
                       onChange={(value) =>
-                        handleInputChangeFilial(index, "filial", value)
+                        handleInputChangeFilial(index, "branch", value)
                       }
-                      options={option}
+                      options={branch}
                     />
                   </Space>
                 </div>
@@ -223,9 +311,9 @@ export default function ProductPrice() {
                       }}
                       placeholder="Mahsulot"
                       onChange={(value) =>
-                        handleInputChangeFilial(index, "product", value)
+                        handleInputChangeFilial(index, "product_variant", value)
                       }
-                      options={option}
+                      options={product}
                     />
                   </Space>
                 </div>
@@ -235,7 +323,7 @@ export default function ProductPrice() {
                   className="col-md-3"
                   placeholder="Sonini kiriting"
                   onChange={(e) =>
-                    handleInputChangeFilial(index, "count", e.target.value)
+                    handleInputChangeFilial(index, "quantity", e.target.value)
                   }
                 />
                 <div className="col-md-3">
@@ -269,7 +357,7 @@ export default function ProductPrice() {
                 }}
                 style={{ width: "100%", marginTop: "10px" }}
               >
-                Submit
+                 {submiting ? "Qo'shilmoqda" : "Qo'shish"}
               </Button>
             </div>
           </form>
