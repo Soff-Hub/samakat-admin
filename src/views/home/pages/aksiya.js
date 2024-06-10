@@ -125,7 +125,7 @@ export default function CollapsibleTable() {
   return (
     <div className="px-2 py-3">
       <div>
-        <NavHeaderSelect title="Mahsulot aksiyalari" />
+        <NavHeaderSelect admin={true} title="Mahsulot aksiyalari" />
       </div>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">

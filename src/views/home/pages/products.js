@@ -30,98 +30,111 @@ import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { useSelector } from "react-redux";
 import NavHeaderProduct from "components/shared/NavHeaderProduct";
 
-
 function EnhancedTableHead() {
   const { role } = useSelector((state) => state.admin);
-const headCells = [
-  {
-    id: "calories",
-    numeric: false,
-    disablePadding: false,
-    label: "Id",
-  },
-  {
-    id: "calories",
-    numeric: false,
-    disablePadding: false,
-    label: "Nomi",
-  },
-  {
-    id: "carbs",
-    numeric: 1,
-    disablePadding: false,
-    label: "Sotuvda",
-  },
-  {
-    id: "carbsd",
-    numeric: true,
-    disablePadding: false,
-    label: "Status",
-  },
-  {
-    id: "protein",
-    numeric: true,
-    disablePadding: false,
-    label: "Amallar",
-  },
-];
-  
-const headCellsAdmin = [
-  {
-    id: "calories",
-    numeric: false,
-    disablePadding: false,
-    label: "Id",
-  },
-  {
-    id: "calories",
-    numeric: false,
-    disablePadding: false,
-    label: "Nomi",
-  },
-  {
-    id: "carbs",
-    numeric: 1,
-    disablePadding: false,
-    label: "Sotuvda",
-  },
-  {
-    id: "carbsd",
-    numeric: true,
-    disablePadding: false,
-    label: "Status",
-  },
-  {
-    id: "carbsd",
-    numeric: true,
-    disablePadding: false,
-    label: "Seller",
-  },
-  {
-    id: "protein",
-    numeric: true,
-    disablePadding: false,
-    label: "Amallar",
-  },
-];
+  const headCells = [
+    {
+      id: "calories",
+      numeric: false,
+      disablePadding: false,
+      label: "Id",
+    },
+    {
+      id: "calories",
+      numeric: false,
+      disablePadding: false,
+      label: "Nomi",
+    },
+    {
+      id: "carbs",
+      numeric: 1,
+      disablePadding: false,
+      label: "Sotuvda",
+    },
+    {
+      id: "carbsd",
+      numeric: true,
+      disablePadding: false,
+      label: "Status",
+    },
+    {
+      id: "protein",
+      numeric: true,
+      disablePadding: false,
+      label: "Amallar",
+    },
+  ];
+
+  const headCellsAdmin = [
+    {
+      id: "calories",
+      numeric: false,
+      disablePadding: false,
+      label: "Id",
+    },
+    {
+      id: "calories",
+      numeric: false,
+      disablePadding: false,
+      label: "Nomi",
+    },
+    {
+      id: "carbs",
+      numeric: 1,
+      disablePadding: false,
+      label: "Sotuvda",
+    },
+    {
+      id: "carbsd",
+      numeric: true,
+      disablePadding: false,
+      label: "Status",
+    },
+    {
+      id: "carbsd",
+      numeric: true,
+      disablePadding: false,
+      label: "Seller",
+    },
+    {
+      id: "protein",
+      numeric: true,
+      disablePadding: false,
+      label: "Amallar",
+    },
+  ];
   return (
     <TableHead>
       <TableRow>
-        { role === "superadmin" ? headCellsAdmin.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric === 1 ? "center" : headCell.numeric ?  "right" : "left"}
-          >
-            <span className="font-bold text-[16px]"> {headCell.label}</span>
-          </TableCell>
-        )) : headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric === 1 ? "center" : headCell.numeric ?  "right" : "left"}
-          >
-            <span className="font-bold text-[16px]"> {headCell.label}</span>
-          </TableCell>
-        ))}
+        {role === "superadmin"
+          ? headCellsAdmin.map((headCell) => (
+              <TableCell
+                key={headCell.id}
+                align={
+                  headCell.numeric === 1
+                    ? "center"
+                    : headCell.numeric
+                    ? "right"
+                    : "left"
+                }
+              >
+                <span className="font-bold text-[16px]"> {headCell.label}</span>
+              </TableCell>
+            ))
+          : headCells.map((headCell) => (
+              <TableCell
+                key={headCell.id}
+                align={
+                  headCell.numeric === 1
+                    ? "center"
+                    : headCell.numeric
+                    ? "right"
+                    : "left"
+                }
+              >
+                <span className="font-bold text-[16px]"> {headCell.label}</span>
+              </TableCell>
+            ))}
       </TableRow>
     </TableHead>
   );
@@ -429,25 +442,44 @@ export default function EnhancedTable() {
                         </TableCell>
                         <TableCell align="right">
                           <Link to={`actions/?${row.type}?edit?${row.slug}`}>
-                            <span style={{ color: `${row?.status === "pending" ? "#F4CA16" : row?.status === "approved" ? "green" : row?.status === "cancelled" ? "red" : ''}` }}>
+                            <span
+                              style={{
+                                color: `${
+                                  row?.status === "pending"
+                                    ? "#F4CA16"
+                                    : row?.status === "approved"
+                                    ? "green"
+                                    : row?.status === "cancelled"
+                                    ? "red"
+                                    : ""
+                                }`,
+                              }}
+                            >
                               {row?.status === "pending" ? (
-                                'kutilmoqda'
-                              ) : row?.status === "approved" ? "tasdiqlangan" : row?.status === "cancelled" ? "bekor qilingan" : (
+                                "kutilmoqda"
+                              ) : row?.status === "approved" ? (
+                                "tasdiqlangan"
+                              ) : row?.status === "cancelled" ? (
+                                "bekor qilingan"
+                              ) : (
                                 <i className="fa-solid fa-minus"></i>
                               )}
                             </span>
                           </Link>
                         </TableCell>
-                        {
-                          role === "superadmin" && 
-                        <TableCell align="right">
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
-                            <span >
-                              {row?.seller?.name ? row?.seller?.name :  <i className="fa-solid fa-minus"></i>}
-                            </span>
-                          </Link>
-                        </TableCell>
-                        }
+                        {role === "superadmin" && (
+                          <TableCell align="right">
+                            <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                              <span>
+                                {row?.seller?.name ? (
+                                  row?.seller?.name
+                                ) : (
+                                  <i className="fa-solid fa-minus"></i>
+                                )}
+                              </span>
+                            </Link>
+                          </TableCell>
+                        )}
                         <TableCell align="right" sx={{ position: "relative" }}>
                           <Link
                             to={`actions/?${row.type}?addVariant?${row.slug}?${row.variant_id}`}

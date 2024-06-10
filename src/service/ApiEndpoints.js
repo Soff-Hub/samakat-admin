@@ -30,12 +30,12 @@ export const API_ENDPOINTS = {
     CREATE_PRODUCT_PRICE_POST : 'admin/product/set-prices/',
     CREATE_PRODUCT_BRANCH_POST : 'admin/product/set-quantities/',
     
-    BADGE: 'admin/badge/',
-    CREATE_BADGE: 'admin/badge/create/',
+    BADGE: 'admin/rebates/',
+    CREATE_BADGE: 'admin/rebates/',
     DETAIL_BADGE: 'admin/badge/detail/',
     PATCH_BADGE:'admin/badge/update/',
-    DELETE_BADGE: 'admin/badge/delete/',
-    PRODUCT_MIN_LIST_BADGE:'admin/product/list/badge',
+    DELETE_BADGE: 'admin/rebates/delete/',
+    BADGE_ADD_SELLER: 'admin/set-products-to-rebate/',
 
     ADDRESS: 'admin/user-address/',
     ADDRESS_DETAIL: 'admin/user-address/detail/',

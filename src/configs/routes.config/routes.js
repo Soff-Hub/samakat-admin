@@ -399,19 +399,9 @@ export const sellerActionRoutes = [
         component: React.lazy(() => import('views/home/pages/branch-products'))
     },
     {
-        key: 'categories',
-        path: '/categories/*',
-        component: React.lazy(() => import('views/home/pages/categories'))
-    },
-    {
-        key: 'wishlists',
-        path: '/wishlists/*',
-        component: React.lazy(() => import('views/home/pages/wishlists'))
-    },
-    {
-        key: 'product-badge',
-        path: '/product-badge/*',
-        component: React.lazy(() => import('views/home/pages/products-badge'))
+        key: 'aksiya',
+        path: '/aksiya/*',
+        component: React.lazy(() => import('views/home/pages/aksiya'))
     },
     {
         key: 'products',
@@ -424,39 +414,14 @@ export const sellerActionRoutes = [
         component: React.lazy(() => import('views/home/pages/adresses'))
     },
     {
-        key: 'product-categories',
-        path: '/product-categories/*',
-        component: React.lazy(() => import('views/home/pages/product-categories'))
-    },
-    {
-        key: 'promos',
-        path: '/promos/*',
-        component: React.lazy(() => import('views/home/pages/promos'))
-    },
-    {
-        key: 'retsept-wishlists',
-        path: '/retsept-wishlists/*',
-        component: React.lazy(() => import('views/home/pages/retsept-wishlists'))
-    },
-    {
         key: 'retsepts',
         path: '/retsepts/*',
         component: React.lazy(() => import('views/home/pages/retsepts'))
     },
     {
-        key: 'users',
-        path: '/users/*',
-        component: React.lazy(() => import('views/home/pages/users'))
-    },
-    {
         key: 'settings',
         path: '/settings/*',
         component: React.lazy(() => import('views/home/pages/settings'))
-    },
-    {
-        key: 'delivery',
-        path: '/delivery/*',
-        component: React.lazy(() => import('views/home/pages/delivery'))
     },
     {
         key: 'arxiv-orders',
@@ -482,11 +447,6 @@ export const sellerActionRoutes = [
         component: React.lazy(() => import('views/home/pages/actions/orders'))
     },
     {
-        key: 'employee',
-        path: '/employee/actions/*',
-        component: React.lazy(() => import('views/home/pages/actions/employee'))
-    },
-    {
         key: 'branches',
         path: '/branches/actions/*',
         component: React.lazy(() => import('views/home/pages/actions/branches'))
@@ -497,14 +457,9 @@ export const sellerActionRoutes = [
         component: React.lazy(() => import('views/home/pages/actions/branch-products'))
     },
     {
-        key: 'wishlists',
-        path: '/wishlists/actions/*',
-        component: React.lazy(() => import('views/home/pages/actions/wishlists'))
-    },
-    {
-        key: 'product-badge',
-        path: '/product-badge/actions/*',
-        component: React.lazy(() => import('views/home/pages/actions/products-badge'))
+        key: 'aksiya',
+        path: '/aksiya/actions/*',
+        component: React.lazy(() => import('views/home/pages/actions/aksiya'))
     },
     {
         key: 'products',
@@ -517,7 +472,7 @@ export const sellerActionRoutes = [
         path: '/products/actions/*',
         component: React.lazy(() => import('views/home/pages/actions/products'))
     },
-     // mahsulot qo'shish uchun page
+     // mahsulot narxi qo'shish uchun page
     {
         key: 'products',
         path: '/products/actions/productPrice/*',
@@ -527,16 +482,6 @@ export const sellerActionRoutes = [
         key: 'adresses',
         path: '/adresses/actions/*',
         component: React.lazy(() => import('views/home/pages/actions/adresses'))
-    },
-    {
-        key: 'promos',
-        path: '/promos/actions/*',
-        component: React.lazy(() => import('views/home/pages/actions/promos'))
-    },
-    {
-        key: 'retsept-wishlists',
-        path: '/retsept-wishlists/actions/*',
-        component: React.lazy(() => import('views/home/pages/actions/retsept-wishlists'))
     },
     {
         key: 'retsepts',

@@ -192,6 +192,11 @@ export const navigationConfigSeller = [
         icon: <CategoryIcon />,
     },
     {
+        name: 'Aksiyalar',
+        path: '/aksiya',
+        icon: <LoyaltyIcon />,
+    },
+    {
         name: 'Manzillar',
         path: '/adresses',
         icon: <MapIcon />,

@@ -15,41 +15,23 @@ export default function Aksiya() {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const [categoryData, setCategoryData] = useState([]);
-  const [relatedCategory, setRelatedCategory] = React.useState([]);
-  const [lifeImage, setLifeImage] = useState(null);
   const [img, setImage] = useState(null);
-  const [discount, setDiscount] = useState(1);
-  const [productSelect, setProductSelect] = useState(true);
+  const [mainImageReal, setMainImageReal] = useState("");
 
-  const handleChangeRelatedCategory = (event) => {
-    setRelatedCategory(event);
-    setProductSelect(true);
-  };
-  const LifeImage = (e) => {
-    if (e?.target?.files[0]) {
-      let img = window.URL.createObjectURL(e.target.files[0]);
-      setLifeImage(img);
-    }
-  };
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
-    if (discount >= 1) {
-      const formData = new FormData();
-      formData.append("text_uz", text);
-      formData.append("text_ru", textRu);
-      formData.append("textColor", badge);
-      formData.append("discount", discount);
-      if (!relatedCategory?.[0]?.label) {
-        formData.append("products", JSON.stringify(relatedCategory));
-      }
+
+    const formData = new FormData();
+    text && formData.append("name_uz", text);
+    textRu &&  formData.append("name_ru", textRu);
+    badge &&  formData.append("hex_code", badge);
       if (img) {
         formData.append("image", img);
       }
       setSubmiting(true);
       await Client.patch(
-        API_ENDPOINTS.PATCH_BADGE + `${location.search.split("?")[2]}/`,
+        API_ENDPOINTS.BADGE + `${location.search.split("?")[2]}/`,
         formData
       )
         .then((data) => {
@@ -64,95 +46,53 @@ export default function Aksiya() {
 
       setSubmiting(false);
       document.querySelector(".create-branch-form").reset();
-    } else {
-      setProductSelect(false);
-    }
   };
 
   const handleSubmitAdd = async () => {
-    if (discount >= 1) {
-      const formData = new FormData();
-      formData.append("text_uz", text);
-      formData.append("text_ru", textRu);
-      formData.append("textColor", badge);
-      formData.append("discount", discount);
-      formData.append("type", location.search.split("?")[1]);
-      if (!relatedCategory?.[0]?.name > 0) {
-        formData.append("products", JSON.stringify(relatedCategory));
-      }
-      if (img) {
-        formData.append("image", img);
-      }
-
-      setSubmiting(true);
-      await Client.post(API_ENDPOINTS.CREATE_BADGE, formData)
-        .then((data) => {
-          toast.success("Aksiya muvaffaqiyatli qo'shildi");
-          setTimeout(() => {
-            navigate("/product-badge");
-          }, 300);
-        })
-        .catch((err) => {
-          toast.error(err?.response?.data?.map((el, i) => i + 1 + "." + el.msg));
-        });
-
-      setSubmiting(false);
-      document.querySelector(".create-branch-form").reset();
-    } else {
-      setProductSelect(false);
+    const formData = new FormData();
+    formData.append("name_uz", text);
+    formData.append("name_ru", textRu);
+    formData.append("hex_code", badge);
+    if (img) {
+      formData.append("image", img);
     }
-  };
 
-  const DiscountPrice = (e) => {
-    setDiscount(e.target.value);
-    setProductSelect(true);
-  };
-
-  const getProducts = async (e) => {
-    await Client.get(
-      `${API_ENDPOINTS.PRODUCT_MIN_LIST_BADGE}?type=${
-        location.search.split("?")[1] !== "edit"
-          ? location.search.split("?")[1]
-          : ""
-      }`
-    )
-      .then((resp) => {
-        setCategoryData(
-          resp?.map((el) => ({
-            value: el.id,
-            label: el.name,
-          }))
-        );
+    setSubmiting(true);
+    await Client.post(API_ENDPOINTS.CREATE_BADGE, formData)
+      .then((data) => {
+        toast.success("Aksiya muvaffaqiyatli qo'shildi");
+        setTimeout(() => {
+          navigate("/product-badge");
+        }, 300);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error(err?.response?.data);
+      });
+
+    setSubmiting(false);
+    document.querySelector(".create-branch-form").reset();
   };
 
   const getBadge = async () => {
-    await Client.get(
-      `${API_ENDPOINTS.DETAIL_BADGE}${location.search.split("?")[2]}`
-    )
+    await Client.get(`${API_ENDPOINTS.BADGE}${location.search.split("?")[2]}`)
       .then((res) => {
         setData(res);
-        setText(res.text_uz);
-        setTextRu(res.text_ru);
-        setBadge(res.textColor);
-        setDiscount(res.discount);
-        // setImage(res.image);
-        setLifeImage(res.image);
-        setRelatedCategory(
-          res.products?.map((el) => ({
-            value: el.id,
-            label: el.name,
-          }))
-        );
+        // setText(res.name_uz);
+        // setTextRu(res.name_ru);
+        // setBadge(res.hex_code);
+        setMainImageReal(res.image);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  const ImageChangeAll = (e) => {
+    setImage(e.target.files[0]);
+    setMainImageReal(window.URL.createObjectURL(e.target.files[0]));
+  };
+
   useEffect(() => {
-    getProducts();
     if (location.search.split("?")[1] === "edit") {
       getBadge();
     }
@@ -168,11 +108,11 @@ export default function Aksiya() {
             <Link to="/product-badge">
               <Button
                 variant="contained"
-                sx={{ 
+                sx={{
                   background: "#000",
-                  '&:hover': {
+                  "&:hover": {
                     backgroundColor: "#333", // Change this to the desired hover color
-                  }
+                  },
                 }}
                 size="large"
                 startIcon={<ArrowBackIcon />}
@@ -196,7 +136,7 @@ export default function Aksiya() {
                     type="text"
                     required
                     className="w-100"
-                    value={text}
+                    value={text ? text :  data?.name_uz ? data?.name_uz : ''}
                     onChange={(e) => {
                       setText(e.target.value);
                     }}
@@ -210,7 +150,7 @@ export default function Aksiya() {
                     type="text"
                     required
                     className="w-100"
-                    value={textRu}
+                    value={textRu  ? textRu :  data?.name_ru ? data?.name_ru : ''}
                     onChange={(e) => {
                       setTextRu(e.target.value);
                     }}
@@ -222,59 +162,61 @@ export default function Aksiya() {
                 variant="outlined"
                 size="large"
                 type="color"
-                value={badge}
+                value={badge ? badge : data?.hex_code ? data?.hex_code : ""}
                 onChange={(e) => {
                   setBadge(e.target.value);
                 }}
               />
 
-              <Space
-                style={{
-                  width: "100%",
-                  textAlign: "left",
-                }}
-                direction="vertical"
-              >
-                <Select
-                  mode="multiple"
-                  allowClear
+              <div className="d-flex gap-3">
+                <div
                   style={{
-                    width: "100%",
+                    maxWidth: "100px",
+                    width: "80px",
+                    backgroundImage: `url(${""})`,
+                    backgroundSize: "cover",
+                    height: "80px",
+                    borderRadius: "5px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    border: "1px solid #ccc",
+                    position: "relative",
                   }}
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  placeholder="Mahsulotlar"
-                  onChange={handleChangeRelatedCategory}
-                  options={categoryData}
-                  defaultValue={relatedCategory}
-                />
-              </Space>
-
-              <div className={!productSelect ? "error-product" : ""}>
-                <TextField
-                  label="Chegirmasi (%)"
-                  variant="outlined"
-                  size="large"
-                  type="number"
-                  style={{ width: "100%" }}
-                  defaultValue={discount}
-                  onChange={(e) => {
-                    DiscountPrice(e);
-                  }}
-                />
+                >
+                  <i class="fa-solid fa-file-arrow-down"></i>
+                  <input
+                    type="file"
+                    style={{
+                      opacity: "0",
+                      position: "absolute",
+                      top: "0",
+                      left: "0",
+                      bottom: "0",
+                      right: "0",
+                    }}
+                    onChange={(e) => ImageChangeAll(e)}
+                  />
+                </div>
+                {mainImageReal && (
+                  <div className="d-flex gap-2 align-items-en">
+                    <img width={80} src={mainImageReal} alt="photo" />
+                    <i
+                      onClick={() => (setImage(""), setMainImageReal(""))}
+                      class="fa-solid fa-trash"
+                    ></i>
+                  </div>
+                )}
               </div>
 
               <Button
                 variant="contained"
                 size="large"
-                sx={{ 
+                sx={{
                   background: "#000",
-                  '&:hover': {
+                  "&:hover": {
                     backgroundColor: "#333", // Change this to the desired hover color
-                  }
+                  },
                 }}
                 type="submit"
                 disabled={submiting}
@@ -348,50 +290,54 @@ export default function Aksiya() {
               }}
             />
 
-            <Space
-              style={{
-                width: "100%",
-                textAlign: "left",
-              }}
-              direction="vertical"
-            >
-              <Select
-                mode="multiple"
-                allowClear
+            <div className="d-flex gap-3">
+              <div
                 style={{
-                  width: "100%",
+                  maxWidth: "100px",
+                  width: "80px",
+                  backgroundImage: `url(${""})`,
+                  backgroundSize: "cover",
+                  height: "80px",
+                  borderRadius: "5px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  border: "1px solid #ccc",
+                  position: "relative",
                 }}
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label ?? "").includes(input)
-                }
-                placeholder="Mahsulotlar"
-                onChange={handleChangeRelatedCategory}
-                options={categoryData}
-              />
-            </Space>
-            <div className={!productSelect ? "error-product" : ""}>
-              <TextField
-                label="Chegirmasi (%)"
-                variant="outlined"
-                size="large"
-                style={{ width: "100%" }}
-                type="number"
-                defaultValue={discount}
-                onChange={(e) => {
-                  DiscountPrice(e);
-                }}
-              />
+              >
+                <i class="fa-solid fa-file-arrow-down"></i>
+                <input
+                  type="file"
+                  style={{
+                    opacity: "0",
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    bottom: "0",
+                    right: "0",
+                  }}
+                  onChange={(e) => ImageChangeAll(e)}
+                />
+              </div>
+              {mainImageReal && (
+                <div className="d-flex gap-2 align-items-en">
+                  <img width={80} src={mainImageReal} alt="photo" />
+                  <i
+                    onClick={() => (setImage(""), setMainImageReal(""))}
+                    class="fa-solid fa-trash"
+                  ></i>
+                </div>
+              )}
             </div>
 
             <Button
               variant="contained"
-              sx={{ 
+              sx={{
                 background: "#000",
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#333", // Change this to the desired hover color
-                }
+                },
               }}
               size="large"
               type="submit"
