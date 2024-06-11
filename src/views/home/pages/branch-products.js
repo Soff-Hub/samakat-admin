@@ -27,7 +27,7 @@ const headCells = [
     id: "fat",
     numeric: false,
     disablePadding: false,
-    label: "Mahsulot",
+    label: "Mahsulot nomi",
   },
   {
     id: "calories",
@@ -208,7 +208,7 @@ export default function EnhancedTable() {
                       <TableRow hover key={row.id}>
                         <TableCell align="left">
                           <Link to={`actions/?edit?${row.id}`}>
-                            {row.product}
+                            {row.product_variant}
                           </Link>
                         </TableCell>
                         <TableCell align="left">
