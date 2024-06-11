@@ -21,7 +21,7 @@ export default function DashboardProdctTable() {
     DashboardProduct();
   }, []);
   return (
-    <div className="ro my-3 px-3">
+    <div data-aos="zoom-in" className="ro my-3 px-3">
       <div class="co-12">
         <div class="card recent-sales overflow-auto">
           <div class="card-body">

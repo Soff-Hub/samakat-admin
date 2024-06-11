@@ -5,6 +5,8 @@ import ChartComponent from "components/shared/chart";
 import { Box, CircularProgress } from "@mui/material";
 import DashboardRight from "components/shared/dashboard-right";
 import DashboardProdctTable from "components/shared/dashboard-prodct-table";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
@@ -20,6 +22,9 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    AOS.init({
+      duration: 1000,
+    });
     getData();
   }, []);
 
@@ -31,7 +36,10 @@ export default function Dashboard() {
       }}
     >
       <div className="row px-3">
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+        <div
+         data-aos="fade-down-right"
+          class="col-xxl-3 col-xl-3 col-lg-3 col-md-6"
+        >
           <div class="card info-card sales-card">
             <div class="card-body">
               <h5 class="card-title">
@@ -52,7 +60,10 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+        <div
+         data-aos="fade-down-right"
+          class="col-xxl-3 col-xl-3 col-lg-3 col-md-6"
+        >
           <div class="card info-card revenue-card">
             <div class="card-body">
               <h5 class="card-title">
@@ -73,7 +84,10 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+        <div
+          data-aos="fade-down-left"
+          class="col-xxl-3 col-xl-3 col-lg-3 col-md-6"
+        >
           <div class="card info-card customers-card">
             <div class="card-body">
               <h5 class="card-title">
@@ -93,7 +107,10 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6">
+        <div
+         data-aos="fade-down-left"
+          class="col-xxl-3 col-xl-3 col-lg-3 col-md-6"
+        >
           <div class="card info-card customers-card2">
             <div class="card-body">
               <h5 class="card-title">
@@ -118,12 +135,13 @@ export default function Dashboard() {
         <div className="pb-2">
           <div className="dashboard-main">
             <ChartComponent />
-            <DashboardRight />
+            <DashboardRight  />
           </div>
           <DashboardProdctTable />
         </div>
       ) : (
         <Box
+        
           sx={{
             display: "flex",
             wdith: "100%",

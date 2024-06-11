@@ -180,7 +180,7 @@ const ChartComponent = () => {
   }, []);
 
   return (
-    <div className=""
+    <div data-aos="flip-left"
     style={{
       maxWidth:'700px',
       width:'100%',
@@ -207,7 +207,7 @@ const ChartComponent = () => {
         <div
          
         >
-          {1 ? (
+          
             <Chart
               options={options}
               series={series}
@@ -217,9 +217,7 @@ const ChartComponent = () => {
               }}
               // className=" chart-height-control"
             />
-          ) : (
-            <>load</>
-          )}
+         
         </div>
       </div>
     </div>
