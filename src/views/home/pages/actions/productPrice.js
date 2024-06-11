@@ -15,6 +15,7 @@ export default function ProductPrice() {
   const [featureList, setFeatureList] = useState([]);
   const [branch, setBranch] = useState([]);
   const [product, setProduct] = useState([]);
+  const loc = useLocation()
   const [dataArray, setDataArray] = useState([
     {
       color: "",
@@ -31,6 +32,8 @@ export default function ProductPrice() {
   ]);
   const { search } = useLocation();
   const params = search.split("=")?.[1];
+  console.log('loc', loc);
+  
 
   const handleAddRow = () => {
     setDataArray([
@@ -76,7 +79,7 @@ export default function ProductPrice() {
     await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT_PRICE_POST + params}/`, data)
       .then((data) => {
         toast.success("Mahsulot muvaffaqiyatli qo'shildi");
-        // navigate(`/products/actions/productPrice?id=${data?.id}`);
+        navigate(`/products/actions/productPrice?branch`);
         setPage(false);
         getProductBranchs()
       })

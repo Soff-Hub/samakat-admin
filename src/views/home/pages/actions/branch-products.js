@@ -32,9 +32,8 @@ export default function Retsepts() {
       }
       const data = {
         branch: branch,
-        product: product,
+        product_variants: product,
         quantity: +quantity,
-        type: location.search.split("?")[1],
       };
       setSubmiting(true);
       await Client.post(API_ENDPOINTS.CREATE_PRODUCT_COUNT_BRANCH, data)
@@ -63,10 +62,6 @@ export default function Retsepts() {
     e.preventDefault();
 
     const data = {};
-
-    if (branch !== "") {
-      Object.assign(data, { branch: branch });
-    }
     if (product !== "") {
       Object.assign(data, { product: product });
     }
@@ -123,14 +118,7 @@ export default function Retsepts() {
   };
 
   const getProduct = async () => {
-    await Client.get(
-      API_ENDPOINTS.PRODUCT_MIN_LIST +
-        `/?type=${
-          location.search.split("?")[1] !== "edit"
-            ? location.search.split("?")[1]
-            : ""
-        }`
-    )
+    await Client.get(API_ENDPOINTS.PRODUCT_LIST_FOR_CREATE)
       .then((res) => {
         setProductOption(
           res?.map((el) => ({
@@ -174,11 +162,11 @@ export default function Retsepts() {
           <Link to="/branch-products">
             <Button
               variant="contained"
-              sx={{ 
+              sx={{
                 background: "#000",
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#333", // Change this to the desired hover color
-                }
+                },
               }}
               size="large"
               startIcon={<ArrowBackIcon />}
@@ -205,8 +193,8 @@ export default function Retsepts() {
                     style={{
                       width: "100%",
                       height: "47px",
-                      // marginTop: "25px",
                     }}
+                    disabled={true}
                     className={`${
                       error ? "rounded-md border border-rose-500" : ""
                     }`}
@@ -221,10 +209,9 @@ export default function Retsepts() {
                     placeholder="Mahsulot"
                     showSearch
                     allowClear
-                    defaultValue={editData?.product}
+                    defaultValue={editData?.product_variant}
                     style={{
                       width: "100%",
-                      height: "47px",
                     }}
                     onChange={onChangeProduct}
                     className={`${
@@ -255,11 +242,11 @@ export default function Retsepts() {
                   size="large"
                   type="submit"
                   disabled={submiting}
-                  sx={{ 
+                  sx={{
                     background: "#000",
-                    '&:hover': {
+                    "&:hover": {
                       backgroundColor: "#333", // Change this to the desired hover color
-                    }
+                    },
                   }}
                 >
                   {submiting ? "Saqlanmoqda" : "Saqlash"}
@@ -318,7 +305,6 @@ export default function Retsepts() {
               allowClear
               style={{
                 width: "100%",
-                height: "47px",
               }}
               onChange={onChangeProduct}
               optionFilterProp="children"
@@ -346,11 +332,11 @@ export default function Retsepts() {
               size="large"
               type="submit"
               disabled={submiting}
-              sx={{ 
+              sx={{
                 background: "#000",
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#333", // Change this to the desired hover color
-                }
+                },
               }}
             >
               {submiting ? "Qo'shilmoqda" : "Qo'shish"}

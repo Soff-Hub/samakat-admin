@@ -1,7 +1,7 @@
 export const API_ENDPOINTS = {
     LOGIN: 'admin/login/',
     PROFILE: 'auth/profile/',
-    CREATE_BRANCH: 'admin/branch/create/',
+    CREATE_BRANCH: 'admin/branch/',
     UPDATE_BRANCH: 'admin/branch/update/',
     DELETE_BRANCH: 'admin/branch/delete/',
     GET_BRANCHS: 'admin/branch/',
@@ -29,7 +29,8 @@ export const API_ENDPOINTS = {
     CREATE_PRODUCT_BRANCH : 'admin/product-variants-branches/',
     CREATE_PRODUCT_PRICE_POST : 'admin/product/set-prices/',
     CREATE_PRODUCT_BRANCH_POST : 'admin/product/set-quantities/',
-    
+    PRODUCT_LIST_FOR_CREATE: 'admin/product-variants/',
+
     BADGE: 'admin/rebates/',
     CREATE_BADGE: 'admin/rebates/',
     DETAIL_BADGE: 'admin/badge/detail/',
@@ -54,9 +55,9 @@ export const API_ENDPOINTS = {
 
     PRODUCT_COUNT_BRANCH: 'admin/product-count-branch/',
     DETAIL_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/detail/',
-    CREATE_PRODUCT_COUNT_BRANCH: 'admin/product-count-branch/create/',
+    CREATE_PRODUCT_COUNT_BRANCH: 'admin/set-quantity/',
     DELETE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/delete/',
-    UPDATE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/update/',
+    UPDATE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/',
 
     PROMO_CODE: 'admin/promo-code/',
     DETAIL_PROMO_CODE: 'admin/promo-code/detail/',

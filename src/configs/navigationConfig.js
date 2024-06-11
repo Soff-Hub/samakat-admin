@@ -197,16 +197,6 @@ export const navigationConfigSeller = [
         icon: <LoyaltyIcon />,
     },
     {
-        name: 'Manzillar',
-        path: '/adresses',
-        icon: <MapIcon />,
-    },
-    {
-        name: 'Retseptlar',
-        path: '/retsepts',
-        icon: <RestaurantIcon />,
-    },
-    {
         name: 'Buyurtmalar arxivi',
         path: '/arxiv-orders',
         icon: <SendAndArchiveIcon />,

@@ -409,16 +409,6 @@ export const sellerActionRoutes = [
         component: React.lazy(() => import('views/home/pages/products'))
     },
     {
-        key: 'adresses',
-        path: '/adresses/*',
-        component: React.lazy(() => import('views/home/pages/adresses'))
-    },
-    {
-        key: 'retsepts',
-        path: '/retsepts/*',
-        component: React.lazy(() => import('views/home/pages/retsepts'))
-    },
-    {
         key: 'settings',
         path: '/settings/*',
         component: React.lazy(() => import('views/home/pages/settings'))
@@ -477,15 +467,5 @@ export const sellerActionRoutes = [
         key: 'products',
         path: '/products/actions/productPrice/*',
         component: React.lazy(() => import('views/home/pages/actions/productPrice'))
-    },
-    {
-        key: 'adresses',
-        path: '/adresses/actions/*',
-        component: React.lazy(() => import('views/home/pages/actions/adresses'))
-    },
-    {
-        key: 'retsepts',
-        path: '/retsepts/actions/*',
-        component: React.lazy(() => import('views/home/pages/actions/retsepts'))
     },
 ]

@@ -18,9 +18,10 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import NavHeaderSelect from "components/shared/NavHeaderSelect";
 import { CircularProgress } from "@mui/material";
-import { Select } from "antd";
+import { Input, Select } from "antd";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
+import toast, { Toaster } from "react-hot-toast";
 
 const headCells = [
   {
@@ -44,9 +45,15 @@ const headCells = [
   },
   {
     id: "protein",
+    numeric: 1,
+    disablePadding: false,
+    label: "Mahsulot sonini tahrirlash",
+  },
+  {
+    id: "protein",
     numeric: true,
     disablePadding: false,
-    label: "Amallar",
+    label: "O'chirish",
   },
 ];
 
@@ -57,7 +64,7 @@ function EnhancedTableHead() {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align={"left"}
             padding={headCell.disablePadding ? "none" : "normal"}
           >
             <span className="font-bold text-[16px]"> {headCell.label}</span>
@@ -78,6 +85,7 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function EnhancedTable() {
+
   const [page, setPage] = React.useState(1);
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState(10);
@@ -85,8 +93,12 @@ export default function EnhancedTable() {
   const [deleteId, setDeleteId] = useState(null);
   const [branch, setBranch] = useState("");
   const [filialData, setFilialData] = useState([]);
+  const [countProduct, setCountProduct] = useState("")
+  const [submitting, setSubmiting] = useState(false)
 
   const Search = async (e) => {
+
+
     await Client.get(
       `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&search=${e}`
     )
@@ -114,7 +126,7 @@ export default function EnhancedTable() {
       })
       .catch((err) => console.log(err));
   };
-  const getRetsipeData = async () => {
+  const getProductBranchData = async () => {
     setPage(1);
     await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}`)
       .then((resp) => {
@@ -146,19 +158,32 @@ export default function EnhancedTable() {
     )
       .then((resp) => {
         setOpen(false);
-        getRetsipeData();
+        getProductBranchData();
       })
       .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
-    getRetsipeData();
-    // eslint-disable-next-line
-  }, []);
+  const handleChangeCount = async (id) => {
+    const data = {
+      quantitiy: countProduct
+    };
+    await Client.patch(
+      `${API_ENDPOINTS.UPDATE_PRODUCT_COUNT_BRANCH}${id}/`,
+      data
+    )
+      .then((data) => {
+        toast.success("Filialdagi mahsulot soni muvaffaqiyatli tahrirlandi");
+        getProductBranchData()
+      })
+      .catch((err) => {
+        toast.error("Xatolik! Qayta urinib ko'ring");
+      });
+  }
+
 
   useEffect(() => {
     getFilial();
-
+    getProductBranchData();
     // eslint-disable-next-line
   }, []);
 
@@ -167,7 +192,7 @@ export default function EnhancedTable() {
       <div>
         <NavHeaderSelect title="Filiallardagi mahsulotlar" />
       </div>
-
+      <Toaster />
       {data ? (
         <Box sx={{ minWidth: 300 }}>
           <Paper sx={{ mb: 2, p: 2 }}>
@@ -208,7 +233,7 @@ export default function EnhancedTable() {
                       <TableRow hover key={row.id}>
                         <TableCell align="left">
                           <Link to={`actions/?edit?${row.id}`}>
-                            {row.product_variant}
+                            {row.name}
                           </Link>
                         </TableCell>
                         <TableCell align="left">
@@ -216,17 +241,28 @@ export default function EnhancedTable() {
                             {row.branch}
                           </Link>
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="left">
                           <Link to={`actions/?edit?${row.id}`}>
                             {row.quantity}
                           </Link>
                         </TableCell>
-                        <TableCell align="right" sx={{ position: "relative" }}>
-                          <Link to={`actions/?edit?${row.id}`}>
-                            <IconButton color="primary">
-                              <DriveFileRenameOutlineOutlinedIcon />
+                        <TableCell align="left" sx={{ position: "relative" }}>
+                          <div className="flex w-75 justify-end end-100">
+                            <Input
+                              type="number"
+                              placeholder="Sonini kiriting"
+                              onChange={(e) => setCountProduct(e.target.value)}
+                              style={{
+                                display: "inline-block",
+                                position: "absalute",
+                              }}
+                            />
+                            <IconButton onClick={() => handleChangeCount(row?.id)} color="primary">
+                              <SaveAsIcon />
                             </IconButton>
-                          </Link>
+                          </div>
+                        </TableCell>
+                        <TableCell align="left" sx={{ position: "relative" }}>
                           <IconButton
                             color="error"
                             onClick={() => {
