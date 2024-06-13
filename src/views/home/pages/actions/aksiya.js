@@ -68,7 +68,7 @@ export default function AksiyaSeller() {
     await Client.get(`${API_ENDPOINTS.PRODUCT_LIST_FOR_CREATE}`)
       .then((resp) => {
         setCategoryData(
-          resp?.results?.map((el) => ({
+          resp?.map((el) => ({
             value: el.id,
             label: el.name,
           }))
@@ -81,10 +81,7 @@ export default function AksiyaSeller() {
     await Client.get(`${API_ENDPOINTS.BADGE}${location.search.split("?")[2]}`)
       .then((res) => {
         setData(res);
-        setRelatedCategory(res.products.map((e) => ({
-            label: e.name,
-            value: e.id
-        })))
+        setRelatedCategory(res.products)
       })
       .catch((err) => {
         console.log(err);

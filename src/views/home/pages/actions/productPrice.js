@@ -1,7 +1,7 @@
 import { Input, Select, Space } from "antd";
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import toast, { Toaster } from "react-hot-toast";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
@@ -16,6 +16,7 @@ export default function ProductPrice() {
   const [branch, setBranch] = useState([]);
   const [product, setProduct] = useState([]);
   const loc = useLocation()
+  const navigate = useNavigate()
   const [dataArray, setDataArray] = useState([
     {
       color: "",
@@ -32,7 +33,7 @@ export default function ProductPrice() {
   ]);
   const { search } = useLocation();
   const params = search.split("=")?.[1];
-  console.log('loc', loc);
+  console.log('loc', params);
   
 
   const handleAddRow = () => {
@@ -79,7 +80,7 @@ export default function ProductPrice() {
     await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT_PRICE_POST + params}/`, data)
       .then((data) => {
         toast.success("Mahsulot muvaffaqiyatli qo'shildi");
-        navigate(`/products/actions/productPrice?branch`);
+        navigate(`/products/actions/productPrice?branch=${params}`);
         setPage(false);
         getProductBranchs()
       })
@@ -115,7 +116,7 @@ export default function ProductPrice() {
       });
 
     setSubmiting(false);
-    // document.querySelector(".create-branch-form").reset();
+    document.querySelector(".create-branch-form").reset();
   };
 
   const getProductFeature = async () => {
@@ -269,8 +270,8 @@ export default function ProductPrice() {
         </div>
       ) : (
         <div className="bg--color px-2 py-3">
-          <h3 className="font-semibold create-branch-form	">Mahsulot filialini qo'shish</h3>
-          <form onSubmit={handleSubmitBranch} className="mt-3">
+          <h3 className="font-semibold	">Mahsulot filialini qo'shish</h3>
+          <form onSubmit={handleSubmitBranch} className="mt-3   create-branch-form">
             {dataArrayFilial.map((item, index) => (
               <div className="row" key={index} style={{ marginBottom: "10px" }}>
                 <div className="col-md-3">

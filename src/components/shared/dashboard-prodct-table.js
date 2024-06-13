@@ -10,7 +10,7 @@ export default function DashboardProdctTable() {
   const DashboardProduct = async () => {
     await Client.get(API_ENDPOINTS.DASHBOARD_ORDER)
       .then((res) => {
-        setData(res?.results);
+        setData(res);
       })
       .catch((err) => {
         console.log(err);

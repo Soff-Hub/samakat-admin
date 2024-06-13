@@ -94,7 +94,6 @@ export default function EnhancedTable() {
   const [branch, setBranch] = useState("");
   const [filialData, setFilialData] = useState([]);
   const [countProduct, setCountProduct] = useState("")
-  const [submitting, setSubmiting] = useState(false)
 
   const Search = async (e) => {
 
@@ -137,11 +136,11 @@ export default function EnhancedTable() {
   };
 
   const getFilial = async () => {
-    await Client.get(API_ENDPOINTS.GET_BRANCHS)
+    await Client.get(API_ENDPOINTS.GET_COUNT_BRANCH)
       .then((res) => {
         setCount(res.count);
         setFilialData(
-          res.results.map((el) => ({
+          res?.map((el) => ({
             label: el.name,
             value: el.id,
           }))
@@ -165,7 +164,7 @@ export default function EnhancedTable() {
 
   const handleChangeCount = async (id) => {
     const data = {
-      quantitiy: countProduct
+      quantity: +countProduct
     };
     await Client.patch(
       `${API_ENDPOINTS.UPDATE_PRODUCT_COUNT_BRANCH}${id}/`,

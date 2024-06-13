@@ -2,8 +2,8 @@ export const API_ENDPOINTS = {
     LOGIN: 'admin/login/',
     PROFILE: 'auth/profile/',
     CREATE_BRANCH: 'admin/branch/',
-    UPDATE_BRANCH: 'admin/branch/update/',
-    DELETE_BRANCH: 'admin/branch/delete/',
+    UPDATE_BRANCH: 'admin/branch/',
+    DELETE_BRANCH: 'admin/branch/',
     GET_BRANCHS: 'admin/branch/',
 
     CATEGORIES: 'admin/category/',
@@ -53,10 +53,11 @@ export const API_ENDPOINTS = {
     PATCH_ORDER : 'admin/order/update/',
     DETAIL_ORDER: 'admin/order/detail/',
 
+    GET_COUNT_BRANCH: 'admin/approved-branches/',
     PRODUCT_COUNT_BRANCH: 'admin/product-count-branch/',
     DETAIL_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/detail/',
     CREATE_PRODUCT_COUNT_BRANCH: 'admin/set-quantity/',
-    DELETE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/delete/',
+    DELETE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/',
     UPDATE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/',
 
     PROMO_CODE: 'admin/promo-code/',

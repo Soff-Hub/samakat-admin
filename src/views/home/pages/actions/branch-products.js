@@ -32,7 +32,7 @@ export default function Retsepts() {
       }
       const data = {
         branch: branch,
-        product_variants: product,
+        product_variants: [product],
         quantity: +quantity,
       };
       setSubmiting(true);

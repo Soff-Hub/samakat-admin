@@ -27,6 +27,22 @@ export default function Branches() {
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
 
+  const status = {
+    'approved' : {
+      'name': 'tasdiqlangan',
+      'color': 'green'
+    },
+    'pending' : {
+      'name': 'kutilmoqda',
+      'color': '#F4CA16'
+    },
+    'cancelled' : {
+      'name': 'bekor qilingan',
+      'color': 'red'
+    },
+
+  }
+
   async function getBranches() {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
       .then((resp) => {
@@ -78,6 +94,9 @@ export default function Branches() {
                   <span className="font-bold text-[16px]">Aniq Manzil</span>
                 </TableCell>
                 <TableCell align="right">
+                  <span className="font-bold text-[16px]">Holati</span>
+                </TableCell>
+                <TableCell align="right">
                   <span className="font-bold text-[16px]">Amallar</span>
                 </TableCell>
               </TableRow>
@@ -103,6 +122,14 @@ export default function Branches() {
                         className="hover:underline"
                       >
                         {row.address}
+                      </Link>
+                    </TableCell>
+                    <TableCell align="right" component="th" scope="row">
+                      <Link
+                        to={"actions/" + row.uuid}
+                        className={`hover:underline text-[${status[row.status].color}] `}
+                      >
+                        {status[row.status].name}
                       </Link>
                     </TableCell>
                     <TableCell align="right">

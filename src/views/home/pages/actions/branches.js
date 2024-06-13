@@ -132,7 +132,7 @@ function Login() {
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
-    await Client.put(`${API_ENDPOINTS.UPDATE_BRANCH}${query["*"]}/`, formVal)
+    await Client.patch(`${API_ENDPOINTS.UPDATE_BRANCH}${query["*"]}/`, formVal)
       .then((data) => {
         toast.success("Filial muvaffaqiyatli tahrirlandi");
         setTimeout(() => {

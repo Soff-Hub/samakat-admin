@@ -183,6 +183,21 @@ export default function EnhancedTable() {
     },
   ]);
 
+  const status = {
+    approved: {
+      name: "tasdiqlangan",
+      color: "green",
+    },
+    pending: {
+      name: "kutilmoqda",
+      color: "#F4CA16",
+    },
+    cancelled: {
+      name: "bekor qilingan",
+      color: "red",
+    },
+  };
+
   const getProductData = async () => {
     setPage(1);
     await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}&type=bistro`)
@@ -444,26 +459,10 @@ export default function EnhancedTable() {
                           <Link to={`actions/?${row.type}?edit?${row.slug}`}>
                             <span
                               style={{
-                                color: `${
-                                  row?.status === "pending"
-                                    ? "#F4CA16"
-                                    : row?.status === "approved"
-                                    ? "green"
-                                    : row?.status === "cancelled"
-                                    ? "red"
-                                    : ""
-                                }`,
+                                color: `${status[row.status].color}`
                               }}
                             >
-                              {row?.status === "pending" ? (
-                                "kutilmoqda"
-                              ) : row?.status === "approved" ? (
-                                "tasdiqlangan"
-                              ) : row?.status === "cancelled" ? (
-                                "bekor qilingan"
-                              ) : (
-                                <i className="fa-solid fa-minus"></i>
-                              )}
+                              {status[row.status].name}
                             </span>
                           </Link>
                         </TableCell>
