@@ -21,15 +21,16 @@ export const API_ENDPOINTS = {
 
     PRODUCT: 'admin/product/',
     DELETE_PRODUCT: 'admin/product/delete/',
-    CREATE_PRODUCT: 'admin/product/create/',
+    CREATE_PRODUCT: 'admin/product/',
     PATCH_PRODUCT : 'admin/product/update/',
-    DETAIL_PRODUCT: 'admin/product/detail/',
+    DETAIL_PRODUCT: 'admin/product/',
     PRODUCT_MIN_LIST:'admin/product/list/filter',
     CREATE_PRODUCT_PRICE : 'admin/product-colors-features/',
     CREATE_PRODUCT_BRANCH : 'admin/product-variants-branches/',
     CREATE_PRODUCT_PRICE_POST : 'admin/product/set-prices/',
     CREATE_PRODUCT_BRANCH_POST : 'admin/product/set-quantities/',
     PRODUCT_LIST_FOR_CREATE: 'admin/product-variants/',
+    UPDATE_PRODUCT_PRICE: 'admin/product/update-prices/',
 
     BADGE: 'admin/rebates/',
     CREATE_BADGE: 'admin/rebates/',

@@ -431,17 +431,17 @@ export default function EnhancedTable() {
                     return (
                       <TableRow hover key={row.id}>
                         <TableCell align="left">
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.slug}`}>
                             {row.id}
                           </Link>
                         </TableCell>
                         <TableCell align="left">
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.slug}`}>
                             {row.name}
                           </Link>
                         </TableCell>
                         <TableCell align="center">
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.slug}`}>
                             {row.on_sale ? (
                               <i
                                 style={{ color: "green" }}
@@ -456,7 +456,7 @@ export default function EnhancedTable() {
                           </Link>
                         </TableCell>
                         <TableCell align="right">
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.slug}`}>
                             <span
                               style={{
                                 color: `${status[row.status].color}`
@@ -468,7 +468,7 @@ export default function EnhancedTable() {
                         </TableCell>
                         {role === "superadmin" && (
                           <TableCell align="right">
-                            <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                            <Link to={`actions/?edit?${row.slug}`}>
                               <span>
                                 {row?.seller?.name ? (
                                   row?.seller?.name
@@ -480,13 +480,13 @@ export default function EnhancedTable() {
                           </TableCell>
                         )}
                         <TableCell align="right" sx={{ position: "relative" }}>
-                          <Link
-                            to={`actions/?${row.type}?addVariant?${row.slug}?${row.variant_id}`}
+                          {/* <Link
+                            to={`actions/?addVariant?${row.slug}?${row.variant_id}`}
                           >
                             <IconButton color="primary" aria-label="delete">
                               <AddCircleOutlinedIcon />
                             </IconButton>
-                          </Link>
+                          </Link> */}
                           {row.is_delete ? (
                             <IconButton
                               color="error"
@@ -501,7 +501,7 @@ export default function EnhancedTable() {
                           ) : (
                             ""
                           )}
-                          <Link to={`actions/?${row.type}?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.slug}`}>
                             <IconButton color="primary">
                               <DriveFileRenameOutlineOutlinedIcon />
                             </IconButton>

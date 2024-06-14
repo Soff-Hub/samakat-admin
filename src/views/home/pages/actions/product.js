@@ -6,64 +6,49 @@ import Switch from "@mui/material/Switch";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
-import AddInputThree from "components/shared/addInputThree";
 import CKeditor from "components/shared/skeditor";
+import { Steps } from "antd";
+const { TextArea } = Input;
 
 export default function Product() {
   const [submiting, setSubmiting] = useState(false);
-  const location = useLocation();
+  const [percent, setPercent] = useState(10);
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [nameRu, setNameRu] = useState("");
   const [description, setDescription] = useState("");
   const [descriptionRu, setDescriptionRu] = useState("");
   const [on_sale, setOn_sale] = React.useState(false);
-  const [image, setImage] = useState("");
-  const [colorListOption, setColorListOption] = useState([]);
-  const [colorList, setColorList] = useState([]);
-  const [imageColor, setImageColor] = useState([]);
-  const [imageColorReal, setImageColorReal] = useState([]);
-  const [addHandleImageData, setAddHandleImageData] = useState([
-    {
-      id: 0,
-    },
-  ]);
-  const [atributInput, setAtributInput] = useState([
-    {
-      id: 1,
-      content_uz: "",
-      content_ru: "",
-      order: "",
-    },
-  ]);
-  const navigate = useNavigate();
-  const [colorImageList, setColorImageList] = useState([]);
-  const [colorImageListReal, setColorImageListReal] = useState([]);
+  const [imageURLs, setImageURLs] = useState([]); // asosiy rasm uchun map un
+  const [imageFiles, setImageFiles] = useState([]); // asosiy rasm file un
+  const [colorListOption, setColorListOption] = useState([]); //rang render un
+  const [colorImageList, setColorImageList] = useState([]); // yuborish uchun rang rasmlari
+  const [short_desc_uz, setShort_desc_uz] = useState(""); // qisqa tavsif un post
+  const [short_desc_ru, setShort_desc_ru] = useState(""); // qisqa tavsif un post
   const [sizetype, setsizeType] = useState([]);
   const [colorData, setColorData] = useState([]);
-  const [sizechaild, setsizeChaild] = useState([]);
   const [changeSize, setChangeSize] = useState(true);
   const [checkChaild, setCheckChaild] = useState(true);
   const [sizeInputArray, setSizeInputArray] = useState([{ item: 1 }]);
-  const [categoryInputArray, setCategoryInputArray] = useState([{ item: 1 }]);
-  const [inputValues, setInputValues] = useState([""]);
+  const [inputValues, setInputValues] = useState([]);
   const [lastCategory, setLastCategory] = useState("");
 
-  const [categoryList, setCategoryList] = useState([]);
-  const [category1, setCategory1] = useState([]);
+  const [categoryList, setCategoryList] = useState([]); //kategoriyalar listi uchun
+  const [category1, setCategory1] = useState([]); // kategoriyalar ni faqat 4 tagacha ichma ich kira oladi
   const [category2, setCategory2] = useState([]);
   const [category3, setCategory3] = useState([]);
-  const [category4, setCategory4] = useState([]);
 
-  const [checkCategory, setCheckCategory] = useState(false);
-  const [treeData, setTreeData] = useState([]);
-  const [feature, setFeature] = useState("");
-  const [featureSelectName, setFeatureSelectName] = useState("");
+  const [checkCategory, setCheckCategory] = useState(false); // categoriyalar tanlangandan so'ng ularni disabled qilib qo'yish
+  const [treeData, setTreeData] = useState([]); // xususiyat nomini tanlagandan so'ng uning chaildlarini chhiqaruvchi state
+  const [feature, setFeature] = useState(""); // tanlagan xususiyat nomi , yuborish uchun / modalda yozganda
+  const [featureSelectName, setFeatureSelectName] = useState(""); // tanlagan xususiyat nomi , yuborish uchun / selectdan tanlaganda
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenSizeParent, setIsModalOpenSizeParent] = useState(false);
 
-  const [mainImage, setMainImage] = useState("");
-  const [mainImageReal, setMainImageReal] = useState("");
+  const [selectedColors, setSelectedColors] = useState([]); //rang id lari
+  const [colorImages, setColorImages] = useState({}); //rang rasmlari map
+  const [allImages, setAllImages] = useState([]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -73,21 +58,123 @@ export default function Product() {
     setIsModalOpen(false);
   };
 
+  // qo'shimcha xususiyat kiritayotgandagi modalni yopish => cancel
   const handleCancelSizeParent = () => {
     setIsModalOpenSizeParent(false);
   };
-
+  // // qo'shimcha xususiyat kiritayotgandagi modalni yopish => ok
   const handleOkSizeParent = () => {
     setIsModalOpenSizeParent(false);
   };
 
-  const handleChange = async (value) => {
-    setColorList(value);
+  // kategoriyalarni otalari
+  const getCategory = async () => {
+    await Client.get(`${API_ENDPOINTS.PPRODUCT_CATEGORY_CREATE}`)
+      .then((resp) => {
+        setCategoryList(
+          resp?.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+  // ranglar get
+  const getColor = async () => {
+    await Client.get(`${API_ENDPOINTS.COLOR}`)
+      .then((resp) => {
+        setColorData(resp);
+        setColorListOption(
+          resp?.map((el) => ({
+            label: (
+              <div>
+                <i
+                  class="fa-solid fa-circle"
+                  style={{ color: el?.hex_code }}
+                ></i>{" "}
+                {el?.name}
+              </div>
+            ),
+            value: el.id,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+  // xususiyatlar get
+  const getSizeType = async () => {
+    await Client.get(`${API_ENDPOINTS.SIZE}`)
+      .then((resp) => {
+        setsizeType([
+          ...resp?.map((el) => ({
+            label: el?.name,
+            value: el.id,
+          })),
+          {
+            label: "Boshqa o'lcham qo'shish",
+            value: 0,
+          },
+        ]);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  // asosiy rasmlarni yig'ib berish uchun
+  const handleImageChangeI = (e) => {
+    const files = Array.from(e.target.files);
+    const newImageURLs = files.map((file) => URL.createObjectURL(file));
+    setImageURLs((prevImageURLs) => [...prevImageURLs, ...newImageURLs]);
+    setImageFiles((prevImageFiles) => [...prevImageFiles, ...files]);
+  };
+
+  // asosiy rasmlarni o'chirish
+  const handleRemoveImage = (index) => {
+    setImageURLs((prevImageURLs) =>
+      prevImageURLs.filter((_, i) => i !== index)
+    );
+    setImageFiles((prevImageFiles) =>
+      prevImageFiles.filter((_, i) => i !== index)
+    );
+  };
+
+  // ranglarni id larini yig'ib berish
+  const handleChangee = (value) => {
+    setSelectedColors(value);
+    setPercent(70);
+  };
+
+  // ranglar uchun rasm qo'shish
+  const handleImageChange = (e, color) => {
+    const file = e.target.files[0];
+    if (file) {
+      colorImageList.push({
+        ["images_" + color]: file,
+      });
+      const reader = new FileReader();
+      reader.onload = () => {
+        const newImage = reader.result;
+        const updatedColorImages = {
+          ...colorImages,
+          [color]: colorImages[color]
+            ? [...colorImages[color], newImage]
+            : [newImage],
+        };
+        setColorImages(updatedColorImages);
+        setAllImages([...allImages, { color, image: newImage }]);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // ranglarni belgilagandan keyin chiqadigan nomi
+  const getColorNameById = (id) => {
+    const color = colorData.find((color) => color.id === id);
+    return color ? color.name : null;
   };
 
   const handleChangeSizeType = async (value) => {
-    console.log("value", value);
-
+    setPercent(70);
     setFeature(value);
     for (let i = 0; i < sizetype.length; i++) {
       if (sizetype[i].value == value) {
@@ -144,97 +231,6 @@ export default function Product() {
       })
       .catch((err) => console.log(err));
   };
-
-  const addProductHighlightInput = (value, id) => {
-    let findItem = atributInput.find((elem) => elem.id === id);
-    findItem.content_uz = value?.content_uz;
-    findItem.content_ru = value?.content_ru;
-    findItem.order = value?.order;
-    setAtributInput([...atributInput]);
-  };
-
-  const deleteIDHighlight = (i) => {
-    setAtributInput(atributInput.filter((item) => item?.id !== i));
-  };
-
-  const addAtributInput = async (value, id) => {
-    setAtributInput([...atributInput, { id, ...value }]);
-  };
-
-  const getCategory = async () => {
-    await Client.get(`${API_ENDPOINTS.PPRODUCT_CATEGORY_CREATE}`)
-      .then((resp) => {
-        setCategoryList(
-          resp?.map((el) => ({
-            label: el.name,
-            value: el.id,
-          }))
-        );
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const getColor = async () => {
-    await Client.get(`${API_ENDPOINTS.COLOR}`)
-      .then((resp) => {
-        setColorData(resp);
-        setColorListOption(
-          resp?.map((el) => ({
-            label: (
-              <div>
-                <i
-                  class="fa-solid fa-circle"
-                  style={{ color: el?.hex_code }}
-                ></i>{" "}
-                {el?.name}
-              </div>
-            ),
-            value: el.id,
-          }))
-        );
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const getSizeType = async () => {
-    await Client.get(`${API_ENDPOINTS.SIZE}`)
-      .then((resp) => {
-        setsizeType([
-          ...resp?.map((el) => ({
-            label: el?.name,
-            value: el.id,
-          })),
-          {
-            label: "Boshqa o'lcham qo'shish",
-            value: 0,
-          },
-        ]);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const change = () => {
-    const product_highlight = atributInput?.map((item) => {
-      const { content, order } = item;
-      return { content, order };
-    });
-  };
-
-  const ImageChange = (e, id) => {
-    colorImageList.push({
-      ["images_" + id]: e.target.files[0],
-    });
-    colorImageListReal.push({
-      ["images_" + id]: window.URL.createObjectURL(e.target.files[0]),
-    });
-    setImageColor(e.target.files[0]),
-      setImageColorReal(window.URL.createObjectURL(e.target.files[0]));
-  };
-  const ImageChangeAll = (e) => {
-    setMainImage(e.target.files[0]);
-    setMainImageReal(window.URL.createObjectURL(e.target.files[0]));
-  };
-
   const addHandleChangeSizeInput = (index, event) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = event.target.value;
@@ -254,47 +250,31 @@ export default function Product() {
     setInputValues(checkedKeys);
   };
 
+  // qo'shish
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
     setSubmiting(true);
-
-    const product_highlight = atributInput?.map((item) => {
-      const { content_uz, content_ru, order } = item;
-      return { content_uz, content_ru, order };
-    });
 
     const formData1 = new FormData();
     formData1.append("name_uz", name);
     formData1.append("name_ru", nameRu);
     formData1.append("description_uz", description);
     formData1.append("description_ru", descriptionRu);
+    formData1.append("short_description_uz", short_desc_uz);
+    formData1.append("short_description_ru", short_desc_ru);
     formData1.append("on_sale", on_sale);
     formData1.append("category", lastCategory);
     formData1.append("colors", JSON.stringify(selectedColors));
     formData1.append("feature", feature);
     formData1.append("feature_items", JSON.stringify(inputValues));
-    formData1.append("images", mainImage);
     colorImageList.forEach((obj) => {
       Object.entries(obj).forEach(([key, value]) => {
         formData1.append(key, value);
       });
     });
-    // imageList.forEach((obj) => {
-    //   Object.entries(obj).forEach(([key, value]) => {
-    //     formData1.append(key, value);
-    //   });
-    // });
-
-    if (
-      product_highlight?.every(
-        (el) => el.content_uz !== "" && el.content_uz && el.order
-      ) &&
-      product_highlight?.every(
-        (el) => el.order !== "" && el.content_uz && el.order
-      )
-    ) {
-      formData1.append("product_highlight", JSON.stringify(product_highlight));
-    }
+    imageFiles.forEach((obj) => {
+      formData1.append("images", obj);
+    });
 
     await Client.post(API_ENDPOINTS.CREATE_PRODUCT, formData1)
       .then((data) => {
@@ -314,51 +294,41 @@ export default function Product() {
     getColor();
     getSizeType();
     getCategory();
+    imageFiles.forEach((obj) => {
+      Object.entries(obj).forEach(([value]) => {
+        console.log("images", value);
+      });
+    });
     // eslint-disable-next-line
   }, []);
 
-  const [selectedColors, setSelectedColors] = useState([]);
-  const [colorImages, setColorImages] = useState({});
-  const [allImages, setAllImages] = useState([]);
-
-  const handleChangee = (value) => {
-    setSelectedColors(value);
-  };
-
-  const handleImageChange = (e, color) => {
-    const file = e.target.files[0];
-    if (file) {
-      colorImageList.push({
-        ["images_" + color]: file,
-      });
-      const reader = new FileReader();
-      reader.onload = () => {
-        const newImage = reader.result;
-        const updatedColorImages = {
-          ...colorImages,
-          [color]: colorImages[color]
-            ? [...colorImages[color], newImage]
-            : [newImage],
-        };
-        setColorImages(updatedColorImages);
-        setAllImages([...allImages, { color, image: newImage }]);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const getColorNameById = (id) => {
-    const color = colorData.find((color) => color.id === id);
-    return color ? color.name : null;
-  };
 
   return (
     <div className="flex  gap-1 bg--color px-2 py-3">
       <div className="w-full">
         <h1 className="text-[35px] pb-2">Mahsulot qo'shish!</h1>
         <Toaster />
-        {/* <Test/> */}
-        <div className="w-full">
+
+        <Steps
+          current={0}
+          percent={percent}
+          items={[
+            {
+              title: "Mahsulot qismlari",
+              subTitle: "birinchi bosqich",
+            },
+            {
+              title: "Narx qo'shish",
+              subTitle: "ikkinchi bosqich",
+            },
+            {
+              title: "Filial biriktirish",
+              subTitle: "uchinchi bosqich",
+            },
+          ]}
+        />
+
+        <div className="w-full mt-3">
           <form
             onSubmit={handleSubmitAdd}
             className="w-full flex flex-col gap-3  create-branch-form border-3"
@@ -367,7 +337,7 @@ export default function Product() {
               <div className="row gap-3">
                 <div className="row">
                   <div className="col-6">
-                    <span className="label--name font-bold">Nomi *</span>
+                    <span className="label--name font-bold">Nomi(uz)*</span>
                     <Input
                       placeholder="Nomi *"
                       type="text"
@@ -401,7 +371,7 @@ export default function Product() {
                 </div>
 
                 <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                  <span className="label--name font-bold">Kategoriyalar</span>
+                  <span className="label--name font-bold">Kategoriyalar *</span>
                   <div className="d-flex gap-3  align-items-start">
                     <Space
                       style={{
@@ -409,8 +379,10 @@ export default function Product() {
                         textAlign: "left",
                       }}
                       direction="vertical"
+                      required
                     >
                       <Select
+                        required
                         disabled={checkCategory}
                         mode="single"
                         allowClear
@@ -440,7 +412,9 @@ export default function Product() {
                             (option?.label ?? "").includes(input)
                           }
                           placeholder="Kategoriyalar"
-                          onChange={(e) => handleChaildCategory(e, 2)}
+                          onChange={(e) => (
+                            handleChaildCategory(e, 2), setPercent(30)
+                          )}
                           options={category1}
                         />
                       )}
@@ -495,15 +469,13 @@ export default function Product() {
 
                 <div className="col-md-6">
                   <span className="label--name font-bold">
-                    Asosiy rasm qo'shish
+                    Asosiy rasmlarni qo'shish
                   </span>
-                  <div className="d-flex gap-3">
+                  <div className="d-flex gap-3 flex-wrap">
                     <div
                       style={{
                         maxWidth: "100px",
                         width: "80px",
-                        backgroundImage: `url(${""})`,
-                        backgroundSize: "cover",
                         height: "80px",
                         borderRadius: "5px",
                         display: "flex",
@@ -511,11 +483,15 @@ export default function Product() {
                         alignItems: "center",
                         border: "1px solid #ccc",
                         position: "relative",
+                        cursor: "pointer",
+                        backgroundColor: "#f8f8f8",
                       }}
                     >
-                      <i class="fa-solid fa-file-arrow-down"></i>
+                      <i className="fa-solid fa-file-arrow-down"></i>
                       <input
                         type="file"
+                        multiple
+                        accept="image/*"
                         style={{
                           opacity: "0",
                           position: "absolute",
@@ -523,29 +499,70 @@ export default function Product() {
                           left: "0",
                           bottom: "0",
                           right: "0",
+                          cursor: "pointer",
                         }}
-                        onChange={(e) => ImageChangeAll(e)}
+                        onChange={handleImageChangeI}
                       />
                     </div>
-                    {mainImageReal && (
-                      <div className="d-flex gap-2 align-items-en">
-                        <img width={80} src={mainImageReal} alt="photo" />
+                    {imageURLs.map((image, index) => (
+                      <div
+                        key={index}
+                        className="d-flex gap-2  position-relative"
+                      >
+                        <img
+                          width={80}
+                          style={{ borderRadius: "3px", objectFit: "cover" }}
+                          src={image}
+                          alt={`Uploaded ${index}`}
+                        />
                         <i
-                          onClick={() => (
-                            setMainImage(""), setMainImageReal("")
-                          )}
-                          class="fa-solid fa-trash"
+                          onClick={() => handleRemoveImage(index)}
+                          className="fa-solid fa-trash"
+                          style={{
+                            cursor: "pointer",
+                            position: "absolute",
+                            top: "5px",
+                            right: "5px",
+                            background: "rgba(255, 255, 255, 0.7)",
+                            borderRadius: "50%",
+                            padding: "2px",
+                          }}
                         ></i>
                       </div>
-                    )}
+                    ))}
                   </div>
                 </div>
 
+                {/* qisqa izoh uchun */}
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <span className="label--name font-bold">
+                      Qisqa izoh (uz){" "}
+                    </span>
+                    <TextArea
+                      placeholder="Qisqa tavsif "
+                      rows={4}
+                      onChange={(e) => setShort_desc_uz(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <span className="label--name font-bold">
+                      Qisqa izoh (ru){" "}
+                    </span>
+                    <TextArea
+                      placeholder="Qisqa tavsif "
+                      rows={4}
+                      onChange={(e) => setShort_desc_ru(e.target.value)}
+                    />
+                  </div>
+                </div>
+                {/* skedetor izohlar uchun */}
+
                 <div className="col-12">
-                  <span className="label--name font-bold">Izoh</span>
+                  <span className="label--name font-bold">Izoh (uz)</span>
                   {/* // eslint-disable-next-line */}
                   <CKeditor
-                    //  value={description}
                     onChange={(e) => setDescription(e)}
                     editorLoaded={true}
                   />
@@ -553,13 +570,14 @@ export default function Product() {
                 <div className="col-12">
                   <span className="label--name font-bold">Izoh (ru)</span>
                   <CKeditor
-                    //  value={descriptionRu}
                     onChange={(e) => setDescriptionRu(e)}
                     editorLoaded={true}
                   />
                 </div>
               </div>
             </div>
+
+            {/* ranglar rasmlar bilan */}
 
             <div className="p-4 colorr">
               <span className="label--name font-bold">Mahsulot ranglari</span>
@@ -608,6 +626,7 @@ export default function Product() {
                       <i className="fa-regular fa-plus"></i> yuklash
                       <input
                         type="file"
+                        accept="image/*"
                         style={{
                           opacity: "0",
                           position: "absolute",
@@ -623,6 +642,8 @@ export default function Product() {
                 </div>
               ))}
             </div>
+
+            {/* xususiyatlar */}
 
             <div className="p-4 colorr">
               <span className="label--name font-bold">
@@ -683,56 +704,14 @@ export default function Product() {
             </div>
 
             <div>
-              <div className="px-2 my-4 colorr">
-                <h2 className="text-[18px] pl-3.5 pt-3 font-bold">
-                  Mahsulot asosiy elementlari
-                </h2>
-                {/* qoshish */}
-                <div className="flex justify-content-between">
-                  <div className="flex flex-col">
-                    {atributInput?.map((item, i) => (
-                      <AddInputThree
-                        dataH={item}
-                        key={i}
-                        addFilialInput={addProductHighlightInput}
-                        id={item.id ? item.id : atributInput[i - 1]?.id + 1}
-                        deleteIDHighlight={deleteIDHighlight}
-                        change={change}
-                      />
-                    ))}
-                  </div>
-
-                  <div
-                    onClick={() =>
-                      addAtributInput(
-                        { content: "", order: "" },
-                        atributInput.length + 1
-                      )
-                    }
-                    className="p-2"
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "flex-end",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <p>
-                      <i className="fa-solid fa-circle-plus"></i> qo'shish
-                    </p>{" "}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <label className="font-bold font-sans text-lg pl-1.5">
-                  Sotuvda
-                </label>
-                <Switch
-                  checked={on_sale}
-                  onChange={(e) => setOn_sale(event.target.checked)}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
-              </div>
+              <label className="font-bold font-sans text-lg pl-1.5">
+                Sotuvda
+              </label>
+              <Switch
+                checked={on_sale}
+                onChange={(e) => setOn_sale(e.target.checked)}
+                inputProps={{ "aria-label": "controlled" }}
+              />
             </div>
 
             <Button
@@ -747,7 +726,7 @@ export default function Product() {
               type="submit"
               disabled={submiting}
             >
-              {submiting ? "Qo'shilmoqda" : "Qo'shish"}
+              {submiting ? "Davom etmoqda" : "Davom etish"}
             </Button>
           </form>
 

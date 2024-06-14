@@ -462,7 +462,12 @@ export const sellerActionRoutes = [
         path: '/products/actions/*',
         component: React.lazy(() => import('views/home/pages/actions/products'))
     },
-     // mahsulot narxi qo'shish uchun page
+    // mahsulot narxi qo'shish uchun page
+    {
+        key: 'productBranch',
+        path: '/products/actions/productBranch/*',
+        component: React.lazy(() => import('views/home/pages/actions/productBranch'))
+    },
     {
         key: 'products',
         path: '/products/actions/productPrice/*',

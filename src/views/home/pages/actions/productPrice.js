@@ -1,4 +1,4 @@
-import { Input, Select, Space } from "antd";
+import { Input, Select, Space, Steps } from "antd";
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,122 +7,34 @@ import toast, { Toaster } from "react-hot-toast";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 
-
 export default function ProductPrice() {
   const [submiting, setSubmiting] = useState(false);
-  const [page, setPage] = useState(true);
   const [colorList, setColorList] = useState([]);
   const [featureList, setFeatureList] = useState([]);
-  const [branch, setBranch] = useState([]);
-  const [product, setProduct] = useState([]);
-  const loc = useLocation()
-  const navigate = useNavigate()
-  const [dataArray, setDataArray] = useState([
-    {
-      color: "",
-      feature: "",
-      price: "",
-    },
-  ]);
-  const [dataArrayFilial, setDataArrayFilial] = useState([
-    {
-      branch: "",
-      product_variant: "",
-      quantity: "",
-    },
-  ]);
+  const [percent, setPercent] = useState(10);
+  const navigate = useNavigate();
   const { search } = useLocation();
   const params = search.split("=")?.[1];
-  console.log('loc', params);
-  
-
-  const handleAddRow = () => {
-    setDataArray([
-      ...dataArray,
-      {
-        color: "",
-        feature: "",
-        price: "",
-      },
-    ]);
+  const [dataArray, setDataArray] = useState([]);
+  const [dataArrayDetail, setDataArrayDetail] = useState([]);
+  const getProductFeatureDeatil = async () => {
+    if (params == "true?id") {
+      await Client.get(
+        `${API_ENDPOINTS.PRODUCT_LIST_FOR_CREATE}${search.split("=")?.[2]}/`
+      )
+        .then((resp) => {
+          setDataArrayDetail(resp);
+        })
+        .catch((err) => console.log(err));
+    }
   };
-  const handleAddRowBranch = () => {
-    setDataArrayFilial([
-      ...dataArrayFilial,
-      {
-        branch: "",
-        product_variant: "",
-        quantity: ""
-      },
-    ]);
-  };
-
-  const handleInputChange = (index, field, value) => {
-    const newArray = [...dataArray];
-    newArray[index][field] = value;
-    setDataArray(newArray);
-  };
-  const handleInputChangeFilial = (index, field, value) => {
-    const newArray = [...dataArrayFilial];
-    newArray[index][field] = value;
-    setDataArrayFilial(newArray);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Submitted Data:", dataArray);
-    setSubmiting(true);
-
-    const data = {
-      product_variants : dataArray
-    } 
-
-    await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT_PRICE_POST + params}/`, data)
-      .then((data) => {
-        toast.success("Mahsulot muvaffaqiyatli qo'shildi");
-        navigate(`/products/actions/productPrice?branch=${params}`);
-        setPage(false);
-        getProductBranchs()
-      })
-      .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
-        setSubmiting(false);
-      });
-
-    setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
-  };
-
-  const handleSubmitBranch = async (e) => {
-    e.preventDefault();
-    console.log("Submitted Data:", dataArrayFilial);
-    setPage(false);
-
-    setSubmiting(true);
-
-    const data = {
-      product_quantities : dataArrayFilial
-    } 
-
-    await Client.post(`${API_ENDPOINTS.CREATE_PRODUCT_BRANCH_POST + params}/`, data)
-      .then((data) => {
-        toast.success("Mahsulot muvaffaqiyatli qo'shildi");
-        navigate(`/products`);
-        setPage(false);
-      })
-      .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
-        setSubmiting(false);
-      });
-
-    setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
-  };
-
   const getProductFeature = async () => {
-    await Client.get(`${API_ENDPOINTS.CREATE_PRODUCT_PRICE + params}/`)
+    await Client.get(
+      `${API_ENDPOINTS.CREATE_PRODUCT_PRICE}${
+        params == "true?id" ? search.split("=")?.[2] : params
+      }/`
+    )
       .then((resp) => {
-        console.log("date", resp);
         setColorList(
           resp?.colors?.map((e) => ({
             label: e?.name,
@@ -138,38 +50,114 @@ export default function ProductPrice() {
       })
       .catch((err) => console.log(err));
   };
-  const getProductBranchs = async () => {
-    await Client.get(`${API_ENDPOINTS.CREATE_PRODUCT_BRANCH + params}/`)
-      .then((resp) => {
-        console.log("date", resp);
-        setBranch(
-          resp?.branches?.map((e) => ({
-            label: e?.name,
-            value: e?.id,
-          }))
-        );
-        setProduct(
-          resp?.product_variants?.map((e) => ({
-            label: <div>
-              <span>{e.color}</span> <span>{e.feature}</span>
-            </div> ,
-            value: e?.id,
-          }))
-        );
+
+  const handleAddRow = () => {
+    setDataArray([
+      ...dataArray,
+      {
+        color: "",
+        feature: "",
+        price: "",
+      },
+    ]);
+  };
+
+  const handleInputChange = (index, field, value) => {
+    const newArray = [...dataArray];
+    newArray[index][field] = value;
+    setDataArray(newArray);
+  };
+  
+  const handleInputChangeDetail = (index, field, value) => {
+    const newArray = [...dataArrayDetail];
+    newArray[index][field] = value;
+    setDataArrayDetail(newArray);
+  };
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Submitted Data:", dataArray);
+    setSubmiting(true);
+
+    const data = {
+      product_variants: dataArray,
+    };
+
+    await Client.post(
+      `${API_ENDPOINTS.CREATE_PRODUCT_PRICE_POST + params}/`,
+      data
+    )
+      .then((data) => {
+        toast.success("Mahsulot muvaffaqiyatli qo'shildi");
+        navigate(`/products/actions/productBranch?branch=${params}`);
+        setPercent(100);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("Xatolik! Qayta urinib ko'ring");
+        setSubmiting(false);
+      });
+
+    setSubmiting(false);
+    document.querySelector(".create-branch-form").reset();
+  };
+
+  const handleSubmitEdit = async (e) => {
+    e.preventDefault();
+    console.log("Submitted Data:", dataArray);
+    setSubmiting(true);
+
+    const data = {
+      new_variants: dataArray,
+      old_variants: dataArrayDetail
+    };
+
+    await Client.post(
+      `${API_ENDPOINTS.UPDATE_PRODUCT_PRICE}${params == "true?id" ? search.split("=")?.[2] : params}/`,
+      data
+    )
+      .then((data) => {
+        toast.success("Mahsulot muvaffaqiyatli qo'shildi");
+        navigate(`/products`);
+        setPercent(100);
+      })
+      .catch((err) => {
+        toast.error("Xatolik! Qayta urinib ko'ring");
+        setSubmiting(false);
+      });
+
+    setSubmiting(false);
+    document.querySelector(".create-branch-form").reset();
   };
 
   useEffect(() => {
     getProductFeature();
-    getProductBranchs()
+    getProductFeatureDeatil();
   }, []);
 
-  // console.log("dataArrayFilial", colorList, featureList);
 
   return (
     <>
-      {page ? (
+      <>
+        <div className="my-4 px-3">
+          <Steps
+            current={1}
+            percent={percent}
+            items={[
+              {
+                title: "Mahsulot qismlari",
+                subTitle: "birinchi bosqichni tahrirlash",
+              },
+              {
+                title: "Narx qo'shish",
+                subTitle: "ikkinchi bosqichni tahrirlash",
+              },
+            ]}
+          />
+        </div>
+      </>
+      {params != "true?id" ? (
         <div className="bg--color px-2 py-3">
           <h3 className="font-semibold	">Mahsulot narxini qo'shish</h3>
           <form onSubmit={handleSubmit} className="mt-3 create-branch-form ">
@@ -191,9 +179,9 @@ export default function ProductPrice() {
                         width: "100%",
                       }}
                       placeholder="Ranglar"
-                      onChange={(value) =>
-                        handleInputChange(index, "color", value)
-                      }
+                      onChange={(value) => (
+                        handleInputChange(index, "color", value), setPercent(40)
+                      )}
                       options={colorList}
                     />
                   </Space>
@@ -215,9 +203,10 @@ export default function ProductPrice() {
                         width: "100%",
                       }}
                       placeholder="O'lchamlarni kiriting"
-                      onChange={(value) =>
-                        handleInputChange(index, "feature", value)
-                      }
+                      onChange={(value) => (
+                        handleInputChange(index, "feature", value),
+                        setPercent(70)
+                      )}
                       options={featureList}
                     />
                   </Space>
@@ -231,48 +220,127 @@ export default function ProductPrice() {
                     handleInputChange(index, "price", e.target.value)
                   }
                 />
-                <div className="col-md-3">
-                  <Button
-                    variant="contained"
-                    sx={{
-                      background: "#000",
-                      "&:hover": {
-                        backgroundColor: "#333",
-                      },
-                    }}
-                    size="small"
-                    style={{ width: "100%" }}
-                    startIcon={<AddIcon />}
-                    onClick={handleAddRow}
-                  >
-                    Qo'shish
-                  </Button>
-                </div>
               </div>
             ))}
-            <div className="col-md-4">
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  background: "green",
-                  "&:hover": {
-                    backgroundColor: "#333",
-                  },
-                }}
-                style={{ width: "100%", marginTop: "10px" }}
-              >
-                {submiting ? "Qo'shilmoqda" : "Qo'shish"}
-              </Button>
+            <div className="row">
+              <div className="col-md-4">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    background: "green",
+                    "&:hover": {
+                      backgroundColor: "#333",
+                    },
+                  }}
+                  style={{ width: "100%" }}
+                >
+                  {submiting ? "Davom etmoqda" : "Davom etish"}
+                </Button>
+              </div>
+              <div className="col-md-4">
+                <Button
+                  variant="contained"
+                  sx={{
+                    background: "#000",
+                    "&:hover": {
+                      backgroundColor: "#333",
+                    },
+                  }}
+                  style={{ width: "100%" }}
+                  startIcon={<AddIcon />}
+                  onClick={handleAddRow}
+                >
+                  Qo'shish
+                </Button>
+              </div>
             </div>
           </form>
           <Toaster />
         </div>
       ) : (
         <div className="bg--color px-2 py-3">
-          <h3 className="font-semibold	">Mahsulot filialini qo'shish</h3>
-          <form onSubmit={handleSubmitBranch} className="mt-3   create-branch-form">
-            {dataArrayFilial.map((item, index) => (
+          <h3 className="font-semibold	">Mahsulot narxini tahrirlash</h3>
+          <form onSubmit={handleSubmitEdit} className="mt-3 create-branch-form ">
+            {dataArrayDetail?.map((item, index) => (
+              <div className="row" key={index} style={{ marginBottom: "10px" }}>
+                <div className="col-md-3">
+                  <Space
+                    style={{
+                      width: "100%",
+                      textAlign: "left",
+                    }}
+                    direction="vertical"
+                  >
+                    <Select
+                      disabled
+                      size="large"
+                      mode="single"
+                      allowClear
+                      style={{
+                        width: "100%",
+                      }}
+                      value={item.color}
+                      placeholder="Ranglar"
+                      onChange={(value) => (
+                        handleInputChangeDetail(index, "color", value), setPercent(40)
+                      )}
+                      options={colorList}
+                    />
+                  </Space>
+                </div>
+
+                <div className="col-md-3">
+                  <Space
+                    style={{
+                      width: "100%",
+                      textAlign: "left",
+                    }}
+                    direction="vertical"
+                  >
+                    <Select
+                      disabled
+                      size="large"
+                      mode="single"
+                      allowClear
+                      style={{
+                        width: "100%",
+                      }}
+                      placeholder="O'lchamlarni kiriting"
+                      onChange={(value) => (
+                        handleInputChangeDetail(index, "feature", value),
+                        setPercent(70)
+                      )}
+                      value={item.feature}
+                      options={featureList}
+                    />
+                  </Space>
+                </div>
+
+                <Input
+                 type="number"
+                  defaultValue={item.price}
+                  size="small"
+                  className="col-md-3"
+                  placeholder="Narxni kiriting"
+                  onChange={(e) =>
+                    handleInputChangeDetail(index, "price", e.target.value)
+                  }
+                />
+
+                <Input
+                type="number"
+                  className="col-md-2 ml-2"
+                  size="small"
+                  placeholder="Discountni kiriting"
+                  value={item.discount}
+                  onChange={(e) =>
+                    handleInputChangeDetail(index, "discount", e.target.value)
+                  }
+                />
+              </div>
+            ))}
+            {dataArray?.map((item, index) => (
               <div className="row" key={index} style={{ marginBottom: "10px" }}>
                 <div className="col-md-3">
                   <Space
@@ -289,11 +357,11 @@ export default function ProductPrice() {
                       style={{
                         width: "100%",
                       }}
-                      placeholder="Filial"
-                      onChange={(value) =>
-                        handleInputChangeFilial(index, "branch", value)
-                      }
-                      options={branch}
+                      placeholder="Ranglar"
+                      onChange={(value) => (
+                        handleInputChange(index, "color", value), setPercent(40)
+                      )}
+                      options={colorList}
                     />
                   </Space>
                 </div>
@@ -313,56 +381,69 @@ export default function ProductPrice() {
                       style={{
                         width: "100%",
                       }}
-                      placeholder="Mahsulot"
-                      onChange={(value) =>
-                        handleInputChangeFilial(index, "product_variant", value)
-                      }
-                      options={product}
+                      placeholder="O'lchamlarni kiriting"
+                      onChange={(value) => (
+                        handleInputChange(index, "feature", value),
+                        setPercent(70)
+                      )}
+                      options={featureList}
                     />
                   </Space>
                 </div>
 
                 <Input
+                type="number"
                   size="small"
                   className="col-md-3"
-                  placeholder="Sonini kiriting"
+                  placeholder="Narxni kiriting"
                   onChange={(e) =>
-                    handleInputChangeFilial(index, "quantity", e.target.value)
+                    handleInputChange(index, "price", e.target.value)
                   }
                 />
-                <div className="col-md-3">
-                  <Button
-                    variant="contained"
-                    sx={{
-                      background: "#000",
-                      "&:hover": {
-                        backgroundColor: "#333",
-                      },
-                    }}
-                    size="small"
-                    style={{ width: "100%" }}
-                    startIcon={<AddIcon />}
-                    onClick={handleAddRowBranch}
-                  >
-                    Qo'shish
-                  </Button>
-                </div>
+
+                <Input
+                type="number"
+                  className="col-md-2 ml-2"
+                  size="small"
+                  placeholder="Discountni kiriting"
+                  onChange={(e) =>
+                    handleInputChange(index, "discount", e.target.value)
+                  }
+                />
               </div>
             ))}
-            <div className="col-md-4">
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  background: "green",
-                  "&:hover": {
-                    backgroundColor: "#333",
-                  },
-                }}
-                style={{ width: "100%", marginTop: "10px" }}
-              >
-                 {submiting ? "Qo'shilmoqda" : "Qo'shish"}
-              </Button>
+            <div className="row">
+              <div className="col-md-4">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    background: "green",
+                    "&:hover": {
+                      backgroundColor: "#333",
+                    },
+                  }}
+                  style={{ width: "100%" }}
+                >
+                  {submiting ? "Saqlash davom etmoqda..." : "Saqlash"}
+                </Button>
+              </div>
+              <div className="col-md-4">
+                <Button
+                  variant="contained"
+                  sx={{
+                    background: "#000",
+                    "&:hover": {
+                      backgroundColor: "#333",
+                    },
+                  }}
+                  style={{ width: "100%" }}
+                  startIcon={<AddIcon />}
+                  onClick={handleAddRow}
+                >
+                  Qo'shish
+                </Button>
+              </div>
             </div>
           </form>
           <Toaster />
