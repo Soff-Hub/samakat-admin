@@ -9,19 +9,13 @@ import { Form, Select, Space } from "antd";
 
 export default function AksiyaSeller() {
   const [submiting, setSubmiting] = useState(false);
-  const [badge, setBadge] = useState("#000");
-  const [text, setText] = useState("");
-  const [textRu, setTextRu] = useState("");
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const [categoryData, setCategoryData] = useState([]);
   const [relatedCategory, setRelatedCategory] = React.useState([]);
-  const [lifeImage, setLifeImage] = useState(null);
   const [img, setImage] = useState(null);
-  const [discount, setDiscount] = useState(1);
   const [productSelect, setProductSelect] = useState(true);
-  const [mainImageReal, setMainImageReal] = useState("");
 
   const handleChangeRelatedCategory = (event) => {
     setRelatedCategory(event);
@@ -65,7 +59,7 @@ export default function AksiyaSeller() {
   };
 
   const getProducts = async (e) => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT_LIST_FOR_CREATE}`)
+    await Client.get(`${API_ENDPOINTS.PRODUCT_BADGE_PRODUCT}`)
       .then((resp) => {
         setCategoryData(
           resp?.map((el) => ({
@@ -81,7 +75,7 @@ export default function AksiyaSeller() {
     await Client.get(`${API_ENDPOINTS.BADGE}${location.search.split("?")[2]}`)
       .then((res) => {
         setData(res);
-        setRelatedCategory(res.products)
+        setRelatedCategory(res.products);
       })
       .catch((err) => {
         console.log(err);
@@ -91,7 +85,7 @@ export default function AksiyaSeller() {
   useEffect(() => {
     getProducts();
     Aksiya();
-    getBadge
+    getBadge;
     // eslint-disable-next-line
   }, []);
 
@@ -101,7 +95,7 @@ export default function AksiyaSeller() {
     <div className="px-2 py-3">
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-[28px] pb-3">Aksiyaga mahsulot qo'shish</h1>
+          <h1 className="text-[28px] pb-3">Aksiyaga mahsulot tahrirlash</h1>
           <Link to="/aksiya">
             <Button
               variant="contained"
@@ -163,6 +157,9 @@ export default function AksiyaSeller() {
               }}
               direction="vertical"
             >
+              {
+                data?.products?.length > 0 &&
+
               <Select
                 mode="multiple"
                 allowClear
@@ -177,8 +174,11 @@ export default function AksiyaSeller() {
                 placeholder="Mahsulotlar"
                 onChange={handleChangeRelatedCategory}
                 options={categoryData}
-                defaultValue={relatedCategory ? relatedCategory : ""}
+                defaultValue={
+                  data?.products?.map((item) => item)
+                }
               />
+              }
             </Space>
 
             <Button

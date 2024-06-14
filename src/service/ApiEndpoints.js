@@ -53,47 +53,49 @@ export const API_ENDPOINTS = {
     ORDER: 'admin/order/',
     PATCH_ORDER : 'admin/order/update/',
     DETAIL_ORDER: 'admin/order/detail/',
-
+    
     GET_COUNT_BRANCH: 'admin/approved-branches/',
+    PRODUCT_BADGE_PRODUCT: 'admin/products-approved/',
     PRODUCT_COUNT_BRANCH: 'admin/product-count-branch/',
     DETAIL_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/detail/',
     CREATE_PRODUCT_COUNT_BRANCH: 'admin/set-quantity/',
     DELETE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/',
     UPDATE_PRODUCT_COUNT_BRANCH : 'admin/product-count-branch/',
-
+    
     PROMO_CODE: 'admin/promo-code/',
     DETAIL_PROMO_CODE: 'admin/promo-code/detail/',
     DETAIL_CREATE: 'admin/promo-code/create/',
     DELETE_CREATE_PROMO_CODE: 'admin/promo-code/delete/',
     UPDATE_PROMO_CODE: 'admin/promo-code/update/',
-
+    
     DASHBOARD:'admin/dashboard/statistic/',
     DASHBOARD_PRODUCT:'admin/todays-best-selling-products/',
     DASHBOARD_ORDER:'admin/todays-best-order/',
     MOTHLY_STATISTIC:'admin/monthly/statistic/',
-
+    
     YEAR:'admin/year/list',
-
+    
     SETTINGS: 'admin/settings/',
-
+    
     PROCESS:'admin/process/order/',
-
+    
     ARCHIVE: 'admin/archive/order/',
-
+    
     EMPLOYEE: 'admin/employees/',
     CREATE_EMPLOYEE: 'admin/employees/create/',
     DETAIL_EMPLOYEE: 'admin/employees/',
-
+    
     SELLER: 'admin/sellers/',
     CREATE_SELLER: 'admin/create-seller/',
     DETAIL_SELLER: 'admin/sellers/',
     // DELETE_SELLER: 'admin/create-seller/',
-
+    
     COLOR: 'admin/colors/',
-
+    
     SIZE : 'admin/features/',
     SIZE_CHAILD : 'admin/feature-items/',
 
     PPRODUCT_CATEGORY_CREATE : 'admin/parent-categories/',
+   
 
 }
