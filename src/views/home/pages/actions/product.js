@@ -675,6 +675,7 @@ export default function Product() {
                         className="block fw-medium"
                         type="primary"
                         onClick={showModal}
+                        style={{cursor: 'pointer'}}
                       >
                         {featureSelectName}
                       </div>

@@ -41,25 +41,16 @@ function AddSeller() {
       render: (store_name) => <a>{store_name ? store_name : <i class="fa-solid fa-minus"></i>}</a>,
     },
     {
-      title: "Tahrirlash",
+      title: "Amallar",
       key: "id",
       dataIndex: "id",
       render: (id) => (
         <>
-          <Link to={`actions/${id}`}>
+        <Link to={`actions/${id}`}>
             <IconButton color="primary">
               <DriveFileRenameOutlineOutlinedIcon />
             </IconButton>
           </Link>
-        </>
-      ),
-    },
-    {
-      title: "O'chirish",
-      key: "id",
-      dataIndex: "id",
-      render: (id) => (
-        <>
           <IconButton
             color="error"
             onClick={() => {

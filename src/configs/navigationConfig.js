@@ -36,7 +36,7 @@ export const navigationConfig = [
         icon: <GroupAddIcon />,
     },
     {
-        name: "Sotuvchi qo'shish",
+        name: "Sotuvchi",
         path: '/addSeller',
         icon: <PeopleAltIcon />,
     },

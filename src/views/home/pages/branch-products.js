@@ -22,6 +22,7 @@ import { Input, Select } from "antd";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import toast, { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const headCells = [
   {
@@ -94,6 +95,7 @@ export default function EnhancedTable() {
   const [branch, setBranch] = useState("");
   const [filialData, setFilialData] = useState([]);
   const [countProduct, setCountProduct] = useState("")
+  const { role } = useSelector((state) => state.admin);
 
   const Search = async (e) => {
 
@@ -189,7 +191,7 @@ export default function EnhancedTable() {
   return (
     <div className="px-2 py-3 bg--color">
       <div>
-        <NavHeaderSelect title="Filiallardagi mahsulotlar" />
+        <NavHeaderSelect admin={role === "superadmin" ? true : false} title="Filiallardagi mahsulotlar" />
       </div>
       <Toaster />
       {data ? (

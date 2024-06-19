@@ -47,13 +47,12 @@ export default function Dashboard() {
               </h5>
 
               <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <div   class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="fa-solid fa-chart-line"></i>
                 </div>
                 <div class="ps-3">
                   <h6>{data?.total_today_amount}</h6>
                   <span class="text-success small pt-1 fw-bold">so'm</span>{" "}
-                  {/* <span class="text-muted small pt-2 ps-1">increase</span> */}
                 </div>
               </div>
             </div>
@@ -114,7 +113,7 @@ export default function Dashboard() {
           <div class="card info-card customers-card2">
             <div class="card-body">
               <h5 class="card-title">
-                Soff foyda <span>| Oxirgi 30 kunlik</span>
+                Foyda <span>| Oxirgi 30 kunlik</span>
               </h5>
 
               <div class="d-flex align-items-center">
