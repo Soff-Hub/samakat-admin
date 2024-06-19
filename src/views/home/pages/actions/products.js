@@ -20,7 +20,6 @@ export default function Product() {
   const [detailProduct, setDetailProduct] = useState({});
 
   const [on_sale, setOn_sale] = React.useState(false);
-  const [imageFiles, setImageFiles] = useState([]); // asosiy rasm file un
   const [colorListOption, setColorListOption] = useState([]); //rang render un
   const [sizetype, setsizeType] = useState([]);
   const [colorImageList, setColorImageList] = useState([]); // yuborish uchun rang rasmlari
@@ -115,24 +114,7 @@ export default function Product() {
       .catch((err) => console.log(err));
   };
 
-  // asosiy rasmlarni yig'ib berish uchun
-  // const handleImageChangeI = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   const newImageURLs = files.map((file) => URL.createObjectURL(file));
-  //   setImageURLs((prevImageURLs) => [...prevImageURLs, ...newImageURLs]);
-  //   setImageFiles((prevImageFiles) => [...prevImageFiles, ...files]);
-  // };
-
-  // asosiy rasmlarni o'chirish
-  const handleRemoveImage = (index) => {
-    setImageURLs((prevImageURLs) =>
-      prevImageURLs.filter((_, i) => i !== index)
-    );
-    setImageFiles((prevImageFiles) =>
-      prevImageFiles.filter((_, i) => i !== index)
-    );
-  };
-
+ 
   // ranglarni id larini yig'ib berish
   const handleChangee = (value) => {
     setSelectedColors(value);

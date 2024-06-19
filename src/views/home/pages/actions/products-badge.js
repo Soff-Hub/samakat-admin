@@ -90,11 +90,7 @@ export default function Aksiya() {
     setImage(e.target.files[0]);
     setMainImageReal(window.URL.createObjectURL(e.target.files[0]));
   };
-
-  const handleChangeRelatedCategory = (event) => {
-    setRelatedCategory(event);
-    setProductSelect(true);
-  }; 
+ 
 
 
   useEffect(() => {

@@ -14,7 +14,6 @@ export default function Retsepts() {
 
   const [editData, setEditData] = useState(null);
   const [branchData, setBranchData] = useState([]);
-  const [productData, setProductData] = useState([]);
   const [branch, setBranch] = useState("");
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -127,7 +126,6 @@ export default function Retsepts() {
           }))
         );
 
-        setProductData(res.results);
       })
       .catch((err) => {
         console.log(err);
