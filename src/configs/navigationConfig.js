@@ -60,11 +60,6 @@ export const navigationConfig = [
         path: '/products',
         icon: <CategoryIcon />,
     },
-    {
-        name: 'Manzillar',
-        path: '/adresses',
-        icon: <MapIcon />,
-    },
     // {
     //     name: 'Promo Kodlar',
     //     path: '/promos',
