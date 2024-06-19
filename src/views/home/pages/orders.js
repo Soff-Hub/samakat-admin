@@ -76,12 +76,9 @@ export default function Branches() {
                 <TableCell>
                   <span className="font-bold text-[16px]">Id</span>
                 </TableCell>
-                <TableCell>
-                  <span className="font-bold text-[16px]">Foydalanuvchi</span>
-                </TableCell>
-                <TableCell>
+                {/* <TableCell>
                   <span className="font-bold text-[16px]">Soni</span>
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <span className="font-bold text-[16px]">Umumiy so'mma</span>
                 </TableCell>
@@ -117,19 +114,7 @@ export default function Branches() {
                         {row.id}
                       </Link>
                     </TableCell>
-                    <TableCell component="th" scope="row">
-                      <Link
-                        to={"actions/?" + row.id}
-                        className="hover:underline"
-                      >
-                        {row?.user_about?.user ? (
-                          row?.user_about?.user
-                        ) : (
-                          <i className="fa-solid fa-minus"></i>
-                        )}
-                      </Link>
-                    </TableCell>
-                    <TableCell component="th" scope="row">
+                    {/* <TableCell component="th" scope="row">
                       <Link
                         to={"actions/?" + row.id}
                         className="hover:underline"
@@ -139,7 +124,7 @@ export default function Branches() {
                         </span>{" "}
                         {row?.count_products ? "ta" : ""}
                       </Link>
-                    </TableCell>
+                    </TableCell> */}
                     {/* <TableCell component="th" scope="row">
                       <Link to={"/promos"} className="hover:underline">
                         {row.promocode === null ? (
@@ -158,7 +143,7 @@ export default function Branches() {
                           {" "}
                           {row?.total_amount}
                         </span>{" "}
-                        {row?.total_amount ? "so'm" : ""}
+                        {row?.total_amount ? " so'm" : ""}
                       </Link>
                     </TableCell>
 

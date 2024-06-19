@@ -50,7 +50,7 @@ export const API_ENDPOINTS = {
     UPDATE_USER: 'admin/user/update/',
     COUNT_USER: 'admin/users-count/',
 
-    ORDER: 'admin/order/',
+    ORDER: 'admin/orders/',
     PATCH_ORDER : 'admin/order/update/',
     DETAIL_ORDER: 'admin/order/detail/',
     
