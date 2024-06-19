@@ -85,7 +85,6 @@ export default function AksiyaSeller() {
   useEffect(() => {
     getProducts();
     Aksiya();
-    getBadge;
     // eslint-disable-next-line
   }, []);
 
@@ -95,7 +94,7 @@ export default function AksiyaSeller() {
     <div className="px-2 py-3">
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-[28px] pb-3">Aksiyaga mahsulot tahrirlash</h1>
+          <h1 className="text-[28px] pb-3">Aksiyaga mahsulot qo'shish</h1>
           <Link to="/aksiya">
             <Button
               variant="contained"

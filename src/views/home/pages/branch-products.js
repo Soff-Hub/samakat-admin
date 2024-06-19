@@ -233,19 +233,17 @@ export default function EnhancedTable() {
                     return (
                       <TableRow hover key={row.id}>
                         <TableCell align="left">
-                          <Link to={`actions/?edit?${row.id}`}>
+                          {/* <Link to={`actions/?edit?${row.id}`}> */}
                             {row.name}
-                          </Link>
+                          {/* </Link> */}
                         </TableCell>
                         <TableCell align="left">
-                          <Link to={`actions/?edit?${row.id}`}>
+                          {/* <Link to={`actions/?edit?${row.id}`}> */}
                             {row.branch}
-                          </Link>
+                          {/* </Link> */}
                         </TableCell>
                         <TableCell align="left">
-                          <Link to={`actions/?edit?${row.id}`}>
                             {row.quantity}
-                          </Link>
                         </TableCell>
                         <TableCell align="left" sx={{ position: "relative" }}>
                           <div className="flex w-75 justify-end end-100">

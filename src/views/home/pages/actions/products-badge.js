@@ -18,34 +18,33 @@ export default function Aksiya() {
   const [img, setImage] = useState(null);
   const [mainImageReal, setMainImageReal] = useState("");
 
-
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
     text && formData.append("name_uz", text);
-    textRu &&  formData.append("name_ru", textRu);
-    badge &&  formData.append("hex_code", badge);
-      if (img) {
-        formData.append("image", img);
-      }
-      setSubmiting(true);
-      await Client.patch(
-        API_ENDPOINTS.BADGE + `${location.search.split("?")[2]}/`,
-        formData
-      )
-        .then((data) => {
-          toast.success("Aksiya muvaffaqiyatli tahrirlandi");
-          setTimeout(() => {
-            navigate("/product-badge");
-          }, 300);
-        })
-        .catch((err) => {
-          toast.error("Xatolik! Qayta urinib ko'ring");
-        });
+    textRu && formData.append("name_ru", textRu);
+    badge && formData.append("hex_code", badge);
+    if (img) {
+      formData.append("image", img);
+    }
+    setSubmiting(true);
+    await Client.patch(
+      API_ENDPOINTS.BADGE + `${location.search.split("?")[2]}/`,
+      formData
+    )
+      .then((data) => {
+        toast.success("Aksiya muvaffaqiyatli tahrirlandi");
+        setTimeout(() => {
+          navigate("/product-badge");
+        }, 300);
+      })
+      .catch((err) => {
+        toast.error("Xatolik! Qayta urinib ko'ring");
+      });
 
-      setSubmiting(false);
-      document.querySelector(".create-branch-form").reset();
+    setSubmiting(false);
+    document.querySelector(".create-branch-form").reset();
   };
 
   const handleSubmitAdd = async () => {
@@ -92,12 +91,21 @@ export default function Aksiya() {
     setMainImageReal(window.URL.createObjectURL(e.target.files[0]));
   };
 
+  const handleChangeRelatedCategory = (event) => {
+    setRelatedCategory(event);
+    setProductSelect(true);
+  }; 
+
+
   useEffect(() => {
     if (location.search.split("?")[1] === "edit") {
       getBadge();
     }
     // eslint-disable-next-line
   }, []);
+
+  console.log('data', data);
+  
 
   return location.search.split("?")[1] === "edit" ? (
     data ? (
@@ -136,7 +144,7 @@ export default function Aksiya() {
                     type="text"
                     required
                     className="w-100"
-                    value={text ? text :  data?.name_uz ? data?.name_uz : ''}
+                    value={text ? text : data?.name_uz ? data?.name_uz : ""}
                     onChange={(e) => {
                       setText(e.target.value);
                     }}
@@ -150,7 +158,7 @@ export default function Aksiya() {
                     type="text"
                     required
                     className="w-100"
-                    value={textRu  ? textRu :  data?.name_ru ? data?.name_ru : ''}
+                    value={textRu ? textRu : data?.name_ru ? data?.name_ru : ""}
                     onChange={(e) => {
                       setTextRu(e.target.value);
                     }}
@@ -167,6 +175,35 @@ export default function Aksiya() {
                   setBadge(e.target.value);
                 }}
               />
+
+
+              {/* 
+            <Space
+              style={{
+                width: "100%",
+                textAlign: "left",
+              }}
+              direction="vertical"
+            >
+              {data?.products?.length > 0 && (
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{
+                    width: "100%",
+                  }}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  placeholder="Mahsulotlar"
+                  onChange={handleChangeRelatedCategory}
+                  options={categoryData}
+                  defaultValue={data?.products?.map((item) => item)}
+                />
+              )}
+            </Space> */}
 
               <div className="d-flex gap-3">
                 <div
@@ -289,6 +326,7 @@ export default function Aksiya() {
                 setBadge(e.target.value);
               }}
             />
+
 
             <div className="d-flex gap-3">
               <div

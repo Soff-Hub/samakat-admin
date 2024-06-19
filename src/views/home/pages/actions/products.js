@@ -116,12 +116,12 @@ export default function Product() {
   };
 
   // asosiy rasmlarni yig'ib berish uchun
-  const handleImageChangeI = (e) => {
-    const files = Array.from(e.target.files);
-    const newImageURLs = files.map((file) => URL.createObjectURL(file));
-    setImageURLs((prevImageURLs) => [...prevImageURLs, ...newImageURLs]);
-    setImageFiles((prevImageFiles) => [...prevImageFiles, ...files]);
-  };
+  // const handleImageChangeI = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   const newImageURLs = files.map((file) => URL.createObjectURL(file));
+  //   setImageURLs((prevImageURLs) => [...prevImageURLs, ...newImageURLs]);
+  //   setImageFiles((prevImageFiles) => [...prevImageFiles, ...files]);
+  // };
 
   // asosiy rasmlarni o'chirish
   const handleRemoveImage = (index) => {
