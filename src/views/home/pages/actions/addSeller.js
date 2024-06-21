@@ -19,7 +19,7 @@ function AddSller() {
       first_name: "",
       phone: "",
       password: "",
-      store_name: "",
+      name: "",
     },
   });
   const [logoImage, setLogoImage] = useState("");
@@ -32,7 +32,7 @@ function AddSller() {
     formData.append("first_name", data?.first_name);
     formData.append("phone", data?.phone);
     formData.append("password", data?.password);
-    formData.append("store_name", data?.store_name);
+    formData.append("name", data?.name);
     formData.append("image", logoImage);
 
     await Client.post(API_ENDPOINTS.CREATE_SELLER, formData)
@@ -59,7 +59,7 @@ function AddSller() {
       .then((data) => {
         console.log("data", data);
         Object.keys(data).map((key) => setValue(key, data[key]));
-        setLogoImageReal(data?.logo);
+        setLogoImageReal(data?.image);
       })
       .catch((err) => {
         console.log(err);
@@ -73,7 +73,7 @@ function AddSller() {
     formData.append("first_name", data?.first_name);
     formData.append("phone", data?.phone);
     formData.append("password", data?.password);
-    formData.append("store_name", data?.store_name);
+    formData.append("name", data?.name);
     formData.append("image", logoImage);
 
     await Client.patch(API_ENDPOINTS.DETAIL_SELLER + `${query["*"]}/`, formData)
@@ -161,7 +161,7 @@ function AddSller() {
           <div>
             <p>Do'kon nomi</p>
             <Controller
-              name="store_name"
+              name="name"
               control={control}
               render={({ field }) => <Input {...field} placeholder="Parol" />}
             />
@@ -259,7 +259,7 @@ function AddSller() {
           <div>
             <p>Do'kon nomi</p>
             <Controller
-              name="store_name"
+              name="name"
               control={control}
               render={({ field }) => <Input {...field} placeholder="Parol" />}
             />
@@ -269,12 +269,12 @@ function AddSller() {
             <p>Logo</p>
             <div className="d-flex gap-3">
               <div
-                className="w-25 border border-3 rounded rounded-3  relative"
+                className="w-50 border border-3 rounded rounded-3  relative"
                 style={{ backgroundColor: "#ccc" }}
                 width={80}
                 height={100}
               >
-                <i class="fa-solid fa-download absolute	left-1/3 bottom-1/3	"></i>
+                <i class="fa-solid fa-download absolute	left-1/2 bottom-1/3	"></i>
                 <input
                   type="file"
                   className="d-block opacity-0"

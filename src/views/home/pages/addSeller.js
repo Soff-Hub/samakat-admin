@@ -41,10 +41,10 @@ function AddSeller() {
       render: (store_name) => <a>{store_name ? store_name : <i class="fa-solid fa-minus"></i>}</a>,
     },
     {
-      title: "Yaratilgan sana",
-      dataIndex: "store_name",
-      key: "store_name",
-      render: (store_name) => <a>{store_name ? store_name : <i class="fa-solid fa-minus"></i>}</a>,
+      title: "Yaratilgan vaqti",
+      dataIndex: "created_at",
+      key: "created_at",
+      render: (created_at) => <a>{created_at ? created_at : <i class="fa-solid fa-minus"></i>}</a>,
     },
     {
       title: "Amallar",

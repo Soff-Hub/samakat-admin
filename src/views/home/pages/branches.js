@@ -19,6 +19,7 @@ import ResponsiveDialog from "components/shared/modal";
 import IconButton from "@mui/material/IconButton";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import { useSelector } from "react-redux";
 
 export default function Branches() {
   const [data, setData] = useState(null);
@@ -26,7 +27,7 @@ export default function Branches() {
   const [deleteId, setDeleteId] = useState(null);
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
-
+  const { role } = useSelector((state) => state.admin);
   const status = {
     'approved' : {
       'name': 'tasdiqlangan',
@@ -79,9 +80,12 @@ export default function Branches() {
     getBranches();
   }, []);
 
+  console.log('rolegh', role);
+  
+
   return (
     <div className="px-2 py-3">
-      <NavHeader title="Filiallar" />
+      <NavHeader title="Filiallar" admin={role === "superadmin" ? true : false} />
       {data ? (
         <div className="block w-full border shadow-lg p-2 mt-5 colorr">
           <Table aria-label="simple table">
