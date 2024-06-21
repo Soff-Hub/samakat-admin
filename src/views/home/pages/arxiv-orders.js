@@ -170,9 +170,9 @@ export default function ArxivOrders() {
                         className="hover:underline"
                       >
                         <span className="font-semibold">
-                          {row?.count_products}{" "}
+                          {row?.total_quantity}{" "}
                         </span>{" "}
-                        {row?.count_products ? "ta" : ""}
+                        {row?.total_quantity ? "ta" : ""}
                       </Link>
                     </TableCell>
                     <TableCell component="th" scope="row">
