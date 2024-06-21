@@ -57,9 +57,9 @@ function AddSller() {
   const sellerDetail = async (id) => {
     await Client.get(API_ENDPOINTS.DETAIL_SELLER + `${id}/`)
       .then((data) => {
-        console.log('data', data);
+        console.log("data", data);
         Object.keys(data).map((key) => setValue(key, data[key]));
-        setLogoImageReal(data?.logo)
+        setLogoImageReal(data?.logo);
       })
       .catch((err) => {
         console.log(err);
@@ -96,7 +96,9 @@ function AddSller() {
   };
 
   useEffect(() => {
-    sellerDetail(query["*"]);
+    if (query["*"]) {
+      sellerDetail(query["*"]);
+    }
   }, [query["*"]]);
 
   return (
@@ -123,7 +125,7 @@ function AddSller() {
       {!query["*"] ? (
         <form className="employee_form" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <p>Ism</p>
+            <p>Mas'ul shaxs</p>
             <Controller
               name="first_name"
               control={control}
@@ -136,7 +138,7 @@ function AddSller() {
             />
           </div>
           <div>
-            <p>Nomer</p>
+            <p>Tizimga kirish paroli</p>
             <Controller
               name="phone"
               control={control}
@@ -146,7 +148,7 @@ function AddSller() {
             />
           </div>
           <div>
-            <p>Parol</p>
+            <p>Tizimga kirish paroli</p>
             <Controller
               name="password"
               control={control}
@@ -169,12 +171,12 @@ function AddSller() {
             <p>Logo</p>
             <div className="d-flex gap-3">
               <div
-                className="w-25 border border-3 rounded rounded-3  relative"
+                className="w-50 border border-3 rounded rounded-3  relative"
                 style={{ backgroundColor: "#ccc" }}
                 width={80}
                 height={100}
               >
-                <i class="fa-solid fa-download absolute	left-1/3 bottom-2	"></i>
+                <i class="fa-solid fa-download absolute	left-1/2 bottom-1/3	"></i>
                 <input
                   type="file"
                   className="d-block opacity-0 "
@@ -195,7 +197,10 @@ function AddSller() {
                     className="rounded rounded-3"
                     alt="seller's logo"
                   />
-                  <i class="fa-solid fa-trash" onClick={() => (setLogoImage(""), setLogoImageReal(""))} ></i>
+                  <i
+                    class="fa-solid fa-trash"
+                    onClick={() => (setLogoImage(""), setLogoImageReal(""))}
+                  ></i>
                 </div>
               )}
             </div>
@@ -227,7 +232,7 @@ function AddSller() {
           onSubmit={handleSubmit(onUpdate)}
         >
           <div>
-            <p>Ism</p>
+            <p>Mas'ul shaxs</p>
             <Controller
               name="first_name"
               control={control}
@@ -235,7 +240,7 @@ function AddSller() {
             />
           </div>
           <div>
-            <p>Nomer</p>
+            <p>Telefon raqam</p>
             <Controller
               name="phone"
               control={control}
@@ -243,7 +248,7 @@ function AddSller() {
             />
           </div>
           <div>
-            <p>Parol</p>
+            <p>Tizimga kirish paroli</p>
             <Controller
               name="password"
               control={control}
@@ -290,7 +295,10 @@ function AddSller() {
                     className="rounded rounded-3"
                     alt="seller's logo"
                   />
-                  <i class="fa-solid fa-trash" onClick={() => (setLogoImage(""), setLogoImageReal(""))} ></i>
+                  <i
+                    class="fa-solid fa-trash"
+                    onClick={() => (setLogoImage(""), setLogoImageReal(""))}
+                  ></i>
                 </div>
               )}
             </div>

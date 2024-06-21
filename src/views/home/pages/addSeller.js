@@ -18,9 +18,9 @@ function AddSeller() {
   const columns = [
     {
       title: "Logo",
-      dataIndex: "logo",
-      key: "logo",
-      render: (logo) => <a>{logo ? <img src={logo} alt="seller's logo" width={40} /> : <i class="fa-solid fa-minus"></i>}</a>,
+      dataIndex: "image",
+      key: "image",
+      render: (image) => <a>{image ? <img src={image} alt="seller's logo" width={40} /> : <i class="fa-solid fa-minus"></i>}</a>,
     },
     {
       title: "Ism",
@@ -36,6 +36,12 @@ function AddSeller() {
     },
     {
       title: "Do'kon nomi",
+      dataIndex: "store_name",
+      key: "store_name",
+      render: (store_name) => <a>{store_name ? store_name : <i class="fa-solid fa-minus"></i>}</a>,
+    },
+    {
+      title: "Yaratilgan sana",
       dataIndex: "store_name",
       key: "store_name",
       render: (store_name) => <a>{store_name ? store_name : <i class="fa-solid fa-minus"></i>}</a>,
