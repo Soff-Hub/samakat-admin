@@ -192,18 +192,19 @@ export default function EnhancedTable() {
 
   const handleChangeCount = async (id) => {
     const data = {
-      quantity: +countProduct
+      quantity: countProduct ? +countProduct : ""
     };
     await Client.patch(
       `${API_ENDPOINTS.UPDATE_PRODUCT_COUNT_BRANCH}${id}/`,
       data
     )
       .then((data) => {
+        setCountProduct("")
         toast.success("Filialdagi mahsulot soni muvaffaqiyatli tahrirlandi");
         getProductBranchData()
       })
       .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
+        toast.error(`${err?.response?.data?.quantity ? "Mahsulotlar sonini kiritish majburiy" : "Xatolik! Qayta urinib ko'ring"} `);
       });
   }
 
@@ -289,6 +290,7 @@ export default function EnhancedTable() {
                         <TableCell align="left" sx={{ position: "relative" }}>
                           <div className="flex w-75 justify-end end-100">
                             <Input
+                            value={countProduct}
                               type="number"
                               placeholder="Sonini kiriting"
                               onChange={(e) => setCountProduct(e.target.value)}
