@@ -23,13 +23,13 @@ function AddSeller() {
       render: (image) => <a>{image ? <img src={image} alt="seller's logo" width={40} /> : <i class="fa-solid fa-minus"></i>}</a>,
     },
     {
-      title: "Ism",
+      title: "Mas'ul shaxs",
       dataIndex: "first_name",
       key: "name",
       render: (first_name) => <a>{first_name ? first_name : <i class="fa-solid fa-minus"></i>}</a>,
     },
     {
-      title: "Nomer",
+      title: "Telefon raqam",
       dataIndex: "phone",
       key: "phone",
       render: (phone) => <a>{phone}</a>,
