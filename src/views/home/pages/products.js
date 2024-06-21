@@ -94,7 +94,7 @@ function EnhancedTableHead() {
       id: "carbsd",
       numeric: true,
       disablePadding: false,
-      label: "Seller",
+      label: "Do'kon",
     },
     {
       id: "protein",
@@ -161,8 +161,10 @@ export default function EnhancedTable() {
   const [categoryValue, setCategoryValue] = useState("");
   const [SaleValue, setSaleValue] = useState(null);
   const [BranchValue, setBranchValue] = useState("");
+  const [storeValue, setStoreValue] = useState("");
   const [errorData, setErrorData] = useState("");
   const [branchList, setBranchList] = useState(null);
+  const [storeList, setStoreList] = useState(null);
   const [quantity, setQuantity] = useState("");
   const { role } = useSelector((state) => state.admin);
   const [sale_product, setSale_product] = useState([
@@ -217,9 +219,16 @@ export default function EnhancedTable() {
   };
 
   const getBranchList = async () => {
-    await Client.get(`${API_ENDPOINTS.GET_BRANCHS}`)
+    await Client.get(`${API_ENDPOINTS.GET_COUNT_BRANCH}`)
       .then((resp) => {
         setBranchList(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+  const getStoreList = async () => {
+    await Client.get(`${API_ENDPOINTS.STOR_LIST}`)
+      .then((resp) => {
+        setStoreList(resp);
       })
       .catch((err) => console.log(err));
   };
@@ -258,7 +267,7 @@ export default function EnhancedTable() {
   const handleChangeCategory = async (event) => {
     setCategoryValue(event.target.value);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&product_categories__category_id=${event.target.value}&product_count_branch__branch=${BranchValue}&product_count_branch__quantity=${quantity}&on_sale=${SaleValue}`
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&category=${event.target.value}&product_count_branch__branch=${BranchValue}&on_sale=${SaleValue}&seller=${storeValue}`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -286,10 +295,22 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-  const handleChangeBranch = async (event) => {
+  // const handleChangeBranch = async (event) => {
+  //   setBranchValue(event.target.value);
+  //   await Client.get(
+  //     `${API_ENDPOINTS.PRODUCT}?page=${page}&on_sale=${SaleValue}&product_count_branch__branch=${event.target.value}&category=${categoryValue}&seller=${storeValue}`
+  //   )
+  //     .then((resp) => {
+  //       setCount(resp.results);
+  //       setData(resp.results);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+
+  const handleChangeStore = async (event) => {
     setBranchValue(event.target.value);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&on_sale=${SaleValue}&product_count_branch__branch=${event.target.value}&product_count_branch__quantity=${quantity}&product_categories__category_id=${categoryValue}`
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&on_sale=${SaleValue}&product_count_branch__branch=${BranchValue}&category=${categoryValue}&seller=${event.target.value}`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -302,6 +323,7 @@ export default function EnhancedTable() {
     getProductData();
     getCategory();
     getBranchList();
+    getStoreList()
     // eslint-disable-next-line
   }, []);
   return (
@@ -389,7 +411,7 @@ export default function EnhancedTable() {
                 ))}
             </Select>
           </FormControl>
-
+{/* 
           <FormControl size="small" className="w-1/3 ">
             <InputLabel
               id="demo-select-small-label"
@@ -414,7 +436,7 @@ export default function EnhancedTable() {
                 );
               })}
             </Select>
-          </FormControl>
+          </FormControl> */}
 
           {role === "superadmin" ? (
             <FormControl size="small" className="w-1/3 ">
@@ -426,14 +448,14 @@ export default function EnhancedTable() {
               </InputLabel>
               <Select
                 className="py-0.5"
-                value={BranchValue}
+                value={storeValue}
                 label="Sotuv bo'yicha"
-                onChange={handleChangeBranch}
+                onChange={handleChangeStore}
               >
                 <MenuItem value={" "}>
                   <i className="fa-solid fa-minus"></i>{" "}
                 </MenuItem>
-                {branchList?.map((item) => {
+                {storeList?.map((item) => {
                   return (
                     <MenuItem value={item.id} key={item.id}>
                       {item.name}
