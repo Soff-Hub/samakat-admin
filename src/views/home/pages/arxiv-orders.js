@@ -122,7 +122,7 @@ export default function ArxivOrders() {
                     <span className="font-bold text-[16px]">Promo kod</span>
                   </TableCell> */}
                 <TableCell>
-                  <span className="font-bold text-[16px]">Manzil</span>
+                  <span className="font-bold text-[16px]">Filial</span>
                 </TableCell>
                 <TableCell>
                   <span className="font-bold text-[16px]">To'lov usuli</span>
@@ -156,8 +156,8 @@ export default function ArxivOrders() {
                         to={"/orders/actions/?" + row.id}
                         className="hover:underline"
                       >
-                        {row.user_about ? (
-                          row.user_about?.user
+                        {row.user ? (
+                          row.user
                         ) : (
                           <i className="fa-solid fa-minus"></i>
                         )}
@@ -204,7 +204,7 @@ export default function ArxivOrders() {
                         {row.address === null ? (
                           <i className="fa-solid fa-minus"></i>
                         ) : (
-                          row.address
+                          row.branch
                         )}
                       </Link>
                     </TableCell>

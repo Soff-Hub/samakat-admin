@@ -95,6 +95,9 @@ export const API_ENDPOINTS = {
     SIZE : 'admin/features/',
     SIZE_CHAILD : 'admin/feature-items/',
 
+
+    STOR_LIST : 'admin/filter-stores/',
+
     PPRODUCT_CATEGORY_CREATE : 'admin/parent-categories/',
    
 

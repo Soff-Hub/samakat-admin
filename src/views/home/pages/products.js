@@ -415,6 +415,36 @@ export default function EnhancedTable() {
               })}
             </Select>
           </FormControl>
+
+          {role === "superadmin" ? (
+            <FormControl size="small" className="w-1/3 ">
+              <InputLabel
+                id="demo-select-small-label"
+                placholder="Filial bo'yicha"
+              >
+                Do'kon
+              </InputLabel>
+              <Select
+                className="py-0.5"
+                value={BranchValue}
+                label="Sotuv bo'yicha"
+                onChange={handleChangeBranch}
+              >
+                <MenuItem value={" "}>
+                  <i className="fa-solid fa-minus"></i>{" "}
+                </MenuItem>
+                {branchList?.map((item) => {
+                  return (
+                    <MenuItem value={item.id} key={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          ) : (
+            ""
+          )}
         </div>
 
         <Paper sx={{ width: "100%", mb: 2 }}>
@@ -431,9 +461,7 @@ export default function EnhancedTable() {
                     return (
                       <TableRow hover key={row.id}>
                         <TableCell align="left">
-                          <Link to={`actions/?edit?${row.slug}`}>
-                            {row.id}
-                          </Link>
+                          <Link to={`actions/?edit?${row.slug}`}>{row.id}</Link>
                         </TableCell>
                         <TableCell align="left">
                           <Link to={`actions/?edit?${row.slug}`}>
@@ -459,7 +487,7 @@ export default function EnhancedTable() {
                           <Link to={`actions/?edit?${row.slug}`}>
                             <span
                               style={{
-                                color: `${status[row.status].color}`
+                                color: `${status[row.status].color}`,
                               }}
                             >
                               {status[row.status].name}

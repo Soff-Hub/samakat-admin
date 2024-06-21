@@ -90,8 +90,6 @@ export default function Aksiya() {
     setImage(e.target.files[0]);
     setMainImageReal(window.URL.createObjectURL(e.target.files[0]));
   };
- 
-
 
   useEffect(() => {
     if (location.search.split("?")[1] === "edit") {
@@ -100,8 +98,7 @@ export default function Aksiya() {
     // eslint-disable-next-line
   }, []);
 
-  console.log('data', data);
-  
+  console.log("data", data);
 
   return location.search.split("?")[1] === "edit" ? (
     data ? (
@@ -171,7 +168,6 @@ export default function Aksiya() {
                   setBadge(e.target.value);
                 }}
               />
-
 
               {/* 
             <Space
@@ -323,6 +319,32 @@ export default function Aksiya() {
               }}
             />
 
+            {/* <Space
+              style={{
+                width: "100%",
+                textAlign: "left",
+              }}
+              direction="vertical"
+            >
+              {data?.products?.length > 0 && (
+                <Select
+                  mode="multiple"
+                  allowClear
+                  style={{
+                    width: "100%",
+                  }}
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "").includes(input)
+                  }
+                  placeholder="Mahsulotlar"
+                  onChange={handleChangeRelatedCategory}
+                  options={categoryData}
+                  defaultValue={data?.products?.map((item) => item)}
+                />
+              )}
+            </Space> */}
 
             <div className="d-flex gap-3">
               <div

@@ -94,6 +94,7 @@ export default function EnhancedTable() {
   const [deleteId, setDeleteId] = useState(null);
   const [branch, setBranch] = useState("");
   const [filialData, setFilialData] = useState([]);
+  const [storeData, setStoreData] = useState([]);
   const [countProduct, setCountProduct] = useState("")
   const { role } = useSelector((state) => state.admin);
 
@@ -112,6 +113,14 @@ export default function EnhancedTable() {
   const handleChangeFilial = async (event) => {
     setBranch(event);
     await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${event}`)
+      .then((resp) => {
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleChangeStore = async (event) => {
+    setBranch(event);
+    await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?seller=${event}`)
       .then((resp) => {
         setData(resp.results);
       })
@@ -142,6 +151,23 @@ export default function EnhancedTable() {
       .then((res) => {
         setCount(res.count);
         setFilialData(
+          res?.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getStore = async () => {
+    await Client.get(API_ENDPOINTS.STOR_LIST)
+      .then((res) => {
+        console.log('store', res);
+        
+        setCount(res.count);
+        setStoreData(
           res?.map((el) => ({
             label: el.name,
             value: el.id,
@@ -184,6 +210,7 @@ export default function EnhancedTable() {
 
   useEffect(() => {
     getFilial();
+    getStore()
     getProductBranchData();
     // eslint-disable-next-line
   }, []);
@@ -221,6 +248,24 @@ export default function EnhancedTable() {
                     ...filialData,
                   ]}
                 ></Select>
+                {role === "superadmin" ?  <Select
+                  mode="select"
+                  placeholder="
+                  Do'kon"
+                  style={{
+                    width: "100%",
+                    height: "47px",
+                  }}
+                  onChange={handleChangeStore}
+                  options={[
+                    {
+                      label: "Hammasi",
+                      value: "",
+                    },
+                    ...storeData,
+                  ]}
+                ></Select> : ''}
+               
               </div>
               <Table
                 sx={{ minWidth: 750 }}
