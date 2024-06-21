@@ -17,6 +17,8 @@ export default function Aksiya() {
   const location = useLocation();
   const [img, setImage] = useState(null);
   const [mainImageReal, setMainImageReal] = useState("");
+  const [product, setProduct] = useState([]);
+  const [productData, setProductData] = useState([]);
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -52,6 +54,7 @@ export default function Aksiya() {
     formData.append("name_uz", text);
     formData.append("name_ru", textRu);
     formData.append("hex_code", badge);
+    formData.append("products", product ? [product] : product );
     if (img) {
       formData.append("image", img);
     }
@@ -86,15 +89,36 @@ export default function Aksiya() {
       });
   };
 
+  const getProducts = async () => {
+    await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}`)
+      .then((res) => {
+        console.log("res", res);
+        setProductData(
+          res?.map((e) => ({
+            label: e?.name,
+            value: e?.id,
+          }))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const ImageChangeAll = (e) => {
     setImage(e.target.files[0]);
     setMainImageReal(window.URL.createObjectURL(e.target.files[0]));
+  };
+
+  const handleChangeProduct = async (event) => {
+    setProduct(event);
   };
 
   useEffect(() => {
     if (location.search.split("?")[1] === "edit") {
       getBadge();
     }
+    getProducts();
     // eslint-disable-next-line
   }, []);
 
@@ -169,15 +193,13 @@ export default function Aksiya() {
                 }}
               />
 
-              {/* 
-            <Space
-              style={{
-                width: "100%",
-                textAlign: "left",
-              }}
-              direction="vertical"
-            >
-              {data?.products?.length > 0 && (
+              <Space
+                style={{
+                  width: "100%",
+                  textAlign: "left",
+                }}
+                direction="vertical"
+              >
                 <Select
                   mode="multiple"
                   allowClear
@@ -190,12 +212,11 @@ export default function Aksiya() {
                     (option?.label ?? "").includes(input)
                   }
                   placeholder="Mahsulotlar"
-                  onChange={handleChangeRelatedCategory}
-                  options={categoryData}
+                  onChange={handleChangeProduct}
+                  options={productData}
                   defaultValue={data?.products?.map((item) => item)}
                 />
-              )}
-            </Space> */}
+              </Space>
 
               <div className="d-flex gap-3">
                 <div
@@ -319,32 +340,29 @@ export default function Aksiya() {
               }}
             />
 
-            {/* <Space
+            <Space
               style={{
                 width: "100%",
                 textAlign: "left",
               }}
               direction="vertical"
             >
-              {data?.products?.length > 0 && (
-                <Select
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: "100%",
-                  }}
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "").includes(input)
-                  }
-                  placeholder="Mahsulotlar"
-                  onChange={handleChangeRelatedCategory}
-                  options={categoryData}
-                  defaultValue={data?.products?.map((item) => item)}
-                />
-              )}
-            </Space> */}
+              <Select
+                mode="multiple"
+                allowClear
+                style={{
+                  width: "100%",
+                }}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "").includes(input)
+                }
+                placeholder="Mahsulotlar"
+                onChange={handleChangeProduct}
+                options={productData}
+              />
+            </Space>
 
             <div className="d-flex gap-3">
               <div
