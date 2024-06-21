@@ -20,6 +20,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import { useSelector } from "react-redux";
+import { Select } from "antd";
 
 export default function Branches() {
   const [data, setData] = useState(null);
@@ -28,21 +29,21 @@ export default function Branches() {
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
   const { role } = useSelector((state) => state.admin);
+  const [storeData, setStoreData] = useState([]);
   const status = {
-    'approved' : {
-      'name': 'tasdiqlangan',
-      'color': 'green'
+    approved: {
+      name: "tasdiqlangan",
+      color: "green",
     },
-    'pending' : {
-      'name': 'kutilmoqda',
-      'color': '#F4CA16'
+    pending: {
+      name: "kutilmoqda",
+      color: "#F4CA16",
     },
-    'cancelled' : {
-      'name': 'bekor qilingan',
-      'color': 'red'
+    cancelled: {
+      name: "bekor qilingan",
+      color: "red",
     },
-
-  }
+  };
 
   async function getBranches() {
     await Client.get(API_ENDPOINTS.GET_BRANCHS)
@@ -53,7 +54,6 @@ export default function Branches() {
       .catch((err) => console.log(err));
   }
 
-
   async function handleDelete() {
     await Client.delete(`${API_ENDPOINTS.DELETE_BRANCH}${deleteId}/`)
       .then((resp) => {
@@ -63,7 +63,6 @@ export default function Branches() {
       })
       .catch((err) => console.log(err));
   }
-
 
   const handleChangePag = async (event, value) => {
     setPage(value);
@@ -76,24 +75,82 @@ export default function Branches() {
       .catch((err) => console.log(err));
   };
 
+  const getStore = async () => {
+    await Client.get(API_ENDPOINTS.STOR_LIST)
+      .then((res) => {
+        setCount(res.count);
+        setStoreData(
+          res?.map((el) => ({
+            label: el.name,
+            value: el.id,
+          }))
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleChangeStore = async (event) => {
+    await Client.get(`${API_ENDPOINTS.GET_BRANCHS}?seller=${event}`)
+      .then((resp) => {
+        setData(resp.results);
+        setCount(resp.count);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     getBranches();
+    role === "superadmin" && getStore()  
   }, []);
 
-  console.log('rolegh', role);
-  
 
   return (
     <div className="px-2 py-3">
-      <NavHeader title="Filiallar" admin={role === "superadmin" ? true : false} />
+      <NavHeader
+        title="Filiallar"
+        admin={role === "superadmin" ? true : false}
+      />
+
+      {role === "superadmin" ? (
+        <Select
+          mode="select"
+          placeholder="
+                  Do'kon"
+          style={{
+            width: "100%",
+            height: "47px",
+          }}
+          className="mt-4"
+          onChange={handleChangeStore}
+          options={[
+            {
+              label: "Hammasi",
+              value: "",
+            },
+            ...storeData,
+          ]}
+        ></Select>
+      ) : (
+        ""
+      )}
+
       {data ? (
-        <div className="block w-full border shadow-lg p-2 mt-5 colorr">
+        <div className="block w-full border shadow-lg p-2 colorr">
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell>
                   <span className="font-bold text-[16px]">Filial Nomi</span>
                 </TableCell>
+                {role === "superadmin" ? (
+                  <TableCell>
+                    <span className="font-bold text-[16px]">Do'kon Nomi</span>
+                  </TableCell>
+                ) : (
+                  ""
+                )}
                 <TableCell align="">
                   <span className="font-bold text-[16px]">Aniq Manzil</span>
                 </TableCell>
@@ -117,27 +174,41 @@ export default function Branches() {
                         to={"actions/" + row.uuid}
                         className="hover:underline"
                       >
-                        {row.name}
+                        {row?.name}
                       </Link>
                     </TableCell>
+                    {role === "superadmin" ? (
+                      <TableCell component="th" scope="row">
+                        <Link
+                          to={"actions/" + row?.uuid}
+                          className="hover:underline"
+                        >
+                          {row?.seller}
+                        </Link>
+                      </TableCell>
+                    ) : (
+                      ""
+                    )}
                     <TableCell component="th" scope="row">
                       <Link
-                        to={"actions/" + row.uuid}
+                        to={"actions/" + row?.uuid}
                         className="hover:underline"
                       >
-                        {row.address}
+                        {row?.address}
                       </Link>
                     </TableCell>
                     <TableCell align="right" component="th" scope="row">
                       <Link
-                        to={"actions/" + row.uuid}
-                        className={`hover:underline text-[${status[row.status].color}] `}
+                        to={"actions/" + row?.uuid}
+                        className={`hover:underline text-[${
+                          status[row?.status]?.color
+                        }] `}
                       >
-                        {status[row.status].name}
+                        {status[row?.status]?.name}
                       </Link>
                     </TableCell>
                     <TableCell align="right">
-                      <Link to={"actions/" + row.uuid}>
+                      <Link to={"actions/" + row?.uuid}>
                         <IconButton color="primary">
                           <DriveFileRenameOutlineOutlinedIcon />
                         </IconButton>
@@ -145,7 +216,7 @@ export default function Branches() {
                       <IconButton
                         color="error"
                         onClick={() => {
-                          setDeleteId(row.uuid);
+                          setDeleteId(row?.uuid);
                           setOpen(true);
                         }}
                         aria-label="delete"
@@ -157,7 +228,7 @@ export default function Branches() {
                 );
               })}
             </TableBody>
-            {count && Math.ceil(count / 30) <= 1 || count === 0 ? (
+            {(count && Math.ceil(count / 30) <= 1) || count === 0 ? (
               <></>
             ) : (
               <div className="m-3 mb-5">
