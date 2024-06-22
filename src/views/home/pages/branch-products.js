@@ -32,6 +32,12 @@ const headCells = [
     label: "Mahsulot nomi",
   },
   {
+    id: "fat",
+    numeric: false,
+    disablePadding: false,
+    label: "Do'kon",
+  },
+  {
     id: "calories",
     numeric: false,
     disablePadding: false,
@@ -120,7 +126,7 @@ export default function EnhancedTable() {
   };
   const handleChangeStore = async (event) => {
     setBranch(event);
-    await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?seller=${event}`)
+    await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch__seller=${event}`)
       .then((resp) => {
         setData(resp.results);
       })
@@ -278,6 +284,9 @@ export default function EnhancedTable() {
                       <TableRow hover key={row.id}>
                         <TableCell align="left">
                             {row.name}
+                        </TableCell>
+                        <TableCell align="left">
+                            {row.seller ? row.seller : "-"}
                         </TableCell>
                         <TableCell align="left">
                             {row.branch}
