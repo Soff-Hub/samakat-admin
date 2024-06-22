@@ -164,8 +164,6 @@ export default function EnhancedTable() {
   const getStore = async () => {
     await Client.get(API_ENDPOINTS.STOR_LIST)
       .then((res) => {
-        console.log('store', res);
-        
         setCount(res.count);
         setStoreData(
           res?.map((el) => ({
@@ -290,7 +288,6 @@ export default function EnhancedTable() {
                         <TableCell align="left" sx={{ position: "relative" }}>
                           <div className="flex w-75 justify-end end-100">
                             <Input
-                            value={countProduct}
                               type="number"
                               placeholder="Sonini kiriting"
                               onChange={(e) => setCountProduct(e.target.value)}
