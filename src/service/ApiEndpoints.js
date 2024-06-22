@@ -52,7 +52,7 @@ export const API_ENDPOINTS = {
 
     ORDER: 'admin/orders/',
     PATCH_ORDER : 'admin/order/update/',
-    DETAIL_ORDER: 'admin/order/detail/',
+    DETAIL_ORDER: 'admin/orders/',
     
     GET_COUNT_BRANCH: 'admin/approved-branches/',
     PRODUCT_BADGE_PRODUCT: 'admin/products-approved/',

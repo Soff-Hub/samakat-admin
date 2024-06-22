@@ -311,7 +311,6 @@ console.log('addHandleImageData', selectImage, imgtrue);
                   placeholder="Kategoriya *"
                   showSearch
                   allowClear
-                  required
                   defaultValue={category}
                   style={{
                     width: "100%",
@@ -365,7 +364,6 @@ console.log('addHandleImageData', selectImage, imgtrue);
                     <Input
                       placeholder="Nomi"
                       type="text"
-                      required
                       value={name}
                       onChange={(e) => {
                         setName(e.target.value);
@@ -395,7 +393,6 @@ console.log('addHandleImageData', selectImage, imgtrue);
                     <Input
                       placeholder="Название"
                       type="text"
-                      required
                       value={nameRu}
                       onChange={(e) => {
                         setNameRu(e.target.value);
@@ -407,7 +404,6 @@ console.log('addHandleImageData', selectImage, imgtrue);
                     <TextArea
                       rows={12}
                       placeholder="Комментарий"
-                      required
                       value={descriptionRu}
                       type="text"
                       onChange={(e) => {

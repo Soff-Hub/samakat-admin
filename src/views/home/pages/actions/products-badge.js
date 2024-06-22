@@ -187,13 +187,13 @@ export default function Aksiya() {
                 variant="outlined"
                 size="large"
                 type="color"
-                value={badge ? badge : data?.hex_code ? data?.hex_code : ""}
+                defaultValue={data?.hex_code}
                 onChange={(e) => {
                   setBadge(e.target.value);
                 }}
               />
 
-              <Space
+              {/* <Space
                 style={{
                   width: "100%",
                   textAlign: "left",
@@ -216,7 +216,7 @@ export default function Aksiya() {
                   options={productData}
                   defaultValue={data?.products?.map((item) => item)}
                 />
-              </Space>
+              </Space> */}
 
               <div className="d-flex gap-3">
                 <div
@@ -339,7 +339,7 @@ export default function Aksiya() {
                 setBadge(e.target.value);
               }}
             />
-
+{/* 
             <Space
               style={{
                 width: "100%",
@@ -362,7 +362,7 @@ export default function Aksiya() {
                 onChange={handleChangeProduct}
                 options={productData}
               />
-            </Space>
+            </Space> */}
 
             <div className="d-flex gap-3">
               <div

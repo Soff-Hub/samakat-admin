@@ -15,9 +15,16 @@ export default function Orders() {
   const [data, setData] = useState(null);
   const navigate = useNavigate()
 
+  const status = {
+    process : 'jarayonda',
+    approved : 'tasdiqlangan',
+    cancelled : "bekor qilingan"
+  }
+
   const getData = async (id) => {
     await Client.get(`${API_ENDPOINTS.DETAIL_ORDER}${id}/`)
       .then((res) => {
+        console.log('order data', res);
         setData(res);
       })
       .catch((err) => {
@@ -120,13 +127,7 @@ export default function Orders() {
                 variant="outlined"
                 size="large"
                 value={
-                  data && data?.status === "approved"
-                    ? "tasdiqlangan"
-                    : data && data?.status === "process"
-                    ? "jarayonda"
-                    : data && data?.status === "cancelled"
-                    ? "bekor qilingan"
-                    : ""
+                  data && status[data?.status]
                 }
                 type="text"
               />
