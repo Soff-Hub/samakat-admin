@@ -20,6 +20,21 @@ export default function Branches() {
   const [count, setCount] = useState("");
   const [page, setPage] = React.useState(1);
 
+  const status = {
+    approved: {
+      name: "tasdiqlangan",
+      color: " text-[green]",
+    },
+    process: {
+      name: "jarayonda",
+      color: "text-[#F4CA16]",
+    },
+    cancelled: {
+      name: "bekor qilingan",
+      color: "text-[red]",
+    },
+  };
+
   async function getOrders() {
     await Client.get(API_ENDPOINTS.ORDER)
       .then((resp) => {
@@ -58,7 +73,7 @@ export default function Branches() {
   return (
     <div className="px-2 py-3 bg--color">
       <div className="mb-4">
-        <h1 className="text-2xl"  >Buyurtmalar</h1>
+        <h1 className="text-2xl">Buyurtmalar</h1>
       </div>
       {data ? (
         <div className="block w-full border shadow-lg p-2 colorr">
@@ -70,7 +85,7 @@ export default function Branches() {
               onChange={(e) => Search(e.target.value)}
             />
           </div>
-          <Table sx={{ minWidth: 300 }} aria-label="caption table" >
+          <Table sx={{ minWidth: 300 }} aria-label="caption table">
             <TableHead>
               <TableRow>
                 <TableCell>
@@ -81,6 +96,9 @@ export default function Branches() {
                 </TableCell> */}
                 <TableCell>
                   <span className="font-bold text-[16px]">Umumiy so'mma</span>
+                </TableCell>
+                <TableCell>
+                  <span className="font-bold text-[16px]">Do'kon</span>
                 </TableCell>
                 {/* <TableCell>
                   <span className="font-bold text-[16px]">Promo kod</span>
@@ -152,6 +170,18 @@ export default function Branches() {
                         to={"actions/?" + row.id}
                         className="hover:underline"
                       >
+                        {row.seller === null ? (
+                          <i className="fa-solid fa-minus"></i>
+                        ) : (
+                          row.seller
+                        )}
+                      </Link>
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Link
+                        to={"actions/?" + row.id}
+                        className="hover:underline"
+                      >
                         {row.branch === null ? (
                           <i className="fa-solid fa-minus"></i>
                         ) : (
@@ -191,94 +221,14 @@ export default function Branches() {
                       <Link
                         to={"actions/?" + row.id}
                         className={`hover:underline ${
-                          row.status === "approved"
-                            ? " text-[green]"
-                            : row.status === "process"
-                            ? "text-[#F4CA16]"
-                            : row.status === "cancelled"
-                            ? "text-[red]"
-                            : "text-[#3B82F6]"
+                          status[row.status]?.color
                         }`}
                       >
-                        {row.status === "approved"
-                          ? "tasdiqlangan"
-                          : row.status === "pending"
-                          ? "kutilmoqda"
-                          : row.status === "cancelled"
-                          ? "bekor qilingan"
-                          : row.status === "process"
-                          ? "jarayonda"
-                          : ""}
+                        {status[row.status]?.name}
                       </Link>
                     </TableCell>
-                    {/* <TableCell component="th" scope="row">
-                      <>
-                      {
-                        row.payment_type === "by_card" ?
-                        "" :
-                        <Button style={{
-                          cursor:`${row.payment_type === "by_card" ? "not-allowed" : "pointer"}`
-                        }} onClick={() =>  showModal(row.id) }>
-                          <i class="fa-solid fa-pen-to-square"></i>
-                        </Button>
-
-                      }
-                        <Modal
-                          title="Holatni tahrirlash"
-                          open={isModalOpen}
-                          onOk={() => handleOk()}
-                          onCancel={handleCancel}
-                          okText="Yuborish"
-                          cancelText="Ortga"
-                          okButtonProps={{
-                            style: {
-                              backgroundColor: "#3B82F6",
-                              color: "white",
-                            },
-                          }}
-                        >
-                          <ul className="modal-ul">
-                            <li
-                              onClick={() => setStatus("approved")}
-                              style={{
-                                backgroundColor:
-                                  status === "approved" ? "#ccc" : "",
-                              }}
-                            >
-                              Tasdiqlangan
-                            </li>
-                            <li
-                              onClick={() => setStatus("pending")}
-                              style={{
-                                backgroundColor:
-                                  status === "pending" ? "#ccc" : "",
-                              }}
-                            >
-                              Jarayonda
-                            </li>
-                            <li
-                              onClick={() => setStatus("in_courier")}
-                              style={{
-                                backgroundColor:
-                                  status === "in_courier" ? "#ccc" : "",
-                              }}
-                            >
-                              Yo'lda
-                            </li>
-                            <li
-                              onClick={() => setStatus("cancelled")}
-                              style={{
-                                backgroundColor:
-                                  status === "cancelled" ? "#ccc" : "",
-                              }}
-                            >
-                              Bekor qilingan
-                            </li>
-                           
-                          </ul>
-                        </Modal>
-                      </>
-                    </TableCell> */}
+                  
+                  
                   </TableRow>
                 );
               })}

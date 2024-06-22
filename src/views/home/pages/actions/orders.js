@@ -83,8 +83,8 @@ export default function Orders() {
                 variant="outlined"
                 size="large"
                 type="text"
-                value={data?.user_about ? data?.user_about?.user : "-"}
-                onClick={() => handleChangeRouter(data.user_about?.id)}
+                value={data?.user_data ? data?.user_data?.user : "-"}
+                onClick={() => handleChangeRouter(data.user_data?.id)}
               />
               <TextField
                 label="Umumiy so'mma"
@@ -111,7 +111,7 @@ export default function Orders() {
                 label="Manzil"
                 variant="outlined"
                 size="large"
-                value={data.address?.location ? data?.address?.location : "-"}
+                value={data.address ? data?.address : "-"}
                 type="text"
                 onClick={() => handleRouterAdress(data?.address?.location ,data?.address?.latitude, data?.address?.longitude )}
               />
@@ -158,21 +158,21 @@ export default function Orders() {
               </div> */}
             </form>
             {
-               data?.product_count?.length > 0 ?
+               data?.product_orders?.length > 0 ?
             <form className="w-2/3 mt-2  bg-slate-200 p-6 mt-6 ">
               <p className="font-normal font-sans text-start text-lg pb-2" >Buyurtmalar:</p>
               <ul className="border-[#AEB2B8] py-2 text-start border rounded">
               {
-                  data?.product_count?.map((el,i) => (
+                  data?.product_orders?.map((el,i) => (
                     <li className="font-normal font-sans text-base pl-2 my-2" >
                       <a style={{
                         display:'flex',
                         alignItems:'center',
                         gap:'5px'
                       }} 
-                       href={`/products/actions/?bistro?edit?${el.product_slug}`}>
+                       href={`/products/actions/?edit?${el?.product_data?.slug}`}>
 
-                     {i+1}. <img src={el.image} width={50} alt="alokand.uz" /> {el.product}
+                     {i+1}. {el?.product_data?.name} {" "} {el?.quantity} ta
 
                       </a>
                     </li>

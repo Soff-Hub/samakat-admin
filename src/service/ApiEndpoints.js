@@ -51,7 +51,7 @@ export const API_ENDPOINTS = {
     COUNT_USER: 'admin/users-count/',
 
     ORDER: 'admin/orders/',
-    PATCH_ORDER : 'admin/order/update/',
+    PATCH_ORDER : 'admin/orders/',
     DETAIL_ORDER: 'admin/orders/',
     
     GET_COUNT_BRANCH: 'admin/approved-branches/',
@@ -77,7 +77,7 @@ export const API_ENDPOINTS = {
     
     SETTINGS: 'admin/settings/',
     
-    PROCESS:'admin/process/order/',
+    PROCESS:'admin/section-courier/',
     
     ARCHIVE: 'admin/archive-orders/',
     

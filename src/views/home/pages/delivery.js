@@ -49,8 +49,8 @@ export default function Delivery() {
   const handleOk = async (id) => {
     if (status === "cancelled") {
       const data = {
-        status: status,
-        commentary: commit,
+        condition: status,
+        canceled_comment: commit,
       };
       await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
         .then((resp) => {
@@ -78,7 +78,7 @@ export default function Delivery() {
         });
     } else {
       const data = {
-        process: status,
+        condition: status,
       };
       await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
         .then((resp) => {
@@ -137,12 +137,12 @@ export default function Delivery() {
   async function getOrders() {
     await Client.get(API_ENDPOINTS.PROCESS)
       .then((resp) => {
-        setData(resp.results);
-        setCount(resp.count);
-        setNewS(resp.results.filter((el) => el.process === "new"));
-        setCollection(resp.results.filter((el) => el.process === "collection"));
-        setWay(resp.results.filter((el) => el.process === "in_courier"));
-        setDelivery(resp.results.filter((el) => el.process === "delivered"));
+        setData(resp);
+        // setCount(resp.count);
+        setNewS(resp.filter((el) => el.condition === "new"));
+        setCollection(resp.filter((el) => el.condition === "collection"));
+        setWay(resp.filter((el) => el.condition === "in_courier"));
+        setDelivery(resp.filter((el) => el.condition === "delivered"));
       })
       .catch((err) => console.log(err));
   }
@@ -154,8 +154,8 @@ export default function Delivery() {
   }, []);
 
   const getDate = (date) => {
-    const Date = date.slice(0, 10);
-    const time = date.slice(11, 18);
+    const Date = date?.slice(0, 10);
+    const time = date?.slice(11, 18);
     return Date + "\n" + time;
   };
 
@@ -180,6 +180,10 @@ export default function Delivery() {
     setIsOpen(false);
   }
 
+
+  console.log('address', newS);
+  
+
   return (
     <div className="p-2">
       <div className="mb-5">
@@ -200,7 +204,7 @@ export default function Delivery() {
                     <div>{el.branch}</div>
                   </div>
                   <div classNacme=" font-medium text-[#757575] mb-1">
-                    {getDate(el?.created_at)}
+                    {el?.created_at} 
                   </div>
                   <div style={{ display: "flex", gap: "10px" }}>
                     {el.is_paid ? (
@@ -252,7 +256,7 @@ export default function Delivery() {
                     <div>{el.branch}</div>
                   </div>
                   <div classNacme=" font-medium text-[#757575] mb-1">
-                    {getDate(el?.created_at)}
+                    {el?.created_at}
                   </div>
 
                   <div style={{ display: "flex", gap: "10px" }}>
@@ -356,7 +360,7 @@ export default function Delivery() {
                     <div>{el.branch}</div>
                   </div>
                   <div classNacme=" font-medium text-[#757575] mb-1">
-                    {getDate(el?.created_at)}
+                    {el?.created_at}
                   </div>
                   <div
                     style={{

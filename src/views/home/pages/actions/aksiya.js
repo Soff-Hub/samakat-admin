@@ -157,7 +157,7 @@ export default function AksiyaSeller() {
               direction="vertical"
             >
               {
-                data?.products?.length > 0 &&
+                // data?.products?.length > 0 &&
 
               <Select
                 mode="multiple"
