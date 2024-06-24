@@ -23,7 +23,6 @@ export default function ProductPrice() {
     },
   ]);
 
-
   const handleAddRowBranch = () => {
     setDataArrayFilial([
       ...dataArrayFilial,
@@ -34,7 +33,6 @@ export default function ProductPrice() {
       },
     ]);
   };
-
 
   const handleInputChangeFilial = (index, field, value) => {
     const newArray = [...dataArrayFilial];
@@ -185,39 +183,40 @@ export default function ProductPrice() {
                   handleInputChangeFilial(index, "quantity", e.target.value)
                 }
               />
-              <div className="col-md-3">
-                <Button
-                  variant="contained"
-                  sx={{
-                    background: "#000",
-                    "&:hover": {
-                      backgroundColor: "#333",
-                    },
-                  }}
-                  size="small"
-                  style={{ width: "100%" }}
-                  startIcon={<AddIcon />}
-                  onClick={handleAddRowBranch}
-                >
-                  Qo'shish
-                </Button>
-              </div>
             </div>
           ))}
-          <div className="col-md-4">
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{
-                background: "green",
-                "&:hover": {
-                  backgroundColor: "#333",
-                },
-              }}
-              style={{ width: "100%", marginTop: "10px" }}
-            >
-              {submiting ? "Qo'shilmoqda" : "qo'shish"}
-            </Button>
+          <div className="row">
+            <div className="col-md-4">
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  background: "green",
+                  "&:hover": {
+                    backgroundColor: "#333",
+                  },
+                }}
+                style={{ width: "100%", marginTop: "10px" }}
+              >
+                {submiting ? "Qo'shilmoqda" : "qo'shish"}
+              </Button>
+            </div>
+            <div className="col-md-4">
+              <Button
+                variant="contained"
+                sx={{
+                  background: "#000",
+                  "&:hover": {
+                    backgroundColor: "#333",
+                  },
+                }}
+                style={{ width: "100%" }}
+                startIcon={<AddIcon />}
+                onClick={handleAddRowBranch}
+              >
+                Qo'shish
+              </Button>
+            </div>
           </div>
         </form>
         <Toaster />

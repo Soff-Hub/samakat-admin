@@ -50,7 +50,7 @@ export default function Product() {
   const [colorImages, setColorImages] = useState({}); //rang rasmlari map
   const [allImages, setAllImages] = useState([]);
 
-  const [chekColorImage, setChekColorImage] = useState([])
+  const [chekColor, setChekColor] = useState([]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -149,6 +149,7 @@ export default function Product() {
   // ranglar uchun rasm qo'shish
   const handleImageChange = (e, color) => {
     const file = e.target.files[0];
+    setChekColor([...chekColor, color]);
     if (file) {
       colorImageList.push({
         ["images_" + color]: file,
@@ -252,27 +253,10 @@ export default function Product() {
     setInputValues(checkedKeys);
   };
 
-  // console.log('selectedColors', selectedColors);
-  // console.log('colorImageList', colorImageList);
-  
-
   // qo'shish
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
     setSubmiting(true);
-
-    // setChekColorImage( colorImageList.map(item => {
-    //   const key = Object.keys(item)[0]; // Get the first (and only) key of the object
-    //   const number = key.replace('images_', ''); // Extract the number part
-    //   Number(number); // Convert the extracted string to a number
-    // }))
-
-    // for (const i of selectedColors) {
-    //   console.log(iterator)
-    //   for (const j of object) {
-        
-    //   }
-    // }
 
     const formData1 = new FormData();
     formData1.append("name_uz", name);
@@ -283,8 +267,11 @@ export default function Product() {
     formData1.append("short_description_ru", short_desc_ru);
     formData1.append("on_sale", on_sale);
     formData1.append("category", lastCategory);
-    formData1.append("colors", JSON.stringify(selectedColors));
-    formData1.append("feature", feature);
+    // formData1.append("colors", JSON.stringify(selectedColors));
+    formData1.append("colors", JSON.stringify(chekColor));
+   if (inputValues) {
+     formData1.append("feature", feature);
+   }
     formData1.append("feature_items", JSON.stringify(inputValues));
     colorImageList.forEach((obj) => {
       Object.entries(obj).forEach(([key, value]) => {
@@ -320,8 +307,6 @@ export default function Product() {
     });
     // eslint-disable-next-line
   }, []);
-
-
 
   return (
     <div className="flex  gap-1 bg--color px-2 py-3">
@@ -389,7 +374,7 @@ export default function Product() {
                     />
                   </div>
                 </div>
-                      {/* kategoriyalar */}
+                {/* kategoriyalar */}
                 <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                   <span className="label--name font-bold">Kategoriyalar *</span>
                   <div className="d-flex gap-3  align-items-start">
@@ -508,7 +493,7 @@ export default function Product() {
                     >
                       <i className="fa-solid fa-file-arrow-down"></i>
                       <input
-                      required
+                        required
                         type="file"
                         multiple
                         accept="image/*"
@@ -561,7 +546,7 @@ export default function Product() {
                       Qisqa izoh (uz) *{" "}
                     </span>
                     <TextArea
-                    required
+                      required
                       placeholder="Qisqa tavsif "
                       rows={4}
                       height="auto"
@@ -573,14 +558,13 @@ export default function Product() {
                       Qisqa izoh (ru) *{" "}
                     </span>
                     <TextArea
-                    required
+                      required
                       placeholder="Qisqa tavsif "
                       rows={4}
                       onChange={(e) => setShort_desc_ru(e.target.value)}
                     />
                   </div>
                 </div>
-
 
                 {/* skedetor izohlar uchun */}
 
@@ -697,13 +681,21 @@ export default function Product() {
                     <>
                       <br />
                       <div
-                        className="block fw-medium"
-                        type="primary"
-                        onClick={showModal}
-                        style={{cursor: 'pointer'}}
+                        className="block fw-medium text-bold"
                       >
                         {featureSelectName}
                       </div>
+
+                      <Tree
+                      required={true}
+                        checkable
+                        // defaultExpandedKeys={["0-0-0", "0-0-1"]}
+                        // defaultSelectedKeys={["0-0-0", "0-0-1"]}
+                        // defaultCheckedKeys={["0-0-0", "0-0-1"]}
+                        // onSelect={onSelect}
+                        onCheck={onCheck}
+                        treeData={treeData}
+                      />
                     </>
                   )}
                 </>
