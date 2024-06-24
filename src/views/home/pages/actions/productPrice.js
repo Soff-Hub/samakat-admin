@@ -24,7 +24,7 @@ export default function ProductPrice() {
   ]);
   const [dataArrayDetail, setDataArrayDetail] = useState([]);
   const getProductFeatureDeatil = async () => {
-    if (params == "true?id") {
+    if (params === "true?id") {
       await Client.get(
         `${API_ENDPOINTS.PRODUCT_LIST_FOR_CREATE}${search.split("=")?.[2]}/`
       )

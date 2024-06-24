@@ -50,6 +50,8 @@ export default function Product() {
   const [colorImages, setColorImages] = useState({}); //rang rasmlari map
   const [allImages, setAllImages] = useState([]);
 
+  const [chekColorImage, setChekColorImage] = useState([])
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -250,10 +252,27 @@ export default function Product() {
     setInputValues(checkedKeys);
   };
 
+  // console.log('selectedColors', selectedColors);
+  // console.log('colorImageList', colorImageList);
+  
+
   // qo'shish
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
     setSubmiting(true);
+
+    // setChekColorImage( colorImageList.map(item => {
+    //   const key = Object.keys(item)[0]; // Get the first (and only) key of the object
+    //   const number = key.replace('images_', ''); // Extract the number part
+    //   Number(number); // Convert the extracted string to a number
+    // }))
+
+    // for (const i of selectedColors) {
+    //   console.log(iterator)
+    //   for (const j of object) {
+        
+    //   }
+    // }
 
     const formData1 = new FormData();
     formData1.append("name_uz", name);
@@ -280,6 +299,7 @@ export default function Product() {
       .then((data) => {
         toast.success("Mahsulot muvaffaqiyatli qo'shildi");
         navigate(`/products/actions/productPrice?id=${data?.id}`);
+        document.querySelector(".create-branch-form").reset();
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
@@ -287,7 +307,6 @@ export default function Product() {
       });
 
     setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
   };
 
   useEffect(() => {
@@ -301,6 +320,7 @@ export default function Product() {
     });
     // eslint-disable-next-line
   }, []);
+
 
 
   return (
@@ -369,7 +389,7 @@ export default function Product() {
                     />
                   </div>
                 </div>
-
+                      {/* kategoriyalar */}
                 <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                   <span className="label--name font-bold">Kategoriyalar *</span>
                   <div className="d-flex gap-3  align-items-start">
@@ -379,7 +399,6 @@ export default function Product() {
                         textAlign: "left",
                       }}
                       direction="vertical"
-                      required
                     >
                       <Select
                         required
@@ -455,13 +474,13 @@ export default function Product() {
                         />
                       )}
                     </Space>
-                    <div
+                    {/* <div
                       size="small"
                       className="btn btn-success"
                       onClick={() => setCheckCategory(!checkCategory)}
                     >
                       Qo'shish
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -469,7 +488,7 @@ export default function Product() {
 
                 <div className="col-md-6">
                   <span className="label--name font-bold">
-                    Asosiy rasmlarni qo'shish
+                    Asosiy rasmlarni qo'shish *
                   </span>
                   <div className="d-flex gap-3 flex-wrap">
                     <div
@@ -489,6 +508,7 @@ export default function Product() {
                     >
                       <i className="fa-solid fa-file-arrow-down"></i>
                       <input
+                      required
                         type="file"
                         multiple
                         accept="image/*"
@@ -538,25 +558,30 @@ export default function Product() {
                 <div className="row">
                   <div className="col-md-6">
                     <span className="label--name font-bold">
-                      Qisqa izoh (uz){" "}
+                      Qisqa izoh (uz) *{" "}
                     </span>
                     <TextArea
+                    required
                       placeholder="Qisqa tavsif "
                       rows={4}
+                      height="auto"
                       onChange={(e) => setShort_desc_uz(e.target.value)}
                     />
                   </div>
                   <div className="col-md-6">
                     <span className="label--name font-bold">
-                      Qisqa izoh (ru){" "}
+                      Qisqa izoh (ru) *{" "}
                     </span>
                     <TextArea
+                    required
                       placeholder="Qisqa tavsif "
                       rows={4}
                       onChange={(e) => setShort_desc_ru(e.target.value)}
                     />
                   </div>
                 </div>
+
+
                 {/* skedetor izohlar uchun */}
 
                 <div className="col-12">

@@ -9,7 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import CKeditor from "components/shared/skeditor";
 import { Steps } from "antd";
 const { TextArea } = Input;
-var parse = require("html-react-parser");
+// var parse = require("html-react-parser");
 
 export default function Product() {
   const [submiting, setSubmiting] = useState(false);

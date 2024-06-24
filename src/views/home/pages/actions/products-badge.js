@@ -5,7 +5,7 @@ import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Form, Select, Space } from "antd";
+import { Form} from "antd";
 
 export default function Aksiya() {
   const [submiting, setSubmiting] = useState(false);
@@ -18,7 +18,7 @@ export default function Aksiya() {
   const [img, setImage] = useState(null);
   const [mainImageReal, setMainImageReal] = useState("");
   const [product, setProduct] = useState([]);
-  const [productData, setProductData] = useState([]);
+  // const [productData, setProductData] = useState([]);
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -89,21 +89,21 @@ export default function Aksiya() {
       });
   };
 
-  const getProducts = async () => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}`)
-      .then((res) => {
-        console.log("res", res);
-        setProductData(
-          res?.map((e) => ({
-            label: e?.name,
-            value: e?.id,
-          }))
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getProducts = async () => {
+  //   await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}`)
+  //     .then((res) => {
+  //       console.log("res", res);
+  //       setProductData(
+  //         res?.map((e) => ({
+  //           label: e?.name,
+  //           value: e?.id,
+  //         }))
+  //       );
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const ImageChangeAll = (e) => {
     setImage(e.target.files[0]);
@@ -118,7 +118,7 @@ export default function Aksiya() {
     if (location.search.split("?")[1] === "edit") {
       getBadge();
     }
-    getProducts();
+    // getProducts();
     // eslint-disable-next-line
   }, []);
 

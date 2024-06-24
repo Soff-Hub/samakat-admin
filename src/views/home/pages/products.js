@@ -26,7 +26,6 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { useSelector } from "react-redux";
 import NavHeaderProduct from "components/shared/NavHeaderProduct";
 
@@ -160,10 +159,8 @@ export default function EnhancedTable() {
   const [category, setCategory] = useState(null);
   const [categoryValue, setCategoryValue] = useState("");
   const [SaleValue, setSaleValue] = useState(null);
-  const [BranchValue, setBranchValue] = useState("");
   const [storeValue, setStoreValue] = useState("");
   const [errorData, setErrorData] = useState("");
-  const [branchList, setBranchList] = useState(null);
   const [storeList, setStoreList] = useState(null);
   const [quantity, setQuantity] = useState("");
   const { role } = useSelector((state) => state.admin);
@@ -218,13 +215,6 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-  const getBranchList = async () => {
-    await Client.get(`${API_ENDPOINTS.GET_COUNT_BRANCH}`)
-      .then((resp) => {
-        setBranchList(resp.results);
-      })
-      .catch((err) => console.log(err));
-  };
   const getStoreList = async () => {
     await Client.get(`${API_ENDPOINTS.STOR_LIST}`)
       .then((resp) => {
@@ -267,7 +257,7 @@ export default function EnhancedTable() {
   const handleChangeCategory = async (event) => {
     setCategoryValue(event.target.value);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&category=${event.target.value}&product_count_branch__branch=${BranchValue}&on_sale=${SaleValue}&seller=${storeValue}`
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&category=${event.target.value}&on_sale=${SaleValue}&seller=${storeValue}`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -284,9 +274,7 @@ export default function EnhancedTable() {
     await Client.get(
       `${API_ENDPOINTS.PRODUCT}?page=${page}&on_sale=${
         event.target.value === "tugagan" ? "" : event.target.value
-      }&product_count_branch__quantity=${
-        event.target.value === "tugagan" ? 0 : ""
-      }&product_count_branch__branch=${BranchValue}`
+      }`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -295,22 +283,10 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
-  // const handleChangeBranch = async (event) => {
-  //   setBranchValue(event.target.value);
-  //   await Client.get(
-  //     `${API_ENDPOINTS.PRODUCT}?page=${page}&on_sale=${SaleValue}&product_count_branch__branch=${event.target.value}&category=${categoryValue}&seller=${storeValue}`
-  //   )
-  //     .then((resp) => {
-  //       setCount(resp.results);
-  //       setData(resp.results);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
-
   const handleChangeStore = async (event) => {
-    setBranchValue(event.target.value);
+    setStoreValue(event.target.value);
     await Client.get(
-      `${API_ENDPOINTS.PRODUCT}?page=${page}&on_sale=${SaleValue}&product_count_branch__branch=${BranchValue}&category=${categoryValue}&seller=${event.target.value}`
+      `${API_ENDPOINTS.PRODUCT}?page=${page}&on_sale=${SaleValue}&category=${categoryValue}&seller=${event.target.value}`
     )
       .then((resp) => {
         setCount(resp.results);
@@ -322,7 +298,6 @@ export default function EnhancedTable() {
   useEffect(() => {
     getProductData();
     getCategory();
-    getBranchList();
     getStoreList();
     // eslint-disable-next-line
   }, []);
@@ -411,32 +386,6 @@ export default function EnhancedTable() {
                 ))}
             </Select>
           </FormControl>
-          {/* 
-          <FormControl size="small" className="w-1/3 ">
-            <InputLabel
-              id="demo-select-small-label"
-              placholder="Filial bo'yicha"
-            >
-              Filial
-            </InputLabel>
-            <Select
-              className="py-0.5"
-              value={BranchValue}
-              label="Sotuv bo'yicha"
-              onChange={handleChangeBranch}
-            >
-              <MenuItem value={" "}>
-                <i className="fa-solid fa-minus"></i>{" "}
-              </MenuItem>
-              {branchList?.map((item) => {
-                return (
-                  <MenuItem value={item.id} key={item.id}>
-                    {item.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl> */}
 
           {role === "superadmin" ? (
             <FormControl size="small" className="w-1/3 ">
@@ -597,6 +546,7 @@ export default function EnhancedTable() {
           )}
         </Paper>
       </Box>
+      
       <ResponsiveDialog
         open={openDelete}
         setOpen={setOpen}

@@ -12,7 +12,6 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
-import { Link } from "react-router-dom";
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
@@ -92,7 +91,6 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function EnhancedTable() {
-
   const [page, setPage] = React.useState(1);
   const [data, setData] = React.useState(null);
   const [count, setCount] = useState(10);
@@ -101,12 +99,10 @@ export default function EnhancedTable() {
   const [branch, setBranch] = useState("");
   const [filialData, setFilialData] = useState([]);
   const [storeData, setStoreData] = useState([]);
-  const [countProduct, setCountProduct] = useState("")
+  const [countProduct, setCountProduct] = useState("");
   const { role } = useSelector((state) => state.admin);
 
   const Search = async (e) => {
-
-
     await Client.get(
       `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch=${branch}&search=${e}`
     )
@@ -126,7 +122,9 @@ export default function EnhancedTable() {
   };
   const handleChangeStore = async (event) => {
     setBranch(event);
-    await Client.get(`${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch__seller=${event}`)
+    await Client.get(
+      `${API_ENDPOINTS.PRODUCT_COUNT_BRANCH}?branch__seller=${event}`
+    )
       .then((resp) => {
         setData(resp.results);
       })
@@ -196,26 +194,31 @@ export default function EnhancedTable() {
 
   const handleChangeCount = async (id) => {
     const data = {
-      quantity: countProduct ? +countProduct : ""
+      quantity: countProduct ? +countProduct : "",
     };
     await Client.patch(
       `${API_ENDPOINTS.UPDATE_PRODUCT_COUNT_BRANCH}${id}/`,
       data
     )
       .then((data) => {
-        setCountProduct("")
+        setCountProduct("");
         toast.success("Filialdagi mahsulot soni muvaffaqiyatli tahrirlandi");
-        getProductBranchData()
+        getProductBranchData();
       })
       .catch((err) => {
-        toast.error(`${err?.response?.data?.quantity ? "Mahsulotlar sonini kiritish majburiy" : "Xatolik! Qayta urinib ko'ring"} `);
+        toast.error(
+          `${
+            err?.response?.data?.quantity
+              ? "Mahsulotlar sonini kiritish majburiy"
+              : "Xatolik! Qayta urinib ko'ring"
+          } `
+        );
       });
-  }
-
+  };
 
   useEffect(() => {
     getFilial();
-    getStore()
+    getStore();
     getProductBranchData();
     // eslint-disable-next-line
   }, []);
@@ -223,7 +226,10 @@ export default function EnhancedTable() {
   return (
     <div className="px-2 py-3 bg--color">
       <div>
-        <NavHeaderSelect admin={role === "superadmin" ? true : false} title="Filiallardagi mahsulotlar" />
+        <NavHeaderSelect
+          admin={role === "superadmin" ? true : false}
+          title="Filiallardagi mahsulotlar"
+        />
       </div>
       <Toaster />
       {data ? (
@@ -253,24 +259,27 @@ export default function EnhancedTable() {
                     ...filialData,
                   ]}
                 ></Select>
-                {role === "superadmin" ?  <Select
-                  mode="select"
-                  placeholder="
+                {role === "superadmin" ? (
+                  <Select
+                    mode="select"
+                    placeholder="
                   Do'kon"
-                  style={{
-                    width: "100%",
-                    height: "47px",
-                  }}
-                  onChange={handleChangeStore}
-                  options={[
-                    {
-                      label: "Hammasi",
-                      value: "",
-                    },
-                    ...storeData,
-                  ]}
-                ></Select> : ''}
-               
+                    style={{
+                      width: "100%",
+                      height: "47px",
+                    }}
+                    onChange={handleChangeStore}
+                    options={[
+                      {
+                        label: "Hammasi",
+                        value: "",
+                      },
+                      ...storeData,
+                    ]}
+                  ></Select>
+                ) : (
+                  ""
+                )}
               </div>
               <Table
                 sx={{ minWidth: 750 }}
@@ -282,18 +291,12 @@ export default function EnhancedTable() {
                   {data?.map((row, index) => {
                     return (
                       <TableRow hover key={row.id}>
+                        <TableCell align="left">{row.name}</TableCell>
                         <TableCell align="left">
-                            {row.name}
+                          {row.seller ? row.seller : "-"}
                         </TableCell>
-                        <TableCell align="left">
-                            {row.seller ? row.seller : "-"}
-                        </TableCell>
-                        <TableCell align="left">
-                            {row.branch}
-                        </TableCell>
-                        <TableCell align="left">
-                            {row.quantity}
-                        </TableCell>
+                        <TableCell align="left">{row.branch}</TableCell>
+                        <TableCell align="left">{row.quantity}</TableCell>
                         <TableCell align="left" sx={{ position: "relative" }}>
                           <div className="flex w-75 justify-end end-100">
                             <Input
@@ -305,7 +308,10 @@ export default function EnhancedTable() {
                                 position: "absalute",
                               }}
                             />
-                            <IconButton onClick={() => handleChangeCount(row?.id)} color="primary">
+                            <IconButton
+                              onClick={() => handleChangeCount(row?.id)}
+                              color="primary"
+                            >
                               <SaveAsIcon />
                             </IconButton>
                           </div>
