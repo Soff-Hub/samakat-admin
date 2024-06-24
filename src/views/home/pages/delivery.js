@@ -186,8 +186,8 @@ export default function Delivery() {
 
   return (
     <div className="p-2">
-      <div className="mb-5">
-        <h1 className="text-2xl">Kurer</h1>
+      <div className="mb-2">
+        <h1 className="text-2xl mt-2">Kurer</h1>
       </div>
       {data ? (
         <div className="delivery-container">
@@ -534,9 +534,9 @@ export default function Delivery() {
                       Buyurtmalar:
                     </p>
                     <ul className="border-[#AEB2B8] py-2 text-start border rounded">
-                      {detail?.product_count?.map((el, i) => (
+                      {detail?.product_orders?.map((el, i) => (
                         <li className="font-normal font-sans text-base pl-2">
-                          {i + 1}. {el.product}{" "}
+                          {i + 1}. {el.product_data?.name}{" "} {el?.quantity} ta
                         </li>
                       ))}
                     </ul>

@@ -36,9 +36,9 @@ function AddSeller() {
     },
     {
       title: "Do'kon nomi",
-      dataIndex: "store_name",
-      key: "store_name",
-      render: (store_name) => <a>{store_name ? store_name : <i class="fa-solid fa-minus"></i>}</a>,
+      dataIndex: "name",
+      key: "name",
+      render: (name) => <a>{name ? name : <i class="fa-solid fa-minus"></i>}</a>,
     },
     {
       title: "Yaratilgan vaqti",

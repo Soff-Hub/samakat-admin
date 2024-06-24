@@ -15,7 +15,13 @@ export default function ProductPrice() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const params = search.split("=")?.[1];
-  const [dataArray, setDataArray] = useState([]);
+  const [dataArray, setDataArray] = useState([
+    {
+      color: "",
+      feature: "",
+      price: 0,
+    },
+  ]);
   const [dataArrayDetail, setDataArrayDetail] = useState([]);
   const getProductFeatureDeatil = async () => {
     if (params == "true?id") {
@@ -57,7 +63,7 @@ export default function ProductPrice() {
       {
         color: "",
         feature: "",
-        price: "",
+        price: 0,
       },
     ]);
   };
@@ -67,14 +73,12 @@ export default function ProductPrice() {
     newArray[index][field] = value;
     setDataArray(newArray);
   };
-  
+
   const handleInputChangeDetail = (index, field, value) => {
     const newArray = [...dataArrayDetail];
     newArray[index][field] = value;
     setDataArrayDetail(newArray);
   };
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,11 +114,13 @@ export default function ProductPrice() {
 
     const data = {
       new_variants: dataArray,
-      old_variants: dataArrayDetail
+      old_variants: dataArrayDetail,
     };
 
     await Client.post(
-      `${API_ENDPOINTS.UPDATE_PRODUCT_PRICE}${params == "true?id" ? search.split("=")?.[2] : params}/`,
+      `${API_ENDPOINTS.UPDATE_PRODUCT_PRICE}${
+        params == "true?id" ? search.split("=")?.[2] : params
+      }/`,
       data
     )
       .then((data) => {
@@ -136,6 +142,7 @@ export default function ProductPrice() {
     getProductFeatureDeatil();
   }, []);
 
+  console.log("dataArray", dataArray);
 
   return (
     <>
@@ -152,6 +159,10 @@ export default function ProductPrice() {
               {
                 title: "Narx qo'shish",
                 subTitle: "ikkinchi bosqichni tahrirlash",
+              },
+              {
+                title: "Filial qo'shish",
+                subTitle: "uchinchi bosqichni tahrirlash",
               },
             ]}
           />
@@ -213,6 +224,7 @@ export default function ProductPrice() {
                 </div>
 
                 <Input
+                  required
                   size="small"
                   className="col-md-3"
                   placeholder="Narxni kiriting"
@@ -261,7 +273,10 @@ export default function ProductPrice() {
       ) : (
         <div className="bg--color px-2 py-3">
           <h3 className="font-semibold	">Mahsulot narxini tahrirlash</h3>
-          <form onSubmit={handleSubmitEdit} className="mt-3 create-branch-form ">
+          <form
+            onSubmit={handleSubmitEdit}
+            className="mt-3 create-branch-form "
+          >
             {dataArrayDetail?.map((item, index) => (
               <div className="row" key={index} style={{ marginBottom: "10px" }}>
                 <div className="col-md-3">
@@ -283,7 +298,8 @@ export default function ProductPrice() {
                       value={item.color}
                       placeholder="Ranglar"
                       onChange={(value) => (
-                        handleInputChangeDetail(index, "color", value), setPercent(40)
+                        handleInputChangeDetail(index, "color", value),
+                        setPercent(40)
                       )}
                       options={colorList}
                     />
@@ -318,7 +334,7 @@ export default function ProductPrice() {
                 </div>
 
                 <Input
-                 type="number"
+                  type="number"
                   defaultValue={item.price}
                   size="small"
                   className="col-md-3"
@@ -329,7 +345,7 @@ export default function ProductPrice() {
                 />
 
                 <Input
-                type="number"
+                  type="number"
                   className="col-md-2 ml-2"
                   size="small"
                   placeholder="Discountni kiriting"
@@ -392,7 +408,7 @@ export default function ProductPrice() {
                 </div>
 
                 <Input
-                type="number"
+                  type="number"
                   size="small"
                   className="col-md-3"
                   placeholder="Narxni kiriting"
@@ -402,7 +418,7 @@ export default function ProductPrice() {
                 />
 
                 <Input
-                type="number"
+                  type="number"
                   className="col-md-2 ml-2"
                   size="small"
                   placeholder="Discountni kiriting"

@@ -191,7 +191,7 @@ export default function EnhancedTable() {
       color: "green",
     },
     pending: {
-      name: "kutilmoqda",
+      name: "tekshirilmoqda",
       color: "#F4CA16",
     },
     cancelled: {
@@ -323,7 +323,7 @@ export default function EnhancedTable() {
     getProductData();
     getCategory();
     getBranchList();
-    getStoreList()
+    getStoreList();
     // eslint-disable-next-line
   }, []);
   return (
@@ -411,7 +411,7 @@ export default function EnhancedTable() {
                 ))}
             </Select>
           </FormControl>
-{/* 
+          {/* 
           <FormControl size="small" className="w-1/3 ">
             <InputLabel
               id="demo-select-small-label"
@@ -485,9 +485,14 @@ export default function EnhancedTable() {
                         <TableCell align="left">
                           <Link to={`actions/?edit?${row.slug}`}>{row.id}</Link>
                         </TableCell>
-                        <TableCell align="left">
+                        <TableCell className="text-truncate " align="left">
                           <Link to={`actions/?edit?${row.slug}`}>
-                            {row.name}
+                            <span
+                              style={{ width: "100px" }}
+                              className="text-truncate"
+                            >
+                              {row.name}
+                            </span>
                           </Link>
                         </TableCell>
                         <TableCell align="center">

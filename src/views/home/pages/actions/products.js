@@ -213,7 +213,7 @@ export default function Product() {
     await Client.patch(`${API_ENDPOINTS.CREATE_PRODUCT + params}/`, formData1)
       .then((data) => {
         toast.success("Mahsulot muvaffaqiyatli qo'shildi");
-        navigate(`/products/actions/productPrice?edit=true?id=${data?.id}`);
+        navigate(`/products/actions/productPrice?edit=true?${data?.id}`);
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
