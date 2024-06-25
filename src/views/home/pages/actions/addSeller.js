@@ -138,12 +138,20 @@ function AddSller() {
             />
           </div>
           <div>
-            <p>Tizimga kirish paroli</p>
+            <p>Do'kon nomi</p>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Parol" />}
+            />
+          </div>
+          <div>
+            <p>Telefon raqam</p>
             <Controller
               name="phone"
               control={control}
               render={({ field }) => (
-                <Input {...field} placeholder="Nomer" required />
+                <Input {...field} placeholder="Telefon raqam" required />
               )}
             />
           </div>
@@ -158,14 +166,7 @@ function AddSller() {
             />
           </div>
 
-          <div>
-            <p>Do'kon nomi</p>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => <Input {...field} placeholder="Parol" />}
-            />
-          </div>
+         
 
           <div>
             <p>Logo</p>
@@ -239,12 +240,22 @@ function AddSller() {
               render={({ field }) => <Input {...field} placeholder="Ism" />}
             />
           </div>
+
+          <div>
+            <p>Do'kon nomi</p>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Parol" />}
+            />
+          </div>
+
           <div>
             <p>Telefon raqam</p>
             <Controller
               name="phone"
               control={control}
-              render={({ field }) => <Input {...field} placeholder="Nomer" />}
+              render={({ field }) => <Input {...field} placeholder="Telefon raqam" />}
             />
           </div>
           <div>
@@ -256,14 +267,7 @@ function AddSller() {
             />
           </div>
 
-          <div>
-            <p>Do'kon nomi</p>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => <Input {...field} placeholder="Parol" />}
-            />
-          </div>
+          
 
           <div>
             <p>Logo</p>
