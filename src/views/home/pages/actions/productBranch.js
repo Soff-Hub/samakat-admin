@@ -6,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import toast, { Toaster } from "react-hot-toast";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function ProductPrice() {
   const [submiting, setSubmiting] = useState(false);
@@ -90,6 +91,17 @@ export default function ProductPrice() {
       })
       .catch((err) => console.log(err));
   };
+
+  const handleDeleteRow = (index) => {
+    console.log('index', index);
+    
+    const newArray = [...dataArrayFilial];
+    newArray.splice(index, 1); // O'sha qatorni o'chiradi
+    setDataArrayFilial(newArray);
+  };
+
+  console.log('dataArrayFilial', dataArrayFilial);
+  
 
   useEffect(() => {
     getProductBranchs();
@@ -183,9 +195,16 @@ export default function ProductPrice() {
                   handleInputChangeFilial(index, "quantity", e.target.value)
                 }
               />
+                <Button
+                   type="danger"
+                  onClick={() => handleDeleteRow(index)}
+                  className="col-md-1 ml-2"
+                >
+                  <DeleteIcon />
+                </Button>
             </div>
           ))}
-          <div className="row">
+          <div className="row mt-4">
             <div className="col-md-4">
               <Button
                 type="submit"
@@ -196,9 +215,9 @@ export default function ProductPrice() {
                     backgroundColor: "#333",
                   },
                 }}
-                style={{ width: "100%", marginTop: "10px" }}
+                style={{ width: "100%" }}
               >
-                {submiting ? "Qo'shilmoqda" : "qo'shish"}
+                {submiting ? "Qo'shilmoqda" : "mahsulot qo'shish"}
               </Button>
             </div>
             <div className="col-md-4">

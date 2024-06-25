@@ -268,7 +268,7 @@ export default function Product() {
     formData1.append("on_sale", on_sale);
     formData1.append("category", lastCategory);
     // formData1.append("colors", JSON.stringify(selectedColors));
-    formData1.append("colors", JSON.stringify(chekColor));
+    formData1.append("colors", JSON.stringify([...new Set(chekColor)]));
    if (inputValues) {
      formData1.append("feature", feature);
    }
