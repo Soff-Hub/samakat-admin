@@ -195,6 +195,7 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
+
           {role === "superadmin"
             ? navigationConfig?.map((item, index) => (
                 <ListItem

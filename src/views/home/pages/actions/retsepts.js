@@ -223,8 +223,8 @@ console.log('addHandleImageData', selectImage, imgtrue);
     document.querySelector(".create-branch-form").reset();
   };
 
-  const getCategory = async (e) => {
-    await Client.get(`${API_ENDPOINTS.CATEGORIES_CHAILD}?type=${e}`)
+  const getCategory = async () => {
+    await Client.get(`${API_ENDPOINTS.CATEGORIES_CHAILD}`)
       .then((resp) => {
         // setData(resp.results);
         setCategoryData(
@@ -242,11 +242,7 @@ console.log('addHandleImageData', selectImage, imgtrue);
       API_ENDPOINTS.DETAIL_RECIPE + location.search.split("?")[2]
     )
       .then((res) => {
-        if (res?.type === "bistro") {
-          getCategory("bistro");
-        } else if (res?.type === "byuti") {
-          getCategory("byuti");
-        }
+          getCategory();
         setEditData(res);
         setName(res?.title_uz);
         setNameRu(res?.title_ru);
