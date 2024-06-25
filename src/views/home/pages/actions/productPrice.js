@@ -226,7 +226,7 @@ export default function ProductPrice() {
               {
                 title: "Narx qo'shish",
                 subTitle: "ikkinchi bosqichni tahrirlash",
-              }
+              },
             ]}
           />
         </div>
@@ -235,7 +235,7 @@ export default function ProductPrice() {
         <>
           <div className="bg--color px-2 py-3">
             <h3 className="font-semibold	">Mahsulot narxini qo'shish</h3>
-            {(data?.colors?.length > 0 || data?.feature_items?.length > 0) ? (
+            {data?.colors?.length > 0 || data?.feature_items?.length > 0 ? (
               <form
                 onSubmit={handleSubmit}
                 className="mt-3 create-branch-form "
@@ -546,14 +546,13 @@ export default function ProductPrice() {
                     }
                   />
 
-<Button
-                      className="col-md-1 ml-2"
-                      type="danger"
-                      onClick={() => handleRemoveRow(index)}
-                    >
-                      <DeleteIcon />
-                    </Button>
-
+                  <Button
+                    className="col-md-1 ml-2"
+                    type="danger"
+                    onClick={() => handleRemoveRow(index)}
+                  >
+                    <DeleteIcon />
+                  </Button>
                 </div>
               ))}
               <div className="row">
