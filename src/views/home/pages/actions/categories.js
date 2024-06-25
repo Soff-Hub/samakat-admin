@@ -193,11 +193,11 @@ function Categories() {
           <Link to="/categories">
             <Button
               variant="contained"
-              sx={{ 
+              sx={{
                 background: "#000",
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#333", // Change this to the desired hover color
-                }
+                },
               }}
               size="large"
               startIcon={<ArrowBackIcon />}
@@ -263,7 +263,8 @@ function Categories() {
                 }}
                 type="number"
               />
-              {!itemData.child_is_available ? (
+
+              {/* {!itemData.child_is_available ? (
                 <Space
                   style={{
                     width: "100%",
@@ -290,8 +291,7 @@ function Categories() {
                 </Space>
               ) : (
                 ""
-              )}
-
+              )} */}
               <div className="image-conatiner">
                 <div
                   style={{
@@ -332,14 +332,15 @@ function Categories() {
                     type="file"
                   />
                 </div>
+
                 <Button
                   onClick={() => (setLifeImage(""), setImage(""))}
                   variant="contained"
-                  sx={{ 
+                  sx={{
                     background: "#000",
-                    '&:hover': {
+                    "&:hover": {
                       backgroundColor: "#333", // Change this to the desired hover color
-                    }
+                    },
                   }}
                   contained
                   startIcon={<DeleteIcon />}
@@ -347,13 +348,14 @@ function Categories() {
                   Delete
                 </Button>
               </div>
+
               <Button
                 variant="contained"
-                sx={{ 
+                sx={{
                   background: "#000",
-                  '&:hover': {
+                  "&:hover": {
                     backgroundColor: "#333", // Change this to the desired hover color
-                  }
+                  },
                 }}
                 size="large"
                 type="submit"
@@ -438,7 +440,7 @@ function Categories() {
             type="number"
           />
 
-          {loaction.search.split("?").length === 5 ? (
+          {/* {loaction.search.split("?").length === 5 ? (
             <Space
               style={{
                 width: "100%",
@@ -464,70 +466,75 @@ function Categories() {
             </Space>
           ) : (
             ""
-          )}
-
-          <div className="image-conatiner">
-            <div
-              style={{
-                width: ` ${lifeImage ? "250px" : "140px"}`,
-                backgroundImage: `url(${lifeImage})`,
-                height: `${lifeImage ? "250px" : "120px"}`,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-                position: "relative",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                textAlign: "center",
-                backgroundSize: "contain",
-              }}
-            >
-              {lifeImage ? (
-                ""
-              ) : (
-                <i
-                  className="fa-regular fa-image"
-                  style={{ fontSize: "35px" }}
-                ></i>
-              )}
-              <input
+          )} */}
+          {loaction.search.split("?").length === 5 ? (
+            ""
+          ) : (
+            <div className="image-conatiner">
+              <div
                 style={{
-                  opacity: "0",
-                  position: "absolute",
-                  top: "0",
-                  left: "0",
-                  bottom: "0",
-                  right: "0",
+                  width: ` ${lifeImage ? "250px" : "140px"}`,
+                  backgroundImage: `url(${lifeImage})`,
+                  height: `${lifeImage ? "250px" : "120px"}`,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  position: "relative",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
+                  textAlign: "center",
+                  backgroundSize: "contain",
                 }}
-                onChange={(e) => (setImage(e?.target?.files[0]), LifeImage(e))}
-                type="file"
-              />
+              >
+                {lifeImage ? (
+                  ""
+                ) : (
+                  <i
+                    className="fa-regular fa-image"
+                    style={{ fontSize: "35px" }}
+                  ></i>
+                )}
+                <input
+                  style={{
+                    opacity: "0",
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    bottom: "0",
+                    right: "0",
+                  }}
+                  onChange={(e) => (
+                    setImage(e?.target?.files[0]), LifeImage(e)
+                  )}
+                  type="file"
+                />
+              </div>
+              <Button
+                onClick={() => (setLifeImage(""), setImage(""))}
+                variant="contained"
+                sx={{
+                  background: "#000",
+                  "&:hover": {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  },
+                }}
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
             </div>
-            <Button
-              onClick={() => (setLifeImage(""), setImage(""))}
-              variant="contained"
-              sx={{ 
-                background: "#000",
-                '&:hover': {
-                  backgroundColor: "#333", // Change this to the desired hover color
-                }
-              }}
-              startIcon={<DeleteIcon />}
-            >
-              Delete
-            </Button>
-          </div>
+          )}
 
           <Button
             variant="contained"
             size="large"
-            sx={{ 
+            sx={{
               background: "#000",
-              '&:hover': {
+              "&:hover": {
                 backgroundColor: "#333", // Change this to the desired hover color
-              }
+              },
             }}
             type="submit"
             disabled={submiting}
