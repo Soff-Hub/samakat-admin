@@ -137,7 +137,7 @@ export default function Branches() {
       )}
 
       {data ? (
-        <div className="block w-full border shadow-lg p-2 colorr">
+        <div className="block w-full border shadow-lg p-2 colorr mt-2">
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -228,7 +228,7 @@ export default function Branches() {
                 );
               })}
             </TableBody>
-            {(count && Math.ceil(count / 30) < 1) || count === 0 ? (
+            {( Math.ceil(count / 30) <= 1) || count === 0 ? (
               <></>
             ) : (
               <div className="m-3 mb-5">

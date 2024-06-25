@@ -24,7 +24,7 @@ function Login() {
     address: "",
     latitude: 0,
     longitude: 0,
-    status: ''
+    status: null
   });
   const [itemData, setItemData] = useState(null);
   const query = useParams();
@@ -36,7 +36,6 @@ function Login() {
   });
   const [position, setPosition] = useState();
   const { role } = useSelector((state) => state.admin);
-  const [status, setStatus] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
