@@ -17,7 +17,8 @@ export default function ProductPrice() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const params = search.split("=")?.[1];
-  const [onePrice, setOnePrice] = useState(null)
+  const chekParam = search.split("=")?.[0];
+  const [onePrice, setOnePrice] = useState(null);
   const [dataArray, setDataArray] = useState([
     {
       color: null,
@@ -27,10 +28,8 @@ export default function ProductPrice() {
   ]);
   const [dataArrayDetail, setDataArrayDetail] = useState([]);
   const getProductFeatureDeatil = async () => {
-    if (params === "true?id") {
-      await Client.get(
-        `${API_ENDPOINTS.PRODUCT_LIST_FOR_CREATE}${search.split("=")?.[2]}/`
-      )
+    if (chekParam === "?edit") {
+      await Client.get(`${API_ENDPOINTS.PRODUCT_LIST_FOR_CREATE}${params}/`)
         .then((resp) => {
           setDataArrayDetail(resp);
         })
@@ -38,11 +37,7 @@ export default function ProductPrice() {
     }
   };
   const getProductFeature = async () => {
-    await Client.get(
-      `${API_ENDPOINTS.CREATE_PRODUCT_PRICE}${
-        params == "true?id" ? search.split("=")?.[2] : params
-      }/`
-    )
+    await Client.get(`${API_ENDPOINTS.CREATE_PRODUCT_PRICE}${params}/`)
       .then((resp) => {
         setData(resp);
         setColorList(
@@ -95,12 +90,9 @@ export default function ProductPrice() {
     // console.log("Submitted Data:", dataArray);
     setSubmiting(true);
 
-   
-
     const data = {
       product_variants: dataArray,
     };
-    
 
     await Client.post(
       `${API_ENDPOINTS.CREATE_PRODUCT_PRICE_POST + params}/`,
@@ -123,13 +115,15 @@ export default function ProductPrice() {
   const handleClickOnePrice = async () => {
     setSubmiting(true);
 
-    const data ={
-      product_variants :  [{
-        color: null,
-        feature: null,
-        price: +onePrice
-      }]
-    }
+    const data = {
+      product_variants: [
+        {
+          color: null,
+          feature: null,
+          price: +onePrice,
+        },
+      ],
+    };
 
     await Client.post(
       `${API_ENDPOINTS.CREATE_PRODUCT_PRICE_POST + params}/`,
@@ -146,7 +140,7 @@ export default function ProductPrice() {
       });
 
     setSubmiting(false);
-  }
+  };
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -180,13 +174,15 @@ export default function ProductPrice() {
   const handleClickOnePriceEdit = async () => {
     setSubmiting(true);
 
-    const data ={
-      product_variants :  [{
-        color: null,
-        feature: null,
-        price: +onePrice
-      }]
-    }
+    const data = {
+      product_variants: [
+        {
+          color: null,
+          feature: null,
+          price: +onePrice,
+        },
+      ],
+    };
 
     await Client.post(
       `${API_ENDPOINTS.UPDATE_PRODUCT_PRICE}${
@@ -213,8 +209,7 @@ export default function ProductPrice() {
     getProductFeatureDeatil();
   }, []);
 
-  console.log("dataArray", dataArray);
-  console.log("dataArrayDetail", dataArrayDetail);
+  console.log("params", search.split("=")?.[0]);
 
   return (
     <>
@@ -231,20 +226,16 @@ export default function ProductPrice() {
               {
                 title: "Narx qo'shish",
                 subTitle: "ikkinchi bosqichni tahrirlash",
-              },
-              {
-                title: "Filial qo'shish",
-                subTitle: "uchinchi bosqichni tahrirlash",
-              },
+              }
             ]}
           />
         </div>
       </>
-      {params != "true?id" ? (
+      {chekParam != "?edit" ? (
         <>
           <div className="bg--color px-2 py-3">
             <h3 className="font-semibold	">Mahsulot narxini qo'shish</h3>
-            {data?.colors?.length && data?.feature_items?.length ? (
+            {(data?.colors?.length > 0 || data?.feature_items?.length > 0) ? (
               <form
                 onSubmit={handleSubmit}
                 className="mt-3 create-branch-form "
@@ -358,34 +349,32 @@ export default function ProductPrice() {
                 </div>
               </form>
             ) : (
-             <div className="row my-3">
-              <div className="col-md-3">
-              <Input
-                required
-                size="large"
-                placeholder="Narxni kiriting"
-                onChange={(e) =>
-                  setOnePrice(e.target.value)
-                }
-              />
+              <div className="row my-3">
+                <div className="col-md-3">
+                  <Input
+                    required
+                    size="large"
+                    placeholder="Narxni kiriting"
+                    onChange={(e) => setOnePrice(e.target.value)}
+                  />
+                </div>
+                <div className="col-md-4">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      background: "green",
+                      "&:hover": {
+                        backgroundColor: "#333",
+                      },
+                    }}
+                    onClick={() => handleClickOnePrice()}
+                    style={{ width: "100%" }}
+                  >
+                    {submiting ? "Davom etmoqda" : "Davom etish"}
+                  </Button>
+                </div>
               </div>
-              <div className="col-md-4">
-              <Button
-                      type="submit"
-                      variant="contained"
-                      sx={{
-                        background: "green",
-                        "&:hover": {
-                          backgroundColor: "#333",
-                        },
-                      }}
-                      onClick={() => handleClickOnePrice()}
-                      style={{ width: "100%" }}
-                    >
-                      {submiting ? "Davom etmoqda" : "Davom etish"}
-                    </Button>
-                  </div>
-             </div>
             )}
             <Toaster />
           </div>
@@ -393,211 +382,228 @@ export default function ProductPrice() {
       ) : (
         <div className="bg--color px-2 py-3">
           <h3 className="font-semibold	">Mahsulot narxini tahrirlash</h3>
-          {
-            data?.colors?.length && data?.feature_items?.length ?
+          {data?.colors?.length > 0 || data?.feature_items?.length > 0 ? (
             <form
-            onSubmit={handleSubmitEdit}
-            className="mt-3 create-branch-form "
-          >
-            {dataArrayDetail?.map((item, index) => (
-              <div className="row" key={index} style={{ marginBottom: "10px" }}>
-                <div className="col-md-3">
-                  <Space
-                    style={{
-                      width: "100%",
-                      textAlign: "left",
-                    }}
-                    direction="vertical"
-                  >
-                    <Select
-                      disabled
-                      size="large"
-                      mode="single"
-                      allowClear
+              onSubmit={handleSubmitEdit}
+              className="mt-3 create-branch-form "
+            >
+              {dataArrayDetail?.map((item, index) => (
+                <div
+                  className="row"
+                  key={index}
+                  style={{ marginBottom: "10px" }}
+                >
+                  <div className="col-md-3">
+                    <Space
                       style={{
                         width: "100%",
+                        textAlign: "left",
                       }}
-                      value={item.color}
-                      placeholder="Ranglar"
-                      onChange={(value) => (
-                        handleInputChangeDetail(index, "color", value),
-                        setPercent(40)
-                      )}
-                      options={colorList}
-                    />
-                  </Space>
-                </div>
+                      direction="vertical"
+                    >
+                      <Select
+                        disabled
+                        size="large"
+                        mode="single"
+                        allowClear
+                        style={{
+                          width: "100%",
+                        }}
+                        value={item.color}
+                        placeholder="Ranglar"
+                        onChange={(value) => (
+                          handleInputChangeDetail(index, "color", value),
+                          setPercent(40)
+                        )}
+                        options={colorList}
+                      />
+                    </Space>
+                  </div>
 
-                <div className="col-md-3">
-                  <Space
-                    style={{
-                      width: "100%",
-                      textAlign: "left",
-                    }}
-                    direction="vertical"
-                  >
-                    <Select
-                      disabled
-                      size="large"
-                      mode="single"
-                      allowClear
+                  <div className="col-md-3">
+                    <Space
                       style={{
                         width: "100%",
+                        textAlign: "left",
                       }}
-                      placeholder="O'lchamlarni kiriting"
-                      onChange={(value) => (
-                        handleInputChangeDetail(index, "feature", value),
-                        setPercent(70)
-                      )}
-                      value={item.feature}
-                      options={featureList}
-                    />
-                  </Space>
-                </div>
+                      direction="vertical"
+                    >
+                      <Select
+                        disabled
+                        size="large"
+                        mode="single"
+                        allowClear
+                        style={{
+                          width: "100%",
+                        }}
+                        placeholder="O'lchamlarni kiriting"
+                        onChange={(value) => (
+                          handleInputChangeDetail(index, "feature", value),
+                          setPercent(70)
+                        )}
+                        value={item.feature}
+                        options={featureList}
+                      />
+                    </Space>
+                  </div>
 
+                  <Input
+                    type="number"
+                    defaultValue={item.price}
+                    size="small"
+                    className="col-md-3"
+                    placeholder="Narxni kiriting"
+                    onChange={(e) =>
+                      handleInputChangeDetail(index, "price", e.target.value)
+                    }
+                  />
+
+                  <Input
+                    type="number"
+                    className="col-md-2 ml-2"
+                    size="small"
+                    placeholder="Discountni kiriting"
+                    value={item.discount}
+                    onChange={(e) =>
+                      handleInputChangeDetail(index, "discount", e.target.value)
+                    }
+                  />
+                </div>
+              ))}
+              {dataArray?.map((item, index) => (
+                <div
+                  className="row"
+                  key={index}
+                  style={{ marginBottom: "10px" }}
+                >
+                  <div className="col-md-3">
+                    <Space
+                      style={{
+                        width: "100%",
+                        textAlign: "left",
+                      }}
+                      direction="vertical"
+                    >
+                      <Select
+                        size="large"
+                        mode="single"
+                        allowClear
+                        style={{
+                          width: "100%",
+                        }}
+                        placeholder="Ranglar"
+                        onChange={(value) => (
+                          handleInputChange(index, "color", value),
+                          setPercent(40)
+                        )}
+                        options={colorList}
+                      />
+                    </Space>
+                  </div>
+
+                  <div className="col-md-3">
+                    <Space
+                      style={{
+                        width: "100%",
+                        textAlign: "left",
+                      }}
+                      direction="vertical"
+                    >
+                      <Select
+                        size="large"
+                        mode="single"
+                        allowClear
+                        style={{
+                          width: "100%",
+                        }}
+                        placeholder="O'lchamlarni kiriting"
+                        onChange={(value) => (
+                          handleInputChange(index, "feature", value),
+                          setPercent(70)
+                        )}
+                        options={featureList}
+                      />
+                    </Space>
+                  </div>
+
+                  <Input
+                    type="number"
+                    size="small"
+                    className="col-md-2"
+                    placeholder="Narxni kiriting"
+                    onChange={(e) =>
+                      handleInputChange(index, "price", e.target.value)
+                    }
+                  />
+
+                  <Input
+                    type="number"
+                    className="col-md-2 ml-2"
+                    size="small"
+                    placeholder="Discountni kiriting"
+                    onChange={(e) =>
+                      handleInputChange(index, "discount", e.target.value)
+                    }
+                  />
+
+<Button
+                      className="col-md-1 ml-2"
+                      type="danger"
+                      onClick={() => handleRemoveRow(index)}
+                    >
+                      <DeleteIcon />
+                    </Button>
+
+                </div>
+              ))}
+              <div className="row">
+                <div className="col-md-4">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      background: "green",
+                      "&:hover": {
+                        backgroundColor: "#333",
+                      },
+                    }}
+                    style={{ width: "100%" }}
+                  >
+                    {submiting ? "Saqlash davom etmoqda..." : "Saqlash"}
+                  </Button>
+                </div>
+                <div className="col-md-4">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      background: "#000",
+                      "&:hover": {
+                        backgroundColor: "#333",
+                      },
+                    }}
+                    style={{ width: "100%" }}
+                    startIcon={<AddIcon />}
+                    onClick={handleAddRow}
+                  >
+                    Qo'shish
+                  </Button>
+                </div>
+              </div>
+            </form>
+          ) : (
+            <div className="row my-3">
+              fdfddf
+              <div className="col-md-3">
                 <Input
-                  type="number"
-                  defaultValue={item.price}
-                  size="small"
-                  className="col-md-3"
+                  required
+                  size="large"
                   placeholder="Narxni kiriting"
-                  onChange={(e) =>
-                    handleInputChangeDetail(index, "price", e.target.value)
-                  }
-                />
-
-                <Input
-                  type="number"
-                  className="col-md-2 ml-2"
-                  size="small"
-                  placeholder="Discountni kiriting"
-                  value={item.discount}
-                  onChange={(e) =>
-                    handleInputChangeDetail(index, "discount", e.target.value)
-                  }
+                  onChange={(e) => setOnePrice(e.target.value)}
+                  // defaultValue={}
                 />
               </div>
-            ))}
-            {dataArray?.map((item, index) => (
-              <div className="row" key={index} style={{ marginBottom: "10px" }}>
-                <div className="col-md-3">
-                  <Space
-                    style={{
-                      width: "100%",
-                      textAlign: "left",
-                    }}
-                    direction="vertical"
-                  >
-                    <Select
-                      size="large"
-                      mode="single"
-                      allowClear
-                      style={{
-                        width: "100%",
-                      }}
-                      placeholder="Ranglar"
-                      onChange={(value) => (
-                        handleInputChange(index, "color", value), setPercent(40)
-                      )}
-                      options={colorList}
-                    />
-                  </Space>
-                </div>
-
-                <div className="col-md-3">
-                  <Space
-                    style={{
-                      width: "100%",
-                      textAlign: "left",
-                    }}
-                    direction="vertical"
-                  >
-                    <Select
-                      size="large"
-                      mode="single"
-                      allowClear
-                      style={{
-                        width: "100%",
-                      }}
-                      placeholder="O'lchamlarni kiriting"
-                      onChange={(value) => (
-                        handleInputChange(index, "feature", value),
-                        setPercent(70)
-                      )}
-                      options={featureList}
-                    />
-                  </Space>
-                </div>
-
-                <Input
-                  type="number"
-                  size="small"
-                  className="col-md-3"
-                  placeholder="Narxni kiriting"
-                  onChange={(e) =>
-                    handleInputChange(index, "price", e.target.value)
-                  }
-                />
-
-                <Input
-                  type="number"
-                  className="col-md-2 ml-2"
-                  size="small"
-                  placeholder="Discountni kiriting"
-                  onChange={(e) =>
-                    handleInputChange(index, "discount", e.target.value)
-                  }
-                />
-              </div>
-            ))}
-            <div className="row">
               <div className="col-md-4">
                 <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{
-                    background: "green",
-                    "&:hover": {
-                      backgroundColor: "#333",
-                    },
-                  }}
-                  style={{ width: "100%" }}
-                >
-                  {submiting ? "Saqlash davom etmoqda..." : "Saqlash"}
-                </Button>
-              </div>
-              <div className="col-md-4">
-                <Button
-                  variant="contained"
-                  sx={{
-                    background: "#000",
-                    "&:hover": {
-                      backgroundColor: "#333",
-                    },
-                  }}
-                  style={{ width: "100%" }}
-                  startIcon={<AddIcon />}
-                  onClick={handleAddRow}
-                >
-                  Qo'shish
-                </Button>
-              </div>
-            </div>
-          </form> :
-          <div className="row my-3">
-          <div className="col-md-3">
-          <Input
-            required
-            size="large"
-            placeholder="Narxni kiriting"
-            onChange={(e) =>
-              setOnePrice(e.target.value)
-            }
-            // defaultValue={}
-          />
-          </div>
-          <div className="col-md-4">
-          <Button
                   type="submit"
                   variant="contained"
                   sx={{
@@ -612,9 +618,9 @@ export default function ProductPrice() {
                   {submiting ? "Davom etmoqda" : "Davom etish"}
                 </Button>
               </div>
-         </div>
-          }
-         
+            </div>
+          )}
+
           <Toaster />
         </div>
       )}
