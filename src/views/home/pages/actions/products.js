@@ -8,6 +8,7 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
 import CKeditor from "components/shared/skeditor";
 import { Steps } from "antd";
+import { useSelector } from "react-redux";
 const { TextArea } = Input;
 // var parse = require("html-react-parser");
 
@@ -19,7 +20,7 @@ export default function Product() {
   const params = search.split("?")?.[2];
   const [detailProduct, setDetailProduct] = useState({});
 
-  const [on_sale, setOn_sale] = React.useState(false);
+  const [on_sale, setOn_sale] = React.useState(null);
   const [colorListOption, setColorListOption] = useState([]); //rang render un
   const [sizetype, setsizeType] = useState([]);
   const [colorImageList, setColorImageList] = useState([]); // yuborish uchun rang rasmlari
@@ -41,6 +42,12 @@ export default function Product() {
   const [selectedColors, setSelectedColors] = useState([]); //rang id lari
   const [colorImages, setColorImages] = useState({}); //rang rasmlari map
   const [allImages, setAllImages] = useState([]);
+
+  const { role } = useSelector((state) => state.admin);
+  const [dataArrayDetail, setDataArrayDetail] = useState([]); //price uchun
+  const [colorList, setColorList] = useState([]); // price va filialni default qiymatlari uchun
+  const [featureList, setFeatureList] = useState([]);
+  const [status, setStatus] = useState("");
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -114,7 +121,6 @@ export default function Product() {
       .catch((err) => console.log(err));
   };
 
- 
   // ranglarni id larini yig'ib berish
   const handleChangee = (value) => {
     setSelectedColors(value);
@@ -200,20 +206,38 @@ export default function Product() {
     setSubmiting(true);
 
     const formData1 = new FormData();
-    formData1.append("on_sale", on_sale && on_sale);
-    formData1.append("colors", selectedColors && JSON.stringify(selectedColors));
+    formData1.append("on_sale", on_sale);
+    formData1.append(
+      "colors",
+      selectedColors && JSON.stringify(selectedColors)
+    );
     formData1.append("feature", feature && feature);
-    formData1.append("feature_items", inputValues && JSON.stringify(inputValues));
+    formData1.append(
+      "feature_items",
+      inputValues && JSON.stringify(inputValues)
+    );
     colorImageList.forEach((obj) => {
       Object.entries(obj).forEach(([key, value]) => {
         formData1.append(key, value);
       });
     });
 
-    await Client.patch(`${API_ENDPOINTS.CREATE_PRODUCT + params}/`, formData1)
+    const data = {
+      status: status,
+    };
+
+    await Client.patch(
+      `${API_ENDPOINTS.CREATE_PRODUCT + params}/`,
+      role === "seller" ? formData1 : data
+    )
       .then((data) => {
-        toast.success("Mahsulot muvaffaqiyatli qo'shildi");
-        navigate(`/products/actions/productPrice?edit=${data?.id}`);
+        if (role === "seller") {
+          toast.success("Mahsulot muvaffaqiyatli qo'shildi");
+          navigate(`/products/actions/productPrice?edit=${data?.id}`);
+        } else {
+          toast.success("Mahsulot statusi muvaffaqiyatli o'zgartirildi");
+          navigate(`/products`);
+        }
       })
       .catch((err) => {
         toast.error("Xatolik! Qayta urinib ko'ring");
@@ -232,16 +256,47 @@ export default function Product() {
       .catch((err) => console.log(err));
   };
 
+  const getProductPrice = async () => {
+    await Client.get(`${API_ENDPOINTS.PRODUCT_LIST_FOR_CREATE}${params}/`)
+      .then((resp) => {
+        setDataArrayDetail(resp);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getProductFeature = async () => {
+    await Client.get(`${API_ENDPOINTS.CREATE_PRODUCT_PRICE}${params}/`)
+      .then((resp) => {
+        // setData(resp);
+        setColorList(
+          resp?.colors?.map((e) => ({
+            label: e?.name,
+            value: e?.id,
+          }))
+        );
+        setFeatureList(
+          resp?.feature_items?.map((e) => ({
+            label: e?.value,
+            value: e?.id,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     getColor();
     getSizeType();
     getCategory();
     if (params) {
       getProductDetail();
+      getProductPrice();
+      getProductFeature();
     }
     // eslint-disable-next-line
   }, []);
 
+  console.log("status", status);
 
   return (
     <>
@@ -250,21 +305,22 @@ export default function Product() {
           <div className="w-full">
             <h1 className="text-[35px] pb-2">Mahsulot tahrirlash</h1>
             <Toaster />
-
-            <Steps
-              current={0}
-              percent={percent}
-              items={[
-                {
-                  title: "Mahsulot qismlari",
-                  subTitle: "birinchi bosqichni tahrirlash",
-                },
-                {
-                  title: "Narx qo'shish",
-                  subTitle: "ikkinchi bosqichni tahrirlash",
-                }
-              ]}
-            />
+            {role === "seller" && (
+              <Steps
+                current={0}
+                percent={percent}
+                items={[
+                  {
+                    title: "Mahsulot qismlari",
+                    subTitle: "birinchi bosqichni tahrirlash",
+                  },
+                  {
+                    title: "Narx qo'shish",
+                    subTitle: "ikkinchi bosqichni tahrirlash",
+                  },
+                ]}
+              />
+            )}
 
             <div className="w-full mt-3">
               <form
@@ -343,12 +399,21 @@ export default function Product() {
                         Asosiy rasm(lar)
                       </span>
                       <div className="d-flex gap-3 flex-wrap">
-                        {
-                        detailProduct?.images &&   detailProduct?.images.map((e) => 
-                        e.color === null && <img  width={80}
-                        style={{ borderRadius: "3px", objectFit: "cover" }} src={e.image} alt="images" />
-                          )
-                        }
+                        {detailProduct?.images &&
+                          detailProduct?.images.map(
+                            (e) =>
+                              e.color === null && (
+                                <img
+                                  width={80}
+                                  style={{
+                                    borderRadius: "3px",
+                                    objectFit: "cover",
+                                  }}
+                                  src={e.image}
+                                  alt="images"
+                                />
+                              )
+                          )}
                       </div>
                     </div>
 
@@ -439,20 +504,22 @@ export default function Product() {
                       ))}
                   </div>
 
-                  <Space
-                    style={{ width: "100%" }}
-                    direction="vertical"
-                    className="mb-4"
-                  >
-                    <Select
-                      mode="tags"
-                      allowClear
+                  {role === "seller" && (
+                    <Space
                       style={{ width: "100%" }}
-                      placeholder="Ranglarni tanlang"
-                      onChange={handleChangee}
-                      options={colorListOption}
-                    />
-                  </Space>
+                      direction="vertical"
+                      className="mb-4"
+                    >
+                      <Select
+                        mode="tags"
+                        allowClear
+                        style={{ width: "100%" }}
+                        placeholder="Ranglarni tanlang"
+                        onChange={handleChangee}
+                        options={colorListOption}
+                      />
+                    </Space>
+                  )}
 
                   {selectedColors.map((color) => (
                     <div key={color}>
@@ -518,72 +585,206 @@ export default function Product() {
                     </div>
                   </div>
 
-                  {changeSize ? (
+                  {role === "seller" && (
                     <>
-                      {checkChaild ? (
-                        <Space
-                          style={{
-                            width: "100%",
-                          }}
-                          direction="vertical"
-                        >
-                          <Select
-                            mode={"single"}
-                            style={{
-                              width: "100%",
-                            }}
-                            placeholder="Ranglarni tanlang"
-                            onChange={handleChangeSizeType}
-                            options={sizetype}
-                          />
-                        </Space>
+                      {changeSize ? (
+                        <>
+                          {checkChaild ? (
+                            <Space
+                              style={{
+                                width: "100%",
+                              }}
+                              direction="vertical"
+                            >
+                              <Select
+                                mode={"single"}
+                                style={{
+                                  width: "100%",
+                                }}
+                                placeholder="Ranglarni tanlang"
+                                onChange={handleChangeSizeType}
+                                options={sizetype}
+                              />
+                            </Space>
+                          ) : (
+                            <>
+                              <br />
+                              <div
+                                className="block fw-medium"
+                                type="primary"
+                                onClick={showModal}
+                              >
+                                {featureSelectName}
+                              </div>
+                            </>
+                          )}
+                        </>
                       ) : (
                         <>
-                          <br />
-                          <div
-                            className="block fw-medium"
-                            type="primary"
-                            onClick={showModal}
-                          >
-                            {featureSelectName}
-                          </div>
+                          {feature !== "" ? (
+                            <div className="d-flex flex-column gap-3">
+                              {feature}
+                              {sizeInputArray?.map((input, index) => (
+                                <Input
+                                  key={input.item}
+                                  placeholder="O'lcham kiriting"
+                                  className="col-md-7"
+                                  value={inputValues[index] || ""}
+                                  onChange={(e) =>
+                                    addHandleChangeSizeInput(index, e)
+                                  }
+                                />
+                              ))}
+                            </div>
+                          ) : (
+                            " "
+                          )}
                         </>
                       )}
                     </>
-                  ) : (
-                    <>
-                      {feature !== "" ? (
-                        <div className="d-flex flex-column gap-3">
-                          {feature}
-                          {sizeInputArray?.map((input, index) => (
-                            <Input
-                              key={input.item}
-                              placeholder="O'lcham kiriting"
-                              className="col-md-7"
-                              value={inputValues[index] || ""}
-                              onChange={(e) =>
-                                addHandleChangeSizeInput(index, e)
-                              }
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        " "
-                      )}
-                    </>
                   )}
+
+                  {role != "seller" && (
+                    <div>
+                      <div className="label--name font-bold my-3">
+                        Mahsulot narxlari
+                      </div>
+
+                      {dataArrayDetail &&
+                        dataArrayDetail?.map((item, index) => (
+                          <div
+                            className="row mt-2"
+                            key={index}
+                            style={{ marginBottom: "10px" }}
+                          >
+                            <div className="col-md-3">
+                              <Space
+                                style={{
+                                  width: "100%",
+                                  textAlign: "left",
+                                }}
+                                direction="vertical"
+                              >
+                                <Select
+                                  disabled={true}
+                                  size="large"
+                                  mode="single"
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                  }}
+                                  value={item?.color}
+                                  placeholder="Ranglar"
+                                  options={colorList}
+                                />
+                              </Space>
+                            </div>
+
+                            <div className="col-md-3">
+                              <Space
+                                style={{
+                                  width: "100%",
+                                  textAlign: "left",
+                                }}
+                                direction="vertical"
+                              >
+                                <Select
+                                  disabled
+                                  size="large"
+                                  mode="single"
+                                  allowClear
+                                  style={{
+                                    width: "100%",
+                                  }}
+                                  placeholder="O'lchamlarni kiriting"
+                                  value={item?.feature}
+                                  options={featureList}
+                                />
+                              </Space>
+                            </div>
+
+                            <Input
+                              disabled
+                              type="number"
+                              defaultValue={item?.price}
+                              size="small"
+                              className="col-md-3"
+                              placeholder="Narxni kiriting"
+                            />
+
+                            <Input
+                              disabled
+                              type="number"
+                              className="col-md-2 ml-2"
+                              size="small"
+                              placeholder="Discountni kiriting"
+                              value={item?.discount}
+                            />
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                  <div className="mt-4">
+                    <label className="font-bold font-sans text-lg pl-1.5">
+                      Sotuvda
+                    </label>
+                    <Switch
+                      disabled={role === "seller" ? false : true}
+                      checked={on_sale || detailProduct?.on_sale}
+                      inputProps={{ "aria-label": "controlled" }}
+                      onChange={(e) => setOn_sale(e.target.checked)}
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="font-bold font-sans text-lg pl-1.5">
-                    Sotuvda
-                  </label>
-                  <Switch
-                    checked={on_sale || detailProduct?.on_sale}
-                    inputProps={{ "aria-label": "controlled" }}
-                    onChange={(e) => setOn_sale(e.target.checked)}
-                  />
-                </div>
+                {role != "seller" && (
+                  <div className="p-4 colorr">
+                    <div className="font-sans text-md font-bold my-3">
+                      Mahsulot statusini o'zgartirish
+                    </div>
+                    <div className="col-md-3">
+                      <Space
+                        style={{
+                          width: "100%",
+                          textAlign: "left",
+                        }}
+                        direction="vertical"
+                      >
+                        <Select
+                          size="large"
+                          mode="single"
+                          style={{
+                            width: "100%",
+                          }}
+                          onChange={(e) => setStatus(e)}
+                          placeholder="status"
+                          options={[
+                            {
+                              label: (
+                                <div className="text-[#50C878]">
+                                  Tasdiqlangan
+                                </div>
+                              ),
+                              value: "approved",
+                            },
+                            {
+                              label: (
+                                <div className="text-[#F4CA16]">Kutilmoqda</div>
+                              ),
+                              value: "pending",
+                            },
+                            {
+                              label: (
+                                <div className="text-[red]">Bekor qilingan</div>
+                              ),
+                              value: "cancelled",
+                            },
+                          ]}
+                        />
+                      </Space>
+                    </div>
+                  </div>
+                )}
 
                 <Button
                   variant="contained"
@@ -597,7 +798,7 @@ export default function Product() {
                   type="submit"
                   disabled={submiting}
                 >
-                  {submiting ? "Saqlash davom etmoqda..." : "Saqlashni davom ettirish"}
+                  {submiting ? "Saqlanmoqda..." : "Saqlash"}
                 </Button>
               </form>
 

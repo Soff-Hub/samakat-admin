@@ -82,7 +82,7 @@ export default function ProductPrice() {
           resp?.product_variants?.map((e) => ({
             label: (
               <div>
-                <span>{e.color}</span> <span>{e.feature}</span>
+                {e?.name}
               </div>
             ),
             value: e?.id,

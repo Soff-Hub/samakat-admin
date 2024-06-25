@@ -14,6 +14,8 @@ import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import { Select, Space } from "antd";
+import { useSelector } from "react-redux";
 
 function Login() {
   const [submiting, setSubmiting] = useState(false);
@@ -22,6 +24,7 @@ function Login() {
     address: "",
     latitude: 0,
     longitude: 0,
+    status: ''
   });
   const [itemData, setItemData] = useState(null);
   const query = useParams();
@@ -32,6 +35,8 @@ function Login() {
     lng: 69.27979344835123442,
   });
   const [position, setPosition] = useState();
+  const { role } = useSelector((state) => state.admin);
+  const [status, setStatus] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -221,6 +226,58 @@ function Login() {
             onSubmit={handleSubmitEdit}
             className="w-1/3 flex flex-col gap-5 create-branch-form colorr p-3 "
           >
+             {role != "seller" && (
+                  <div >
+                    <div className="font-sans text-md font-bold my-3">
+                      Mahsulot statusini o'zgartirish
+                    </div>
+                    <div>
+                      <Space
+                        style={{
+                          width: "100%",
+                          textAlign: "left",
+                        }}
+                        direction="vertical"
+                      >
+                        <Select
+                          size="large"
+                          mode="single"
+                          style={{
+                            width: "100%",
+                          }}
+                          onChange={(e) => {
+                            setFormVal((c) => ({ ...c, status: e }));
+                          }}
+                          placeholder="status"
+                          value={formVal.status}
+                          options={[
+                            {
+                              label: (
+                                <div className="text-[#50C878]">
+                                  Tasdiqlangan
+                                </div>
+                              ),
+                              value: "approved",
+                            },
+                            {
+                              label: (
+                                <div className="text-[#F4CA16]">Kutilmoqda</div>
+                              ),
+                              value: "pending",
+                            },
+                            {
+                              label: (
+                                <div className="text-[red]">Bekor qilingan</div>
+                              ),
+                              value: "cancelled",
+                            },
+                          ]}
+                        />
+                      </Space>
+                    </div>
+                  </div>
+                )}
+
             <TextField
               label="Filial nomi"
               variant="outlined"

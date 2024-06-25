@@ -609,7 +609,7 @@ export default function Product() {
                 <div key={color}>
                   <span className="label--name font-bold d-block mb-3">
                     {getColorNameById(color)}
-                    {color}
+                    {/* {color} */}
                   </span>
                   <div className="d-flex flex-wrap gap-3 my-2">
                     {colorImages[color]?.map((image, index) => (

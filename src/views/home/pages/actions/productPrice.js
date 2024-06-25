@@ -24,6 +24,7 @@ export default function ProductPrice() {
       color: null,
       feature: null,
       price: 0,
+      discount: 0,
     },
   ]);
   const [dataArrayDetail, setDataArrayDetail] = useState([]);
@@ -63,6 +64,7 @@ export default function ProductPrice() {
         color: null,
         feature: null,
         price: 0,
+        discount: 0,
       },
     ]);
   };
@@ -175,11 +177,12 @@ export default function ProductPrice() {
     setSubmiting(true);
 
     const data = {
-      product_variants: [
+      old_variants: [
         {
+          id: dataArrayDetail?.[0]?.id,
           color: null,
           feature: null,
-          price: +onePrice,
+          price: onePrice ? +onePrice :  dataArrayDetail?.[0]?.price,
         },
       ],
     };
@@ -201,7 +204,6 @@ export default function ProductPrice() {
       });
 
     setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
   };
 
   useEffect(() => {
@@ -209,7 +211,7 @@ export default function ProductPrice() {
     getProductFeatureDeatil();
   }, []);
 
-  console.log("params", search.split("=")?.[0]);
+  console.log("params", dataArrayDetail?.[0]?.price);
 
   return (
     <>
@@ -226,7 +228,7 @@ export default function ProductPrice() {
               {
                 title: "Narx qo'shish",
                 subTitle: "ikkinchi bosqichni tahrirlash",
-              },
+              }
             ]}
           />
         </div>
@@ -591,15 +593,18 @@ export default function ProductPrice() {
             </form>
           ) : (
             <div className="row my-3">
-              fdfddf
               <div className="col-md-3">
-                <Input
-                  required
-                  size="large"
-                  placeholder="Narxni kiriting"
-                  onChange={(e) => setOnePrice(e.target.value)}
-                  // defaultValue={}
-                />
+                {dataArrayDetail?.[0] && (
+                  <Input
+                    required
+                    size="large"
+                    placeholder="Narxni kiriting"
+                    onChange={(e) => setOnePrice(e.target.value)}
+                    defaultValue={
+                      dataArrayDetail?.[0]?.price && dataArrayDetail?.[0]?.price
+                    }
+                  />
+                )}
               </div>
               <div className="col-md-4">
                 <Button

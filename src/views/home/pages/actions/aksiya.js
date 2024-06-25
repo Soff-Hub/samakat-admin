@@ -112,90 +112,90 @@ export default function AksiyaSeller() {
           </Link>
         </div>
         <Toaster />
-        <div className="flex gap-5">
-          <form
-            onSubmit={handleSubmitEdit}
-            className="w-1/2 m-auto flex mt-4 flex-col gap-4 colorr p-3 create-branch-form"
-          >
-            <div className="row">
-              <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                <TextField
-                  label="Aksiya matni"
-                  variant="outlined"
-                  size="large"
-                  type="text"
-                  required
-                  className="w-100"
-                  value={data?.name_uz ? data?.name_uz : ""}
-                />
-              </div>
-              <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                <TextField
-                  label="Aksiya matni (ru) "
-                  variant="outlined"
-                  size="large"
-                  type="text"
-                  required
-                  className="w-100"
-                  value={data?.name_ru ? data?.name_ru : ""}
-                />
-              </div>
-            </div>
-            <TextField
-              label="Aksiya rangi"
-              variant="outlined"
-              size="large"
-              type="color"
-              value={data?.hex_code ? data?.hex_code : ""}
-            />
-
-            <Space
-              style={{
-                width: "100%",
-                textAlign: "left",
-              }}
-              direction="vertical"
+        {data && (
+          <div className="flex gap-5">
+            <form
+              onSubmit={handleSubmitEdit}
+              className="w-1/2 m-auto flex mt-4 flex-col gap-4 colorr p-3 create-branch-form"
             >
-              {
-                // data?.products?.length > 0 &&
+              <div className="row">
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <TextField
+                    label="Aksiya matni"
+                    variant="outlined"
+                    size="large"
+                    type="text"
+                    required
+                    className="w-100"
+                    value={data?.name_uz ? data?.name_uz : ""}
+                  />
+                </div>
+                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                  <TextField
+                    label="Aksiya matni (ru) "
+                    variant="outlined"
+                    size="large"
+                    type="text"
+                    required
+                    className="w-100"
+                    value={data?.name_ru ? data?.name_ru : ""}
+                  />
+                </div>
+              </div>
+              <TextField
+                label="Aksiya rangi"
+                variant="outlined"
+                size="large"
+                type="color"
+                value={data?.hex_code ? data?.hex_code : ""}
+              />
 
-              <Select
-                mode="multiple"
-                allowClear
+              <Space
                 style={{
                   width: "100%",
+                  textAlign: "left",
                 }}
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label ?? "").includes(input)
-                }
-                placeholder="Mahsulotlar"
-                onChange={handleChangeRelatedCategory}
-                options={categoryData}
-                defaultValue={
-                  data?.products?.map((item) => item)
-                }
-              />
-              }
-            </Space>
+                direction="vertical"
+              >
+                {
+                  // data?.products?.length > 0 &&
 
-            <Button
-              variant="contained"
-              size="large"
-              sx={{
-                background: "#000",
-                "&:hover": {
-                  backgroundColor: "#333", // Change this to the desired hover color
-                },
-              }}
-              type="submit"
-              disabled={submiting}
-            >
-              {submiting ? "Saqlanmoqda" : "Saqlash"}
-            </Button>
-          </form>
-        </div>
+                  <Select
+                    mode="multiple"
+                    allowClear
+                    style={{
+                      width: "100%",
+                    }}
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      (option?.label ?? "").includes(input)
+                    }
+                    placeholder="Mahsulotlar"
+                    onChange={handleChangeRelatedCategory}
+                    options={categoryData}
+                    defaultValue={data?.products?.map((item) => item)}
+                  />
+                }
+              </Space>
+
+              <Button
+                variant="contained"
+                size="large"
+                sx={{
+                  background: "#000",
+                  "&:hover": {
+                    backgroundColor: "#333", // Change this to the desired hover color
+                  },
+                }}
+                type="submit"
+                disabled={submiting}
+              >
+                {submiting ? "Saqlanmoqda" : "Saqlash"}
+              </Button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );

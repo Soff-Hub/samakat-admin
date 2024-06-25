@@ -228,7 +228,7 @@ export default function Branches() {
                 );
               })}
             </TableBody>
-            {(count && Math.ceil(count / 30) <= 1) || count === 0 ? (
+            {(count && Math.ceil(count / 30) < 1) || count === 0 ? (
               <></>
             ) : (
               <div className="m-3 mb-5">

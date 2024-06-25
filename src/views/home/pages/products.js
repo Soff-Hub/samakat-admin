@@ -199,7 +199,7 @@ export default function EnhancedTable() {
 
   const getProductData = async () => {
     setPage(1);
-    await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}&type=bistro`)
+    await Client.get(`${API_ENDPOINTS.PRODUCT}?page=${page}`)
       .then((resp) => {
         setCount(resp.count);
         setConstCount(resp.count);
@@ -432,12 +432,11 @@ export default function EnhancedTable() {
                     return (
                       <TableRow hover key={row.id}>
                         <TableCell align="left">
-                          <Link to={`actions/?edit?${row.slug}`}>{row.id}</Link>
+                          <Link to={`actions/?edit?${row.id}`}>{row.id}</Link>
                         </TableCell>
-                        <TableCell className="text-truncate " align="left">
-                          <Link to={`actions/?edit?${row.slug}`}>
+                        <TableCell  className="text-truncate " align="left"   style={{ width: "200px", maxWidth: "200px", minWidth: "200px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          <Link  to={`actions/?edit?${row.id}`}>
                             <span
-                              style={{ width: "100px" }}
                               className="text-truncate"
                             >
                               {row.name}
@@ -445,7 +444,7 @@ export default function EnhancedTable() {
                           </Link>
                         </TableCell>
                         <TableCell align="center">
-                          <Link to={`actions/?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.id}`}>
                             {row.on_sale ? (
                               <i
                                 style={{ color: "green" }}
@@ -460,7 +459,7 @@ export default function EnhancedTable() {
                           </Link>
                         </TableCell>
                         <TableCell align="right">
-                          <Link to={`actions/?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.id}`}>
                             <span
                               style={{
                                 color: `${status[row.status].color}`,
@@ -472,7 +471,7 @@ export default function EnhancedTable() {
                         </TableCell>
                         {role === "superadmin" && (
                           <TableCell align="right">
-                            <Link to={`actions/?edit?${row.slug}`}>
+                            <Link to={`actions/?edit?${row.id}`}>
                               <span>
                                 {row?.seller?.name ? (
                                   row?.seller?.name
@@ -485,7 +484,7 @@ export default function EnhancedTable() {
                         )}
                         <TableCell align="right" sx={{ position: "relative" }}>
                           {/* <Link
-                            to={`actions/?addVariant?${row.slug}?${row.variant_id}`}
+                            to={`actions/?addVariant?${row.id}?${row.variant_id}`}
                           >
                             <IconButton color="primary" aria-label="delete">
                               <AddCircleOutlinedIcon />
@@ -495,7 +494,7 @@ export default function EnhancedTable() {
                             <IconButton
                               color="error"
                               onClick={() => {
-                                setDeleteId(row.slug);
+                                setDeleteId(row.id);
                                 setOpen(true);
                               }}
                               aria-label="delete"
@@ -505,7 +504,7 @@ export default function EnhancedTable() {
                           ) : (
                             ""
                           )}
-                          <Link to={`actions/?edit?${row.slug}`}>
+                          <Link to={`actions/?edit?${row.id}`}>
                             <IconButton color="primary">
                               <DriveFileRenameOutlineOutlinedIcon />
                             </IconButton>
