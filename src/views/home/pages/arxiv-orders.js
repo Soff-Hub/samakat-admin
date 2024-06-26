@@ -34,7 +34,7 @@ export default function ArxivOrders() {
   }
 
   const Search = async (e) => {
-    await Client.get(`${API_ENDPOINTS.ARCHIVE}?search=${e}`)
+    await Client.get(`${API_ENDPOINTS.ARCHIVE}?search=${e}?status=${status}`)
       .then((resp) => {
         setData(resp.results);
       })
