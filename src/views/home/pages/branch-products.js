@@ -291,10 +291,22 @@ export default function EnhancedTable() {
                   {data?.map((row, index) => {
                     return (
                       <TableRow hover key={row.id}>
-                        <TableCell align="left">{row.name}</TableCell>
-                        <TableCell align="left">
-                          {row.seller ? row.seller : "-"}
-                        </TableCell>
+                        <TableCell align="left"   style={{
+                            width: "250px",
+                            maxWidth: "250px",
+                            minWidth: "250px",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}>{row.name}</TableCell>
+                        <TableCell align="left"   style={{
+                            width: "200px",
+                            maxWidth: "200px",
+                            minWidth: "200px",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}>{row.seller}</TableCell>
                         <TableCell align="left">{row.branch}</TableCell>
                         <TableCell align="left">{row.quantity}</TableCell>
                         <TableCell align="left" sx={{ position: "relative" }}>

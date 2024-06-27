@@ -481,248 +481,257 @@ export default function Product() {
                 </div>
 
                 {/* ranglar rasmlar bilan */}
+                {detailProduct?.colors?.length > 0 && (
+                  <div className="p-4 colorr">
+                    <span className="label--name font-bold">
+                      Mahsulot ranglari
+                    </span>
 
-                <div className="p-4 colorr">
-                  <span className="label--name font-bold">
-                    Mahsulot ranglari
-                  </span>
-
-                  <div className="label--name font-bold mb-3">
-                    {detailProduct?.colors &&
-                      detailProduct?.colors.map((e) => (
-                        <div>
-                          <p className="py-1">{e.name}</p>
-                          <div className="d-flex gap-2">
-                            {detailProduct?.images.map(
-                              (el) =>
-                                el.color === e.id && (
-                                  <img width={80} src={el?.image} alt="photo" />
-                                )
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-
-                  {role === "seller" && (
-                    <Space
-                      style={{ width: "100%" }}
-                      direction="vertical"
-                      className="mb-4"
-                    >
-                      <Select
-                        mode="tags"
-                        allowClear
-                        style={{ width: "100%" }}
-                        placeholder="Ranglarni tanlang"
-                        onChange={handleChangee}
-                        options={colorListOption}
-                      />
-                    </Space>
-                  )}
-
-                  {selectedColors.map((color) => (
-                    <div key={color}>
-                      <span className="label--name font-bold d-block mb-3">
-                        {getColorNameById(color)}
-                        {color}
-                      </span>
-                      <div className="d-flex flex-wrap gap-3 my-2">
-                        {colorImages[color]?.map((image, index) => (
-                          <div key={index} className="d-flex gap-2">
-                            <img width={80} src={image} alt="photo" />
+                    <div className="label--name font-bold mb-3">
+                      {detailProduct?.colors &&
+                        detailProduct?.colors.map((e) => (
+                          <div>
+                            <p className="py-1">{e.name}</p>
+                            <div className="d-flex gap-2">
+                              {detailProduct?.images.map(
+                                (el) =>
+                                  el.color === e.id && (
+                                    <img
+                                      width={80}
+                                      src={el?.image}
+                                      alt="photo"
+                                    />
+                                  )
+                              )}
+                            </div>
                           </div>
                         ))}
+                    </div>
 
-                        <div
-                          style={{
-                            maxWidth: "100px",
-                            width: "80px",
-                            backgroundSize: "cover",
-                            height: "80px",
-                            borderRadius: "5px",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            border: "1px solid #ccc",
-                            position: "relative",
-                          }}
-                        >
-                          <i className="fa-regular fa-plus"></i> yuklash
-                          <input
-                            type="file"
-                            accept="image/*"
+                    {role === "seller" && (
+                      <Space
+                        style={{ width: "100%" }}
+                        direction="vertical"
+                        className="mb-4"
+                      >
+                        <Select
+                          mode="tags"
+                          allowClear
+                          style={{ width: "100%" }}
+                          placeholder="Ranglarni tanlang"
+                          onChange={handleChangee}
+                          options={colorListOption}
+                        />
+                      </Space>
+                    )}
+
+                    {selectedColors.map((color) => (
+                      <div key={color}>
+                        <span className="label--name font-bold d-block mb-3">
+                          {getColorNameById(color)}
+                          {color}
+                        </span>
+                        <div className="d-flex flex-wrap gap-3 my-2">
+                          {colorImages[color]?.map((image, index) => (
+                            <div key={index} className="d-flex gap-2">
+                              <img width={80} src={image} alt="photo" />
+                            </div>
+                          ))}
+
+                          <div
                             style={{
-                              opacity: "0",
-                              position: "absolute",
-                              top: "0",
-                              left: "0",
-                              bottom: "0",
-                              right: "0",
+                              maxWidth: "100px",
+                              width: "80px",
+                              backgroundSize: "cover",
+                              height: "80px",
+                              borderRadius: "5px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              border: "1px solid #ccc",
+                              position: "relative",
                             }}
-                            onChange={(e) => handleImageChange(e, color)}
-                          />
+                          >
+                            <i className="fa-regular fa-plus"></i> yuklash
+                            <input
+                              type="file"
+                              accept="image/*"
+                              style={{
+                                opacity: "0",
+                                position: "absolute",
+                                top: "0",
+                                left: "0",
+                                bottom: "0",
+                                right: "0",
+                              }}
+                              onChange={(e) => handleImageChange(e, color)}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
 
                 {/* xususiyatlar */}
 
                 <div className="p-4 colorr">
-                  <span className="label--name font-bold">
-                    Mahsulot xususiyatlari
-                  </span>
-
-                  <div className="label--name font-bold my-2">
-                    <p>{detailProduct?.feature?.name}</p>
-                    <div>
-                      {detailProduct?.feature_items &&
-                        detailProduct?.feature_items?.map((el) => (
-                          <p>{el?.value}</p>
-                        ))}
-                    </div>
-                  </div>
-
-                  {role === "seller" && (
+                  {detailProduct?.feature_items?.length > 0 && (
                     <>
-                      {changeSize ? (
+                      <span className="label--name font-bold">
+                        Mahsulot xususiyatlari
+                      </span>
+
+                      <div className="label--name font-bold my-2">
+                        <p>{detailProduct?.feature?.name}</p>
+                        <div>
+                          {detailProduct?.feature_items &&
+                            detailProduct?.feature_items?.map((el) => (
+                              <p>{el?.value}</p>
+                            ))}
+                        </div>
+                      </div>
+
+                      {role === "seller" && (
                         <>
-                          {checkChaild ? (
-                            <Space
-                              style={{
-                                width: "100%",
-                              }}
-                              direction="vertical"
-                            >
-                              <Select
-                                mode={"single"}
-                                style={{
-                                  width: "100%",
-                                }}
-                                placeholder="Ranglarni tanlang"
-                                onChange={handleChangeSizeType}
-                                options={sizetype}
-                              />
-                            </Space>
+                          {changeSize ? (
+                            <>
+                              {checkChaild ? (
+                                <Space
+                                  style={{
+                                    width: "100%",
+                                  }}
+                                  direction="vertical"
+                                >
+                                  <Select
+                                    mode={"single"}
+                                    style={{
+                                      width: "100%",
+                                    }}
+                                    placeholder="Ranglarni tanlang"
+                                    onChange={handleChangeSizeType}
+                                    options={sizetype}
+                                  />
+                                </Space>
+                              ) : (
+                                <>
+                                  <br />
+                                  <div
+                                    className="block fw-medium"
+                                    type="primary"
+                                    onClick={showModal}
+                                  >
+                                    {featureSelectName}
+                                  </div>
+                                </>
+                              )}
+                            </>
                           ) : (
                             <>
-                              <br />
-                              <div
-                                className="block fw-medium"
-                                type="primary"
-                                onClick={showModal}
-                              >
-                                {featureSelectName}
-                              </div>
+                              {feature !== "" ? (
+                                <div className="d-flex flex-column gap-3">
+                                  {feature}
+                                  {sizeInputArray?.map((input, index) => (
+                                    <Input
+                                      key={input.item}
+                                      placeholder="O'lcham kiriting"
+                                      className="col-md-7"
+                                      value={inputValues[index] || ""}
+                                      onChange={(e) =>
+                                        addHandleChangeSizeInput(index, e)
+                                      }
+                                    />
+                                  ))}
+                                </div>
+                              ) : (
+                                " "
+                              )}
                             </>
                           )}
                         </>
-                      ) : (
-                        <>
-                          {feature !== "" ? (
-                            <div className="d-flex flex-column gap-3">
-                              {feature}
-                              {sizeInputArray?.map((input, index) => (
+                      )}
+
+                      {role != "seller" && (
+                        <div>
+                          <div className="label--name font-bold my-3">
+                            Mahsulot narxlari
+                          </div>
+
+                          {dataArrayDetail &&
+                            dataArrayDetail?.map((item, index) => (
+                              <div
+                                className="row mt-2"
+                                key={index}
+                                style={{ marginBottom: "10px" }}
+                              >
+                                <div className="col-md-3">
+                                  <Space
+                                    style={{
+                                      width: "100%",
+                                      textAlign: "left",
+                                    }}
+                                    direction="vertical"
+                                  >
+                                    <Select
+                                      disabled={true}
+                                      size="large"
+                                      mode="single"
+                                      allowClear
+                                      style={{
+                                        width: "100%",
+                                      }}
+                                      value={item?.color}
+                                      placeholder="Ranglar"
+                                      options={colorList}
+                                    />
+                                  </Space>
+                                </div>
+
+                                <div className="col-md-3">
+                                  <Space
+                                    style={{
+                                      width: "100%",
+                                      textAlign: "left",
+                                    }}
+                                    direction="vertical"
+                                  >
+                                    <Select
+                                      disabled
+                                      size="large"
+                                      mode="single"
+                                      allowClear
+                                      style={{
+                                        width: "100%",
+                                      }}
+                                      placeholder="O'lchamlarni kiriting"
+                                      value={item?.feature}
+                                      options={featureList}
+                                    />
+                                  </Space>
+                                </div>
+
                                 <Input
-                                  key={input.item}
-                                  placeholder="O'lcham kiriting"
-                                  className="col-md-7"
-                                  value={inputValues[index] || ""}
-                                  onChange={(e) =>
-                                    addHandleChangeSizeInput(index, e)
-                                  }
+                                  disabled
+                                  type="number"
+                                  defaultValue={item?.price}
+                                  size="small"
+                                  className="col-md-3"
+                                  placeholder="Narxni kiriting"
                                 />
-                              ))}
-                            </div>
-                          ) : (
-                            " "
-                          )}
-                        </>
+
+                                <Input
+                                  disabled
+                                  type="number"
+                                  className="col-md-2 ml-2"
+                                  size="small"
+                                  placeholder="Discountni kiriting"
+                                  value={item?.discount}
+                                />
+                              </div>
+                            ))}
+                        </div>
                       )}
                     </>
-                  )}
-
-                  {role != "seller" && (
-                    <div>
-                      <div className="label--name font-bold my-3">
-                        Mahsulot narxlari
-                      </div>
-
-                      {dataArrayDetail &&
-                        dataArrayDetail?.map((item, index) => (
-                          <div
-                            className="row mt-2"
-                            key={index}
-                            style={{ marginBottom: "10px" }}
-                          >
-                            <div className="col-md-3">
-                              <Space
-                                style={{
-                                  width: "100%",
-                                  textAlign: "left",
-                                }}
-                                direction="vertical"
-                              >
-                                <Select
-                                  disabled={true}
-                                  size="large"
-                                  mode="single"
-                                  allowClear
-                                  style={{
-                                    width: "100%",
-                                  }}
-                                  value={item?.color}
-                                  placeholder="Ranglar"
-                                  options={colorList}
-                                />
-                              </Space>
-                            </div>
-
-                            <div className="col-md-3">
-                              <Space
-                                style={{
-                                  width: "100%",
-                                  textAlign: "left",
-                                }}
-                                direction="vertical"
-                              >
-                                <Select
-                                  disabled
-                                  size="large"
-                                  mode="single"
-                                  allowClear
-                                  style={{
-                                    width: "100%",
-                                  }}
-                                  placeholder="O'lchamlarni kiriting"
-                                  value={item?.feature}
-                                  options={featureList}
-                                />
-                              </Space>
-                            </div>
-
-                            <Input
-                              disabled
-                              type="number"
-                              defaultValue={item?.price}
-                              size="small"
-                              className="col-md-3"
-                              placeholder="Narxni kiriting"
-                            />
-
-                            <Input
-                              disabled
-                              type="number"
-                              className="col-md-2 ml-2"
-                              size="small"
-                              placeholder="Discountni kiriting"
-                              value={item?.discount}
-                            />
-                          </div>
-                        ))}
-                    </div>
                   )}
                   <div className="mt-4">
                     <label className="font-bold font-sans text-lg pl-1.5">

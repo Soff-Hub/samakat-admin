@@ -163,6 +163,7 @@ export default function EnhancedTable() {
   const [errorData, setErrorData] = useState("");
   const [storeList, setStoreList] = useState(null);
   const [quantity, setQuantity] = useState("");
+  const [branch, setBranch] = useState([]);
   const { role } = useSelector((state) => state.admin);
   const [sale_product, setSale_product] = useState([
     {
@@ -295,19 +296,31 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   };
 
+  async function getBranches() {
+    await Client.get(API_ENDPOINTS.GET_BRANCHS)
+      .then((resp) => {
+        setBranch(resp.results);
+      })
+      .catch((err) => console.log(err));
+  }
+
   useEffect(() => {
     getProductData();
     getCategory();
     getStoreList();
+    getBranches();
     // eslint-disable-next-line
   }, []);
+
   return (
     <div className="px-2 py-3">
       <div>
-        <NavHeaderProduct
-          admin={role === "superadmin" ? true : false}
-          title="Mahsulotlar"
-        />
+        {branch?.length > 0 && (
+          <NavHeaderProduct
+            admin={role === "superadmin" ? true : false}
+            title="Mahsulotlar"
+          />
+        )}
       </div>
       <div className="mb-5">
         <h1 className="text-2xl font-sans">
@@ -387,7 +400,7 @@ export default function EnhancedTable() {
             </Select>
           </FormControl>
 
-          {role === "superadmin" ? (
+          {role === "superadmin" || role === "employee" ? (
             <FormControl size="small" className="w-1/3 ">
               <InputLabel
                 id="demo-select-small-label"
@@ -434,13 +447,20 @@ export default function EnhancedTable() {
                         <TableCell align="left">
                           <Link to={`actions/?edit?${row.id}`}>{row.id}</Link>
                         </TableCell>
-                        <TableCell  className="text-truncate " align="left"   style={{ width: "200px", maxWidth: "200px", minWidth: "200px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                          <Link  to={`actions/?edit?${row.id}`}>
-                            <span
-                              className="text-truncate"
-                            >
-                              {row.name}
-                            </span>
+                        <TableCell
+                          className="text-truncate "
+                          align="left"
+                          style={{
+                            width: "200px",
+                            maxWidth: "200px",
+                            minWidth: "200px",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          <Link to={`actions/?edit?${row.id}`}>
+                            <span className="text-truncate">{row.name}</span>
                           </Link>
                         </TableCell>
                         <TableCell align="center">
@@ -545,7 +565,7 @@ export default function EnhancedTable() {
           )}
         </Paper>
       </Box>
-      
+
       <ResponsiveDialog
         open={openDelete}
         setOpen={setOpen}
