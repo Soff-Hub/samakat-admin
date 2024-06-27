@@ -49,13 +49,8 @@ export default function Product() {
   const [featureList, setFeatureList] = useState([]);
   const [status, setStatus] = useState("");
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+
 
   // qo'shimcha xususiyat kiritayotgandagi modalni yopish => cancel
   const handleCancelSizeParent = () => {
@@ -112,10 +107,6 @@ export default function Product() {
             label: el?.name,
             value: el.id,
           })),
-          {
-            label: "Boshqa o'lcham qo'shish",
-            value: 0,
-          },
         ]);
       })
       .catch((err) => console.log(err));
@@ -155,32 +146,21 @@ export default function Product() {
     const color = colorData.find((color) => color.id === id);
     return color ? color.name : null;
   };
-  const handleChangeSizeType = async (value) => {
-    setPercent(70);
-    setFeature(value);
-    for (let i = 0; i < sizetype.length; i++) {
-      if (sizetype[i].value == value) {
-        setFeatureSelectName(sizetype[i]?.label);
-      }
-    }
-    if (value === 0) {
-      setChangeSize(false);
-      setIsModalOpenSizeParent(true);
-    } else {
-      await Client.get(`${API_ENDPOINTS.SIZE_CHAILD + value}/`)
-        .then((resp) => {
-          setCheckChaild(false);
 
-          setTreeData(
-            resp?.map((el) => ({
-              title: el?.value,
-              key: el.id,
-            }))
-          );
-        })
-        .catch((err) => console.log(err));
-    }
+  const SizeType = async (value) => {
+    await Client.get(`${API_ENDPOINTS.SIZE_CHAILD + value}/`)
+      .then((resp) => {
+        setTreeData(
+          resp?.map((el) => ({
+            title: el?.value,
+            key: el.id,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
   };
+
+
   const addHandleChangeSizeInput = (index, event) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = event.target.value;
@@ -194,6 +174,7 @@ export default function Product() {
       setInputValues([...inputValues, ""]);
     }
   };
+
 
   // biror razmer turini tanlagandan so'ng modal ichidagi razmerlarni check qilish funksiyasi
   const onCheck = (checkedKeys, info) => {
@@ -252,6 +233,7 @@ export default function Product() {
     await Client.get(`${API_ENDPOINTS.DETAIL_PRODUCT + params}/`)
       .then((resp) => {
         setDetailProduct(resp);
+        SizeType(resp?.feature?.id);
       })
       .catch((err) => console.log(err));
   };
@@ -296,7 +278,6 @@ export default function Product() {
     // eslint-disable-next-line
   }, []);
 
-  console.log("status", status);
 
   return (
     <>
@@ -595,37 +576,7 @@ export default function Product() {
                       {role === "seller" && (
                         <>
                           {changeSize ? (
-                            <>
-                              {checkChaild ? (
-                                <Space
-                                  style={{
-                                    width: "100%",
-                                  }}
-                                  direction="vertical"
-                                >
-                                  <Select
-                                    mode={"single"}
-                                    style={{
-                                      width: "100%",
-                                    }}
-                                    placeholder="Ranglarni tanlang"
-                                    onChange={handleChangeSizeType}
-                                    options={sizetype}
-                                  />
-                                </Space>
-                              ) : (
-                                <>
-                                  <br />
-                                  <div
-                                    className="block fw-medium"
-                                    type="primary"
-                                    onClick={showModal}
-                                  >
-                                    {featureSelectName}
-                                  </div>
-                                </>
-                              )}
-                            </>
+                            ""
                           ) : (
                             <>
                               {feature !== "" ? (
@@ -648,6 +599,15 @@ export default function Product() {
                               )}
                             </>
                           )}
+                          <Tree
+                            checkable
+                            defaultExpandedKeys={["9", "10", "11"]}
+                            defaultSelectedKeys={["9", "10", "11"]}
+                            defaultCheckedKeys={["9", "10", "11"]}
+                            // onSelect={onSelect}
+                            onCheck={onCheck}
+                            treeData={treeData}
+                          />
                         </>
                       )}
 
@@ -811,28 +771,6 @@ export default function Product() {
                 </Button>
               </form>
 
-              <Modal
-                width={250}
-                title="Basic Modal"
-                open={isModalOpen}
-                onCancel={handleCancel}
-                okButtonProps={{
-                  style: {
-                    display: "none",
-                  },
-                }}
-                cancelText="✔️"
-              >
-                <Tree
-                  checkable
-                  // defaultExpandedKeys={["0-0-0", "0-0-1"]}
-                  // defaultSelectedKeys={["0-0-0", "0-0-1"]}
-                  // defaultCheckedKeys={["0-0-0", "0-0-1"]}
-                  // onSelect={onSelect}
-                  onCheck={onCheck}
-                  treeData={treeData}
-                />
-              </Modal>
               <Modal
                 width={300}
                 title="Xususiyat nomini qo'shing"

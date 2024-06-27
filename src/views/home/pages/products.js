@@ -105,7 +105,7 @@ function EnhancedTableHead() {
   return (
     <TableHead>
       <TableRow>
-        {role === "superadmin"
+        {(role === "superadmin" || role === "employee")
           ? headCellsAdmin.map((headCell) => (
               <TableCell
                 key={headCell.id}
@@ -489,7 +489,7 @@ export default function EnhancedTable() {
                             </span>
                           </Link>
                         </TableCell>
-                        {role === "superadmin" && (
+                        {(role === "superadmin" || role === "employee") && (
                           <TableCell align="right">
                             <Link to={`actions/?edit?${row.id}`}>
                               <span>

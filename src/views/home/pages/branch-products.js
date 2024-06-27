@@ -259,7 +259,7 @@ export default function EnhancedTable() {
                     ...filialData,
                   ]}
                 ></Select>
-                {role === "superadmin" ? (
+                {(role === "superadmin" || role === "employee" )? (
                   <Select
                     mode="select"
                     placeholder="

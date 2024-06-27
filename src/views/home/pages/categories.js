@@ -10,7 +10,7 @@ export default function Categories2() {
 
   async function getCategories() {
     await Client.get(
-      `${API_ENDPOINTS.CATEGORIES}?page=${page}&parent_is_null=true`
+      `${API_ENDPOINTS.CATEGORIES}?page=${page}&parent_is_null=true&limit=1000`
     )
       .then((resp) => {
         setData(resp.results);

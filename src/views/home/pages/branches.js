@@ -102,7 +102,7 @@ export default function Branches() {
 
   useEffect(() => {
     getBranches();
-    role === "superadmin" && getStore()  
+    (role === "superadmin" || role === "employee" )&& getStore()  
   }, []);
 
 
@@ -113,7 +113,7 @@ export default function Branches() {
         admin={role === "superadmin" ? true : false}
       />
 
-      {role === "superadmin" ? (
+      {(role === "superadmin" || role === "employee") ? (
         <Select
           mode="select"
           placeholder="
@@ -144,7 +144,7 @@ export default function Branches() {
                 <TableCell>
                   <span className="font-bold text-[16px]">Filial Nomi</span>
                 </TableCell>
-                {role === "superadmin" ? (
+                {(role === "superadmin" || role === "employee") ? (
                   <TableCell>
                     <span className="font-bold text-[16px]">Do'kon Nomi</span>
                   </TableCell>
@@ -153,6 +153,9 @@ export default function Branches() {
                 )}
                 <TableCell align="">
                   <span className="font-bold text-[16px]">Aniq Manzil</span>
+                </TableCell>
+                <TableCell align="center">
+                  <span className="font-bold text-[16px]">Yaratilgan vaqt</span>
                 </TableCell>
                 <TableCell align="right">
                   <span className="font-bold text-[16px]">Holati</span>
@@ -177,7 +180,7 @@ export default function Branches() {
                         {row?.name}
                       </Link>
                     </TableCell>
-                    {role === "superadmin" ? (
+                    {(role === "superadmin" || role === "employee") ? (
                       <TableCell component="th" scope="row">
                         <Link
                           to={"actions/" + row?.uuid}
@@ -195,6 +198,14 @@ export default function Branches() {
                         className="hover:underline"
                       >
                         {row?.address}
+                      </Link>
+                    </TableCell>
+                    <TableCell  align="center" component="th" scope="row">
+                      <Link
+                        to={"actions/" + row?.uuid}
+                        className="hover:underline"
+                      >
+                       {row?.created_at}
                       </Link>
                     </TableCell>
                     <TableCell align="right" component="th" scope="row">
