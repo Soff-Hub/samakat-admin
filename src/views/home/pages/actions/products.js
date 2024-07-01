@@ -278,6 +278,8 @@ export default function Product() {
     // eslint-disable-next-line
   }, []);
 
+  console.log('detailProduct', detailProduct);
+  
 
   return (
     <>
@@ -706,7 +708,7 @@ export default function Product() {
                   </div>
                 </div>
 
-                {role != "seller" && (
+                {role != "seller" && detailProduct?.status && (
                   <div className="p-4 colorr">
                     <div className="font-sans text-md font-bold my-3">
                       Mahsulot statusini o'zgartirish
@@ -725,6 +727,7 @@ export default function Product() {
                           style={{
                             width: "100%",
                           }}
+                          defaultValue={detailProduct?.status}
                           onChange={(e) => setStatus(e)}
                           placeholder="status"
                           options={[

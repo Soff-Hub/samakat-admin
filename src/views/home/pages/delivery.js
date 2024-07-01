@@ -441,8 +441,8 @@ export default function Delivery() {
                       variant="outlined"
                       size="large"
                       type="text"
-                      value={detail.user_about ? detail?.user_about?.user : "-"}
-                      onClick={() => handleChangeRouter(detail.user_about?.id)}
+                      value={detail.user_data ? detail?.user_data?.first_name : "-"}
+                      onClick={() => handleChangeRouter(detail.user_data?.id)}
                     />
                     <TextField
                       label="Umumiy so'mma"

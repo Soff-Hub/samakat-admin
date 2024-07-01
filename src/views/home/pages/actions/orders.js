@@ -9,11 +9,13 @@ import {
   TextField,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useSelector } from "react-redux";
 
 export default function Orders() {
   const locationn = useLocation();
   const [data, setData] = useState(null);
   const navigate = useNavigate()
+  const { role } = useSelector((state) => state.admin);
 
   const status = {
     process : 'jarayonda',
@@ -24,7 +26,6 @@ export default function Orders() {
   const getData = async (id) => {
     await Client.get(`${API_ENDPOINTS.DETAIL_ORDER}${id}/`)
       .then((res) => {
-        console.log('order data', res);
         setData(res);
       })
       .catch((err) => {
@@ -39,7 +40,7 @@ export default function Orders() {
   }
 
   const handleChangeRouter = (id) => {
-    if (id) {
+    if (id && role != "seller") {
       navigate(`/users/actions/?detail?${id}`)
     }
   }
@@ -83,7 +84,7 @@ export default function Orders() {
                 variant="outlined"
                 size="large"
                 type="text"
-                value={data?.user_data ? data?.user_data?.user : "-"}
+                value={data?.user_data ? data?.user_data?.first_name : "-"}
                 onClick={() => handleChangeRouter(data.user_data?.id)}
               />
               <TextField
