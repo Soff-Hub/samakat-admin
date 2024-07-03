@@ -99,6 +99,8 @@ export const API_ENDPOINTS = {
     STOR_LIST : 'admin/filter-stores/',
 
     PPRODUCT_CATEGORY_CREATE : 'admin/parent-categories/',
+
+    WORKTIME: 'admin/working-days'
    
 
 }

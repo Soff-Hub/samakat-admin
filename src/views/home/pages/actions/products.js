@@ -36,7 +36,6 @@ export default function Product() {
   const [feature, setFeature] = useState(""); // tanlagan xususiyat nomi , yuborish uchun / modalda yozganda
   const [featureSelectName, setFeatureSelectName] = useState(""); // tanlagan xususiyat nomi , yuborish uchun / selectdan tanlaganda
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenSizeParent, setIsModalOpenSizeParent] = useState(false);
 
   const [selectedColors, setSelectedColors] = useState([]); //rang id lari
@@ -150,12 +149,7 @@ export default function Product() {
   const SizeType = async (value) => {
     await Client.get(`${API_ENDPOINTS.SIZE_CHAILD + value}/`)
       .then((resp) => {
-        setTreeData(
-          resp?.map((el) => ({
-            title: el?.value,
-            key: el.id,
-          }))
-        );
+        setTreeData(resp);
       })
       .catch((err) => console.log(err));
   };
@@ -268,18 +262,18 @@ export default function Product() {
 
   useEffect(() => {
     getColor();
-    getSizeType();
     getCategory();
     if (params) {
       getProductDetail();
       getProductPrice();
       getProductFeature();
     }
+    getSizeType();
     // eslint-disable-next-line
   }, []);
 
-  console.log('detailProduct', detailProduct);
-  
+  const result =  treeData?.filter(item1 => !detailProduct?.feature_items?.some(item2 => item2.id === item1.id));
+  console.log('result', result);
 
   return (
     <>
@@ -608,7 +602,10 @@ export default function Product() {
                             defaultCheckedKeys={["9", "10", "11"]}
                             // onSelect={onSelect}
                             onCheck={onCheck}
-                            treeData={treeData}
+                            treeData={result?.map((el) => ({
+                              title: el?.value,
+                              key: el.id,
+                            }))}
                           />
                         </>
                       )}
@@ -707,7 +704,8 @@ export default function Product() {
                     />
                   </div>
                 </div>
-
+                  
+                  {/* admin va employee uchun status o'zgartirish */}
                 {role != "seller" && detailProduct?.status && (
                   <div className="p-4 colorr">
                     <div className="font-sans text-md font-bold my-3">

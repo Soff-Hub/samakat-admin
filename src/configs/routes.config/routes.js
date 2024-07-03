@@ -408,6 +408,11 @@ export const sellerActionRoutes = [
         path: '/arxiv-orders/*',
         component: React.lazy(() => import('views/home/pages/arxiv-orders'))
     },
+    {
+        key: 'settings',
+        path: '/settings/*',
+        component: React.lazy(() => import('views/home/pages/settings'))
+    },
 
 
 
@@ -440,6 +445,11 @@ export const sellerActionRoutes = [
         key: 'aksiya',
         path: '/aksiya/actions/*',
         component: React.lazy(() => import('views/home/pages/actions/aksiya'))
+    },
+    {
+        key: 'settings',
+        path: '/settings/actions/*',
+        component: React.lazy(() => import('views/home/pages/actions/settings'))
     },
     {
         key: 'products',

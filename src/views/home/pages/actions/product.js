@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Input, Modal, Select, Space, Tree } from "antd";
 import Switch from "@mui/material/Switch";
 import Client from "service/Client";

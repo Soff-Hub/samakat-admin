@@ -144,6 +144,9 @@ export default function ProductPrice() {
     setSubmiting(false);
   };
 
+  // console.log('new_variants', dataArray, dataArray?.map((e) => e.color != null ? e : "" ))
+  // console.log('old_variants', dataArrayDetail)
+
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
     console.log("Submitted Data:", dataArray);
@@ -151,6 +154,7 @@ export default function ProductPrice() {
 
     const data = {
       new_variants: dataArray,
+      // ?.map((e) => e.color != null ? e : ""),
       old_variants: dataArrayDetail,
     };
 

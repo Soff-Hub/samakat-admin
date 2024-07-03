@@ -195,5 +195,10 @@ export const navigationConfigSeller = [
         name: 'Buyurtmalar arxivi',
         path: '/arxiv-orders',
         icon: <SendAndArchiveIcon />,
-    }
+    },
+    {
+        name: 'Sozlamalar',
+        path: '/settings',
+        icon: <SettingsOutlinedIcon />,
+    },
 ]
