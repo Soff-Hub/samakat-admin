@@ -26,6 +26,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { Tooltip } from 'antd'
 import { useSelector } from "react-redux";
 import NavHeaderProduct from "components/shared/NavHeaderProduct";
 
@@ -105,7 +106,7 @@ function EnhancedTableHead() {
   return (
     <TableHead>
       <TableRow>
-        {(role === "superadmin" || role === "employee")
+        {role === "superadmin" || role === "employee"
           ? headCellsAdmin.map((headCell) => (
               <TableCell
                 key={headCell.id}
@@ -315,11 +316,13 @@ export default function EnhancedTable() {
   return (
     <div className="px-2 py-3">
       <div>
-        {branch?.length > 0 && (
+        {branch?.length > 0 ? (
           <NavHeaderProduct
             admin={role === "superadmin" ? true : false}
             title="Mahsulotlar"
           />
+        ) : (
+          <p className="text-[#F4E401]" >Mahsulot qo'shish uchun filial qo'shishingiz zarur!!!</p>
         )}
       </div>
       <div className="mb-5">
