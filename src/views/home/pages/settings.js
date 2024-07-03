@@ -73,15 +73,14 @@ export default function Settings() {
   }
 
   const workName = {
-    1:"Dushanba",
-    2:"Seshanba",
-    3:"Chorshanba",
-    4:"Payshanba",
-    5:"Juma",
-    6:"Shanba",
-    7:"Yakshanba",
-  }
-
+    1: "Dushanba",
+    2: "Seshanba",
+    3: "Chorshanba",
+    4: "Payshanba",
+    5: "Juma",
+    6: "Shanba",
+    7: "Yakshanba",
+  };
 
   const columns = [
     {
@@ -106,7 +105,15 @@ export default function Settings() {
       title: "Dam olish kunlari",
       dataIndex: "not_working_day",
       key: "not_working_day",
-      render: (not_working_day) => <span>{not_working_day ? <i class="fa-regular fa-circle-check text-[green]"></i> : <i class="fa-regular fa-circle-check text-[red]"></i>}</span>,
+      render: (not_working_day) => (
+        <span>
+          {not_working_day ? (
+            <i class="fa-regular fa-circle-check text-[green]"></i>
+          ) : (
+            <i class="fa-regular fa-circle-check text-[red]"></i>
+          )}
+        </span>
+      ),
     },
     {
       title: "Tahrirlash",
@@ -121,12 +128,12 @@ export default function Settings() {
           </Link>
         </>
       ),
-    }
+    },
   ];
 
   useEffect(() => {
     getData();
-    getWorkTime()
+    getWorkTime();
   }, []);
 
   return (
@@ -206,14 +213,24 @@ export default function Settings() {
         </div>
       )}
 
-      {
-        role === "seller" && 
+      {role === "seller" && (
         <div className=" px-2">
-           <h2 className="text-xl pb-2">Ish vaqti</h2>
-        <Table columns={columns} dataSource={timeData} pagination={false} />
-      </div>
-      }
-
+          {timeData?.length > 0 ? (
+            <>
+              <h2 className="text-xl pb-2">Ish vaqti</h2>
+              <Table
+                columns={columns}
+                dataSource={timeData}
+                pagination={false}
+              />
+            </>
+          ) : (
+            <div style={{height:'300px'}} className="flex justify-content-center align-items-center" >
+              <i class="fa-solid fa-arrow-rotate-left fa-spin fa-2xl text-[#000000]"></i>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
