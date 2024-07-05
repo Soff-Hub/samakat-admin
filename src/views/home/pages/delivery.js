@@ -108,6 +108,7 @@ export default function Delivery() {
 
     setIsModalOpen(false);
   };
+  
   const handlePriceOk = async (id) => {
     const data = {
       is_paid: true,
@@ -178,8 +179,6 @@ export default function Delivery() {
     setIsOpen(false);
   }
 
-  console.log("address", newS);
-
   return (
     <div className="p-2">
       <div className="mb-2">
@@ -199,7 +198,18 @@ export default function Delivery() {
                     <div className=" font-medium text-[#757575]">N{el.id}</div>
                     <div>{el.branch}</div>
                   </div>
-                  <div classNacme=" font-medium text-[#757575] mb-1">
+                  <div className="text-xs">
+                    <span className=" font-medium text-[#757575] mb-1">
+                      Narxi :
+                    </span>{" "}
+                    {el?.total_amount} sum
+                  </div>
+                  <div className="text-xs">
+                    <span className=" font-medium text-[#757575] mb-1">
+                      Do'kon nomi :
+                    </span>
+                  </div>
+                  <div className=" font-medium text-[#757575] text-xs mb-1">
                     {el?.created_at}
                   </div>
                   <div style={{ display: "flex", gap: "10px" }}>
@@ -251,7 +261,18 @@ export default function Delivery() {
                     <div className=" font-medium text-[#757575]">N{el.id}</div>
                     <div>{el.branch}</div>
                   </div>
-                  <div classNacme=" font-medium text-[#757575] mb-1">
+                  <div className="text-xs">
+                    <span className=" font-medium text-[#757575] mb-1">
+                      Narxi :
+                    </span>{" "}
+                    {el?.total_amount} sum
+                  </div>
+                  <div className="text-xs">
+                    <span className=" font-medium text-[#757575] mb-1">
+                      Do'kon nomi :
+                    </span>
+                  </div>
+                  <div className=" font-medium text-[#757575] text-xs mb-1">
                     {el?.created_at}
                   </div>
 
@@ -303,7 +324,18 @@ export default function Delivery() {
                     <div className=" font-medium text-[#757575]">N{el.id}</div>
                     <div>{el.branch}</div>
                   </div>
-                  <div classNacme=" font-medium text-[#757575] mb-1">
+                  <div className="text-xs">
+                    <span className=" font-medium text-[#757575] mb-1">
+                      Narxi :
+                    </span>{" "}
+                    {el?.total_amount} sum
+                  </div>
+                  <div className="text-xs">
+                    <span className=" font-medium text-[#757575] mb-1">
+                      Do'kon nomi :
+                    </span>
+                  </div>
+                  <div className="text-xs font-medium text-[#757575] mb-1">
                     {getDate(el?.created_at)}
                   </div>
 
@@ -353,9 +385,20 @@ export default function Delivery() {
                 <div className="delivery-item-container_component">
                   <div className="item">
                     <div className=" font-medium text-[#757575]">N{el.id}</div>
-                    <div>{el.branch}</div>
+                    <div>{el?.branch}</div>
                   </div>
-                  <div classNacme=" font-medium text-[#757575] mb-1">
+                  <div className="text-xs">
+                    <span className=" font-medium text-[#757575] mb-1">
+                      Narxi :
+                    </span>{" "}
+                    {el?.total_amount} sum
+                  </div>
+                  <div className="text-xs">
+                    <span className=" font-medium text-[#757575] mb-1">
+                      Do'kon nomi :
+                    </span>
+                  </div>
+                  <div className="text-xs font-medium text-[#757575] mb-1">
                     {el?.created_at}
                   </div>
                   <div
