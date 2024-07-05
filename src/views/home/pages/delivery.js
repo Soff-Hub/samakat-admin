@@ -114,17 +114,17 @@ export default function Delivery() {
     };
     await Client.patch(API_ENDPOINTS.PATCH_ORDER + `${id}/`, data)
       .then((res) => {
-        setIsModalPriceOpen(false)
+        setIsModalPriceOpen(false);
         getOrders();
       })
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   const handle_is_Paid = async (id) => {
-    setPriceId(id)
-    setIsModalPriceOpen(true)
+    setPriceId(id);
+    setIsModalPriceOpen(true);
   };
 
   const handleCancel = () => {
@@ -146,8 +146,6 @@ export default function Delivery() {
       })
       .catch((err) => console.log(err));
   }
-
-
 
   useEffect(() => {
     getOrders();
@@ -180,9 +178,7 @@ export default function Delivery() {
     setIsOpen(false);
   }
 
-
-  console.log('address', newS);
-  
+  console.log("address", newS);
 
   return (
     <div className="p-2">
@@ -204,7 +200,7 @@ export default function Delivery() {
                     <div>{el.branch}</div>
                   </div>
                   <div classNacme=" font-medium text-[#757575] mb-1">
-                    {el?.created_at} 
+                    {el?.created_at}
                   </div>
                   <div style={{ display: "flex", gap: "10px" }}>
                     {el.is_paid ? (
@@ -419,7 +415,9 @@ export default function Delivery() {
                 justifyContent: "space-between",
               }}
             >
-              <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Mahsulot</h2>
+              <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
+                Buyurtma haqida ma'lumot
+              </h2>
               <button onClick={closeModal}>
                 <i class="fa-solid fa-xmark fa-lg"></i>
               </button>
@@ -441,25 +439,16 @@ export default function Delivery() {
                       variant="outlined"
                       size="large"
                       type="text"
-                      value={detail.user_data ? detail?.user_data?.first_name : "-"}
+                      value={
+                        detail.user_data ? detail?.user_data?.first_name : "-"
+                      }
                       onClick={() => handleChangeRouter(detail.user_data?.id)}
                     />
                     <TextField
-                      label="Umumiy so'mma"
+                      label="Umumiy summa"
                       variant="outlined"
                       size="large"
                       value={detail.total_amount ? detail?.total_amount : "-"}
-                      type="text"
-                    />
-                    <TextField
-                      label="Soni"
-                      variant="outlined"
-                      size="large"
-                      value={
-                        detail.count_products
-                          ? detail?.count_products + " ta"
-                          : "-"
-                      }
                       type="text"
                     />
                     <TextField
@@ -479,7 +468,7 @@ export default function Delivery() {
                       label="Manzil"
                       variant="outlined"
                       size="large"
-                      value={detail?.address ? detail?.address?.location : "-"}
+                      value={detail?.address ? detail?.address : "-"}
                       type="text"
                     />
                     {/* <TextField
@@ -536,7 +525,7 @@ export default function Delivery() {
                     <ul className="border-[#AEB2B8] py-2 text-start border rounded">
                       {detail?.product_orders?.map((el, i) => (
                         <li className="font-normal font-sans text-base pl-2">
-                          {i + 1}. {el.product_data?.name}{" "} {el?.quantity} ta
+                          {i + 1}. {el.product_data?.name} {el?.quantity} ta
                         </li>
                       ))}
                     </ul>
@@ -547,6 +536,7 @@ export default function Delivery() {
               )}
             </div>
           </ReactModal>
+
           <Modal
             title="Holatni tahrirlash"
             open={isModalOpen}
@@ -615,6 +605,7 @@ export default function Delivery() {
               </li>
             </ul>
           </Modal>
+
           <Modal
             title="Pulini o'zgartirish uchun ogohlantirish"
             open={isModalPriceOpen}
@@ -629,7 +620,7 @@ export default function Delivery() {
               },
             }}
           >
-          <h2>Puli to'langanligiga ishonchingiz komilmi?</h2>
+            <h2>Puli to'langanligiga ishonchingiz komilmi?</h2>
           </Modal>
         </div>
       ) : (
