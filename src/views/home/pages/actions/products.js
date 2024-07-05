@@ -26,7 +26,6 @@ export default function Product() {
   const [colorImageList, setColorImageList] = useState([]); // yuborish uchun rang rasmlari
   const [colorData, setColorData] = useState([]);
   const [changeSize, setChangeSize] = useState(true);
-  const [checkChaild, setCheckChaild] = useState(true);
   const [sizeInputArray, setSizeInputArray] = useState([{ item: 1 }]);
   const [inputValues, setInputValues] = useState([""]);
 
@@ -34,7 +33,6 @@ export default function Product() {
 
   const [treeData, setTreeData] = useState([]); // xususiyat nomini tanlagandan so'ng uning chaildlarini chhiqaruvchi state
   const [feature, setFeature] = useState(""); // tanlagan xususiyat nomi , yuborish uchun / modalda yozganda
-  const [featureSelectName, setFeatureSelectName] = useState(""); // tanlagan xususiyat nomi , yuborish uchun / selectdan tanlaganda
 
   const [isModalOpenSizeParent, setIsModalOpenSizeParent] = useState(false);
 
@@ -47,9 +45,6 @@ export default function Product() {
   const [colorList, setColorList] = useState([]); // price va filialni default qiymatlari uchun
   const [featureList, setFeatureList] = useState([]);
   const [status, setStatus] = useState("");
-
-
-
 
   // qo'shimcha xususiyat kiritayotgandagi modalni yopish => cancel
   const handleCancelSizeParent = () => {
@@ -154,7 +149,6 @@ export default function Product() {
       .catch((err) => console.log(err));
   };
 
-
   const addHandleChangeSizeInput = (index, event) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = event.target.value;
@@ -169,7 +163,6 @@ export default function Product() {
     }
   };
 
-
   // biror razmer turini tanlagandan so'ng modal ichidagi razmerlarni check qilish funksiyasi
   const onCheck = (checkedKeys, info) => {
     setInputValues(checkedKeys);
@@ -181,12 +174,14 @@ export default function Product() {
     setSubmiting(true);
 
     const formData1 = new FormData();
-    formData1.append("on_sale", on_sale);
-    formData1.append(
-      "colors",
-      selectedColors && JSON.stringify(selectedColors)
-    );
-    formData1.append("feature", feature && feature);
+    formData1.append("on_sale", on_sale || detailProduct?.on_sale);
+    if (selectedColors?.length > 0) {
+      formData1.append(
+        "colors",
+        selectedColors && JSON.stringify(selectedColors)
+      );
+    }
+    // formData1.append("feature",feature || sizetype);
     formData1.append(
       "feature_items",
       inputValues && JSON.stringify(inputValues)
@@ -272,8 +267,11 @@ export default function Product() {
     // eslint-disable-next-line
   }, []);
 
-  const result =  treeData?.filter(item1 => !detailProduct?.feature_items?.some(item2 => item2.id === item1.id));
-  console.log('result', result);
+  const result = treeData?.filter(
+    (item1) =>
+      !detailProduct?.feature_items?.some((item2) => item2.id === item1.id)
+  );
+  console.log("result", result);
 
   return (
     <>
@@ -571,42 +569,31 @@ export default function Product() {
 
                       {role === "seller" && (
                         <>
-                          {changeSize ? (
-                            ""
+                          {detailProduct?.is_owner_future ? (
+                            <div className="d-flex flex-column gap-3">
+                              {feature}
+                              {sizeInputArray?.map((input, index) => (
+                                <Input
+                                  key={input.item}
+                                  placeholder="O'lcham kiriting"
+                                  className="col-md-7"
+                                  value={inputValues[index] || ""}
+                                  onChange={(e) =>
+                                    addHandleChangeSizeInput(index, e)
+                                  }
+                                />
+                              ))}
+                            </div>
                           ) : (
-                            <>
-                              {feature !== "" ? (
-                                <div className="d-flex flex-column gap-3">
-                                  {feature}
-                                  {sizeInputArray?.map((input, index) => (
-                                    <Input
-                                      key={input.item}
-                                      placeholder="O'lcham kiriting"
-                                      className="col-md-7"
-                                      value={inputValues[index] || ""}
-                                      onChange={(e) =>
-                                        addHandleChangeSizeInput(index, e)
-                                      }
-                                    />
-                                  ))}
-                                </div>
-                              ) : (
-                                " "
-                              )}
-                            </>
+                            <Tree
+                              checkable
+                              onCheck={onCheck}
+                              treeData={result?.map((el) => ({
+                                title: el?.value,
+                                key: el.id,
+                              }))}
+                            />
                           )}
-                          <Tree
-                            checkable
-                            defaultExpandedKeys={["9", "10", "11"]}
-                            defaultSelectedKeys={["9", "10", "11"]}
-                            defaultCheckedKeys={["9", "10", "11"]}
-                            // onSelect={onSelect}
-                            onCheck={onCheck}
-                            treeData={result?.map((el) => ({
-                              title: el?.value,
-                              key: el.id,
-                            }))}
-                          />
                         </>
                       )}
 
@@ -704,8 +691,8 @@ export default function Product() {
                     />
                   </div>
                 </div>
-                  
-                  {/* admin va employee uchun status o'zgartirish */}
+
+                {/* admin va employee uchun status o'zgartirish */}
                 {role != "seller" && detailProduct?.status && (
                   <div className="p-4 colorr">
                     <div className="font-sans text-md font-bold my-3">
@@ -792,10 +779,7 @@ export default function Product() {
               >
                 <Input
                   placeholder="Nomini kiriting"
-                  onChange={(e) => (
-                    setFeature(e.target.value),
-                    setFeatureSelectName(e.target.value)
-                  )}
+                  onChange={(e) => setFeature(e.target.value)}
                 />
               </Modal>
             </div>

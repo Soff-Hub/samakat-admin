@@ -8,6 +8,7 @@ import { API_ENDPOINTS } from "service/ApiEndpoints";
 import NavHeader from "components/shared/NavHeader";
 import { Table } from "antd";
 import ResponsiveDialog from "components/shared/modal";
+import { Pagination, Stack, Typography } from "@mui/material";
 
 function AddSeller() {
   const [data, setData] = useState(null);
@@ -15,6 +16,8 @@ function AddSeller() {
   
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState("");
   const columns = [
     {
       title: "Logo",
@@ -88,10 +91,21 @@ function AddSeller() {
     await Client.get(API_ENDPOINTS.SELLER)
       .then((resp) => {
         setData(resp.results);
-        // setCount(resp.count);
+        setCount(resp.count);
       })
       .catch((err) => console.log(err));
   }
+
+  const handleChangePag = async (event, value) => {
+    setPage(value);
+    await Client.get(`${API_ENDPOINTS.SELLER}?page=${value}`)
+      .then((resp) => {
+        console.log(resp);
+        setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     getSellerList();
@@ -102,6 +116,22 @@ function AddSeller() {
       <NavHeader title="Sotuvchilar" />
       <div className="py-3 px-2">
         <Table columns={columns} dataSource={data} pagination={false} />
+        {( Math.ceil(count / 30) <= 1) || count === 0 ? (
+              <></>
+            ) : (
+              <div className="m-3 mb-5">
+                <Stack spacing={2}>
+                  <Typography> Sahifa : {page}</Typography>
+                  <Pagination
+                    count={
+                      Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)
+                    }
+                    page={page}
+                    onChange={handleChangePag}
+                  />
+                </Stack>
+              </div>
+            )}
       </div>
       <ResponsiveDialog
         open={openDelete}

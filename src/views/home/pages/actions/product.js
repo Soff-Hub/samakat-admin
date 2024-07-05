@@ -632,7 +632,7 @@ export default function Product() {
                         position: "relative",
                       }}
                     >
-                      <i className="fa-regular fa-plus"></i> yuklash
+                     <span style={{fontSize:'12px'}} > <i className="fa-regular fa-plus"></i> yuklash</span>
                       <input
                         type="file"
                         accept="image/*"

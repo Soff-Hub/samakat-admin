@@ -146,6 +146,7 @@ export default function ProductPrice() {
                   direction="vertical"
                 >
                   <Select
+                  required
                     size="large"
                     mode="single"
                     allowClear
@@ -171,6 +172,7 @@ export default function ProductPrice() {
                   direction="vertical"
                 >
                   <Select
+                  required
                     size="large"
                     mode="single"
                     allowClear
@@ -188,6 +190,7 @@ export default function ProductPrice() {
               </div>
 
               <Input
+              required
                 size="small"
                 className="col-md-3"
                 placeholder="Sonini kiriting"

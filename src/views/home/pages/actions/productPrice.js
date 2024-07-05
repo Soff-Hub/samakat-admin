@@ -60,12 +60,6 @@ export default function ProductPrice() {
   const handleAddRow = () => {
     setDataArray([
       ...dataArray,
-      {
-        color: null,
-        feature: null,
-        price: 0,
-        discount: 0,
-      },
     ]);
   };
 
@@ -144,8 +138,12 @@ export default function ProductPrice() {
     setSubmiting(false);
   };
 
-  // console.log('new_variants', dataArray, dataArray?.map((e) => e.color != null ? e : "" ))
-  // console.log('old_variants', dataArrayDetail)
+  console.log(
+    "new_variants",
+    dataArray,
+    dataArray?.map((e) => (e.color != null ? e : ""))
+  );
+  // console.log("old_variants", dataArrayDetail)
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -154,8 +152,8 @@ export default function ProductPrice() {
 
     const data = {
       new_variants: dataArray,
-      // ?.map((e) => e.color != null ? e : ""),
-      old_variants: dataArrayDetail,
+      // ?.map((e) => (e.color != null ? e : "")),
+      old_variants: dataArrayDetail?.map((e) => (e.color != null ? e : {})),
     };
 
     await Client.post(
@@ -170,13 +168,21 @@ export default function ProductPrice() {
         setPercent(100);
       })
       .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
+        console.log("err?.data", err.response.data.msg);
+        toast.error(
+          `${
+            err.response.data.msg
+              ? err.response.data.msg
+              : "Xatolik! Qayta urinib ko'ring"
+          } `
+        );
         setSubmiting(false);
       });
 
     setSubmiting(false);
     document.querySelector(".create-branch-form").reset();
   };
+
   const handleClickOnePriceEdit = async () => {
     setSubmiting(true);
 
@@ -186,7 +192,7 @@ export default function ProductPrice() {
           id: dataArrayDetail?.[0]?.id,
           color: null,
           feature: null,
-          price: onePrice ? +onePrice :  dataArrayDetail?.[0]?.price,
+          price: onePrice ? +onePrice : dataArrayDetail?.[0]?.price,
         },
       ],
     };
@@ -215,26 +221,45 @@ export default function ProductPrice() {
     getProductFeatureDeatil();
   }, []);
 
-  console.log("params", dataArrayDetail?.[0]?.price);
-
   return (
     <>
       <>
         <div className="my-4 px-3">
-          <Steps
-            current={1}
-            percent={percent}
-            items={[
-              {
-                title: "Mahsulot qismlari",
-                subTitle: "birinchi bosqichni tahrirlash",
-              },
-              {
-                title: "Narx qo'shish",
-                subTitle: "ikkinchi bosqichni tahrirlash",
-              }
-            ]}
-          />
+          {chekParam != "?edit" ? (
+            <Steps
+              current={1}
+              percent={percent}
+              items={[
+                {
+                  title: "Mahsulot qismlari",
+                  subTitle: "birinchi bosqichni tahrirlash",
+                },
+                {
+                  title: "Narx qo'shish",
+                  subTitle: "ikkinchi bosqichni tahrirlash",
+                },
+                {
+                  title: "Filial qo'shish",
+                  subTitle: "uchinchi bosqichni tahrirlash",
+                },
+              ]}
+            />
+          ) : (
+            <Steps
+              current={1}
+              percent={percent}
+              items={[
+                {
+                  title: "Mahsulot qismlari",
+                  subTitle: "birinchi bosqichni tahrirlash",
+                },
+                {
+                  title: "Narx qo'shish",
+                  subTitle: "ikkinchi bosqichni tahrirlash",
+                },
+              ]}
+            />
+          )}
         </div>
       </>
       {chekParam != "?edit" ? (
