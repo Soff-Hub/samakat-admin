@@ -454,9 +454,9 @@ export default function EnhancedTable() {
                           className="text-truncate "
                           align="left"
                           style={{
-                            width: "200px",
-                            maxWidth: "200px",
-                            minWidth: "200px",
+                            width: "300px",
+                            maxWidth: "300px",
+                            minWidth: "300px",
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",

@@ -21,6 +21,8 @@ function DashboarRight() {
     DashboardProduct();
   }, []);
 
+  console.log('data', data);
+
   return (
     <div data-aos="flip-right" class="card">
       {/* <div class="filter">
@@ -44,9 +46,9 @@ function DashboarRight() {
         {data?.map((el) => (
           <div class="activity-item d-flex">
             <div class="activite-label">{el.count} ta</div>
-            <i class={`fa-solid fa-circle activity-badge align-self-start text-success `} ></i>
+            <i style={{color: `${el.color}`}} class={`fa-solid fa-circle activity-badge align-self-start`} ></i>
             <div class="activity-content">
-             {el.product__name}
+             {el.product_variant__product__name}
             </div>
           </div>
         ))}
