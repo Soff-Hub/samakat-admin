@@ -12,7 +12,6 @@ import { Pagination, Stack, Typography } from "@mui/material";
 
 function AddSeller() {
   const [data, setData] = useState(null);
-  // const [count, setCount] = useState(null)
   
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);

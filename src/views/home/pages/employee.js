@@ -8,10 +8,12 @@ import { Link } from "react-router-dom";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import ResponsiveDialog from "components/shared/modal";
+import { Pagination, Stack, Typography } from "@mui/material";
 
 function Employee() {
   const [data, setData] = useState(null);
-  // const [count, setCount] = useState(null)
+  const [count, setCount] = useState("")
+  const [page, setPage] = useState(1);
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   
@@ -72,14 +74,26 @@ function Employee() {
       .catch((err) => console.log(err));
   }
 
+  const handleChangePag = async (event, value) => {
+    setPage(value);
+    await Client.get(`${API_ENDPOINTS.EMPLOYEE}?page=${value}`)
+      .then((resp) => {
+        setCount(resp.count);
+        setData(resp.results);
+      })
+      .catch((err) => console.log(err));
+  };
+
   async function getOrders() {
     await Client.get(API_ENDPOINTS.EMPLOYEE)
       .then((resp) => {
         setData(resp.results);
-        // setCount(resp.count);
+        setCount(resp.count);
       })
       .catch((err) => console.log(err));
   }
+
+
 
   useEffect(() => {
     getOrders();
@@ -90,6 +104,22 @@ function Employee() {
       <NavHeader title="Xodimlar" />
       <div className="py-3 px-2">
         <Table columns={columns} dataSource={data} pagination={false} />
+        {( Math.ceil(count / 30) <= 1) || count === 0 ? (
+              <></>
+            ) : (
+              <div className="m-3 mb-5">
+                <Stack spacing={2}>
+                  <Typography> Sahifa : {page}</Typography>
+                  <Pagination
+                    count={
+                      Math.ceil(count / 30) < 1 ? 1 : Math.ceil(count / 30)
+                    }
+                    page={page}
+                    onChange={handleChangePag}
+                  />
+                </Stack>
+              </div>
+            )}
       </div>
       <ResponsiveDialog
         open={openDelete}

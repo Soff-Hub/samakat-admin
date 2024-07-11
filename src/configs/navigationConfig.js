@@ -13,6 +13,7 @@ import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 import SendAndArchiveIcon from '@mui/icons-material/SendAndArchive';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 
 export const navigationConfig = [
     {
@@ -74,6 +75,11 @@ export const navigationConfig = [
         name: 'Foydalanuvchilar',
         path: '/users',
         icon: <GroupIcon />,
+    },
+    {
+        name: 'Bildirishnomalar',
+        path: '/notification',
+        icon: <NotificationsActiveIcon />,
     },
     {
         name: 'Sozlamalar',
