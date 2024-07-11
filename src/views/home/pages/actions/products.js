@@ -271,7 +271,7 @@ export default function Product() {
     (item1) =>
       !detailProduct?.feature_items?.some((item2) => item2.id === item1.id)
   );
-  console.log("result", result);
+  // console.log("result", result);
 
   return (
     <>
@@ -401,8 +401,8 @@ export default function Product() {
                         </span>
                         <TextArea
                           value={
-                            detailProduct?.short_description_uz &&
-                            detailProduct?.short_description_uz
+                            detailProduct?.short_description_uz ?
+                            detailProduct?.short_description_uz : ''
                           }
                           placeholder="Qisqa tavsif "
                           rows={4}
@@ -415,8 +415,8 @@ export default function Product() {
                         </span>
                         <TextArea
                           value={
-                            detailProduct?.short_description_ru &&
-                            detailProduct?.short_description_ru
+                            detailProduct?.short_description_ru ?
+                            detailProduct?.short_description_ru : ''
                           }
                           placeholder="Qisqa tavsif "
                           rows={4}
@@ -432,8 +432,8 @@ export default function Product() {
                       {/* // eslint-disable-next-line */}
                       <CKeditor
                         value={
-                          detailProduct?.description_uz &&
-                          detailProduct?.description_uz
+                          detailProduct?.description_uz ?
+                          detailProduct?.description_uz : ''
                         }
                         disabled={true}
                         editorLoaded={true}
@@ -444,8 +444,8 @@ export default function Product() {
                       <span className="label--name font-bold">Izoh (ru)</span>
                       <CKeditor
                         value={
-                          detailProduct?.description_ru &&
-                          detailProduct?.description_ru
+                          detailProduct?.description_ru ?
+                          detailProduct?.description_ru : ''
                         }
                         disabled={true}
                         editorLoaded={true}
