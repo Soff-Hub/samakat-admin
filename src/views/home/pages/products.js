@@ -298,9 +298,9 @@ export default function EnhancedTable() {
   };
 
   async function getBranches() {
-    await Client.get(API_ENDPOINTS.GET_BRANCHS)
+    await Client.get(API_ENDPOINTS.GET_BRANCHS_CHECK)
       .then((resp) => {
-        setBranch(resp.results);
+        setBranch(resp?.exists);
       })
       .catch((err) => console.log(err));
   }
@@ -316,7 +316,7 @@ export default function EnhancedTable() {
   return (
     <div className="px-2 py-3">
       <div>
-        {branch?.length > 0 ? (
+        {!branch ? (
           <NavHeaderProduct
             admin={role === "superadmin" ? true : false}
             title="Mahsulotlar"

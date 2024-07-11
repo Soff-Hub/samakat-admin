@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
     UPDATE_BRANCH: 'admin/branch/',
     DELETE_BRANCH: 'admin/branch/',
     GET_BRANCHS: 'admin/branch/',
+    GET_BRANCHS_CHECK: 'admin/exists-approved-branchs/',
 
     CATEGORIES: 'admin/category/',
     CREATE_CATEGORY: 'admin/category/create/',

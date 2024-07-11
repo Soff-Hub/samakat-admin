@@ -142,7 +142,7 @@ function AddSller() {
             <Controller
               name="name"
               control={control}
-              render={({ field }) => <Input {...field} placeholder="Parol" />}
+              render={({ field }) => <Input {...field} placeholder="Do'kon nomi" />}
             />
           </div>
           <div>
