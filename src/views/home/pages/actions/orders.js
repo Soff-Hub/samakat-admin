@@ -94,13 +94,13 @@ export default function Orders() {
                 value={data.total_amount ? data?.total_amount  : "-"} 
                 type="text"
               />
-              <TextField
+              {/* <TextField
                 label="Soni"
                 variant="outlined"
                 size="large"
                 value={data.count_products ? data?.count_products + " ta" : "-"}
                 type="text"
-              />
+              /> */}
               <TextField
                 label="Vaqti"
                 variant="outlined"
