@@ -123,7 +123,6 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  console.log('role', role);
   
   const currentPageConverter = (page) => {
     if (role === "superadmin") {

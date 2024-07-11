@@ -49,6 +49,7 @@ export const API_ENDPOINTS = {
     DETAIL_USER: 'admin/user/detail/',
     UPDATE_USER: 'admin/user/update/',
     COUNT_USER: 'admin/users-count/',
+    APPLICATIONS:"admin/applications/",
 
     ORDER: 'admin/orders/',
     PATCH_ORDER : 'admin/orders/',

@@ -203,11 +203,10 @@ export default function Product() {
     }
   };
   const handleChaildCategory = async (e, index) => {
-    console.log("e", e);
     setLastCategory(e);
     await Client.get(`${API_ENDPOINTS.PPRODUCT_CATEGORY_CREATE + e}/`)
       .then((resp) => {
-        if (resp === []) {
+        if (resp.length === 0) {
           setLastCategory(e);
         } else if (index === 1) {
           setCategory1(
@@ -307,6 +306,8 @@ export default function Product() {
     });
     // eslint-disable-next-line
   }, []);
+
+  
 
   return (
     <div className="flex  gap-1 bg--color px-2 py-3">
@@ -576,6 +577,8 @@ export default function Product() {
                     editorLoaded={true}
                   />
                 </div>
+
+                
                 <div className="col-12">
                   <span className="label--name font-bold">Izoh (ru)</span>
                   <CKeditor
