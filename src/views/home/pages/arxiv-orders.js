@@ -111,9 +111,9 @@ export default function ArxivOrders() {
                 <TableCell>
                   <span className="font-bold text-[16px]">Foydalanuvchi</span>
                 </TableCell>
-                <TableCell>
+                {/* <TableCell>
                   <span className="font-bold text-[16px]">Soni</span>
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <span className="font-bold text-[16px]">Umumiy so'mma</span>
                 </TableCell>
@@ -164,7 +164,7 @@ export default function ArxivOrders() {
                       </Link>
                     </TableCell>
 
-                    <TableCell component="th" scope="row">
+                    {/* <TableCell component="th" scope="row">
                       <Link
                         to={"/orders/actions/?" + row.id}
                         className="hover:underline"
@@ -174,7 +174,7 @@ export default function ArxivOrders() {
                         </span>{" "}
                         {row?.total_quantity ? "ta" : ""}
                       </Link>
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell component="th" scope="row">
                       <Link
                         to={"/orders/actions/?" + row.id}

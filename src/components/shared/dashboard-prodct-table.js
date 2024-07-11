@@ -1,11 +1,13 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 
 export default function DashboardProdctTable() {
   const [data, setData] = useState([]);
+  const { role } = useSelector((state) => state.admin);
 
   const DashboardProduct = async () => {
     await Client.get(API_ENDPOINTS.DASHBOARD_ORDER)
@@ -38,6 +40,9 @@ export default function DashboardProdctTable() {
                   }}
                 >
                   <th scope="col">Id</th>
+                  {
+                    role === "superadmin" && <th scope="col">Do'kon nomi</th>
+                  }
                   <th scope="col">Filial</th>
                   <th scope="col">To'lov</th>
                   <th scope="col">Narxi</th>
@@ -55,15 +60,18 @@ export default function DashboardProdctTable() {
                     <th scope="row">
                       <a href="#">{el?.id}</a>
                     </th>
-                    <td>{el?.branch?.name}</td>
-                    
+                    {
+                       role === "superadmin" &&  <td>{el?.seller}</td>
+                    }
+                    <td>{el?.branch}</td>
+
                     <td>
                       <span class="text-primary">
                         {el?.is_paid ? "To'langan" : "To'lanmagan"}
                       </span>
                     </td>
                     <td>{el?.total_amount} so'm</td>
-                    <td>{el?.created_at?.substring(0,10)}</td>
+                    <td>{el?.created_at?.substring(0, 10)}</td>
                     <td>
                       {el?.status === "cancelled" ? (
                         <span class="badge bg-danger">Bekor qilingan</span>

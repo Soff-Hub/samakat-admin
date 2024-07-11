@@ -206,7 +206,7 @@ export default function Delivery() {
                   </div>
                   <div className="text-xs">
                     <span className=" font-medium text-[#757575] mb-1">
-                      Do'kon nomi :
+                      Do'kon nomi : {el?.seller}
                     </span>
                   </div>
                   <div className=" font-medium text-[#757575] text-xs mb-1">
@@ -269,7 +269,7 @@ export default function Delivery() {
                   </div>
                   <div className="text-xs">
                     <span className=" font-medium text-[#757575] mb-1">
-                      Do'kon nomi :
+                      Do'kon nomi : {el?.seller}
                     </span>
                   </div>
                   <div className=" font-medium text-[#757575] text-xs mb-1">
@@ -332,7 +332,7 @@ export default function Delivery() {
                   </div>
                   <div className="text-xs">
                     <span className=" font-medium text-[#757575] mb-1">
-                      Do'kon nomi :
+                      Do'kon nomi : {el?.seller}
                     </span>
                   </div>
                   <div className="text-xs font-medium text-[#757575] mb-1">
@@ -395,7 +395,7 @@ export default function Delivery() {
                   </div>
                   <div className="text-xs">
                     <span className=" font-medium text-[#757575] mb-1">
-                      Do'kon nomi :
+                      Do'kon nomi : {el?.seller}
                     </span>
                   </div>
                   <div className="text-xs font-medium text-[#757575] mb-1">
