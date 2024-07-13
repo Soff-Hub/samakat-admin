@@ -101,7 +101,7 @@ export const API_ENDPOINTS = {
 
     PPRODUCT_CATEGORY_CREATE : 'admin/parent-categories/',
 
-    WORKTIME: 'admin/working-days'
-   
+    WORKTIME: 'admin/working-days',
+    VARINATS:'admin/variants/'   
 
 }

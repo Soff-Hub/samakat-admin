@@ -307,6 +307,7 @@ export default function EnhancedTable() {
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                           }}>{row.seller}</TableCell>
+                          
                         <TableCell align="left">{row.branch}</TableCell>
                         <TableCell align="left">{row.quantity}</TableCell>
                         <TableCell align="left" sx={{ position: "relative" }}>

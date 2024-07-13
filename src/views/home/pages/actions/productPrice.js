@@ -432,15 +432,15 @@ export default function ProductPrice() {
         </>
       ) : (
         <div className="bg--color px-2 py-3">
-          <h3 className="font-semibold	">Mahsulot narxini tahrirlash</h3>
+          <h3 className="font-semibold	px-[10px]">Mahsulot narxini tahrirlash</h3>
           {data?.colors?.length > 0 || data?.feature_items?.length > 0 ? (
             <form
               onSubmit={handleSubmitEdit}
-              className="mt-3 create-branch-form "
+              className=" mt-3 create-branch-form  "
             >
               {dataArrayDetail?.map((item, index) => (
                 <div
-                  className="row"
+                  className="row m-0 p-0 mb-3"
                   key={index}
                   style={{ marginBottom: "10px" }}
                 >
@@ -451,8 +451,11 @@ export default function ProductPrice() {
                         textAlign: "left",
                       }}
                       direction="vertical"
+
                     >
+                      <p>Mahsulot rangi</p>
                       <Select
+
                         disabled
                         size="large"
                         mode="single"
@@ -479,6 +482,7 @@ export default function ProductPrice() {
                       }}
                       direction="vertical"
                     >
+                      <p>Mahsulot o'lchamlar</p>
                       <Select
                         disabled
                         size="large"
@@ -497,25 +501,31 @@ export default function ProductPrice() {
                       />
                     </Space>
                   </div>
-                  <InputNumber
-                    defaultValue={item.price}
-                    placeholder="Narxni kiriting"
-                    className='w-100 py-2 col-md-3'
-                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
-                    onKeyPress={(e) => {
-                      if (!/[0-9]/.test(e.key)) {
-                        e.preventDefault();
+                  <div className="col-md-3">
+                    <p className="mb-2">Mahsulot narxi</p>
+
+                    <InputNumber
+                      defaultValue={item.price}
+                      placeholder="Narxni kiriting"
+                      className='py-1 col-md-12'
+                      formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                      onKeyPress={(e) => {
+                        if (!/[0-9]/.test(e.key)) {
+                          e.preventDefault();
+                        }
+                      }}
+                      onChange={(e) =>
+                        handleInputChangeDetail(index, "price", e)
                       }
-                    }}
-                    onChange={(e) =>
-                      handleInputChangeDetail(index, "price", e)
-                    }
-                  />
+                    />
+                  </div>
+                  <div className="col-md-2">
+                  <p className="mb-2">Mahsulot chegirmasi(%)</p>
 
                   <Input
                     type="number"
-                    className="col-md-2 ml-2"
+                    className="col-md-12  h-[38px]"
                     size="small"
                     placeholder="Discountni kiriting"
                     value={item.discount}
@@ -523,11 +533,14 @@ export default function ProductPrice() {
                       handleInputChangeDetail(index, "discount", e.target.value)
                     }
                   />
+                  </div>
+
+
                 </div>
               ))}
               {dataArray?.map((item, index) => (
                 <div
-                  className="row"
+                  className="row p-0 m-0 mb-3"
                   key={index}
                   style={{ marginBottom: "10px" }}
                 >
@@ -581,13 +594,19 @@ export default function ProductPrice() {
                     </Space>
                   </div>
 
-                  <Input
-                    type="number"
-                    size="small"
-                    className="col-md-2"
+                  <InputNumber
+                    defaultValue={item.price}
                     placeholder="Narxni kiriting"
+                    className='py-1 col-md-2'
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                    onKeyPress={(e) => {
+                      if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
                     onChange={(e) =>
-                      handleInputChange(index, "price", e.target.value)
+                      handleInputChange(index, "price", e)
                     }
                   />
 
@@ -610,7 +629,7 @@ export default function ProductPrice() {
                   </Button>
                 </div>
               ))}
-              <div className="row">
+              <div className="row p-0 m-0">
                 <div className="col-md-4">
                   <Button
                     type="submit"
@@ -645,7 +664,7 @@ export default function ProductPrice() {
               </div>
             </form>
           ) : (
-            <div className="row my-3">
+            <div className="row my-3 ">
               <div className="col-md-3">
                 {dataArrayDetail?.[0] && (
 
@@ -655,7 +674,7 @@ export default function ProductPrice() {
                       dataArrayDetail?.[0]?.price && dataArrayDetail?.[0]?.price
                     }
                     placeholder="Narxni kiriting"
-                    className='w-100 py-2 col-md-3'
+                    className='py-2 col-md-3'
                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
                     onKeyPress={(e) => {

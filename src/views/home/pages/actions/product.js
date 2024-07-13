@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, Modal, Select, Space, Tree } from "antd";
+import { Image, Input, Modal, Select, Space, Tree } from "antd";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
@@ -256,6 +256,7 @@ export default function Product() {
     setSubmiting(true);
 
     const formData1 = new FormData();
+    formData1.append("on_sale", true);
     formData1.append("name_uz", name);
     formData1.append("name_ru", nameRu);
     formData1.append("description_uz", description);
@@ -265,9 +266,9 @@ export default function Product() {
     formData1.append("category", lastCategory);
     // formData1.append("colors", JSON.stringify(selectedColors));
     formData1.append("colors", JSON.stringify([...new Set(chekColor)]));
-   if (inputValues) {
-     formData1.append("feature", feature);
-   }
+    if (inputValues) {
+      formData1.append("feature", feature);
+    }
     formData1.append("feature_items", JSON.stringify(inputValues));
     colorImageList.forEach((obj) => {
       Object.entries(obj).forEach(([key, value]) => {
@@ -304,7 +305,7 @@ export default function Product() {
     // eslint-disable-next-line
   }, []);
 
-  
+
 
   return (
     <div className="flex  gap-1 bg--color px-2 py-3">
@@ -512,22 +513,25 @@ export default function Product() {
                         key={index}
                         className="d-flex gap-2  position-relative"
                       >
-                        <img
-                          width={80}
-                          style={{ borderRadius: "3px", objectFit: "cover" }}
-                          src={image}
-                          alt={`Uploaded ${index}`}
-                        />
+
+                        <Image.PreviewGroup >
+                          <Image
+                            width={80}
+                            style={{ borderRadius: "3px", objectFit: "cover" }}
+                            src={image}
+                            alt={`Uploaded ${index}`}
+                          />
+
+                        </Image.PreviewGroup>
+
                         <i
                           onClick={() => handleRemoveImage(index)}
-                          className="fa-solid fa-trash"
+                          className="fa-solid fa-trash text-danger shadow"
                           style={{
                             cursor: "pointer",
                             position: "absolute",
                             top: "5px",
                             right: "5px",
-                            background: "rgba(255, 255, 255, 0.7)",
-                            borderRadius: "50%",
                             padding: "2px",
                           }}
                         ></i>
@@ -575,7 +579,7 @@ export default function Product() {
                   />
                 </div>
 
-                
+
                 <div className="col-12">
                   <span className="label--name font-bold">Izoh (ru)</span>
                   <CKeditor
@@ -632,7 +636,7 @@ export default function Product() {
                         position: "relative",
                       }}
                     >
-                     <span style={{fontSize:'12px'}} > <i className="fa-regular fa-plus"></i> yuklash</span>
+                      <span style={{ fontSize: '12px' }} > <i className="fa-regular fa-plus"></i> yuklash</span>
                       <input
                         type="file"
                         accept="image/*"
@@ -687,7 +691,7 @@ export default function Product() {
                       </div>
 
                       <Tree
-                      required={true}
+                        required={true}
                         checkable
                         // defaultExpandedKeys={["0-0-0", "0-0-1"]}
                         // defaultSelectedKeys={["0-0-0", "0-0-1"]}

@@ -1,8 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Input, Modal, Select, Space, Tree } from "antd";
-import Switch from "@mui/material/Switch";
+import { Image, Input, Modal, Select, Space, Tree } from "antd";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
@@ -20,7 +19,6 @@ export default function Product() {
   const params = search.split("?")?.[2];
   const [detailProduct, setDetailProduct] = useState({});
 
-  const [on_sale, setOn_sale] = React.useState(null);
   const [colorListOption, setColorListOption] = useState([]); //rang render un
   const [sizetype, setsizeType] = useState([]);
   const [colorImageList, setColorImageList] = useState([]); // yuborish uchun rang rasmlari
@@ -174,7 +172,7 @@ export default function Product() {
     setSubmiting(true);
 
     const formData1 = new FormData();
-    formData1.append("on_sale", on_sale || detailProduct?.on_sale);
+    formData1.append("on_sale", true);
     if (selectedColors?.length > 0) {
       formData1.append(
         "colors",
@@ -373,23 +371,28 @@ export default function Product() {
                       <span className="label--name font-bold">
                         Asosiy rasm(lar)
                       </span>
+
                       <div className="d-flex gap-3 flex-wrap">
                         {detailProduct?.images &&
                           detailProduct?.images.map(
                             (e) =>
                               e.color === null && (
-                                <img
-                                  width={80}
-                                  style={{
-                                    borderRadius: "3px",
-                                    objectFit: "cover",
-                                  }}
-                                  src={e.image}
-                                  alt="images"
-                                />
+                                <Image.PreviewGroup >
+                                  <Image
+                                    width={80}
+                                    style={{
+                                      borderRadius: "3px",
+                                      objectFit: "cover",
+                                    }}
+                                    src={e.image}
+                                    alt="images"
+                                  />
+
+                                </Image.PreviewGroup>
                               )
                           )}
                       </div>
+
                     </div>
 
                     {/* qisqa tavsif */}
@@ -402,7 +405,7 @@ export default function Product() {
                         <TextArea
                           value={
                             detailProduct?.short_description_uz ?
-                            detailProduct?.short_description_uz : ''
+                              detailProduct?.short_description_uz : ''
                           }
                           placeholder="Qisqa tavsif "
                           rows={4}
@@ -416,7 +419,7 @@ export default function Product() {
                         <TextArea
                           value={
                             detailProduct?.short_description_ru ?
-                            detailProduct?.short_description_ru : ''
+                              detailProduct?.short_description_ru : ''
                           }
                           placeholder="Qisqa tavsif "
                           rows={4}
@@ -433,7 +436,7 @@ export default function Product() {
                       <CKeditor
                         value={
                           detailProduct?.description_uz ?
-                          detailProduct?.description_uz : ''
+                            detailProduct?.description_uz : ''
                         }
                         disabled={true}
                         editorLoaded={true}
@@ -445,7 +448,7 @@ export default function Product() {
                       <CKeditor
                         value={
                           detailProduct?.description_ru ?
-                          detailProduct?.description_ru : ''
+                            detailProduct?.description_ru : ''
                         }
                         disabled={true}
                         editorLoaded={true}
@@ -471,11 +474,20 @@ export default function Product() {
                               {detailProduct?.images.map(
                                 (el) =>
                                   el.color === e.id && (
-                                    <img
-                                      width={80}
-                                      src={el?.image}
-                                      alt="photo"
-                                    />
+
+                                    <Image.PreviewGroup >
+                                      <Image
+                                        style={{
+                                          borderRadius: "3px",
+                                          objectFit: "cover",
+                                        }}
+                                        width={80}
+                                        src={el?.image}
+                                        alt="photo"
+                                      />
+
+                                    </Image.PreviewGroup>
+
                                   )
                               )}
                             </div>
@@ -550,7 +562,7 @@ export default function Product() {
 
                 {/* xususiyatlar */}
 
-                <div className="p-4 colorr">
+                <div className={detailProduct?.feature_items?.length > 0 && "p-4 colorr"}>
                   {detailProduct?.feature_items?.length > 0 && (
                     <>
                       <span className="label--name font-bold">
@@ -679,21 +691,10 @@ export default function Product() {
                       )}
                     </>
                   )}
-                  <div className="mt-4">
-                    <label className="font-bold font-sans text-lg pl-1.5">
-                      Sotuvda
-                    </label>
-                    <Switch
-                      disabled={role === "seller" ? false : true}
-                      checked={on_sale || detailProduct?.on_sale}
-                      inputProps={{ "aria-label": "controlled" }}
-                      onChange={(e) => setOn_sale(e.target.checked)}
-                    />
-                  </div>
                 </div>
 
                 {/* admin va employee uchun status o'zgartirish */}
-                {role != "seller" && detailProduct?.status && (
+                {role !== "seller" && detailProduct?.status && (
                   <div className="p-4 colorr">
                     <div className="font-sans text-md font-bold my-3">
                       Mahsulot statusini o'zgartirish
