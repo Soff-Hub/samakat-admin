@@ -2,7 +2,6 @@ import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, Modal, Select, Space, Tree } from "antd";
-import Switch from "@mui/material/Switch";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
@@ -18,7 +17,6 @@ export default function Product() {
   const [nameRu, setNameRu] = useState("");
   const [description, setDescription] = useState("");
   const [descriptionRu, setDescriptionRu] = useState("");
-  const [on_sale, setOn_sale] = React.useState(false);
   const [imageURLs, setImageURLs] = useState([]); // asosiy rasm uchun map un
   const [imageFiles, setImageFiles] = useState([]); // asosiy rasm file un
   const [colorListOption, setColorListOption] = useState([]); //rang render un
@@ -264,7 +262,6 @@ export default function Product() {
     formData1.append("description_ru", descriptionRu);
     formData1.append("short_description_uz", short_desc_uz);
     formData1.append("short_description_ru", short_desc_ru);
-    formData1.append("on_sale", on_sale);
     formData1.append("category", lastCategory);
     // formData1.append("colors", JSON.stringify(selectedColors));
     formData1.append("colors", JSON.stringify([...new Set(chekColor)]));
@@ -724,16 +721,6 @@ export default function Product() {
               )}
             </div>
 
-            <div>
-              <label className="font-bold font-sans text-lg pl-1.5">
-                Sotuvda
-              </label>
-              <Switch
-                checked={on_sale}
-                onChange={(e) => setOn_sale(e.target.checked)}
-                inputProps={{ "aria-label": "controlled" }}
-              />
-            </div>
 
             <Button
               variant="contained"

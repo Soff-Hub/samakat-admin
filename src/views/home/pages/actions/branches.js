@@ -3,43 +3,84 @@ import { Button, TextField } from "@mui/material";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import {
-  GoogleMap,
   LoadScript,
+  GoogleMap,
   Marker,
-  OverlayView,
+  InfoWindow,
+  useJsApiLoader,
 } from "@react-google-maps/api";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
 import { Select, Space } from "antd";
 import { useSelector } from "react-redux";
+import axios from "axios";
+
+const containerStyle = {
+  width: "100%",
+  height: "420px",
+};
+
+const defaultCenter = {
+  lat: 41.2831462,
+  lng: 69.2065356,
+};
+
+export function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 
 function Login() {
   const [submiting, setSubmiting] = useState(false);
+  const [search, setSearch] = useState("");
+  const debunce = useDebounce(search, 500)
+  const [curretnLocation, setCurrentLocation] = useState(null);
+  const [mapPosition, setMapPosition] = useState(defaultCenter);
+  const [locationData, setlocationData] = useState([]);
   const [formVal, setFormVal] = useState({
     name: "",
     address: "",
-    latitude: 0,
-    longitude: 0,
-    status: null
+    latitude: "",
+    longitude: "",
+    status: null,
   });
+
   const [itemData, setItemData] = useState(null);
+  const [infoWindowToggle, setInfoWindowToggle] = useState(false);
+  const [fokucInput, setFokucInput] = useState(false);
   const query = useParams();
   const navigate = useNavigate();
-
-  const [defaultCenter, setdefaultCenter] = useState({
-    lat: 41.39117141852333442,
-    lng: 69.27979344835123442,
-  });
-  const [position, setPosition] = useState();
   const { role } = useSelector((state) => state.admin);
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyAZCug959FaGfsyWg2he8OczJUJ_tfDukg",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await Client.post(API_ENDPOINTS.CREATE_BRANCH, formVal)
+    const data = {
+      name: formVal?.name,
+      address: curretnLocation || formVal?.address,
+      latitude: mapPosition?.lat,
+      longitude: mapPosition?.lng,
+      status: null,
+    };
+    await Client.post(API_ENDPOINTS.CREATE_BRANCH, data)
       .then((data) => {
         toast.success("Filial muvaffaqiyatli qo'shildi");
         setTimeout(() => {
@@ -50,93 +91,18 @@ function Login() {
         toast.error("Xatolik! Qayta urinib ko'ring");
       });
     setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
-  };
-
-  const [map, setMap] = useState(null);
-  const mapStyles = {
-    height: "100%",
-    width: "100%",
-  };
-
-  const handleDragOver = () => {
-    setdefaultCenter({
-      lat: map.center.lat(),
-      lng: map.center.lng(),
-    });
-  };
-
-  function handleMarkerDrag(evt) {
-    setPosition({
-      lat: evt.latLng.lat(),
-      lng: evt.latLng.lng(),
-    });
-
-    setFormVal((curr) => ({
-      ...curr,
-      latitude: evt.latLng.lat(),
-      longitude: evt.latLng.lng(),
-    }));
-  }
-
-  function handleMarkerDragOver(evt) {
-    setdefaultCenter({
-      lat: evt.latLng.lat(),
-      lng: evt.latLng.lng(),
-    });
-
-    setFormVal((c) => ({
-      ...c,
-      ...{
-        latitude: evt.latLng.lat(),
-        longitude: evt.latLng.lng(),
-      },
-    }));
-  }
-
-  const overlayViewStyles = {
-    background: "white",
-    color: "black",
-    fontSize: "14px",
-    fontWeight: "bold",
-    padding: "2px",
-    borderRadius: "4px",
-    textAlign: "center",
-    position: "absolute",
-    minWidth: 120,
-    left: "50%",
-    transform: "translateX(-50%)",
-    border: "1px solid gray",
-  };
-
-  const markerOptions = {
-    icon: {
-      url: "https://png.pngtree.com/png-vector/20230413/ourmid/pngtree-3d-location-icon-clipart-in-transparent-background-vector-png-image_6704161.png",
-      scaledSize: { width: 50, height: 50 },
-    },
-  };
-
-  const getItem = async () => {
-    await Client.get(`${API_ENDPOINTS.GET_BRANCHS}${query["*"]}`)
-      .then((resp) => {
-        setPosition({
-          lat: Number(resp.latitude),
-          lng: Number(resp.longitude),
-        });
-
-        setdefaultCenter({
-          lat: Number(resp.latitude),
-          lng: Number(resp.longitude),
-        });
-        setFormVal(resp);
-        setItemData(resp);
-      })
-      .catch((err) => console.log(err));
   };
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
-    await Client.patch(`${API_ENDPOINTS.UPDATE_BRANCH}${query["*"]}/`, formVal)
+    const data = {
+      name: formVal?.name ? formVal?.name : itemData?.name,
+      address: curretnLocation ? curretnLocation : itemData?.address,
+      latitude: mapPosition?.lat ? mapPosition?.lat : itemData?.latitude,
+      longitude: mapPosition?.lng ? mapPosition?.lng : itemData?.longitude,
+      status: formVal?.status ? formVal?.status : itemData?.status,
+    };
+    await Client.patch(`${API_ENDPOINTS.UPDATE_BRANCH}${query["*"]}/`, data)
       .then((data) => {
         toast.success("Filial muvaffaqiyatli tahrirlandi");
         setTimeout(() => {
@@ -150,336 +116,255 @@ function Login() {
     setSubmiting(false);
   };
 
-  const handleMapLoad = (map) => {
-    setMap(map);
+  const getItem = async () => {
+    await Client.get(`${API_ENDPOINTS.GET_BRANCHS}${query["*"]}`)
+      .then((resp) => {
+        setFormVal(resp);
+        setItemData(resp);
+      })
+      .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
-    if (query["*"] === "") {
-      setPosition({
-        lat: formVal.latitude,
-        lng: formVal.longitude,
-      });
+  const onMarkerDragEnd = async (e) => {
+    if (e.domEvent.type === "click") {
+      setInfoWindowToggle(true);
+    }
 
-      setdefaultCenter({
-        lat: formVal.latitude,
-        lng: formVal.longitude,
-      });
-    } else if (formVal.latitude === 0 && formVal.longitude === 0) {
+    const latLng = {
+      lat: parseFloat(e.latLng.lat()),
+      lng: parseFloat(e.latLng.lng()),
+    };
+
+    setMapPosition(latLng);
+
+    try {
+      const apiUrl = `https://nominatim.openstreetmap.org/reverse?&search.php?q=${search}&lat=${latLng.lat
+        }&lon=${latLng.lng}&format=json&accept-language=${"uz"}&countrycodes=uz`;
+      const response = await axios.get(apiUrl);
+
+      if (response.data) {
+        const address = response.data.display_name;
+        toast(address, {
+          style: { color: "white", background: "green" }, // Xabar rangi va orqa fon rangi
+          progressClassName: "fancy-progress-bar",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        return setCurrentLocation(address);
+      } else {
+        throw new Error("No results found");
+      }
+    } catch (error) {
+      throw new Error("Failed to fetch address: " + error);
+    }
+  };
+
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setMapPosition({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Error getting the current location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
+  async function locationSearch() {
+    try {
+      const formattedAddress = debunce.replace(/\s+/g, "+");
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search.php?q=${formattedAddress}&format=json&accept-language=${"uz"}&countrycodes=uz`
+      );
+      const results = response.data;
+      setlocationData(results);
+    } catch (error) {
+      console.error("Config error:", error.config);
+    }
+  }
+
+  useEffect(() => {
+    if (query["*"]) {
       getItem();
     }
-    // eslint-disable-next-line
-  }, [formVal.latitude, formVal.longitude]);
+  }, [query]);
 
-  return query["*"] !== "" ? (
-    <div className="bg--color py-3 px-2">
-      <div className="flex items-center justify-between">
-        <h1 className="text-[35px] pb-3">Filial tahrirlash</h1>
-        <Link to="/branches">
-          <Button
-            variant="contained"
-            sx={{ 
-              background: "#000",
-              '&:hover': {
-                backgroundColor: "#333", // Change this to the desired hover color
-              }
+  useEffect(() => {
+    if (search !== "") {
+      locationSearch();
+    }
+  }, [debunce]);
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+
+  return (
+    <div className="bg--color px-2">
+      <h1 className="text-[35px] py-2 mt-3"> Filial {query["*"] !== "" ? "tahrirlash" : "Qo'shish"}</h1>
+      <div style={{ position: "relative" }}>
+        <TextField
+          className="w-full my-4"
+          placeholder="Qidiruv"
+          variant="outlined"
+          size="large"
+          type="text"
+          onChange={(e) => setSearch(e.target.value)}
+          onFocus={() => setFokucInput(true)}
+          onBlur={() => {
+            setTimeout(() => {
+              setFokucInput(false)
+            }, 1000);
+          }}
+        />
+        {search !== "" && fokucInput && (
+          <div
+            className="bg-slate-100 shadow w-100 p-3"
+            style={{
+              position: "absolute",
+              top: "85px",
+              zIndex: "999",
             }}
-            size="large"
-            startIcon={<ArrowBackIcon />}
           >
-            Orqaga
-          </Button>
-        </Link>
+            {locationData?.length > 0 &&
+              locationData?.map((item) => (
+                <p
+                  onClick={() => (
+                    setMapPosition({
+                      lat: parseFloat(item?.lat),
+                      lng: parseFloat(item?.lon),
+                    }),
+                    setCurrentLocation(item?.display_name),
+                    setFokucInput(false)
+                  )}
+                  className=" border-b-2 cursor-pointer pt-3"
+                >
+                  {item?.display_name}
+                </p>
+              ))}
+          </div>
+        )}
       </div>
-      <Toaster />
-      {itemData ? (
-        <div className="flex gap-5">
-          <div className="w-1/2" style={{ minHeight: 400 }}>
-            <LoadScript
-              googleMapsApiKey={"AIzaSyDJEtT1hiuEuRHOy366iwruiyFl0vcaBTM"}
-            >
+      <div >
+        <Toaster />
+        <div className="flex flex-col">
+          <div className="w-100">
+            <LoadScript googleMapsApiKey="AIzaSyAZCug959FaGfsyWg2he8OczJUJ_tfDukg">
               <GoogleMap
-                onLoad={handleMapLoad}
-                onDragEnd={handleDragOver}
-                mapContainerStyle={mapStyles}
-                zoom={14}
-                center={defaultCenter}
+                mapContainerStyle={containerStyle}
+                center={mapPosition}
+                zoom={15}
+
               >
                 <Marker
-                  position={position}
-                  options={markerOptions}
-                  draggable
-                  onDrag={handleMarkerDrag}
-                  onDragEnd={handleMarkerDragOver}
+                  position={mapPosition}
+                  draggable={true}
+                  onDragEnd={(e) => onMarkerDragEnd(e)}
                 >
-                  <OverlayView position={position} mapPaneName={"overlayLayer"}>
-                    <div style={overlayViewStyles}>
-                      {formVal.name === "" ? "Filial nomi" : formVal.name}
-                    </div>
-                  </OverlayView>
+                  {infoWindowToggle && (
+                    <InfoWindow
+                      position={mapPosition}
+                      onCloseClick={() => setInfoWindowToggle(false)}
+                    >
+                    </InfoWindow>
+                  )}
                 </Marker>
               </GoogleMap>
             </LoadScript>
           </div>
           <form
-            onSubmit={handleSubmitEdit}
-            className="w-1/3 flex flex-col gap-5 create-branch-form colorr p-3 "
+            onSubmit={query["*"] !== "" ? handleSubmitEdit : handleSubmit}
+            className="bg-white p-3 flex gap-3 py-4 justify-between "
           >
-             {role != "seller" && (
-                  <div >
-                    <div className="font-sans text-md font-bold my-3">
-                      Mahsulot statusini o'zgartirish
-                    </div>
-                    <div>
-                      <Space
-                        style={{
-                          width: "100%",
-                          textAlign: "left",
-                        }}
-                        direction="vertical"
-                      >
-                        <Select
-                          size="large"
-                          mode="single"
-                          style={{
-                            width: "100%",
-                          }}
-                          onChange={(e) => {
-                            setFormVal((c) => ({ ...c, status: e }));
-                          }}
-                          placeholder="status"
-                          value={formVal.status}
-                          options={[
-                            {
-                              label: (
-                                <div className="text-[#50C878]">
-                                  Tasdiqlangan
-                                </div>
-                              ),
-                              value: "approved",
-                            },
-                            {
-                              label: (
-                                <div className="text-[#F4CA16]">Kutilmoqda</div>
-                              ),
-                              value: "pending",
-                            },
-                            {
-                              label: (
-                                <div className="text-[red]">Bekor qilingan</div>
-                              ),
-                              value: "cancelled",
-                            },
-                          ]}
-                        />
-                      </Space>
-                    </div>
-                  </div>
-                )}
+            {role !== "seller" && query["*"] !== "" && (
+              <div>
+                <div className="w-[200px] ">
+                  <Space className="w-100  h-[55px]" direction="vertical">
+                    <Select
+
+                      className="w-100 h-[55px]"
+                      mode="single"
+                      onChange={(e) => {
+                        setFormVal((c) => ({ ...c, status: e }));
+                      }}
+                      placeholder="Filail holati"
+                      value={formVal.status}
+                      options={[
+                        {
+                          label: (
+                            <div className="text-[#50C878]">Tasdiqlangan</div>
+                          ),
+                          value: "approved",
+                        },
+                        {
+                          label: <div className="text-[#F4CA16]">Kutilmoqda</div>,
+                          value: "pending",
+                        },
+                        {
+                          label: <div className="text-[red]">Bekor qilingan</div>,
+                          value: "cancelled",
+                        },
+                      ]}
+                    />
+                  </Space>
+                </div>
+              </div>
+            )}
 
             <TextField
-              label="Filial nomi"
+              placeholder="Filial nomi"
               variant="outlined"
               size="large"
               type="text"
               required
+              className="w-100"
               value={formVal.name}
               onChange={(e) => {
                 setFormVal((c) => ({ ...c, name: e.target.value }));
               }}
             />
             <TextField
-              label="Aniq manzil"
+              placeholder="Aniq manzil"
               variant="outlined"
               size="large"
+              className="w-100"
               required
-              value={formVal.address}
+              value={curretnLocation ? curretnLocation : formVal.address}
               onChange={(e) => {
                 setFormVal((c) => ({ ...c, address: e.target.value }));
               }}
               type="text"
             />
-            <TextField
-              label="Kenglik"
-              variant="outlined"
-              size="large"
-              name="latitude"
-              required
-              value={formVal.latitude}
-              onChange={(e) => {
-                setPosition((c) => ({
-                  ...c,
-                  lat: Number(e.target.value),
-                }));
-                setdefaultCenter((c) => ({
-                  ...c,
-                  lat: Number(e.target.value),
-                }));
-                setFormVal((c) => ({ ...c, latitude: e.target.value }));
-              }}
-              type="number"
-            />
-            <TextField
-              label="Uzunlik"
-              variant="outlined"
-              size="large"
-              required
-              value={formVal.longitude}
-              onChange={(e) => {
-                setPosition((c) => ({
-                  ...c,
-                  lng: Number(e.target.value),
-                }));
-                setdefaultCenter((c) => ({
-                  ...c,
-                  lng: Number(e.target.value),
-                }));
-                setFormVal((c) => ({ ...c, longitude: e.target.value }));
-              }}
-              type="number"
-            />
             <Button
               variant="contained"
-              sx={{ 
+              sx={{
                 background: "#000",
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#333", // Change this to the desired hover color
-                }
+                },
               }}
+              className="w-[300px]"
               size="large"
-              startIcon={<SaveIcon />}
+              startIcon={query["*"] !== "" && <SaveIcon />}
               type="submit"
               disabled={submiting}
             >
-              {submiting ? "Saqlanmoqda..." : "Saqlash"}
+              {query["*"] !== "" ?
+                submiting ? "Saqlanmoqda..." : "Sqalash" :
+                submiting ? "Qo'shilmoqda..." : "Qo'shish"
+              }
             </Button>
           </form>
         </div>
-      ) : (
-        <Box
-          sx={{
-            display: "flex",
-            wdith: "100%",
-            justifyContent: "center",
-            padding: "150px 0",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
-    </div>
-  ) : (
-    <div className="py-3 px-2"  >
-      <h1 className="text-[35px] pb-3">Filial qo'shish</h1>
-      <Toaster />
-      <div className="flex gap-5">
-        <div className="w-1/2" style={{ minHeight: 400 }}>
-          <LoadScript
-            googleMapsApiKey={"AIzaSyDJEtT1hiuEuRHOy366iwruiyFl0vcaBTM"}
-          >
-            <GoogleMap
-              onLoad={handleMapLoad}
-              onDragEnd={handleDragOver}
-              mapContainerStyle={mapStyles}
-              zoom={14}
-              center={defaultCenter}
-            >
-              <Marker
-                position={position}
-                options={markerOptions}
-                draggable
-                onDrag={handleMarkerDrag}
-                onDragEnd={handleMarkerDragOver}
-              >
-                <OverlayView position={position} mapPaneName={"overlayLayer"}>
-                  <div style={overlayViewStyles}>
-                    {formVal.name === "" ? "Filial nomi" : formVal.name}
-                  </div>
-                </OverlayView>
-              </Marker>
-            </GoogleMap>
-          </LoadScript>
-        </div>
-        <form
-          onSubmit={handleSubmit}
-          className="w-1/3 flex flex-col gap-5 create-branch-form colorr p-2"
-        >
-          <TextField
-            label="Filial nomi"
-            variant="outlined"
-            size="large"
-            type="text"
-            required
-            value={formVal.name}
-            onChange={(e) => {
-              setFormVal((c) => ({ ...c, name: e.target.value }));
-            }}
-          />
-          <TextField
-            label="Aniq manzil"
-            variant="outlined"
-            size="large"
-            required
-            value={formVal.address}
-            onChange={(e) => {
-              setFormVal((c) => ({ ...c, address: e.target.value }));
-            }}
-            type="text"
-          />
-          <TextField
-            label="Kenglik"
-            variant="outlined"
-            size="large"
-            name="latitude"
-            required
-            value={formVal.latitude}
-            onChange={(e) => {
-              setPosition((c) => ({
-                ...c,
-                lat: Number(e.target.value),
-              }));
-              setdefaultCenter((c) => ({
-                ...c,
-                lat: Number(e.target.value),
-              }));
-              setFormVal((c) => ({ ...c, latitude: e.target.value }));
-            }}
-            type="number"
-          />
-          <TextField
-            label="Uzunlik"
-            variant="outlined"
-            size="large"
-            required
-            value={formVal.longitude}
-            onChange={(e) => {
-              setPosition((c) => ({
-                ...c,
-                lng: Number(e.target.value),
-              }));
-              setdefaultCenter((c) => ({
-                ...c,
-                lng: Number(e.target.value),
-              }));
-              setFormVal((c) => ({ ...c, longitude: e.target.value }));
-            }}
-            type="number"
-          />
-          <Button
-            variant="outlined"
-            size="large"
-            type="submit"
-            disabled={submiting}
-            sx={{ 
-              background: "#000",
-              '&:hover': {
-                backgroundColor: "#333", // Change this to the desired hover color
-              }
-            }}
-          >
-            {submiting ? "Qo'shilmoqda" : "Qo'shish"}
-          </Button>
-        </form>
       </div>
     </div>
   );

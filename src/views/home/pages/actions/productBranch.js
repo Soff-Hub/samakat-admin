@@ -35,6 +35,8 @@ export default function ProductPrice() {
     ]);
   };
 
+  console.log(dataArrayFilial);
+
   const handleInputChangeFilial = (index, field, value) => {
     const newArray = [...dataArrayFilial];
     newArray[index][field] = value;
@@ -43,7 +45,6 @@ export default function ProductPrice() {
 
   const handleSubmitBranch = async (e) => {
     e.preventDefault();
-    console.log("Submitted Data:", dataArrayFilial);
     setSubmiting(true);
 
     const data = {
@@ -93,14 +94,12 @@ export default function ProductPrice() {
   };
 
   const handleDeleteRow = (index) => {
-    console.log('index', index);
     
     const newArray = [...dataArrayFilial];
     newArray.splice(index, 1); // O'sha qatorni o'chiradi
     setDataArrayFilial(newArray);
   };
 
-  console.log('dataArrayFilial', dataArrayFilial);
   
 
   useEffect(() => {

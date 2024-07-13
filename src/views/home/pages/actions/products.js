@@ -755,7 +755,7 @@ export default function Product() {
                   type="submit"
                   disabled={submiting}
                 >
-                  {submiting ? "Saqlanmoqda..." : "Saqlash"}
+                  {submiting ? "Saqlanmoqda..." : "Davom etish"}
                 </Button>
               </form>
 

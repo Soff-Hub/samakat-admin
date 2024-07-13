@@ -1,4 +1,4 @@
-import { Input, Select, Space, Steps } from "antd";
+import { Input, InputNumber, Select, Space, Steps } from "antd";
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -60,6 +60,12 @@ export default function ProductPrice() {
   const handleAddRow = () => {
     setDataArray([
       ...dataArray,
+      {
+        color: null,
+        feature: null,
+        price: 0,
+        discount: 0,
+      }
     ]);
   };
 
@@ -143,7 +149,6 @@ export default function ProductPrice() {
     dataArray,
     dataArray?.map((e) => (e.color != null ? e : ""))
   );
-  // console.log("old_variants", dataArrayDetail)
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
@@ -157,8 +162,7 @@ export default function ProductPrice() {
     };
 
     await Client.post(
-      `${API_ENDPOINTS.UPDATE_PRODUCT_PRICE}${
-        params == "true?id" ? search.split("=")?.[2] : params
+      `${API_ENDPOINTS.UPDATE_PRODUCT_PRICE}${params == "true?id" ? search.split("=")?.[2] : params
       }/`,
       data
     )
@@ -170,10 +174,9 @@ export default function ProductPrice() {
       .catch((err) => {
         console.log("err?.data", err.response.data.msg);
         toast.error(
-          `${
-            err.response.data.msg
-              ? err.response.data.msg
-              : "Xatolik! Qayta urinib ko'ring"
+          `${err.response.data.msg
+            ? err.response.data.msg
+            : "Xatolik! Qayta urinib ko'ring"
           } `
         );
         setSubmiting(false);
@@ -198,8 +201,7 @@ export default function ProductPrice() {
     };
 
     await Client.post(
-      `${API_ENDPOINTS.UPDATE_PRODUCT_PRICE}${
-        params == "true?id" ? search.split("=")?.[2] : params
+      `${API_ENDPOINTS.UPDATE_PRODUCT_PRICE}${params == "true?id" ? search.split("=")?.[2] : params
       }/`,
       data
     )
@@ -327,15 +329,23 @@ export default function ProductPrice() {
                         />
                       </Space>
                     </div>
-                    <Input
+
+                    <InputNumber
                       required
-                      size="small"
-                      className="col-md-3"
                       placeholder="Narxni kiriting"
+                      className='col-md-3 py-1'
+                      formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                      onKeyPress={(e) => {
+                        if (!/[0-9]/.test(e.key)) {
+                          e.preventDefault();
+                        }
+                      }}
                       onChange={(e) =>
-                        handleInputChange(index, "price", e.target.value)
+                        handleInputChange(index, "price", e)
                       }
-                    />{" "}
+                    />
+
                     <Button
                       className="col-md-1 ml-2"
                       type="danger"
@@ -382,12 +392,22 @@ export default function ProductPrice() {
             ) : (
               <div className="row my-3">
                 <div className="col-md-3">
-                  <Input
+                  <InputNumber
                     required
-                    size="large"
                     placeholder="Narxni kiriting"
-                    onChange={(e) => setOnePrice(e.target.value)}
+                    className='w-100 py-2'
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                    onKeyPress={(e) => {
+                      if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(e) =>
+                      setOnePrice(e)
+                    }
                   />
+
                 </div>
                 <div className="col-md-4">
                   <Button
@@ -400,7 +420,7 @@ export default function ProductPrice() {
                       },
                     }}
                     onClick={() => handleClickOnePrice()}
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", height: "46px" }}
                   >
                     {submiting ? "Davom etmoqda" : "Davom etish"}
                   </Button>
@@ -477,15 +497,19 @@ export default function ProductPrice() {
                       />
                     </Space>
                   </div>
-
-                  <Input
-                    type="number"
+                  <InputNumber
                     defaultValue={item.price}
-                    size="small"
-                    className="col-md-3"
                     placeholder="Narxni kiriting"
+                    className='w-100 py-2 col-md-3'
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                    onKeyPress={(e) => {
+                      if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
                     onChange={(e) =>
-                      handleInputChangeDetail(index, "price", e.target.value)
+                      handleInputChangeDetail(index, "price", e)
                     }
                   />
 
@@ -599,7 +623,7 @@ export default function ProductPrice() {
                     }}
                     style={{ width: "100%" }}
                   >
-                    {submiting ? "Saqlash davom etmoqda..." : "Saqlash"}
+                    {submiting ? "Saqlash davom etmoqda..." : "Davom etish"}
                   </Button>
                 </div>
                 <div className="col-md-4">
@@ -624,13 +648,23 @@ export default function ProductPrice() {
             <div className="row my-3">
               <div className="col-md-3">
                 {dataArrayDetail?.[0] && (
-                  <Input
+
+                  <InputNumber
                     required
-                    size="large"
-                    placeholder="Narxni kiriting"
-                    onChange={(e) => setOnePrice(e.target.value)}
                     defaultValue={
                       dataArrayDetail?.[0]?.price && dataArrayDetail?.[0]?.price
+                    }
+                    placeholder="Narxni kiriting"
+                    className='w-100 py-2 col-md-3'
+                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                    onKeyPress={(e) => {
+                      if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(e) =>
+                      setOnePrice(e)
                     }
                   />
                 )}
