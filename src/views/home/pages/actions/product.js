@@ -618,7 +618,15 @@ export default function Product() {
                   <div className="d-flex flex-wrap gap-3 my-2">
                     {colorImages[color]?.map((image, index) => (
                       <div key={index} className="d-flex gap-2">
-                        <img width={80} src={image} alt="photo" />
+                        <Image.PreviewGroup >
+                          <Image
+                            width={80}
+                            src={image}
+                            alt={`Uploaded ${index}`}
+                          />
+
+                        </Image.PreviewGroup>
+
                       </div>
                     ))}
 
