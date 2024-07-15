@@ -19,7 +19,7 @@ import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRen
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import LoyaltyIcon from '@mui/icons-material/Loyalty';
+
 
 import {
   CircularProgress,
@@ -30,9 +30,8 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import NavHeaderProduct from "components/shared/NavHeaderProduct";
-import { Button, Form, InputNumber, Modal, Select as AntdSelect } from "antd";
-import toast from "react-hot-toast";
-const { Option } = AntdSelect
+import { Tooltip } from "antd";
+
 
 function EnhancedTableHead() {
   const { role } = useSelector((state) => state.admin);
@@ -107,6 +106,7 @@ function EnhancedTableHead() {
       label: "Amallar",
     },
   ];
+
   return (
     <TableHead>
       <TableRow>
@@ -161,19 +161,15 @@ export default function EnhancedTable() {
   const [constCount, setConstCount] = useState("");
   const [openDelete, setOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [saleId, setsaleId] = useState(null);
-  const [varinats, setVarinats] = useState(null);
   const [category, setCategory] = useState(null);
   const [categoryValue, setCategoryValue] = useState("");
   const [SaleValue, setSaleValue] = useState(null);
   const [storeValue, setStoreValue] = useState("");
   const [errorData, setErrorData] = useState("");
   const [storeList, setStoreList] = useState(null);
-  const [selectValue, setselectValue] = useState(null);
   const [quantity, setQuantity] = useState("");
   const [branch, setBranch] = useState([]);
   const { role } = useSelector((state) => state.admin);
-  const [openModal, setOpenModal] = React.useState(false);
   const [sale_product, setSale_product] = useState([
     {
       id: 1,
@@ -191,7 +187,6 @@ export default function EnhancedTable() {
       value: "tugagan",
     },
   ]);
-  const [form2] = Form.useForm();
 
   const status = {
     approved: {
@@ -313,28 +308,6 @@ export default function EnhancedTable() {
       .catch((err) => console.log(err));
   }
 
-  async function getBranchesVarinat() {
-    await Client.get(API_ENDPOINTS.VARINATS + saleId?.id + '/')
-      .then((resp) => {
-        setVarinats(resp);
-      })
-      .catch((err) => console.log(err));
-  }
-
-
-  async function postOrderPatch(values) {
-    try {
-      form2.resetFields();
-      await Client.patch(API_ENDPOINTS.GET_BRANCHS, values);
-      toast.success("Muvaffaqiyatli yangilandi");
-      getBranches()
-
-    } catch (error) {
-      throw toast.error(error?.message);
-    }
-    setOpenModal(false)
-
-  }
 
 
   useEffect(() => {
@@ -344,15 +317,6 @@ export default function EnhancedTable() {
     getBranches();
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (saleId?.id) {
-      getBranchesVarinat()
-    }
-  }, [saleId]);
-
-
-
 
 
 
@@ -528,6 +492,8 @@ export default function EnhancedTable() {
                             )}
                           </Link>
                         </TableCell>
+
+
                         <TableCell align="right">
                           <Link to={`actions/?edit?${row.id}`}>
                             <span
@@ -535,10 +501,21 @@ export default function EnhancedTable() {
                                 color: `${status[row.status].color}`,
                               }}
                             >
-                              {status[row.status].name}
+                              <Tooltip title={row?.rejected_reason}>
+                                <span style={{ cursor: 'pointer' }}>
+                                  {
+                                    row?.status === "cancelled" &&
+                                    <i className="fa-solid fa-circle-question text-danger mr-1"></i>
+                                  }
+                                  {status[row.status].name}
+                                </span>
+                              </Tooltip>
                             </span>
                           </Link>
                         </TableCell>
+
+
+
                         {(role === "superadmin" || role === "employee") && (
                           <TableCell align="right">
                             <Link to={`actions/?edit?${row.id}`}>
@@ -553,10 +530,6 @@ export default function EnhancedTable() {
                           </TableCell>
                         )}
                         <TableCell align="right" sx={{ position: "relative" }}>
-
-                          <IconButton onClick={() => (setsaleId(row), setOpenModal(true))} color="warning" aria-label="delete">
-                            <LoyaltyIcon />
-                          </IconButton>
 
                           {row.is_delete ? (
                             <IconButton
@@ -621,82 +594,6 @@ export default function EnhancedTable() {
         errorData={errorData}
       />
 
-
-      <Modal
-        title={<p>Mahsulot Chegirmasini tahrirlash</p>}
-        footer={null}
-        open={openModal}
-        onCancel={() => setOpenModal(false)}
-      >
-        <Form
-          form={form2}
-          onFinish={postOrderPatch}
-          className="row mt-3 mb-2 "
-          layout='vertical'
-          noValidate
-        >
-
-          <Form.Item
-            label="Mahsulot varianti"
-            className="col-md-12 mb-3 "
-            name="name">
-
-            <AntdSelect
-              variant="filled"
-              className="col-md-12"
-              placeholder="Mahsulot varianti"
-              style={{ height: "47px" }}
-              onChange={(e) => setselectValue(e)}
-            >
-              {
-                varinats?.length > 0 && varinats?.map(item => (
-                  <Option key={item?.id} value={item?.id} >{item?.concat_item}</Option>
-                ))
-              }
-            </AntdSelect>
-
-          </Form.Item>
-
-
-          <Form.Item
-            className="col-md-12 mb-3"
-            name="discount"
-            label="Mahsulot chegirmasi">
-            <InputNumber
-              defaultValue={(varinats?.length > 0 && varinats?.find(item => item?.id === selectValue))}
-              placeholder="Mahsulot chegirmasi"
-              className='w-100 py-2'
-              formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
-              onKeyPress={(e) => {
-                if (!/[0-9]/.test(e.key)) {
-                  e.preventDefault();
-                }
-              }}
-            />
-
-          </Form.Item>
-
-          <div>
-            <Button
-              htmlType="submit"
-              style={{
-                height: '47px',
-                padding: "1px 30px",
-              }}
-              className="bg-primary text-white  col-md-12">
-              <span
-                style={{
-                  fontSize:
-                    '16px',
-                }}>
-                Saqlash
-              </span>
-            </Button>
-          </div>
-
-        </Form>
-      </Modal>
     </div>
   );
 }

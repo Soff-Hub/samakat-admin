@@ -1,7 +1,6 @@
-import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Image, Input, Modal, Select, Space, Tree } from "antd";
+import { Form, Image, Input, Modal, Select, Space, Tree, Button } from "antd";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
@@ -30,6 +29,7 @@ export default function Product() {
   const [sizeInputArray, setSizeInputArray] = useState([{ item: 1 }]);
   const [inputValues, setInputValues] = useState([]);
   const [lastCategory, setLastCategory] = useState("");
+  const [form] = Form.useForm();
 
   const [categoryList, setCategoryList] = useState([]); //kategoriyalar listi uchun
   const [category1, setCategory1] = useState([]); // kategoriyalar ni faqat 4 tagacha ichma ich kira oladi
@@ -251,8 +251,8 @@ export default function Product() {
   };
 
   // qo'shish
-  const handleSubmitAdd = async (e) => {
-    e.preventDefault();
+  const handleSubmitAdd = async () => {
+    form.resetFields();
     setSubmiting(true);
 
     const formData1 = new FormData();
@@ -333,147 +333,175 @@ export default function Product() {
         />
 
         <div className="w-full mt-3">
-          <form
-            onSubmit={handleSubmitAdd}
+          <Form
+            form={form}
+            onFinish={handleSubmitAdd}
+            layout='vertical'
             className="w-full flex flex-col gap-3  create-branch-form border-3"
           >
             <div className="colorr p-4">
               <div className="row gap-3">
                 <div className="row">
-                  <div className="col-6">
-                    <span className="label--name font-bold">Nomi(uz)*</span>
+
+                  <Form.Item
+                    
+                    label="Mahsulot nomi"
+                    className="col-md-6  mb-3"
+                    name="titleUz"
+                    
+                    
+                    rules={[
+                      {
+                        required: true,
+                        message:
+                          'Mahsulot nomini kirtish majburiy',
+                      },
+                    ]}>
                     <Input
-                      placeholder="Nomi *"
-                      type="text"
-                      value={name}
-                      required
-                      className="py-2"
+                    
+                      
+                      placeholder="Mahsulot nomi"
                       style={{
-                        height: "35px",
+                        height: "45px",
                       }}
                       onChange={(e) => {
                         setName(e.target.value);
                       }}
                     />
-                  </div>
-                  <div className="col-6">
-                    <span className="label--name font-bold">Nomi(ru) *</span>
+                  </Form.Item>
+                  <Form.Item
+                    label="Mahsulot nomi (ru)"
+                    className="col-md-6  mb-3"
+                    name="titleRu"
+                    rules={[
+                      {
+                        required: true,
+                        message:
+                          'Mahsulot nomini kirtish majburiy',
+                      },
+                    ]}>
                     <Input
-                      placeholder="Название *"
-                      type="text"
-                      value={nameRu}
-                      required
-                      className="py-2"
+                      placeholder="Mahsulot nomi (ru)"
                       style={{
-                        height: "35px",
+                        height: "45px",
                       }}
                       onChange={(e) => {
                         setNameRu(e.target.value);
                       }}
                     />
-                  </div>
+                  </Form.Item>
+
                 </div>
                 {/* kategoriyalar */}
-                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                  <span className="label--name font-bold">Kategoriyalar *</span>
-                  <div className="d-flex gap-3  align-items-start">
-                    <Space
+                <Form.Item
+                  label="Kategoriyalar"
+                  className=" mb-3 col-md-12"
+                  name="category"
+                  rules={[
+                    {
+                      required: true,
+                      message:
+                        'Kategoriyalarni nomini kirtish majburiy',
+                    },
+                  ]}>
+                  <Select
+                    disabled={checkCategory}
+                    mode="single"
+                    allowClear
+                    style={{
+                      width: "100%",
+                      height: "40px"
+                    }}
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      (option?.label ?? "").includes(input)
+                    }
+                    placeholder="Kategoriyalar"
+                    onChange={(e) => handleChaildCategory(e, 1)}
+                    options={categoryList}
+                  />
+
+
+                  {category1?.length > 0 && (
+                    <Select
+                      disabled={checkCategory}
+                      mode="single"
+                      allowClear
                       style={{
                         width: "100%",
-                        textAlign: "left",
+                        height: "40px"
                       }}
-                      direction="vertical"
-                    >
-                      <Select
-                        required
-                        disabled={checkCategory}
-                        mode="single"
-                        allowClear
-                        style={{
-                          width: "100%",
-                        }}
-                        showSearch
-                        optionFilterProp="children"
-                        filterOption={(input, option) =>
-                          (option?.label ?? "").includes(input)
-                        }
-                        placeholder="Kategoriyalar"
-                        onChange={(e) => handleChaildCategory(e, 1)}
-                        options={categoryList}
-                      />
-                      {category1?.length > 0 && (
-                        <Select
-                          disabled={checkCategory}
-                          mode="single"
-                          allowClear
-                          style={{
-                            width: "100%",
-                          }}
-                          showSearch
-                          optionFilterProp="children"
-                          filterOption={(input, option) =>
-                            (option?.label ?? "").includes(input)
-                          }
-                          placeholder="Kategoriyalar"
-                          onChange={(e) => (
-                            handleChaildCategory(e, 2), setPercent(30)
-                          )}
-                          options={category1}
-                        />
+                      className="mt-2"
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        (option?.label ?? "").includes(input)
+                      }
+                      placeholder="Kategoriyalar"
+                      onChange={(e) => (
+                        handleChaildCategory(e, 2), setPercent(30)
                       )}
-                      {category2?.length > 0 && (
-                        <Select
-                          disabled={checkCategory}
-                          mode="single"
-                          allowClear
-                          style={{
-                            width: "100%",
-                          }}
-                          showSearch
-                          optionFilterProp="children"
-                          filterOption={(input, option) =>
-                            (option?.label ?? "").includes(input)
-                          }
-                          placeholder="Kategoriyalar"
-                          onChange={(e) => handleChaildCategory(e, 3)}
-                          options={category2}
-                        />
-                      )}
-                      {category3?.length > 0 && (
-                        <Select
-                          disabled={checkCategory}
-                          mode="single"
-                          allowClear
-                          style={{
-                            width: "100%",
-                          }}
-                          showSearch
-                          optionFilterProp="children"
-                          filterOption={(input, option) =>
-                            (option?.label ?? "").includes(input)
-                          }
-                          placeholder="Kategoriyalar"
-                          onChange={(e) => setLastCategory(e)}
-                          options={category3}
-                        />
-                      )}
-                    </Space>
-                    {/* <div
-                      size="small"
-                      className="btn btn-success"
-                      onClick={() => setCheckCategory(!checkCategory)}
-                    >
-                      Qo'shish
-                    </div> */}
-                  </div>
-                </div>
+                      options={category1}
+                    />
+                  )}
+                  {category2?.length > 0 && (
+                    <Select
+                      disabled={checkCategory}
+                      mode="single"
+                      allowClear
+                      className="mt-2"
+                      style={{
+                        width: "100%",
+                        height: "40px"
+                      }}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        (option?.label ?? "").includes(input)
+                      }
+                      placeholder="Kategoriyalar"
+                      onChange={(e) => handleChaildCategory(e, 3)}
+                      options={category2}
+                    />
+                  )}
+                  {category3?.length > 0 && (
+                    <Select
+                      disabled={checkCategory}
+                      mode="single"
+                      allowClear
+                      className="mt-2"
+                      style={{
+                        width: "100%",
+                        height: "40px"
+                      }}
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        (option?.label ?? "").includes(input)
+                      }
+                      placeholder="Kategoriyalar"
+                      onChange={(e) => setLastCategory(e)}
+                      options={category3}
+                    />
+                  )}
+                </Form.Item>
+
+
 
                 {/* umumiy rasm */}
 
-                <div className="col-md-6">
-                  <span className="label--name font-bold">
-                    Asosiy rasmlarni qo'shish *
-                  </span>
+                <Form.Item
+                  label="Asosiy rasmlarni qo'shish"
+                  className=" mb-3 col-md-12"
+                  name="images"
+                  rules={[
+                    {
+                      required: true,
+                      message:
+                        "Asosiy rasmlarni qo'shish nomini kirtish majburiy",
+                    },
+                  ]}>
                   <div className="d-flex gap-3 flex-wrap">
                     <div
                       style={{
@@ -491,8 +519,7 @@ export default function Product() {
                       }}
                     >
                       <i className="fa-solid fa-file-arrow-down"></i>
-                      <input
-                        required
+                      <Input
                         type="file"
                         multiple
                         accept="image/*"
@@ -517,6 +544,7 @@ export default function Product() {
                         <Image.PreviewGroup >
                           <Image
                             width={80}
+                            height={80}
                             style={{ borderRadius: "3px", objectFit: "cover" }}
                             src={image}
                             alt={`Uploaded ${index}`}
@@ -538,36 +566,55 @@ export default function Product() {
                       </div>
                     ))}
                   </div>
-                </div>
+
+                </Form.Item>
+
 
                 {/* qisqa izoh uchun */}
 
                 <div className="row">
-                  <div className="col-md-6">
-                    <span className="label--name font-bold">
-                      Qisqa izoh (uz) *{" "}
-                    </span>
+
+                  <Form.Item
+                    label=" Qisqa izoh (uz)"
+                    className=" mb-3 col-md-12"
+                    name="des1"
+                    rules={[
+                      {
+                        required: true,
+                        message:
+                          " Qisqa izoh (uz) kirtish majburiy",
+                      },
+                    ]}>
                     <TextArea
-                      required
                       placeholder="Qisqa tavsif "
                       rows={4}
                       height="auto"
                       onChange={(e) => setShort_desc_uz(e.target.value)}
                     />
-                  </div>
-                  <div className="col-md-6">
-                    <span className="label--name font-bold">
-                      Qisqa izoh (ru) *{" "}
-                    </span>
+
+                  </Form.Item>
+
+                  <Form.Item
+                    label=" Qisqa izoh (ru)"
+                    className=" mb-3 col-md-12"
+                    name="des2"
+                    rules={[
+                      {
+                        required: true,
+                        message:
+                          " Qisqa izoh (ru) kirtish majburiy",
+                      },
+                    ]}>
                     <TextArea
-                      required
-                      placeholder="Qisqa tavsif "
+                      placeholder="Qisqa tavsif(ru) "
                       rows={4}
+                      height="auto"
                       onChange={(e) => setShort_desc_ru(e.target.value)}
                     />
-                  </div>
-                </div>
 
+                  </Form.Item>
+
+                </div>
                 {/* skedetor izohlar uchun */}
 
                 <div className="col-12">
@@ -576,6 +623,7 @@ export default function Product() {
                   <CKeditor
                     onChange={(e) => setDescription(e)}
                     editorLoaded={true}
+
                   />
                 </div>
 
@@ -734,21 +782,30 @@ export default function Product() {
             </div>
 
 
-            <Button
-              variant="contained"
-              sx={{
-                background: "#000",
-                "&:hover": {
-                  backgroundColor: "#333", // Change this to the desired hover color
-                },
-              }}
-              size="large"
-              type="submit"
-              disabled={submiting}
-            >
-              {submiting ? "Davom etmoqda" : "Davom etish"}
-            </Button>
-          </form>
+            <Form.Item className="w-full my-2">
+              <Button
+                loading={submiting}
+                htmlType="submit"
+                style={{
+                  width: '100%',
+                  height: '45px',
+                  padding: "1px 30px"
+                }}
+                className="bg-black">
+                <span
+                  style={{
+                    color: '#fff',
+                    fontSize:
+                      '16px',
+                  }}>
+                  Davom etish
+                </span>
+              </Button>
+            </Form.Item>
+
+          </Form>
+
+
 
           <Modal
             width={250}
@@ -772,6 +829,7 @@ export default function Product() {
               treeData={treeData}
             />
           </Modal>
+          
           <Modal
             width={300}
             title="Xususiyat nomini qo'shing"

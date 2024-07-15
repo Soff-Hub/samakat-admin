@@ -20,9 +20,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
+import { Button, Form, Image, InputNumber } from "antd";
+import logo from '../../../assets/images/logo Alokand emblem.png'
+import toast, { Toaster } from "react-hot-toast";
+
 
 const style = {
   position: "absolute",
@@ -57,21 +60,17 @@ export function formatterPrice(number) {
 export default function Applicaitons() {
   const { role } = useSelector((state) => state.admin);
   const [data, setData] = useState(null);
+  const [dataProfile, setDataProfile] = useState(null);
   const [count, setCount] = useState("");
   const [page, setPage] = useState(1);
   const [productsId, setProductsId] = useState(null);
-  const [number, setNumber] = useState({ amount: "", card_number: "" });
   const [description, setDescription] = useState(null);
   const [files, setfiles] = useState(null);
   const [open, setOpen] = useState(false);
-  const [openImage, setOpenImage] = useState(false);
-  const [openImageId, setOpenImageId] = useState(null);
   const [statusSel, setstatusSel] = useState(null);
   const handleClose = () => setOpen(false);
+  const [form] = Form.useForm();
 
-  const handleNumberChange = (event) => {
-    setNumber((ov) => ({ ...ov, [event.target.name]: event.target.value }));
-  };
 
   async function getOrders() {
     await Client.get(API_ENDPOINTS.APPLICATIONS)
@@ -83,33 +82,41 @@ export default function Applicaitons() {
   }
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    await Client.post(API_ENDPOINTS.APPLICATIONS, number).catch((err) =>
-      console.log(err)
-    );
-    getOrders();
+    try {
+      await Client.post(API_ENDPOINTS.APPLICATIONS, event)
+      getOrders();
+      toast.success('Muvaffaqiyatli yuborildi')
+    } catch (error) {
+      toast.error(error?.response?.data?.msg[0] || error?.message);
+    }
   };
 
   const handleSubmitPatch = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    if (files) {
-      formData?.append("check_file", files);
+    try {
+      const formData = new FormData();
+      if (files) {
+        formData?.append("check_file", files);
+      }
+      if (description) {
+        formData?.append("description", description);
+      }
+      if (statusSel) {
+        formData?.append("status", statusSel);
+      }
+      formData?.append("amout", productsId?.amount);
+      formData?.append("card_number", productsId?.card_number);
+      await Client.patch(
+        API_ENDPOINTS.APPLICATIONS + productsId?.id + "/",
+        formData
+      )
+      toast.success('Muvaffaqiyatli yangilandi')
+      getOrders();
+      setOpen(false);
+    } catch (error) {
+      toast.error(error?.response?.data?.msg[0] || error?.message);
+      setOpen(false);
     }
-    if (description) {
-      formData?.append("description", description);
-    }
-    if (statusSel) {
-      formData?.append("status", statusSel);
-    }
-    formData?.append("amout", productsId?.amount);
-    formData?.append("card_number", productsId?.card_number);
-    await Client.patch(
-      API_ENDPOINTS.APPLICATIONS + productsId?.id + "/",
-      formData
-    ).catch((err) => console.log(err));
-    setOpen(false);
-    getOrders();
   };
 
   const handleClickPatch = async (item) => {
@@ -143,9 +150,18 @@ export default function Applicaitons() {
     return time + "\n" + Date;
   };
 
+  async function getProfile() {
+    await Client.get(API_ENDPOINTS.PROFILE)
+      .then((resp) => {
+        setDataProfile(resp);
+      })
+      .catch((err) => console.log(err));
+  }
   useEffect(() => {
+    getProfile()
     getOrders();
   }, []);
+
 
   const columnSeller = [
     {
@@ -232,54 +248,98 @@ export default function Applicaitons() {
     },
   };
 
+  useEffect(() => {
+    if (dataProfile?.wallet) {
+      form.setFieldsValue({
+        amount: dataProfile?.wallet
+      })
+    }
+  }, [form, dataProfile?.wallet])
+
 
   return (
     <div className="px-2 py-3 bg--color">
+      <Toaster />
       <div className="mb-4">
         <h1 className="text-2xl">Arizalar </h1>
       </div>
       {role === "seller" && (
-        <form
-          className="flex justify-between items-start gap-3 p-3 bg-white"
-          autoComplete="off"
-          onSubmit={handleSubmit}
+        <Form
+          form={form}
+          onFinish={handleSubmit}
+          layout='vertical'
+          className="row p-3 m-0 bg-white mb-2 "
         >
-          <TextField
-            id="outlined-number"
-            className="w-50"
-            name="amount"
-            label="Summa"
-            type="number"
-            value={number?.amount}
-            onChange={handleNumberChange}
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+          <span className="mb-3 text-yellow-400  font-semibold">
+            Balansdagi pulingizni yechib olishingiz uchun ariza yuboring. Sizga 24 soat ichida arizangizda ko’rsatilgan summa bo’yicha pul o’tkaziladi va bu bo’yicha xabar yuboriladi.
+            <br />  !Eslatma: Xisobingizda kamida  <strong >{formatterPrice(dataProfile?.application_charge)}</strong> so’m bo’lishi kerak.
+          </span>
+          <Form.Item
 
-          <TextField
-            required
-            id="outlined-number"
-            className="w-50"
+            label="Summa"
+            className="col-md-5  m-0"
+            name="amount"
+
+
+            rules={[
+              {
+                required: true,
+                message:
+                  'Summani kirtish majburiy',
+              },
+            ]}>
+            <InputNumber
+              disabled={dataProfile?.wallet < dataProfile?.application_charge}
+              placeholder="Summa kiriting"
+              className='w-full py-1 h-[40px]'
+              formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+              onKeyPress={(e) => {
+                if (!/[0-9]/.test(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+            />
+          </Form.Item>
+          <Form.Item
             label="Karta raqam"
-            type="number"
+            className="col-md-5  m-0"
             name="card_number"
-            value={number?.card_number}
-            onChange={handleNumberChange}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
+
+
+            rules={[
+              {
+                required: true,
+                message:
+                  'Karta raqam kirtish majburiy',
+              },
+            ]}>
+            <InputNumber
+              disabled={dataProfile?.wallet < dataProfile?.application_charge}
+              placeholder="Karta raqam kiriting"
+              className='w-full py-1 h-[40px] '
+              maxLength={19}
+              formatter={(value) => `${value}`.replace(/\B(?=(\d{4})+(?!\d))/g, ',')}
+              parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+              onKeyPress={(e) => {
+                if (!/[0-9]/.test(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+            />
+          </Form.Item>
 
           <Button
-            variant="contained"
-            className="w-[130px] h-[55px]"
-            type="submit"
+            disabled={dataProfile?.wallet < dataProfile?.application_charge}
+            type="primary"
+            className={`bg-blue-500 text-${dataProfile?.wallet < dataProfile?.application_charge ? "gray-400" : "white"} col-md-2 mt-[30px] h-[40px]`}
+            htmlType="submit"
           >
             Yuborish
           </Button>
-        </form>
+
+
+        </Form>
       )}
 
       {data ? (
@@ -300,19 +360,19 @@ export default function Applicaitons() {
               <TableRow>
                 {role === "seller"
                   ? columnSeller?.map((item) => (
-                      <TableCell key={item?.id}>
-                        <span className="font-bold text-[16px]">
-                          {item?.name}
-                        </span>
-                      </TableCell>
-                    ))
+                    <TableCell key={item?.id}>
+                      <span className="font-bold text-[16px]">
+                        {item?.name}
+                      </span>
+                    </TableCell>
+                  ))
                   : columnAdmin?.map((item) => (
-                      <TableCell key={item?.id}>
-                        <span className="font-bold text-[16px]">
-                          {item?.name}
-                        </span>
-                      </TableCell>
-                    ))}
+                    <TableCell key={item?.id}>
+                      <span className="font-bold text-[16px]">
+                        {item?.name}
+                      </span>
+                    </TableCell>
+                  ))}
               </TableRow>
             </TableHead>
 
@@ -353,20 +413,15 @@ export default function Applicaitons() {
                       </span>
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      <span
-                        onClick={() => (
-                          setOpenImageId(row), setOpenImage(true)
-                        )}
-                        style={{ cursor: "zoom-in" }}
-                        className="hover:underline"
-                      >
-                        <img
-                          height={50}
-                          width={50}
-                          src={row?.check_file}
+                      <Image.PreviewGroup >
+                        <Image
+                          height={40}
+                          width={40}
+                          src={row?.check_file || logo}
                           alt={row?.check_file || "Check rasmi"}
                         />
-                      </span>
+
+                      </Image.PreviewGroup>
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <span className="hover:underline">
@@ -375,9 +430,8 @@ export default function Applicaitons() {
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <span
-                        className={`hover:underline ${
-                          status[row.status]?.color
-                        }`}
+                        className={`hover:underline ${status[row.status]?.color
+                          }`}
                       >
                         {status[row.status]?.name}
                       </span>
@@ -497,59 +551,23 @@ export default function Applicaitons() {
 
               <div className="flex justify-end ">
                 <div className="flex gap-3 items-center">
-                  <Button
-                    color="error"
-                    variant="contained"
-                    className=" h-[40px]"
+                  <button
+                    className=" h-[40px] btn btn-danger text-red-500"
                     type="button"
                     onClick={handleClose}
                   >
                     Bekor qilish
-                  </Button>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    className=" h-[40px]"
+                  </button>
+                  <button
+
+                    className=" h-[40px] btn btn-primary text-blue-500"
                     type="submit"
                   >
                     Yuborish
-                  </Button>
+                  </button>
                 </div>
               </div>
             </form>
-          </Box>
-        </Fade>
-      </Modal>
-
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={openImage}
-        onClose={() => setOpenImage(false)}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={openImage}>
-          <Box sx={style}>
-            <div className="flex justify-between items-start">
-              <p id="transition-modal-title" variant="h6" component="h2">
-                {openImageId?.seller}
-                <p>{formatterPrice(openImageId?.amount)} so'm</p>
-              </p>
-              <span
-                onClick={() => setOpenImage(false)}
-                style={{ cursor: "pointer" }}
-              >
-                {" "}
-                <CloseIcon />
-              </span>
-            </div>
-            <img width={600} height={600} className="mt-2" src={openImageId?.check_file}  alt="check_file"/>
           </Box>
         </Fade>
       </Modal>

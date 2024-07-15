@@ -7,7 +7,7 @@ export default function CKeditor({ onChange, name, value, disabled }) {
     return (
         <>
             <CKEditor
-            disabled={disabled}
+                disabled={disabled}
                 editor={ClassicEditor}
                 name={name}
                 data={value}

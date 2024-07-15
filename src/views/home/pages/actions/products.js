@@ -23,7 +23,6 @@ export default function Product() {
   const [sizetype, setsizeType] = useState([]);
   const [colorImageList, setColorImageList] = useState([]); // yuborish uchun rang rasmlari
   const [colorData, setColorData] = useState([]);
-  const [changeSize, setChangeSize] = useState(true);
   const [sizeInputArray, setSizeInputArray] = useState([{ item: 1 }]);
   const [inputValues, setInputValues] = useState([""]);
 
@@ -43,6 +42,7 @@ export default function Product() {
   const [colorList, setColorList] = useState([]); // price va filialni default qiymatlari uchun
   const [featureList, setFeatureList] = useState([]);
   const [status, setStatus] = useState("");
+  const [desReason, setDesReason] = useState(null);
 
   // qo'shimcha xususiyat kiritayotgandagi modalni yopish => cancel
   const handleCancelSizeParent = () => {
@@ -179,7 +179,10 @@ export default function Product() {
         selectedColors && JSON.stringify(selectedColors)
       );
     }
-    // formData1.append("feature",feature || sizetype);
+    if (desReason) {
+      formData1.append("rejected_reason", desReason);
+
+    }
     formData1.append(
       "feature_items",
       inputValues && JSON.stringify(inputValues)
@@ -191,7 +194,8 @@ export default function Product() {
     });
 
     const data = {
-      status: status,
+      status: status ? status : detailProduct?.status,
+      rejected_reason: desReason ? desReason : detailProduct?.rejected_reason
     };
 
     await Client.patch(
@@ -269,7 +273,12 @@ export default function Product() {
     (item1) =>
       !detailProduct?.feature_items?.some((item2) => item2.id === item1.id)
   );
-  // console.log("result", result);
+
+
+  const lastCategory = detailProduct?.category_data?.length > 0
+    ? detailProduct.category_data[detailProduct.category_data.length - 1].name
+    : '';
+
 
   return (
     <>
@@ -337,9 +346,20 @@ export default function Product() {
                       </div>
                     </div>
 
-                    <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                    <div className="col-md-12">
                       <span className="label--name font-bold">
-                        Kategoriyalar
+                        Kategoriyalar:
+                        <span className="ml-1">
+                          {detailProduct?.category_data?.length > 0 &&
+                            detailProduct.category_data?.map((item, index) => (
+                              <span key={index}>
+                                {item.name}
+                                {index < detailProduct.category_data.length - 1 ? ' > ' : ''}
+                              </span>
+                            ))
+                          }
+                        </span>
+
                       </span>
                       <div className="d-flex gap-3  align-items-start">
                         <Space
@@ -356,10 +376,7 @@ export default function Product() {
                             }}
                             placeholder="Kategoriyalar"
                             options={categoryList}
-                            value={
-                              detailProduct?.category_data &&
-                              detailProduct?.category_data?.name
-                            }
+                            value={lastCategory}
                           />
                         </Space>
                       </div>
@@ -748,8 +765,27 @@ export default function Product() {
                         />
                       </Space>
                     </div>
+                    {
+                      (status === "cancelled" || detailProduct?.status) &&
+                      <div className="col-md-12">
+                        <span className="label--name font-bold">
+                          Sabab *
+                        </span>
+                        <TextArea
+                          onChange={(e) => setDesReason(e.target.value)}
+                          defaultValue={
+                            detailProduct?.rejected_reason ?
+                              detailProduct?.rejected_reason : ''
+                          }
+                          placeholder="Sabab *"
+                          rows={4}
+                        />
+                      </div>
+
+                    }
                   </div>
                 )}
+
 
                 <Button
                   variant="contained"

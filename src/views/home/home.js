@@ -39,6 +39,12 @@ import { Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "store/slice";
 import Logo from "../../assets/images/logo-white.png";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useState } from "react";
+import { API_ENDPOINTS } from "service/ApiEndpoints";
+import Client from "service/Client";
+import { Image } from "antd";
+import { formatterPrice } from "./pages/applications";
 
 const drawerWidth = 300;
 
@@ -112,6 +118,8 @@ export default function MiniDrawer() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [data, setData] = useState(null);
+  const [socket, setSocket] = useState(null);
   const { currentPage, role, isLoginning } = useSelector(
     (state) => state.admin
   );
@@ -123,14 +131,14 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  
+
   const currentPageConverter = (page) => {
     if (role === "superadmin") {
       const current = navigationConfig.find(
         (el) => el.path.split("/")[1] === page.split("/")[1]
       );
       dispatch(setCurrentPage(current?.name || "Dashboard"));
-    }else if (role === "seller") {
+    } else if (role === "seller") {
       const current = navigationConfigSeller.find(
         (el) => el.path.split("/")[1] === page.split("/")[1]
       );
@@ -143,6 +151,18 @@ export default function MiniDrawer() {
     }
   };
 
+  async function getProfile() {
+    await Client.get(API_ENDPOINTS.PROFILE)
+      .then((resp) => {
+        setData(resp);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    getProfile()
+  }, []);
+
   useEffect(() => {
     if (role === "superadmin") {
       if (location.pathname === "/") {
@@ -152,7 +172,7 @@ export default function MiniDrawer() {
       if (location.pathname === "/") {
         navigate("/orders");
       }
-    }else{
+    } else {
       if (location.pathname === "/") {
         navigate("/dashboard");
       }
@@ -161,6 +181,31 @@ export default function MiniDrawer() {
 
     // eslint-disable-next-line
   }, [location.pathname, navigationConfig, role, isLoginning]);
+
+  
+  // useEffect(() => {
+  //   const token = 'token';
+  //   if (token) {
+
+  //     const ws = new WebSocket(
+  //       `${process.env.NEXT_PUBLIC_WS_BASE_URL}ws/deals?token=${token}`
+  //     );
+  //     setSocket(ws);
+
+  //     ws.onmessage = (event) => {
+  //       setSocket(JSON.parse(event?.data));
+  //     };
+
+  //     // Clean up on unmount
+  //     return () => {
+  //       if (ws.readyState === WebSocket.OPEN) {
+  //         ws.close();
+  //       }
+  //     };
+  //   }
+
+  // }, []);
+
 
   return (
     <Box sx={{ display: "flex", minWidth: 650 }}>
@@ -186,60 +231,93 @@ export default function MiniDrawer() {
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <img style={{ width: "80%" }} src={Logo} alt="aloqand" />
-          <IconButton onClick={handleDrawerClose}>
-            <MenuOpenIcon />
-          </IconButton>
+        <DrawerHeader className="flex flex-col">
+          <div className="d-flex justify-between">
+            <img style={{ width: "80%" }} src={Logo} alt="aloqand" />
+            <IconButton onClick={handleDrawerClose}>
+              <MenuOpenIcon />
+            </IconButton>
+          </div>
+
+          {role === "seller" && <div className="pt-2  w-full flex flex-col">
+            <div className="flex items-center gap-2 pl-2">
+              {data?.image ?
+                <Image.PreviewGroup >
+                  <Image
+                    className="mb-2"
+                    style={{
+                      width: "45px",
+                      height: "45px",
+                      borderRadius: "50%"
+                    }}
+                    src={data?.image}
+                    alt={data?.image}
+                  />
+
+                </Image.PreviewGroup>
+
+                : <AccountCircleIcon style={{ fontSize: "55px" }} />}
+              <div className="flex flex-col">
+                <span className="text-truncate text-[14px] ">{data?.first_name} </span>
+                <span className="text-[14px] text-truncate">{data?.phone}</span>
+              </div>
+            </div>
+            <p className={`p-2 bg-${data?.wallet >= data?.application_charge ? "green-500" : "red-500"} mt-2 text-white text-center`}>
+              Balans: {
+                formatterPrice(data?.wallet)
+              } so'm
+            </p>
+          </div>}
+
         </DrawerHeader>
         <Divider />
         <List>
 
           {role === "superadmin"
             ? navigationConfig?.map((item, index) => (
-                <ListItem
-                  key={index}
-                  disablePadding
-                  sx={{ display: "block" }}
-                  className={
-                    item.name === currentPage ? "bg-black text-white" : ""
-                  }
-                >
-                  <Link to={item.path}>
-                    <ListItemButton
+              <ListItem
+                key={index}
+                disablePadding
+                sx={{ display: "block" }}
+                className={
+                  item.name === currentPage ? "bg-black text-white" : ""
+                }
+              >
+                <Link to={item.path}>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
                       sx={{
-                        minHeight: 48,
-                        justifyContent: open ? "initial" : "center",
-                        px: 2.5,
+                        minWidth: 0,
+                        mr: open ? 1 : "auto",
+                        justifyContent: "center",
+                        color: item.name === currentPage ? "#fff" : "",
                       }}
                     >
-                      <ListItemIcon
-                        sx={{
-                          minWidth: 0,
-                          mr: open ? 1 : "auto",
-                          justifyContent: "center",
-                          color: item.name === currentPage ? "#fff" : "",
-                        }}
-                      >
-                        {item.icon}
-                      </ListItemIcon>
-                      <ListItemText
-                        sx={{
-                          minWidth: 0,
-                          mr: open ? 1 : "auto",
-                          justifyContent: "center",
-                          color: item.name === currentPage ? "#fff" : "",
-                          opacity: open ? 1 : 0,
-                        }}
-                        primary={item.name}
-                      />
-                    </ListItemButton>
-                  </Link>
-                  <Divider />
-                </ListItem>
-              ))
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 1 : "auto",
+                        justifyContent: "center",
+                        color: item.name === currentPage ? "#fff" : "",
+                        opacity: open ? 1 : 0,
+                      }}
+                      primary={item.name}
+                    />
+                  </ListItemButton>
+                </Link>
+                <Divider />
+              </ListItem>
+            ))
             : role === "seller"
-            ? navigationConfigSeller?.map((item, index) => (
+              ? navigationConfigSeller?.map((item, index) => (
                 <ListItem
                   key={index}
                   disablePadding
@@ -266,8 +344,9 @@ export default function MiniDrawer() {
                       >
                         {item.icon}
                       </ListItemIcon>
+
                       <ListItemText
-                        primary={item.name}
+                        primary={item.name + ""}
                         sx={{ opacity: open ? 1 : 0 }}
                       />
                     </ListItemButton>
@@ -275,7 +354,7 @@ export default function MiniDrawer() {
                   <Divider />
                 </ListItem>
               ))
-            : navigationConfigEmployee?.map((item, index) => (
+              : navigationConfigEmployee?.map((item, index) => (
                 <ListItem
                   key={index}
                   disablePadding
@@ -324,16 +403,16 @@ export default function MiniDrawer() {
             <Routes>
               {role === "superadmin"
                 ? adminActionRoutes.map((route, index) => {
-                    return (
-                      <Route
-                        key={index}
-                        path={route.path}
-                        element={<AppRoute component={route.component} />}
-                      />
-                    );
-                  })
+                  return (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      element={<AppRoute component={route.component} />}
+                    />
+                  );
+                })
                 : role === "seller"
-                ? sellerActionRoutes.map((route, index) => {
+                  ? sellerActionRoutes.map((route, index) => {
                     return (
                       <Route
                         key={index}
@@ -342,7 +421,7 @@ export default function MiniDrawer() {
                       />
                     );
                   })
-                : employeActionRoutes.map((route, index) => {
+                  : employeActionRoutes.map((route, index) => {
                     return (
                       <Route
                         key={index}
@@ -355,6 +434,6 @@ export default function MiniDrawer() {
           </Suspense>
         </div>
       </Box>
-    </Box>
+    </Box >
   );
 }
