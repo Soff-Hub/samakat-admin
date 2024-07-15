@@ -41,6 +41,7 @@ export default function UserDropdown() {
     }, [user])
 
 
+
     return (
         <div className='ms-auto'>
             <Button style={{ color: '#fff' }} aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick}>
@@ -49,7 +50,10 @@ export default function UserDropdown() {
                 {
                     user?.role !== 'seller' ? <AccountCircleIcon /> :
                         user?.seller?.image ?
-                            <img style={{ width: '35px', height: '35px', borderRadius: '50%', border: '1px solid #fff' }} src={user?.seller?.image} alt="alokand" />
+                            <img
+                                style={{ width: '35px', height: '35px', borderRadius: '50%', border: '1px solid #fff' }}
+                                src={user?.seller?.image} alt="alokand" />
+
                             :
                             <AccountCircleIcon fontSize='large' />
                 }

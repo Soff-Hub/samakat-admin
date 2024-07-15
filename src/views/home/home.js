@@ -39,11 +39,9 @@ import { Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "store/slice";
 import Logo from "../../assets/images/logo-white.png";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useState } from "react";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
-import { Image } from "antd";
 import { formatterPrice } from "./pages/applications";
 
 const drawerWidth = 300;
@@ -152,7 +150,7 @@ export default function MiniDrawer() {
   };
 
   async function getProfile() {
-    await Client.get(API_ENDPOINTS.PROFILE)
+    await Client.get(API_ENDPOINTS.PROFILE_ADMIN)
       .then((resp) => {
         setData(resp);
       })
@@ -239,29 +237,8 @@ export default function MiniDrawer() {
             </IconButton>
           </div>
 
-          {role === "seller" && <div className="pt-2  w-full flex flex-col">
-            <div className="flex items-center gap-2 pl-2">
-              {data?.image ?
-                <Image.PreviewGroup >
-                  <Image
-                    className="mb-2"
-                    style={{
-                      width: "45px",
-                      height: "45px",
-                      borderRadius: "50%"
-                    }}
-                    src={data?.image}
-                    alt={data?.image}
-                  />
+          {role === "seller" && <div className="w-full">
 
-                </Image.PreviewGroup>
-
-                : <AccountCircleIcon style={{ fontSize: "55px" }} />}
-              <div className="flex flex-col">
-                <span className="text-truncate text-[14px] ">{data?.first_name} </span>
-                <span className="text-[14px] text-truncate">{data?.phone}</span>
-              </div>
-            </div>
             <p className={`p-2 bg-${data?.wallet >= data?.application_charge ? "green-500" : "red-500"} mt-2 text-white text-center`}>
               Balans: {
                 formatterPrice(data?.wallet)
