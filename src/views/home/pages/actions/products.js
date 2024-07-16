@@ -181,7 +181,9 @@ export default function Product() {
     }
     if (desReason) {
       formData1.append("rejected_reason", desReason);
-
+    }
+    if (status) {
+      formData1.append('status', status ? status : detailProduct?.status,)
     }
 
     formData1.append(
@@ -201,14 +203,9 @@ export default function Product() {
       });
     });
 
-    const data = {
-      status: status ? status : detailProduct?.status,
-      rejected_reason: desReason ? desReason : detailProduct?.rejected_reason
-    };
-
     await Client.patch(
       `${API_ENDPOINTS.CREATE_PRODUCT + params}/`,
-      role === "seller" ? formData1 : data
+      formData1
     )
       .then((data) => {
         if (role === "seller") {

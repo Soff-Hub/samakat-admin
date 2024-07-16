@@ -187,7 +187,7 @@ export default function MiniDrawer() {
   // Applicaiton Websocket
   useEffect(() => {
     if (token) {
-      const ws = new WebSocket(`ws://192.168.1.34:80/ws/apllication-notification/?token=${token}`);
+      const ws = new WebSocket(`wss://api.alokand.uz/ws/apllication-notification/?token=${token}`);
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -206,7 +206,7 @@ export default function MiniDrawer() {
 
   useEffect(() => {
     if (token) {
-      const ws = new WebSocket(`ws://192.168.1.34:80/ws/new-product/?token=${token}`);
+      const ws = new WebSocket(`wss://api.alokand.uz/ws/new-product/?token=${token}`);
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -225,7 +225,7 @@ export default function MiniDrawer() {
 
   useEffect(() => {
     if (token) {
-      const ws = new WebSocket(`ws://192.168.1.34:80/ws/order-notification/?token=${token}`);
+      const ws = new WebSocket(`wss://api.alokand.uz/ws/order-notification/?token=${token}`);
 
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -242,9 +242,6 @@ export default function MiniDrawer() {
 
 
 
-  console.log(socket);
-  console.log(socket2);
-  console.log(socket3);
 
 
   return (
