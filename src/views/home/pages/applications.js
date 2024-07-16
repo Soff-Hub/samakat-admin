@@ -235,15 +235,15 @@ export default function Applicaitons() {
 
   const status = {
     approved: {
-      name: "tasdiqlangan",
-      color: " text-[green]",
+      name: "Tasdiqlangan",
+      color: " text-green-600",
     },
     pending: {
-      name: "jarayonda",
-      color: "text-[#F4CA16]",
+      name: "Jarayonda",
+      color: "text-yellow-500",
     },
     cancelled: {
-      name: "bekor qilingan",
+      name: "Bekor qilingan",
       color: "text-[red]",
     },
   };

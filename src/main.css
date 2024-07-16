@@ -1,8 +1,7 @@
 .login-page {
     height: 100vh;
     margin-top: 0;
-    /* background-image: url('https://i.pinimg.com/originals/b5/e4/b2/b5e4b2c5660807a83f1926574556ea75.jpg'); */
-    background-image: url('../public/login_image22.jpg');
+    background-image: url('../src/assets/images/1680377652_pictures-pibig-info-p-risunok-kurer-krasivo-18.jpg');
     background-size: cover;
     background-position: center;
 }

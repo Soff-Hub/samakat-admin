@@ -43,6 +43,8 @@ import { useState } from "react";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import Client from "service/Client";
 import { formatterPrice } from "./pages/applications";
+import { baseURL } from "service/BaseService";
+import { Badge } from "antd";
 
 const drawerWidth = 300;
 
@@ -112,15 +114,17 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MiniDrawer() {
+  const { currentPage, role, isLoginning, token } = useSelector(
+    (state) => state.admin
+  );
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const [data, setData] = useState(null);
   const [socket, setSocket] = useState(null);
-  const { currentPage, role, isLoginning } = useSelector(
-    (state) => state.admin
-  );
+  const [socket2, setSocket2] = useState(null);
+  const [socket3, setSocket3] = useState(null);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -180,29 +184,67 @@ export default function MiniDrawer() {
     // eslint-disable-next-line
   }, [location.pathname, navigationConfig, role, isLoginning]);
 
-  
-  // useEffect(() => {
-  //   const token = 'token';
-  //   if (token) {
+  // Applicaiton Websocket
+  useEffect(() => {
+    if (token) {
+      const ws = new WebSocket(`ws://192.168.1.34:80/ws/apllication-notification/?token=${token}`);
 
-  //     const ws = new WebSocket(
-  //       `${process.env.NEXT_PUBLIC_WS_BASE_URL}ws/deals?token=${token}`
-  //     );
-  //     setSocket(ws);
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        setSocket(data?.data);
+      };
 
-  //     ws.onmessage = (event) => {
-  //       setSocket(JSON.parse(event?.data));
-  //     };
+      return () => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.close();
+        }
+      };
+    }
+  }, [token]);
 
-  //     // Clean up on unmount
-  //     return () => {
-  //       if (ws.readyState === WebSocket.OPEN) {
-  //         ws.close();
-  //       }
-  //     };
-  //   }
+  // Applicaiton Products
 
-  // }, []);
+  useEffect(() => {
+    if (token) {
+      const ws = new WebSocket(`ws://192.168.1.34:80/ws/new-product/?token=${token}`);
+
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        setSocket2(data?.data);
+      };
+
+      return () => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.close();
+        }
+      };
+    }
+  }, [token]);
+
+  // Order WebSocket
+
+  useEffect(() => {
+    if (token) {
+      const ws = new WebSocket(`ws://192.168.1.34:80/ws/order-notification/?token=${token}`);
+
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        setSocket3(data?.data);
+      };
+
+      return () => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.close();
+        }
+      };
+    }
+  }, [token]);
+
+
+
+  console.log(socket);
+  console.log(socket2);
+  console.log(socket3);
 
 
   return (
@@ -278,7 +320,52 @@ export default function MiniDrawer() {
                     >
                       {item.icon}
                     </ListItemIcon>
+
                     <ListItemText
+                      primary={<p className="flex justify-between items-center">
+                        <span>{item.name}</span>
+
+                        {(item?.path === '/applications' && socket?.count > 0) && <Badge
+                          count={socket?.count}
+                          color="orange"
+                          style={{
+                            height: "25px",
+                            width: "25px",
+                            fontSize: "14px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: 'center',
+                            borderRadius: "50%"
+                          }}
+                        ></Badge>}
+                        {
+                          (item?.path === '/products' && socket2?.count > 0)
+                          &&
+                          <Badge count={socket2?.count} color="orange"
+                            style={{
+                              height: "25px",
+                              width: "25px",
+                              fontSize: "14px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: 'center',
+                              borderRadius: "50%"
+                            }
+                            }> </Badge>
+
+                        }
+                        {(item?.path === '/orders' && socket3?.count > 0) && <Badge count={socket3?.count} color="orange"
+                          style={{
+                            height: "25px",
+                            width: "25px",
+                            fontSize: "14px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: 'center',
+                            borderRadius: "50%"
+                          }}> </Badge>}
+
+                      </p>}
                       sx={{
                         minWidth: 0,
                         mr: open ? 1 : "auto",
@@ -286,7 +373,6 @@ export default function MiniDrawer() {
                         color: item.name === currentPage ? "#fff" : "",
                         opacity: open ? 1 : 0,
                       }}
-                      primary={item.name}
                     />
                   </ListItemButton>
                 </Link>
@@ -323,7 +409,50 @@ export default function MiniDrawer() {
                       </ListItemIcon>
 
                       <ListItemText
-                        primary={item.name + ""}
+                        primary={<p className="flex justify-between items-center">
+                          <span>{item.name}</span>
+
+                          {(item?.path === '/applications' && socket?.count > 0) && <Badge
+                            count={socket?.count}
+                            color="orange"
+                            style={{
+                              height: "25px",
+                              width: "25px",
+                              fontSize: "14px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: 'center',
+                              borderRadius: "50%"
+                            }}
+                          ></Badge>}
+                          {
+                            (item?.path === '/products' && socket2?.count > 0)
+                            &&
+                            <Badge count={socket2?.count} color="orange"
+                              style={{
+                                height: "25px",
+                                width: "25px",
+                                fontSize: "14px",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: 'center',
+                                borderRadius: "50%"
+                              }
+                              }> </Badge>
+
+                          }
+                          {(item?.path === '/orders' && socket3?.count > 0) && <Badge count={socket3?.count} color="orange"
+                            style={{
+                              height: "25px",
+                              width: "25px",
+                              fontSize: "14px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: 'center',
+                              borderRadius: "50%"
+                            }}> </Badge>}
+
+                        </p>}
                         sx={{ opacity: open ? 1 : 0 }}
                       />
                     </ListItemButton>
@@ -359,7 +488,50 @@ export default function MiniDrawer() {
                         {item.icon}
                       </ListItemIcon>
                       <ListItemText
-                        primary={item.name}
+                        primary={<p className="flex justify-between items-center">
+                          <span>{item.name}</span>
+
+                          {(item?.path === '/applications' && socket?.count > 0) && <Badge
+                            count={socket?.count}
+                            color="orange"
+                            style={{
+                              height: "25px",
+                              width: "25px",
+                              fontSize: "14px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: 'center',
+                              borderRadius: "50%"
+                            }}
+                          ></Badge>}
+                          {
+                            (item?.path === '/products' && socket2?.count > 0)
+                            &&
+                            <Badge count={socket2?.count} color="orange"
+                              style={{
+                                height: "25px",
+                                width: "25px",
+                                fontSize: "14px",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: 'center',
+                                borderRadius: "50%"
+                              }
+                              }> </Badge>
+
+                          }
+                          {(item?.path === '/orders' && socket3?.count > 0) && <Badge count={socket3?.count} color="orange"
+                            style={{
+                              height: "25px",
+                              width: "25px",
+                              fontSize: "14px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: 'center',
+                              borderRadius: "50%"
+                            }}> </Badge>}
+
+                        </p>}
                         sx={{ opacity: open ? 1 : 0 }}
                       />
                     </ListItemButton>

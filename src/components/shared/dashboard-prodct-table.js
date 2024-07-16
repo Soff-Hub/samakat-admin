@@ -22,15 +22,15 @@ export default function DashboardProdctTable() {
   }, []);
   return (
     <div data-aos="zoom-in" className="ro my-3 px-3">
-      <div class="co-12">
-        <div class="card recent-sales overflow-auto">
-          <div class="card-body">
-            <h5 class="card-title">
+      <div className="co-12">
+        <div className="card recent-sales overflow-auto">
+          <div className="card-body">
+            <h5 className="card-title">
               {" "}
               Buyurtmalar <span>| Bugun</span>
             </h5>
 
-            <table class="table table-borderless datatable">
+            <table className="table table-borderless datatable">
               <thead>
                 <tr
                   style={{
@@ -48,6 +48,7 @@ export default function DashboardProdctTable() {
               <tbody>
                 {data?.map((el) => (
                   <tr
+                  key={el?.id}
                     style={{
                       borderBottom: "1px solid #ccc",
                     }}
@@ -58,7 +59,7 @@ export default function DashboardProdctTable() {
                     <td>{el?.branch?.name}</td>
                     
                     <td>
-                      <span class="text-primary">
+                      <span className="text-primary">
                         {el?.is_paid ? "To'langan" : "To'lanmagan"}
                       </span>
                     </td>
@@ -66,11 +67,11 @@ export default function DashboardProdctTable() {
                     <td>{el?.created_at?.substring(0,10)}</td>
                     <td>
                       {el?.status === "cancelled" ? (
-                        <span class="badge bg-danger">Bekor qilingan</span>
+                        <span className="badge bg-danger">Bekor qilingan</span>
                       ) : el?.status === "approved" ? (
-                        <span class="badge bg-success">Tasdiqlangan</span>
+                        <span className="badge bg-success">Tasdiqlangan</span>
                       ) : el?.status === "process" ? (
-                        <span class="badge bg-warning">Jarayonda</span>
+                        <span className="badge bg-warning">Jarayonda</span>
                       ) : (
                         ""
                       )}

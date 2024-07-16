@@ -9,6 +9,7 @@ const BaseService = axios.create({
     baseURL: appConfig.apiPrefix,
     timeout: 200000,
 })
+export const baseURL = appConfig.apiPrefix;
 
 const unAuthorizeCode = [403]
 

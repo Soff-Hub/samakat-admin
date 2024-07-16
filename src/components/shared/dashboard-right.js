@@ -21,7 +21,7 @@ function DashboarRight() {
     DashboardProduct();
   }, []);
 
-  console.log('data', data);
+
 
   return (
     <div data-aos="flip-right" class="card">
@@ -38,16 +38,16 @@ function DashboarRight() {
               </ul>
             </div> */}
 
-      <div class="card-body">
-        <h5 class="card-title">
+      <div className="card-body">
+        <h5 className="card-title">
           Ommabop mahsulotlar <span>| Bugun</span>
         </h5>
-        <div class="activity">
+        <div className="activity">
         {data?.map((el) => (
-          <div class="activity-item d-flex">
-            <div class="activite-label">{el.count} ta</div>
-            <i style={{color: `${el.color}`}} class={`fa-solid fa-circle activity-badge align-self-start`} ></i>
-            <div class="activity-content">
+          <div key={el?.id} className="activity-item d-flex">
+            <div className="activite-label">{el.count} ta</div>
+            <i style={{color: `${el.color}`}} className={`fa-solid fa-circle activity-badge align-self-start`} ></i>
+            <div className="activity-content">
              {el.product_variant__product__name}
             </div>
           </div>

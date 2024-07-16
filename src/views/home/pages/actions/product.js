@@ -36,7 +36,6 @@ export default function Product() {
   const [category2, setCategory2] = useState([]);
   const [category3, setCategory3] = useState([]);
 
-  const [checkCategory, setCheckCategory] = useState(false); // categoriyalar tanlangandan so'ng ularni disabled qilib qo'yish
   const [treeData, setTreeData] = useState([]); // xususiyat nomini tanlagandan so'ng uning chaildlarini chhiqaruvchi state
   const [feature, setFeature] = useState(""); // tanlagan xususiyat nomi , yuborish uchun / modalda yozganda
   const [featureSelectName, setFeatureSelectName] = useState(""); // tanlagan xususiyat nomi , yuborish uchun / selectdan tanlaganda
@@ -200,6 +199,8 @@ export default function Product() {
         .catch((err) => console.log(err));
     }
   };
+
+
   const handleChaildCategory = async (e, index) => {
     setLastCategory(e);
     await Client.get(`${API_ENDPOINTS.PPRODUCT_CATEGORY_CREATE + e}/`)
@@ -231,6 +232,8 @@ export default function Product() {
       })
       .catch((err) => console.log(err));
   };
+
+
   const addHandleChangeSizeInput = (index, event) => {
     const newInputValues = [...inputValues];
     newInputValues[index] = event.target.value;
@@ -264,7 +267,6 @@ export default function Product() {
     formData1.append("short_description_uz", short_desc_uz);
     formData1.append("short_description_ru", short_desc_ru);
     formData1.append("category", lastCategory);
-    // formData1.append("colors", JSON.stringify(selectedColors));
     formData1.append("colors", JSON.stringify([...new Set(chekColor)]));
     if (inputValues) {
       formData1.append("feature", feature);
@@ -307,6 +309,7 @@ export default function Product() {
 
 
 
+  
   return (
     <div className="flex  gap-1 bg--color px-2 py-3">
       <div className="w-full">
@@ -332,6 +335,7 @@ export default function Product() {
           ]}
         />
 
+
         <div className="w-full mt-3">
           <Form
             form={form}
@@ -340,16 +344,15 @@ export default function Product() {
             className="w-full flex flex-col gap-3  create-branch-form border-3"
           >
             <div className="colorr p-4">
-              <div className="row gap-3">
+              <div className="row ">
                 <div className="row">
 
                   <Form.Item
-                    
+
                     label="Mahsulot nomi"
                     className="col-md-6  mb-3"
-                    name="titleUz"
-                    
-                    
+                    name="name_uz"
+
                     rules={[
                       {
                         required: true,
@@ -358,21 +361,22 @@ export default function Product() {
                       },
                     ]}>
                     <Input
-                    
-                      
+
+
                       placeholder="Mahsulot nomi"
                       style={{
-                        height: "45px",
+                        height: "45.4px",
                       }}
                       onChange={(e) => {
                         setName(e.target.value);
                       }}
                     />
                   </Form.Item>
+
                   <Form.Item
                     label="Mahsulot nomi (ru)"
                     className="col-md-6  mb-3"
-                    name="titleRu"
+                    name="name_ru"
                     rules={[
                       {
                         required: true,
@@ -383,7 +387,7 @@ export default function Product() {
                     <Input
                       placeholder="Mahsulot nomi (ru)"
                       style={{
-                        height: "45px",
+                        height: "45.4px",
                       }}
                       onChange={(e) => {
                         setNameRu(e.target.value);
@@ -405,12 +409,11 @@ export default function Product() {
                     },
                   ]}>
                   <Select
-                    disabled={checkCategory}
                     mode="single"
                     allowClear
                     style={{
                       width: "100%",
-                      height: "40px"
+                      height: "45.4px"
                     }}
                     showSearch
                     optionFilterProp="children"
@@ -425,12 +428,11 @@ export default function Product() {
 
                   {category1?.length > 0 && (
                     <Select
-                      disabled={checkCategory}
                       mode="single"
                       allowClear
                       style={{
                         width: "100%",
-                        height: "40px"
+                        height: "45.4px"
                       }}
                       className="mt-2"
                       showSearch
@@ -447,13 +449,12 @@ export default function Product() {
                   )}
                   {category2?.length > 0 && (
                     <Select
-                      disabled={checkCategory}
                       mode="single"
                       allowClear
                       className="mt-2"
                       style={{
                         width: "100%",
-                        height: "40px"
+                        height: "45.4px"
                       }}
                       showSearch
                       optionFilterProp="children"
@@ -467,13 +468,12 @@ export default function Product() {
                   )}
                   {category3?.length > 0 && (
                     <Select
-                      disabled={checkCategory}
                       mode="single"
                       allowClear
                       className="mt-2"
                       style={{
                         width: "100%",
-                        height: "40px"
+                        height: "45.4px"
                       }}
                       showSearch
                       optionFilterProp="children"
@@ -577,7 +577,7 @@ export default function Product() {
                   <Form.Item
                     label=" Qisqa izoh (uz)"
                     className=" mb-3 col-md-12"
-                    name="des1"
+                    name="short_description_uz"
                     rules={[
                       {
                         required: true,
@@ -597,7 +597,7 @@ export default function Product() {
                   <Form.Item
                     label=" Qisqa izoh (ru)"
                     className=" mb-3 col-md-12"
-                    name="des2"
+                    name="short_description_ru"
                     rules={[
                       {
                         required: true,
@@ -617,31 +617,38 @@ export default function Product() {
                 </div>
                 {/* skedetor izohlar uchun */}
 
-                <div className="col-12">
-                  <span className="label--name font-bold">Izoh (uz)</span>
-                  {/* // eslint-disable-next-line */}
+                <Form.Item
+                  label=" Izoh (uz)"
+                  className=" mb-3 col-md-12"
+                  name="description_uz">
                   <CKeditor
                     onChange={(e) => setDescription(e)}
                     editorLoaded={true}
 
                   />
-                </div>
 
+                </Form.Item>
 
-                <div className="col-12">
-                  <span className="label--name font-bold">Izoh (ru)</span>
+                <Form.Item
+                  label=" Izoh (ru)"
+                  className=" mb-3 col-md-12"
+                  name="description_ru">
                   <CKeditor
                     onChange={(e) => setDescriptionRu(e)}
                     editorLoaded={true}
                   />
-                </div>
+
+                </Form.Item>
+
               </div>
             </div>
 
             {/* ranglar rasmlar bilan */}
+            <Form.Item
+              label=" Mahsulot ranglari"
+              className=" m-0 col-md-12 colorr p-4"
+              name="colors">
 
-            <div className="p-4 colorr">
-              <span className="label--name font-bold">Mahsulot ranglari</span>
               <Space
                 style={{ width: "100%" }}
                 direction="vertical"
@@ -650,7 +657,7 @@ export default function Product() {
                 <Select
                   mode="tags"
                   allowClear
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", height: "45.4px" }}
                   placeholder="Ranglarni tanlang"
                   onChange={handleChangee}
                   options={colorListOption}
@@ -710,14 +717,16 @@ export default function Product() {
                   </div>
                 </div>
               ))}
-            </div>
+            </Form.Item>
+
+
 
             {/* xususiyatlar */}
+            <Form.Item
+              label=" Mahsulot xususiyatlari"
+              className="m-0 col-md-12 colorr p-4"
+              name="feature">
 
-            <div className="p-4 colorr">
-              <span className="label--name font-bold">
-                Mahsulot xususiyatlari
-              </span>
               {changeSize ? (
                 <>
                   {checkChaild ? (
@@ -731,6 +740,7 @@ export default function Product() {
                         mode={"single"}
                         style={{
                           width: "100%",
+                          height: "45.4px"
                         }}
                         placeholder="Ranglarni tanlang"
                         onChange={handleChangeSizeType}
@@ -779,7 +789,8 @@ export default function Product() {
                   )}
                 </>
               )}
-            </div>
+            </Form.Item>
+
 
 
             <Form.Item className="w-full my-2">
@@ -829,7 +840,7 @@ export default function Product() {
               treeData={treeData}
             />
           </Modal>
-          
+
           <Modal
             width={300}
             title="Xususiyat nomini qo'shing"

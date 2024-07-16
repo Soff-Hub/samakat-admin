@@ -1,7 +1,6 @@
-import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Image, Input, Modal, Select, Space, Tree } from "antd";
+import { Form, Image, Input, Modal, Select, Space, Tree, Button } from "antd";
 import Client from "service/Client";
 import { API_ENDPOINTS } from "service/ApiEndpoints";
 import toast, { Toaster } from "react-hot-toast";
@@ -18,6 +17,7 @@ export default function Product() {
   const { search } = useLocation();
   const params = search.split("?")?.[2];
   const [detailProduct, setDetailProduct] = useState({});
+  const [form] = Form.useForm();
 
   const [colorListOption, setColorListOption] = useState([]); //rang render un
   const [sizetype, setsizeType] = useState([]);
@@ -167,10 +167,10 @@ export default function Product() {
   };
 
   // tahrirlash
-  const handleSubmitEdit = async (e) => {
-    e.preventDefault();
-    setSubmiting(true);
+  const handleSubmitEdit = async (values) => {
 
+    setSubmiting(true);
+    form.resetFields();
     const formData1 = new FormData();
     formData1.append("on_sale", true);
     if (selectedColors?.length > 0) {
@@ -183,10 +183,18 @@ export default function Product() {
       formData1.append("rejected_reason", desReason);
 
     }
+
     formData1.append(
       "feature_items",
       inputValues && JSON.stringify(inputValues)
     );
+    formData1.append('name_uz', values?.name_uz);
+    formData1.append('name_ru', values?.name_ru);
+    formData1.append('short_description_uz', values?.short_description_uz);
+    formData1.append('short_description_ru', values?.short_description_ru);
+    formData1.append('description_ru', values?.description_ru);
+    formData1.append('description_uz', values?.description_uz);
+
     colorImageList.forEach((obj) => {
       Object.entries(obj).forEach(([key, value]) => {
         formData1.append(key, value);
@@ -217,7 +225,7 @@ export default function Product() {
       });
 
     setSubmiting(false);
-    document.querySelector(".create-branch-form").reset();
+
   };
 
   const getProductDetail = async () => {
@@ -279,6 +287,21 @@ export default function Product() {
     ? detailProduct.category_data[detailProduct.category_data.length - 1].name
     : '';
 
+  useEffect(() => {
+
+    if (detailProduct?.id) {
+      form.setFieldsValue({
+        name_uz: detailProduct?.name_uz,
+        name_ru: detailProduct?.name_ru,
+        short_description_uz: detailProduct?.short_description_uz,
+        short_description_ru: detailProduct?.short_description_ru,
+        description_uz: detailProduct?.description_uz || '',
+        description_ru: detailProduct?.description_ru || '',
+      })
+    }
+  }, [detailProduct, form]);
+
+
 
   return (
     <>
@@ -305,90 +328,78 @@ export default function Product() {
             )}
 
             <div className="w-full mt-3">
-              <form
-                onSubmit={handleSubmitEdit}
+              <Form
+                form={form}
+                layout='vertical'
+                onFinish={handleSubmitEdit}
                 className="w-full flex flex-col gap-3  create-branch-form border-3"
               >
                 <div className="colorr p-4">
-                  <div className="row gap-3">
+                  <div className="row ">
+
                     <div className="row">
-                      <div className="col-6">
-                        <span className="label--name font-bold">Nomi(uz)*</span>
+
+                      <Form.Item
+
+                        label="Mahsulot nomi (uz)"
+                        className="col-md-6  mb-3"
+                        name="name_uz"
+                      >
                         <Input
-                          placeholder="Nomi *"
                           type="text"
-                          value={
-                            detailProduct?.name_uz && detailProduct?.name_uz
-                          }
-                          className="py-2"
-                          disabled={true}
-                          style={{
-                            height: "35px",
-                          }}
-                        />
-                      </div>
-                      <div className="col-6">
-                        <span className="label--name font-bold">
-                          Nomi(ru) *
-                        </span>
-                        <Input
-                          placeholder="Название *"
-                          type="text"
-                          value={
-                            detailProduct?.name_uz && detailProduct?.name_uz
-                          }
-                          disabled={true}
                           className="py-2"
                           style={{
-                            height: "35px",
+                            height: "45.4px",
                           }}
                         />
-                      </div>
-                    </div>
+                      </Form.Item>
 
-                    <div className="col-md-12">
-                      <span className="label--name font-bold">
-                        Kategoriyalar:
-                        <span className="ml-1">
-                          {detailProduct?.category_data?.length > 0 &&
-                            detailProduct.category_data?.map((item, index) => (
-                              <span key={index}>
-                                {item.name}
-                                {index < detailProduct.category_data.length - 1 ? ' > ' : ''}
-                              </span>
-                            ))
-                          }
-                        </span>
-
-                      </span>
-                      <div className="d-flex gap-3  align-items-start">
-                        <Space
+                      <Form.Item
+                        label="Mahsulot nomi (ru)"
+                        className="col-md-6  mb-3"
+                        name="name_ru"
+                      >
+                        <Input
+                          type="text"
+                          className="py-2"
                           style={{
-                            width: "100%",
-                            textAlign: "left",
+                            height: "45.4px",
                           }}
-                          direction="vertical"
-                        >
-                          <Select
-                            disabled={true}
-                            style={{
-                              width: "100%",
-                            }}
-                            placeholder="Kategoriyalar"
-                            options={categoryList}
-                            value={lastCategory}
-                          />
-                        </Space>
-                      </div>
+                        />
+                      </Form.Item>
+
                     </div>
+
+                    <Form.Item
+                      label={detailProduct?.category_data?.length > 0 &&
+                        detailProduct.category_data?.map((item, index) => (
+                          <span key={index}>
+                            {item.name}
+                            {index < detailProduct.category_data.length - 1 ? '  > ' : ''}
+                          </span>
+                        ))
+                      }
+                      className="col-md-12"
+                    >
+                      <Select
+                        disabled={true}
+                        style={{
+                          width: "100%",
+                          height: "45.5px"
+                        }}
+
+                        options={categoryList}
+                        value={lastCategory}
+                      />
+
+                    </Form.Item>
 
                     {/* umumiy rasm */}
-
-                    <div className="col-md-6">
-                      <span className="label--name font-bold">
-                        Asosiy rasm(lar)
-                      </span>
-
+                    <Form.Item
+                      label=" Asosiy rasmlar"
+                      className="col-md-12  mb-2"
+                      name="images"
+                    >
                       <div className="d-flex gap-3 flex-wrap">
                         {detailProduct?.images &&
                           detailProduct?.images.map(
@@ -409,178 +420,178 @@ export default function Product() {
                               )
                           )}
                       </div>
+                    </Form.Item>
 
-                    </div>
+
 
                     {/* qisqa tavsif */}
 
                     <div className="row">
-                      <div className="col-md-6">
-                        <span className="label--name font-bold">
-                          Qisqa izoh (uz){" "}
-                        </span>
+                      <Form.Item
+                        label="Qisqa tavsif (uz)"
+                        className="col-md-6  mb-2"
+                        name="short_description_uz"
+                      >
                         <TextArea
-                          value={
-                            detailProduct?.short_description_uz ?
-                              detailProduct?.short_description_uz : ''
-                          }
-                          placeholder="Qisqa tavsif "
                           rows={4}
-                          disabled={true}
+
                         />
-                      </div>
-                      <div className="col-md-6">
-                        <span className="label--name font-bold">
-                          Qisqa izoh (ru){" "}
-                        </span>
+                      </Form.Item>
+
+                      <Form.Item
+                        label="Qisqa tavsif (ru)"
+                        className="col-md-6  mb-2"
+                        name="short_description_ru"
+                      >
                         <TextArea
-                          value={
-                            detailProduct?.short_description_ru ?
-                              detailProduct?.short_description_ru : ''
-                          }
-                          placeholder="Qisqa tavsif "
                           rows={4}
-                          disabled={true}
+
                         />
-                      </div>
+                      </Form.Item>
+
+
                     </div>
+
 
                     {/* skedetor izohlar uchun */}
 
-                    <div className="col-12">
-                      <span className="label--name font-bold">Izoh</span>
-                      {/* // eslint-disable-next-line */}
+                    <Form.Item
+                      label="Izoh (uz)"
+                      className="col-md-12  mb-2"
+                      name="description_uz"
+                    >
+
                       <CKeditor
-                        value={
-                          detailProduct?.description_uz ?
-                            detailProduct?.description_uz : ''
-                        }
-                        disabled={true}
+
                         editorLoaded={true}
                         onChange={() => setCategoryList}
                       />
-                    </div>
-                    <div className="col-12">
-                      <span className="label--name font-bold">Izoh (ru)</span>
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Izoh (ru)"
+                      className="col-md-12  mb-2"
+                      name="description_ru"
+                    >
+
                       <CKeditor
-                        value={
-                          detailProduct?.description_ru ?
-                            detailProduct?.description_ru : ''
-                        }
-                        disabled={true}
+
+
                         editorLoaded={true}
                         onChange={() => setCategoryList}
                       />
-                    </div>
+                    </Form.Item>
+
+
                   </div>
                 </div>
 
                 {/* ranglar rasmlar bilan */}
                 {detailProduct?.colors?.length > 0 && (
                   <div className="p-4 colorr">
-                    <span className="label--name font-bold">
-                      Mahsulot ranglari
-                    </span>
-
-                    <div className="label--name font-bold mb-3">
-                      {detailProduct?.colors &&
-                        detailProduct?.colors.map((e) => (
-                          <div>
-                            <p className="py-1">{e.name}</p>
-                            <div className="d-flex gap-2">
-                              {detailProduct?.images.map(
-                                (el) =>
-                                  el.color === e.id && (
-
-                                    <Image.PreviewGroup >
-                                      <Image
-                                        style={{
-                                          borderRadius: "3px",
-                                          objectFit: "cover",
-                                        }}
-                                        width={80}
-                                        src={el?.image}
-                                        alt="photo"
-                                      />
-
-                                    </Image.PreviewGroup>
-
-                                  )
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                    </div>
 
                     {role === "seller" && (
-                      <Space
-                        style={{ width: "100%" }}
-                        direction="vertical"
-                        className="mb-4"
+                      <Form.Item
+                        label="Mahsulot ranglari"
+                        className="col-md-12  mb-2"
+                        name="colors"
                       >
                         <Select
                           mode="tags"
                           allowClear
-                          style={{ width: "100%" }}
+                          style={{ width: "100%", height: "45.4px" }}
                           placeholder="Ranglarni tanlang"
                           onChange={handleChangee}
                           options={colorListOption}
                         />
-                      </Space>
+                      </Form.Item>
                     )}
 
-                    {selectedColors.map((color) => (
-                      <div key={color}>
-                        <span className="label--name font-bold d-block mb-3">
-                          {getColorNameById(color)}
-                          {color}
-                        </span>
-                        <div className="d-flex flex-wrap gap-3 my-2">
-                          {colorImages[color]?.map((image, index) => (
-                            <div key={index} className="d-flex gap-2">
-                              <Image.PreviewGroup >
-                                <Image
-                                  width={80}
-                                  src={image}
-                                  alt={`Uploaded ${index}`}
-                                />
 
-                              </Image.PreviewGroup>
-                            </div>
-                          ))}
 
-                          <div
-                            style={{
-                              maxWidth: "100px",
-                              width: "80px",
-                              backgroundSize: "cover",
-                              height: "80px",
-                              borderRadius: "5px",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              border: "1px solid #ccc",
-                              position: "relative",
-                            }}
-                          >
-                            <i className="fa-regular fa-plus"></i> yuklash
-                            <input
-                              type="file"
-                              accept="image/*"
+                    <div className="label--name font-medium mb-3 flex gap-4 items-end">
+                      {detailProduct?.colors &&
+                        detailProduct?.colors.map((e) => (
+                          detailProduct?.images.map(
+                            (el) =>
+                              el.color === e.id && (
+                                <div className="flex flex-col">
+                                  <p className="py-1">{e.name}</p>
+                                  <Image.PreviewGroup >
+                                    <Image
+                                      style={{
+                                        borderRadius: "3px",
+                                        objectFit: "cover",
+                                      }}
+                                      width={80}
+                                      height={80}
+                                      src={el?.image}
+                                      alt="photo"
+                                    />
+
+                                  </Image.PreviewGroup>
+                                </div>
+
+                              )
+                          )
+                        ))}
+
+                      {selectedColors.map((color) => (
+                        <div key={color}>
+                          <div className="d-flex  gap-3 my-2">
+                            {colorImages[color]?.map((image, index) => (
+                              <div key={index} className="d-flex gap-2">
+                                <span className="label--name font-bold d-block mb-3">
+                                  {getColorNameById(color)}
+                                  {color}
+                                </span>
+                                <Image.PreviewGroup >
+                                  <Image
+                                    width={80}
+                                    height={80}
+                                    src={image}
+                                    alt={`Uploaded ${index}`}
+                                  />
+
+                                </Image.PreviewGroup>
+                              </div>
+                            ))}
+
+                            <div
                               style={{
-                                opacity: "0",
-                                position: "absolute",
-                                top: "0",
-                                left: "0",
-                                bottom: "0",
-                                right: "0",
+                                maxWidth: "100px",
+                                width: "80px",
+                                backgroundSize: "cover",
+                                height: "100px",
+                                borderRadius: "5px",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                border: "1px solid #ccc",
+                                position: "relative",
                               }}
-                              onChange={(e) => handleImageChange(e, color)}
-                            />
+                            >
+                              <i className="fa-regular fa-plus"></i> yuklash
+                              <input
+                                type="file"
+                                accept="image/*"
+                                style={{
+                                  opacity: "0",
+                                  position: "absolute",
+                                  top: "0",
+                                  left: "0",
+                                  bottom: "0",
+                                  right: "0",
+                                }}
+                                onChange={(e) => handleImageChange(e, color)}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+
+
                   </div>
                 )}
 
@@ -788,20 +799,14 @@ export default function Product() {
 
 
                 <Button
-                  variant="contained"
-                  sx={{
-                    background: "#000",
-                    "&:hover": {
-                      backgroundColor: "#333", // Change this to the desired hover color
-                    },
-                  }}
-                  size="large"
-                  type="submit"
+                  htmlType="submit"
+                  type="primary"
+                  className="bg-blue-500 h-[45.5px] mb-4"
                   disabled={submiting}
                 >
                   {submiting ? "Saqlanmoqda..." : "Davom etish"}
                 </Button>
-              </form>
+              </Form>
 
               <Modal
                 width={300}
