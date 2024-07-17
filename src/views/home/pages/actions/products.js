@@ -42,7 +42,7 @@ export default function Product() {
   const [colorList, setColorList] = useState([]); // price va filialni default qiymatlari uchun
   const [featureList, setFeatureList] = useState([]);
   const [status, setStatus] = useState("");
-  const [desReason, setDesReason] = useState(null);
+
 
   // qo'shimcha xususiyat kiritayotgandagi modalni yopish => cancel
   const handleCancelSizeParent = () => {
@@ -168,30 +168,27 @@ export default function Product() {
 
   // tahrirlash
   const handleSubmitEdit = async (values) => {
-
     setSubmiting(true);
-    form.resetFields();
     const formData1 = new FormData();
-    formData1.append("on_sale", true);
+
     if (selectedColors?.length > 0) {
       formData1.append(
         "colors",
         selectedColors && JSON.stringify(selectedColors)
       );
     }
-    if (desReason) {
-      formData1.append("rejected_reason", desReason);
-    }
-    if (status) {
-      formData1.append('status', status ? status : detailProduct?.status,)
-    }
 
     formData1.append(
       "feature_items",
       inputValues && JSON.stringify(inputValues)
     );
+    formData1.append("on_sale", true);
     formData1.append('name_uz', values?.name_uz);
     formData1.append('name_ru', values?.name_ru);
+    if (role !== 'seller') {
+      formData1.append('rejected_reason', values?.rejected_reason);
+      formData1.append('status', values?.status);
+    }
     formData1.append('short_description_uz', values?.short_description_uz);
     formData1.append('short_description_ru', values?.short_description_ru);
     formData1.append('description_ru', values?.description_ru);
@@ -209,11 +206,17 @@ export default function Product() {
     )
       .then((data) => {
         if (role === "seller") {
-          toast.success("Mahsulot muvaffaqiyatli qo'shildi");
-          navigate(`/products/actions/productPrice?edit=${data?.id}`);
+          setTimeout(() => {
+            toast.success("Mahsulot muvaffaqiyatli qo'shildi");
+          }, 400);
+          navigate(`/products/actions/productPrice?edit=${detailProduct?.id}`);
         } else {
-          toast.success("Mahsulot statusi muvaffaqiyatli o'zgartirildi");
-          navigate(`/products`);
+          if (values?.status !== detailProduct?.status) {
+            toast.success("Mahsulot statusi muvaffaqiyatli o'zgartirildi");
+          }
+          setTimeout(() => {
+            navigate(`/products`);
+          }, 400);
         }
       })
       .catch((err) => {
@@ -222,6 +225,7 @@ export default function Product() {
       });
 
     setSubmiting(false);
+
 
   };
 
@@ -294,9 +298,12 @@ export default function Product() {
         short_description_ru: detailProduct?.short_description_ru,
         description_uz: detailProduct?.description_uz || '',
         description_ru: detailProduct?.description_ru || '',
+        rejected_reason: detailProduct?.rejected_reason,
+        status: detailProduct?.status,
       })
     }
   }, [detailProduct, form]);
+
 
 
 
@@ -304,9 +311,9 @@ export default function Product() {
     <>
       {detailProduct && (
         <div className="flex  gap-1 bg--color px-2 py-3">
+          <Toaster />
           <div className="w-full">
             <h1 className="text-[35px] pb-2">Mahsulot tahrirlash</h1>
-            <Toaster />
             {role === "seller" && (
               <Steps
                 current={0}
@@ -533,19 +540,20 @@ export default function Product() {
                           )
                         ))}
 
+                    </div>
+                    <div className="flex flex-col gap-2">
                       {selectedColors.map((color) => (
                         <div key={color}>
-                          <div className="d-flex  gap-3 my-2">
+                          <span className="label--name font-bold d-block mb-2">
+                            {getColorNameById(color)}
+                            {color}
+                          </span>
+                          <div className="d-flex flex-wrap gap-3 my-2">
                             {colorImages[color]?.map((image, index) => (
                               <div key={index} className="d-flex gap-2">
-                                <span className="label--name font-bold d-block mb-3">
-                                  {getColorNameById(color)}
-                                  {color}
-                                </span>
                                 <Image.PreviewGroup >
                                   <Image
                                     width={80}
-                                    height={80}
                                     src={image}
                                     alt={`Uploaded ${index}`}
                                   />
@@ -559,7 +567,7 @@ export default function Product() {
                                 maxWidth: "100px",
                                 width: "80px",
                                 backgroundSize: "cover",
-                                height: "100px",
+                                height: "80px",
                                 borderRadius: "5px",
                                 display: "flex",
                                 justifyContent: "center",
@@ -726,69 +734,62 @@ export default function Product() {
                 </div>
 
                 {/* admin va employee uchun status o'zgartirish */}
-                {role !== "seller" && detailProduct?.status && (
+                {role !== "seller" && (
                   <div className="p-4 colorr">
-                    <div className="font-sans text-md font-bold my-3">
-                      Mahsulot statusini o'zgartirish
-                    </div>
-                    <div className="col-md-3">
-                      <Space
+                    <Form.Item
+                      name={'status'}
+                      label="Mahsulot statusini o'zgartirish"
+                      className="col-md-6 mb-2"
+                    >
+
+                      <Select
+                        size="large"
+                        mode="single"
                         style={{
                           width: "100%",
-                          textAlign: "left",
                         }}
-                        direction="vertical"
-                      >
-                        <Select
-                          size="large"
-                          mode="single"
-                          style={{
-                            width: "100%",
-                          }}
-                          defaultValue={detailProduct?.status}
-                          onChange={(e) => setStatus(e)}
-                          placeholder="status"
-                          options={[
-                            {
-                              label: (
-                                <div className="text-[#50C878]">
-                                  Tasdiqlangan
-                                </div>
-                              ),
-                              value: "approved",
-                            },
-                            {
-                              label: (
-                                <div className="text-[#F4CA16]">Kutilmoqda</div>
-                              ),
-                              value: "pending",
-                            },
-                            {
-                              label: (
-                                <div className="text-[red]">Bekor qilingan</div>
-                              ),
-                              value: "cancelled",
-                            },
-                          ]}
-                        />
-                      </Space>
-                    </div>
+                        placeholder="status"
+                        options={[
+                          {
+                            label: (
+                              <div className="text-[#50C878]">
+                                Tasdiqlangan
+                              </div>
+                            ),
+                            value: "approved",
+                          },
+                          {
+                            label: (
+                              <div className="text-[#F4CA16]">Kutilmoqda</div>
+                            ),
+                            value: "pending",
+                          },
+                          {
+                            label: (
+                              <div className="text-[red]">Bekor qilingan</div>
+                            ),
+                            value: "cancelled",
+                          },
+                        ]}
+                        onChange={(e) => setStatus(e)}
+                      />
+                    </Form.Item>
+
+
+
                     {
-                      (status === "cancelled" || detailProduct?.status) &&
-                      <div className="col-md-12">
-                        <span className="label--name font-bold">
-                          Sabab *
-                        </span>
+                      (status === "cancelled" || detailProduct?.status === 'cancelled') &&
+                      <Form.Item
+                        name={'rejected_reason'}
+                        label="Sabab"
+                        className="col-md-12 mb-2"
+                      >
+
                         <TextArea
-                          onChange={(e) => setDesReason(e.target.value)}
-                          defaultValue={
-                            detailProduct?.rejected_reason ?
-                              detailProduct?.rejected_reason : ''
-                          }
                           placeholder="Sabab *"
                           rows={4}
                         />
-                      </div>
+                      </Form.Item>
 
                     }
                   </div>
