@@ -205,7 +205,7 @@ export default function Product() {
     setLastCategory(e);
     await Client.get(`${API_ENDPOINTS.PPRODUCT_CATEGORY_CREATE + e}/`)
       .then((resp) => {
-        if (resp.length === 0) {
+        if (resp == []) {
           setLastCategory(e);
         } else if (index === 1) {
           setCategory1(
@@ -309,7 +309,8 @@ export default function Product() {
 
 
 
-  
+
+
   return (
     <div className="flex  gap-1 bg--color px-2 py-3">
       <div className="w-full">
@@ -644,16 +645,12 @@ export default function Product() {
             </div>
 
             {/* ranglar rasmlar bilan */}
-            <Form.Item
-              label=" Mahsulot ranglari"
-              className=" m-0 col-md-12 colorr p-4"
-              name="colors">
+            <div className="colorr p-4">
+              <Form.Item
+                label=" Mahsulot ranglari"
+                className=" m-0 col-md-12 mb-3"
+                name="colors">
 
-              <Space
-                style={{ width: "100%" }}
-                direction="vertical"
-                className="mb-4"
-              >
                 <Select
                   mode="tags"
                   allowClear
@@ -662,13 +659,15 @@ export default function Product() {
                   onChange={handleChangee}
                   options={colorListOption}
                 />
-              </Space>
+
+
+              </Form.Item>
 
               {selectedColors.map((color) => (
                 <div key={color}>
                   <span className="label--name font-bold d-block mb-3">
                     {getColorNameById(color)}
-                    {/* {color} */}
+                    {color}
                   </span>
                   <div className="d-flex flex-wrap gap-3 my-2">
                     {colorImages[color]?.map((image, index) => (
@@ -717,7 +716,7 @@ export default function Product() {
                   </div>
                 </div>
               ))}
-            </Form.Item>
+            </div>
 
 
 
