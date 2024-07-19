@@ -6,7 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Select, Space } from "antd";
+
 
 function Categories() {
   const [submiting, setSubmiting] = useState(false);
@@ -15,22 +15,16 @@ function Categories() {
     name_ru: "",
     order: 0,
     parent: "",
-    type: "",
+    discount_rate: ''
   });
   const [itemData, setItemData] = useState(null);
   const [img, setImage] = useState(null);
   const [parentName, setParentName] = useState(null);
-  const [parentNameRu, setParentNameRu] = useState(null);
   const [lifeImage, setLifeImage] = useState(null);
   const navigate = useNavigate();
   const loaction = useLocation();
   const [product, setProduct] = useState([]);
-  const [productApi, setProductApi] = useState(null);
-  const [defaultData, setDefaultData] = useState([]);
 
-  const handleChangeRelatedCategory = (event) => {
-    setProduct(event);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,10 +32,10 @@ function Categories() {
     formData.append("name_uz", formVal.name_uz);
     formData.append("name_ru", formVal.name_ru);
     formData.append("order", formVal.order);
+    formData.append("discount_rate", formVal.discount_rate);
     if (img) {
       formData.append("image", img);
     }
-    formData.append("type", loaction.search.split("?")[1]);
     setSubmiting(true);
 
     await Client.post(API_ENDPOINTS.CREATE_CATEGORY, formData)
@@ -68,7 +62,6 @@ function Categories() {
     if (img) {
       formData.append("image", img);
     }
-    formData.append("type", loaction.search.split("?")[1]);
     formData.append("products", JSON.stringify(product));
 
     setSubmiting(true);
@@ -95,12 +88,6 @@ function Categories() {
         setItemData(resp);
         setLifeImage(resp.image);
         setProduct(resp.products?.map((el) => el.id));
-        setDefaultData(
-          resp.products?.map((el) => ({
-            value: el.id,
-            label: el.name,
-          }))
-        );
       })
       .catch((err) => console.log(err));
   };
@@ -122,7 +109,8 @@ function Categories() {
     formData.append("name_uz", formVal.name_uz);
     formData.append("name_ru", formVal.name_ru);
     formData.append("order", formVal.order);
-    formData.append("type", formVal.type);
+
+    formData.append("discount_rate", formVal.discount_rate);
     if (product) {
       formData.append("products", JSON.stringify(product));
     }
@@ -146,20 +134,7 @@ function Categories() {
     setSubmiting(false);
   };
 
-  const getProduct = async () => {
-    await Client.get(`${API_ENDPOINTS.PRODUCT_MIN_LIST}`)
-      .then((res) => {
-        setProductApi(
-          res?.map((el) => ({
-            value: el.id,
-            label: el.name,
-          }))
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+
 
   useEffect(() => {
     if (loaction.search.split("?").length === 4) {
@@ -181,9 +156,7 @@ function Categories() {
     }
   };
 
-  useEffect(() => {
-    getProduct();
-  }, []);
+
 
   return loaction.search.split("?").length === 4 ? (
     itemData ? (
@@ -213,15 +186,15 @@ function Categories() {
               onSubmit={handleSubmitEdit}
               className="w-1/2 m-auto mt-6 flex flex-col gap-3 colorr p-3 create-branch-form"
             >
-              <TextField
+              {itemData?.parent !== null && <TextField
                 label="Ota kategoriya"
                 variant="outlined"
                 size="large"
                 type="text"
                 value={itemData?.parent !== null ? itemData?.parent : "yo'q"}
-              />
-              <div className="row">
-                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+              />}
+              <div className="row gap-y-4">
+                <div className="col-md-6">
                   <TextField
                     label="Kategoriya nomi"
                     variant="outlined"
@@ -235,7 +208,7 @@ function Categories() {
                     }}
                   />
                 </div>
-                <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                <div className="col-md-6">
                   <TextField
                     label="Kategoriya nomi (ru)"
                     variant="outlined"
@@ -249,49 +222,40 @@ function Categories() {
                     }}
                   />
                 </div>
+                <div className={itemData?.parent === null ? "col-md-6" : "col-md-12"}>
+                  <TextField
+                    className="w-100"
+                    label="Tartib raqami"
+                    variant="outlined"
+                    size="large"
+                    name="order"
+                    required
+                    defaultValue={itemData.order}
+                    onChange={(e) => {
+                      setFormVal((c) => ({ ...c, order: e.target.value }));
+                    }}
+                    type="number"
+                  />
+                </div>
+                {itemData?.parent === null && <div className="col-md-6">
+                  <TextField
+                    label="Ilova ulushi (%)"
+                    variant="outlined"
+                    size="large"
+                    name="order"
+                    className="w-100"
+
+                    required
+                    defaultValue={itemData.discount_rate}
+                    onChange={(e) => {
+                      setFormVal((c) => ({ ...c, discount_rate: e.target.value }));
+                    }}
+                    type="number"
+                  />
+                </div>}
               </div>
 
-              <TextField
-                label="Tartib raqami"
-                variant="outlined"
-                size="large"
-                name="order"
-                required
-                defaultValue={itemData.order}
-                onChange={(e) => {
-                  setFormVal((c) => ({ ...c, order: e.target.value }));
-                }}
-                type="number"
-              />
 
-              {/* {!itemData.child_is_available ? (
-                <Space
-                  style={{
-                    width: "100%",
-                    textAlign: "left",
-                  }}
-                  direction="vertical"
-                >
-                  <Select
-                    mode="multiple"
-                    allowClear
-                    style={{
-                      width: "100%",
-                    }}
-                    showSearch
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      (option?.label ?? "").includes(input)
-                    }
-                    placeholder="Mahsulotlar"
-                    onChange={handleChangeRelatedCategory}
-                    defaultValue={defaultData}
-                    options={productApi}
-                  />
-                </Space>
-              ) : (
-                ""
-              )} */}
               <div className="image-conatiner">
                 <div
                   style={{
@@ -361,7 +325,7 @@ function Categories() {
                 type="submit"
                 disabled={submiting}
               >
-                {submiting ? "Saqlanmoqda" : "Saqlash"}
+                {submiting ? "Saqlanmoqda..." : "Saqlash"}
               </Button>
             </form>
           </div>
@@ -380,8 +344,8 @@ function Categories() {
             loaction.search.split("?").length === 2
               ? handleSubmit
               : loaction.search.split("?").length === 5
-              ? handleCHaildSubmit
-              : ""
+                ? handleCHaildSubmit
+                : ""
           }
           className="w-1/2 m-auto mt-6 flex flex-col gap-3 p-3 colorr create-branch-form"
         >
@@ -397,8 +361,8 @@ function Categories() {
             ""
           )}
 
-          <div className="row">
-            <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+          <div className="row gap-y-4">
+            <div className="col-md-6">
               <TextField
                 label="Kategoriya nomi"
                 variant="outlined"
@@ -412,61 +376,56 @@ function Categories() {
                 }}
               />
             </div>
-            <div className="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
+            <div className="col-md-6">
               <TextField
                 label="Kategoriya nomi (ru) "
                 variant="outlined"
                 size="large"
                 type="text"
                 required
-                className="w-100 w-100 mt-2 m-xxl-0 m-xl-0 m-lg-0 m-md-0 m-sm-0"
+                className="w-100"
                 value={formVal.name_ru}
                 onChange={(e) => {
                   setFormVal((c) => ({ ...c, name_ru: e.target.value }));
                 }}
               />
             </div>
-          </div>
-          <TextField
-            label="Tartib raqami"
-            variant="outlined"
-            size="large"
-            name="order"
-            required
-            value={formVal.order}
-            onChange={(e) => {
-              setFormVal((c) => ({ ...c, order: e.target.value }));
-            }}
-            type="number"
-          />
-
-          {/* {loaction.search.split("?").length === 5 ? (
-            <Space
-              style={{
-                width: "100%",
-                textAlign: "left",
-              }}
-              direction="vertical"
-            >
-              <Select
-                mode="multiple"
-                allowClear
-                style={{
-                  width: "100%",
+            <div className={loaction.search.split("?").length === 2 ? "col-md-6" : "col-md-12"}>
+              <TextField
+                label="Tartib raqami"
+                variant="outlined"
+                size="large"
+                name="order"
+                className="w-100"
+                required
+                value={formVal.order}
+                onChange={(e) => {
+                  setFormVal((c) => ({ ...c, order: e.target.value }));
                 }}
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label ?? "").includes(input)
-                }
-                placeholder="Mahsulotlar"
-                onChange={handleChangeRelatedCategory}
-                options={productApi}
+                type="number"
               />
-            </Space>
-          ) : (
-            ""
-          )} */}
+            </div>
+
+            {loaction.search.split("?").length === 2 && <div className="col-md-6">
+              <TextField
+                label="Ilova ulushi (%)"
+                variant="outlined"
+                size="large"
+                name="order"
+                className="w-100"
+                required
+                value={formVal.discount_rate}
+                onChange={(e) => {
+                  setFormVal((c) => ({ ...c, discount_rate: e.target.value }));
+                }}
+                type="number"
+              />
+            </div>}
+
+          </div>
+
+
+
           {loaction.search.split("?").length === 5 ? (
             ""
           ) : (

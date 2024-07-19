@@ -144,15 +144,9 @@ export default function ProductPrice() {
     setSubmiting(false);
   };
 
-  console.log(
-    "new_variants",
-    dataArray,
-    dataArray?.map((e) => (e.color != null ? e : ""))
-  );
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
-    console.log("Submitted Data:", dataArray);
     setSubmiting(true);
 
     const data = {
@@ -172,11 +166,17 @@ export default function ProductPrice() {
         setPercent(100);
       })
       .catch((err) => {
-        console.log("err?.data", err.response.data.msg);
+        console.log("err?.data", err.response?.data?.new_variants[0]?.price[0] ||
+          err.response?.data?.new_variants[0]?.discount[0] ||
+          err.response?.data?.old_variants[0]?.price[0] ||
+          err.response?.data?.old_variants[0]?.discount[0]);
+
         toast.error(
-          `${err.response.data.msg
-            ? err.response.data.msg
-            : "Xatolik! Qayta urinib ko'ring"
+          `${err.response?.data?.new_variants[0]?.price[0] ||
+          err.response?.data?.new_variants[0]?.discount[0] ||
+          err.response?.data?.old_variants[0]?.price[0] ||
+          err.response?.data?.old_variants[0]?.discount[0]
+          || "Xatolik! Qayta urinib ko'ring"
           } `
         );
         setSubmiting(false);
@@ -211,8 +211,12 @@ export default function ProductPrice() {
         setPercent(100);
       })
       .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
+        toast.error(err.response?.data?.new_variants[0]?.price[0] ||
+          err.response?.data?.new_variants[0]?.discount[0] ||
+          err.response?.data?.old_variants[0]?.price[0] ||
+          err.response?.data?.old_variants[0]?.discount[0] || "Xatolik! Qayta urinib ko'ring");
         setSubmiting(false);
+
       });
 
     setSubmiting(false);
@@ -506,6 +510,7 @@ export default function ProductPrice() {
 
                     <InputNumber
                       defaultValue={item.price}
+
                       placeholder="Narxni kiriting"
                       className='py-1 col-md-12'
                       formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -521,18 +526,19 @@ export default function ProductPrice() {
                     />
                   </div>
                   <div className="col-md-2">
-                  <p className="mb-2">Mahsulot chegirmasi(%)</p>
+                    <p className="mb-2">Mahsulot chegirmasi(%)</p>
 
-                  <Input
-                    type="number"
-                    className="col-md-12  h-[38px]"
-                    size="small"
-                    placeholder="Discountni kiriting"
-                    value={item.discount}
-                    onChange={(e) =>
-                      handleInputChangeDetail(index, "discount", e.target.value)
-                    }
-                  />
+                    <Input
+                      type="number"
+                      className="col-md-12  h-[38px]"
+                      size="small"
+                      placeholder="Discountni kiriting"
+                      value={item.discount}
+                      onChange={(e) =>
+                        handleInputChangeDetail(index, "discount", e.target.value)
+                      }
+                      maxLength={3}
+                    />
                   </div>
 
 
