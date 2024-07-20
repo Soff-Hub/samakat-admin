@@ -19,6 +19,13 @@ export default function ProductPrice() {
   const params = search.split("=")?.[1];
   const chekParam = search.split("=")?.[0];
   const [onePrice, setOnePrice] = useState(null);
+  const [onePrice1, setOnePrice1] = useState(null);
+  const [onePrice2, setOnePrice2] = useState(null);
+  const [onePrice3, setOnePrice3] = useState(null);
+  const [delayedPriceMessage, setDelayedPriceMessage] = useState('');
+  const [delayedPriceMessage1, setDelayedPriceMessage1] = useState('');
+  const [delayedPriceMessage2, setDelayedPriceMessage2] = useState('');
+  const [delayedPriceMessage3, setDelayedPriceMessage3] = useState('');
   const [dataArray, setDataArray] = useState([
     {
       color: null,
@@ -27,6 +34,7 @@ export default function ProductPrice() {
       discount: 0,
     },
   ]);
+
   const [dataArrayDetail, setDataArrayDetail] = useState([]);
   const getProductFeatureDeatil = async () => {
     if (chekParam === "?edit") {
@@ -73,6 +81,8 @@ export default function ProductPrice() {
     const newArray = [...dataArray];
     newArray[index][field] = value;
     setDataArray(newArray);
+
+
   };
 
   const handleInputChangeDetail = (index, field, value) => {
@@ -106,7 +116,7 @@ export default function ProductPrice() {
         setPercent(100);
       })
       .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
+        toast.error(err?.message || "Xatolik! Qayta urinib ko'ring");
         setSubmiting(false);
       });
 
@@ -122,7 +132,7 @@ export default function ProductPrice() {
         {
           color: null,
           feature: null,
-          price: +onePrice,
+          price: Math.round(Number(onePrice) / 1000) * 1000,
         },
       ],
     };
@@ -137,7 +147,7 @@ export default function ProductPrice() {
         setPercent(100);
       })
       .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
+        toast.error(err?.message || "Xatolik! Qayta urinib ko'ring");
         setSubmiting(false);
       });
 
@@ -166,10 +176,7 @@ export default function ProductPrice() {
         setPercent(100);
       })
       .catch((err) => {
-        console.log("err?.data", err.response?.data?.new_variants[0]?.price[0] ||
-          err.response?.data?.new_variants[0]?.discount[0] ||
-          err.response?.data?.old_variants[0]?.price[0] ||
-          err.response?.data?.old_variants[0]?.discount[0]);
+        toast.error(err?.message || "Xatolik! Qayta urinib ko'ring");
 
         toast.error(
           `${err.response?.data?.new_variants[0]?.price[0] ||
@@ -216,6 +223,7 @@ export default function ProductPrice() {
           err.response?.data?.old_variants[0]?.price[0] ||
           err.response?.data?.old_variants[0]?.discount[0] || "Xatolik! Qayta urinib ko'ring");
         setSubmiting(false);
+        toast.error(err?.message || "Xatolik! Qayta urinib ko'ring");
 
       });
 
@@ -226,6 +234,72 @@ export default function ProductPrice() {
     getProductFeature();
     getProductFeatureDeatil();
   }, []);
+
+  useEffect(() => {
+    if (onePrice !== null) {
+      const timer = setTimeout(() => {
+        if (onePrice % 1000 !== 0) {
+          setDelayedPriceMessage(`Qabul qilinadigan summa ${Math.round(Number(onePrice) / 1000) * 1000} so'm`);
+        } else {
+          setDelayedPriceMessage('');
+        }
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setDelayedPriceMessage('');
+    }
+  }, [onePrice]);
+
+  useEffect(() => {
+    if (onePrice1 !== null) {
+      const timer = setTimeout(() => {
+        if (onePrice1 % 1000 !== 0) {
+          setDelayedPriceMessage1(`Qabul qilinadigan summa ${Math.round(Number(onePrice1) / 1000) * 1000} so'm`);
+        } else {
+          setDelayedPriceMessage1('');
+        }
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setDelayedPriceMessage1('');
+    }
+  }, [onePrice1]);
+
+  useEffect(() => {
+    if (onePrice2 !== null) {
+      const timer = setTimeout(() => {
+        if (onePrice2 % 1000 !== 0) {
+          setDelayedPriceMessage2(`Qabul qilinadigan summa ${Math.round(Number(onePrice2) / 1000) * 1000} so'm`);
+        } else {
+          setDelayedPriceMessage2('');
+        }
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+    else {
+      setDelayedPriceMessage2('');
+    }
+  }, [onePrice2]);
+
+  useEffect(() => {
+    if (onePrice3 !== null) {
+      const timer = setTimeout(() => {
+        if (onePrice3 % 1000 !== 0) {
+          setDelayedPriceMessage3(`Qabul qilinadigan summa ${Math.round(Number(onePrice3) / 1000) * 1000} so'm`);
+        } else {
+          setDelayedPriceMessage3('');
+        }
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setDelayedPriceMessage3('');
+    }
+  }, [onePrice3]);
+
 
   return (
     <>
@@ -279,7 +353,7 @@ export default function ProductPrice() {
               >
                 {dataArray?.map((item, index) => (
                   <div
-                    className="row"
+                    className="row items-start"
                     key={index}
                     style={{ marginBottom: "10px" }}
                   >
@@ -334,21 +408,26 @@ export default function ProductPrice() {
                       </Space>
                     </div>
 
-                    <InputNumber
-                      required
-                      placeholder="Narxni kiriting"
-                      className='col-md-3 py-1'
-                      formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
-                      onKeyPress={(e) => {
-                        if (!/[0-9]/.test(e.key)) {
-                          e.preventDefault();
+                    <div className="col-md-3">
+                      <InputNumber
+                        required
+                        placeholder="Narxni kiriting"
+                        className='w-100 py-1'
+                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                        onKeyPress={(e) => {
+                          if (!/[0-9]/.test(e.key)) {
+                            e.preventDefault();
+                          }
+                        }}
+                        onChange={(e) => (
+                          handleInputChange(index, "price", Math.round(Number(e) / 1000) * 1000),
+                          setOnePrice1(e)
+                        )
                         }
-                      }}
-                      onChange={(e) =>
-                        handleInputChange(index, "price", e)
-                      }
-                    />
+                      />
+                      <span className="text-danger text-[14px]">{delayedPriceMessage1}</span>
+                    </div>
 
                     <Button
                       className="col-md-1 ml-2"
@@ -411,6 +490,7 @@ export default function ProductPrice() {
                       setOnePrice(e)
                     }
                   />
+                  <span className="text-danger text-[14px]">{delayedPriceMessage}</span>
 
                 </div>
                 <div className="col-md-4">
@@ -521,9 +601,16 @@ export default function ProductPrice() {
                         }
                       }}
                       onChange={(e) =>
-                        handleInputChangeDetail(index, "price", e)
+                      (
+                        handleInputChangeDetail(index, "price", Math.round(Number(e) / 1000) * 1000),
+                        setOnePrice2(e)
+
+                      )
                       }
+
+
                     />
+                    <span className="text-danger text-[14px]">{delayedPriceMessage2}</span>
                   </div>
                   <div className="col-md-2">
                     <p className="mb-2">Mahsulot chegirmasi(%)</p>
@@ -546,11 +633,11 @@ export default function ProductPrice() {
               ))}
               {dataArray?.map((item, index) => (
                 <div
-                  className="row p-0 m-0 mb-3"
+                  className="row p-0 m-0 mb-3 items-start"
                   key={index}
                   style={{ marginBottom: "10px" }}
                 >
-                  <div className="col-md-3">
+                  <div className="col-md-2">
                     <Space
                       style={{
                         width: "100%",
@@ -600,25 +687,33 @@ export default function ProductPrice() {
                     </Space>
                   </div>
 
-                  <InputNumber
-                    defaultValue={item.price}
-                    placeholder="Narxni kiriting"
-                    className='py-1 col-md-2'
-                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                    parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
-                    onKeyPress={(e) => {
-                      if (!/[0-9]/.test(e.key)) {
-                        e.preventDefault();
+                  <div className="col-md-3">
+                    <InputNumber
+                      defaultValue={item.price}
+                      placeholder="Narxni kiriting"
+                      className='py-1 w-100'
+                      formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      parser={(value) => value?.replace(/\$\s?|(,*)/g, '')}
+                      onKeyPress={(e) => {
+                        if (!/[0-9]/.test(e.key)) {
+                          e.preventDefault();
+                        }
+                      }}
+                      onChange={(e) =>
+                      (
+                        handleInputChange(index, "price", Math.round(Number(e) / 1000) * 1000),
+                        setOnePrice3(e)
+                      )
                       }
-                    }}
-                    onChange={(e) =>
-                      handleInputChange(index, "price", e)
-                    }
-                  />
+                    />
+                    <span className="text-danger text-[14px]">{delayedPriceMessage3}</span>
+
+                  </div>
+
 
                   <Input
                     type="number"
-                    className="col-md-2 ml-2"
+                    className="col-md-2 ml-2 h-[40px]"
                     size="small"
                     placeholder="Discountni kiriting"
                     onChange={(e) =>
@@ -635,6 +730,7 @@ export default function ProductPrice() {
                   </Button>
                 </div>
               ))}
+
               <div className="row p-0 m-0">
                 <div className="col-md-4">
                   <Button

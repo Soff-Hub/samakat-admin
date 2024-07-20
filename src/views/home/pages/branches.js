@@ -102,7 +102,7 @@ export default function Branches() {
 
   useEffect(() => {
     getBranches();
-    (role === "superadmin" || role === "employee" )&& getStore()  
+    (role === "superadmin" || role === "employee") && getStore()
   }, []);
 
 
@@ -200,20 +200,19 @@ export default function Branches() {
                         {row?.address}
                       </Link>
                     </TableCell>
-                    <TableCell  align="center" component="th" scope="row">
+                    <TableCell align="center" component="th" scope="row">
                       <Link
                         to={"actions/" + row?.uuid}
                         className="hover:underline"
                       >
-                       {row?.created_at}
+                        {row?.created_at}
                       </Link>
                     </TableCell>
                     <TableCell align="right" component="th" scope="row">
                       <Link
                         to={"actions/" + row?.uuid}
-                        className={`hover:underline text-[${
-                          status[row?.status]?.color
-                        }] `}
+                        className={`hover:underline text-[${status[row?.status]?.color
+                          }] `}
                       >
                         {status[row?.status]?.name}
                       </Link>
@@ -239,7 +238,7 @@ export default function Branches() {
                 );
               })}
             </TableBody>
-            {( Math.ceil(count / 30) <= 1) || count === 0 ? (
+            {(Math.ceil(count / 30) <= 1) || count === 0 ? (
               <></>
             ) : (
               <div className="m-3 mb-5">

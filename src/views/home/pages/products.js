@@ -19,6 +19,7 @@ import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRen
 import ResponsiveDialog from "components/shared/modal";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import DiscountIcon from '@mui/icons-material/Discount';
 
 
 import {
@@ -170,6 +171,7 @@ export default function EnhancedTable() {
   const [quantity, setQuantity] = useState("");
   const [branch, setBranch] = useState([]);
   const { role } = useSelector((state) => state.admin);
+
   const [sale_product, setSale_product] = useState([
     {
       id: 1,
@@ -307,7 +309,6 @@ export default function EnhancedTable() {
       })
       .catch((err) => console.log(err));
   }
-
 
 
   useEffect(() => {
@@ -530,6 +531,11 @@ export default function EnhancedTable() {
                           </TableCell>
                         )}
                         <TableCell align="right" sx={{ position: "relative" }}>
+                          <Link to={`actions/productPrice?edit=${row.id}`}>
+                            <IconButton color="primary">
+                              <DiscountIcon color="warning" />
+                            </IconButton>
+                          </Link>
 
                           {row.is_delete ? (
                             <IconButton

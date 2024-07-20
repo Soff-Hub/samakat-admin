@@ -255,9 +255,7 @@ export default function Product() {
 
   // qo'shish
   const handleSubmitAdd = async () => {
-    form.resetFields();
     setSubmiting(true);
-
     const formData1 = new FormData();
     formData1.append("on_sale", true);
     formData1.append("name_uz", name);
@@ -269,7 +267,7 @@ export default function Product() {
     formData1.append("category", lastCategory);
     formData1.append("colors", JSON.stringify([...new Set(chekColor)]));
     if (inputValues) {
-      formData1.append("feature", feature);
+      formData1.append("feature", feature == 0 ? null : feature);
     }
     formData1.append("feature_items", JSON.stringify(inputValues));
     colorImageList.forEach((obj) => {
@@ -285,11 +283,12 @@ export default function Product() {
       .then((data) => {
         toast.success("Mahsulot muvaffaqiyatli qo'shildi");
         navigate(`/products/actions/productPrice?id=${data?.id}`);
-        document.querySelector(".create-branch-form").reset();
+        form.resetFields();
       })
       .catch((err) => {
-        toast.error("Xatolik! Qayta urinib ko'ring");
+        toast.error(err?.message || "Xatolik! Qayta urinib ko'ring");
         setSubmiting(false);
+
       });
 
     setSubmiting(false);
